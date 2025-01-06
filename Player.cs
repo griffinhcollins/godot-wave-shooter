@@ -4,18 +4,24 @@ using System;
 public partial class Player : Area2D
 {
 
+	[Signal]
+	public delegate void HitEventHandler();
+
 	[Export]
 	public int speed { get; set; } = 400; // player movement in pixels/sec
 
 	public Vector2 screenSize; // pixel screen size
 
 	AnimatedSprite2D animSprite;
+	CollisionShape2D collShape;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		screenSize = GetViewportRect().Size;
 		animSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		collShape = GetNode<CollisionShape2D>("CollisionShape2D");
+		// Hide();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -74,4 +80,22 @@ public partial class Player : Area2D
 		}
 
 	}
+
+	private void OnBodyEntered(Node2D body)
+	{
+		Hide();
+		EmitSignal(SignalName.Hit);
+		// Activate I-frames
+		collShape.SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
+	}
+
+	public void Start(Vector2 position)
+	{
+		Position = position;
+		Show();
+		collShape.Disabled = false;
+	}
+
+
+
 }

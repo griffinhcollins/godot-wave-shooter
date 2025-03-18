@@ -4,68 +4,104 @@ using System;
 public partial class Main : Node
 {
 
-	[Export]
-	public PackedScene MobScene { get; set; }
+    [Export]
+    public PackedScene MobScene { get; set; }
 
-	private int score;
+    private int score;
+    Player player;
+    Marker2D startPos;
+
+    Timer startTimer;
+    Timer scoreTimer;
+    Timer mobTimer;
+    Hud hud;
+
+    public override void _Ready()
+    {
+        player = GetNode<Player>("Player");
+        startPos = GetNode<Marker2D>("StartPosition");
+        startTimer = GetNode<Timer>("StartTimer");
+        scoreTimer = GetNode<Timer>("ScoreTimer");
+        mobTimer = GetNode<Timer>("MobTimer");
+        hud = GetNode<Hud>("HUD");
+
+        // NewGame();
+    }
+
+    public void GameOver()
+    {
+        hud.ShowGameOver();
+        mobTimer.Stop();
+        scoreTimer.Stop();
+    }
+
+    private void ClearScreen()
+    {
+        foreach (Node childNode in GetChildren())
+        {
+            if (childNode is Mob)
+            {
+                childNode.QueueFree();
+            }
+        }
+    }
+
+    public override void _Process(double delta)
+    {
+        if (Input.IsActionJustPressed("restart"))
+        {
+            NewGame();
+        }
+    }
+
+    public void NewGame()
+    {
+        ClearScreen();
+        score = 0;
+        hud.UpdateScore(score);
+        hud.ShowMessage("Get Ready!");
+        player.Start(startPos.Position);
+
+        startTimer.Start();
+        mobTimer.Start();
+        scoreTimer.Start();
+    }
+
+    private void OnScoreTimeout()
+    {
+        score++;
+        hud.UpdateScore(score);
+    }
+
+    private void OnStartTimerTimeout()
+    {
+        mobTimer.Start();
+        scoreTimer.Start();
+    }
 
 
-	public override void _Ready()
-	{
-		NewGame();
-	}
+    private void OnMobTimerTimeout()
+    {
 
-	public void GameOver()
-	{
-		GetNode<Timer>("MobTimer").Stop();
-		GetNode<Timer>("ScoreTimer").Stop();
-	}
+        Mob mob = MobScene.Instantiate<Mob>();
 
+        PathFollow2D mobSpawnLocation = GetNode<PathFollow2D>("MobPath/MobSpawnLocation");
 
-	public void NewGame()
-	{
-		score = 0;
+        mobSpawnLocation.ProgressRatio = GD.Randf();
 
-		Player player = GetNode<Player>("Player");
-		Marker2D startPos = GetNode<Marker2D>("StartPosition");
-		player.Start(startPos.Position);
+        float direction = mobSpawnLocation.Rotation + Mathf.Pi / 2;
 
-		GetNode<Timer>("StartTimer").Start();
-	}
+        mob.Position = mobSpawnLocation.Position;
+        direction += (float)GD.RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);
+        mob.Rotation = direction;
+        mob.Position -= Vector2.FromAngle(direction) * 200f;
 
-	private void OnScoreTimeout()
-	{
-		score++;
-	}
+        Vector2 velocity = new Vector2((float)GD.RandRange(150f, 250f), 0);
+        mob.LinearVelocity = velocity.Rotated(direction);
 
-	private void OnStartTimerTimeout()
-	{
-		GetNode<Timer>("MobTimer").Start();
-		GetNode<Timer>("ScoreTimer").Start();
-	}
-
-
-	private void OnMobTimerTimeout()
-	{
-
-		Mob mob = MobScene.Instantiate<Mob>();
-
-		PathFollow2D mobSpawnLocation = GetNode<PathFollow2D>("MobPath/MobSpawnLocation");
-
-		mobSpawnLocation.ProgressRatio = GD.Randf();
-
-		float direction = mobSpawnLocation.Rotation + Mathf.Pi / 2;
-
-		mob.Position = mobSpawnLocation.Position;
-		direction += (float)GD.RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);
-		mob.Rotation = direction;
-
-		Vector2 velocity = new Vector2((float)GD.RandRange(150f, 250f), 0);
-		mob.LinearVelocity = velocity.Rotated(direction);
-
-		// The mob doesn't actually exist yet? wack
-		AddChild(mob);
-	}
+        // The mob doesn't actually exist yet? wack
+        AddChild(mob);
+    }
 
 
 }

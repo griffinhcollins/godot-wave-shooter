@@ -37,13 +37,7 @@ public partial class Main : Node
 
     private void ClearScreen()
     {
-        foreach (Node childNode in GetChildren())
-        {
-            if (childNode is Mob)
-            {
-                childNode.QueueFree();
-            }
-        }
+        GetTree().CallGroup("mobs", Node.MethodName.QueueFree);
     }
 
     public override void _Process(double delta)

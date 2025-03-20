@@ -8,6 +8,9 @@ public partial class Player : Area2D
     public delegate void HitEventHandler();
 
     [Export]
+    public PackedScene bullet;
+
+
     public int speed { get; set; } = 400; // player movement in pixels/sec
 
     public Vector2 screenSize; // pixel screen size
@@ -17,6 +20,8 @@ public partial class Player : Area2D
 
     Node2D reticule;
 
+    Timer bulletTimer;
+    bool canFire = true;
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -25,8 +30,14 @@ public partial class Player : Area2D
         collShape = GetNode<CollisionShape2D>("CollisionShape2D");
 
         reticule = GetNode<Node2D>("ReticuleHolder");
+        bulletTimer = GetNode<Timer>("BulletTimer");
 
         // Hide();
+    }
+
+    private void OnBulletTimerFinished()
+    {
+        canFire = true;
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -38,6 +49,15 @@ public partial class Player : Area2D
 
         reticule.Rotation = -1 * pointVec.AngleTo(Vector2.Up);
 
+        // Fire if clicking
+        if (Input.IsMouseButtonPressed(MouseButton.Left) && canFire)
+        {
+            canFire = false;
+            bulletTimer.Start();
+            RigidBody2D newBullet = bullet.Instantiate<RigidBody2D>();
+            newBullet.LinearVelocity = new Vector2(0, -1000).Rotated(reticule.Rotation);
+            AddChild(newBullet);
+        }
 
 
         // Be still by default

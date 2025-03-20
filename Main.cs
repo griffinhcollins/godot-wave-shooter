@@ -90,8 +90,8 @@ public partial class Main : Node
         mob.Rotation = direction;
         mob.Position -= Vector2.FromAngle(direction) * 200f;
 
-        Vector2 velocity = new Vector2((float)GD.RandRange(150f, 250f), 0);
-        mob.LinearVelocity = velocity.Rotated(direction);
+        // Vector2 velocity = new Vector2((float)GD.RandRange(150f, 250f), 0);
+        // mob.LinearVelocity = velocity.Rotated(direction);
 
         // The mob doesn't actually exist yet? wack
         AddChild(mob);

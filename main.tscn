@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://bioj3xubltl3u"]
+[gd_scene load_steps=7 format=3 uid="uid://bioj3xubltl3u"]
 
 [ext_resource type="PackedScene" uid="uid://dphno2aha4dnk" path="res://player.tscn" id="1_5dyaw"]
 [ext_resource type="Script" path="res://Main.cs" id="1_yum70"]
 [ext_resource type="PackedScene" uid="uid://daepl4ypavfsl" path="res://mob.tscn" id="2_8h3n6"]
+[ext_resource type="PackedScene" uid="uid://cmmo7eugaemg7" path="res://bullet.tscn" id="4_15sad"]
 [ext_resource type="PackedScene" uid="uid://bv6wktb7wsx2x" path="res://hud.tscn" id="4_c2pip"]
 
 [sub_resource type="Curve2D" id="Curve2D_oc665"]
@@ -15,8 +16,9 @@ point_count = 5
 script = ExtResource("1_yum70")
 MobScene = ExtResource("2_8h3n6")
 
-[node name="Player" parent="." instance=ExtResource("1_5dyaw")]
+[node name="Player" parent="." groups=["player"] instance=ExtResource("1_5dyaw")]
 position = Vector2(405, 328)
+bullet = ExtResource("4_15sad")
 
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 0.5

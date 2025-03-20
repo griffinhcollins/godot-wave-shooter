@@ -59,6 +59,7 @@ public partial class Main : Node
 
     private void NewGame()
     {
+        Stats.Reset();
         waveCounter = 1;
         state = State.alive;
         StartWave();

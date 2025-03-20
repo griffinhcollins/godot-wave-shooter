@@ -8,6 +8,13 @@ public partial class Mob : RigidBody2D
     float health = 10;
     float speedLimit = 500;
 
+
+    [Export]
+    public PackedScene coin;
+
+
+
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -25,10 +32,19 @@ public partial class Mob : RigidBody2D
         health -= dmg;
         if (health <= 0)
         {
-            QueueFree();
+            Die();
         }
     }
 
+
+    private void Die()
+    {
+        Coin newCoin = coin.Instantiate<Coin>();
+        newCoin.Position = Position;
+        GetParent().CallDeferred("add_child", newCoin);
+        QueueFree();
+
+    }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)

@@ -19,7 +19,9 @@ public partial class Main : Node
     // 0 = in game, 1 = between waves, 2 = dead
     int state;
 
-    int waveLength = 20;
+    int waveLength;
+
+    float spawnRate; // How many enemies spawn per second
 
     int waveCounter;
 
@@ -60,10 +62,22 @@ public partial class Main : Node
     private void NewGame()
     {
         Stats.Reset();
+        UpdateEnemyStats();
         waveCounter = 1;
         state = State.alive;
         StartWave();
     }
+
+
+    public void UpdateEnemyStats()
+    {
+
+        waveLength = Stats.Enemy.WaveLength;
+        spawnRate = Stats.Enemy.SpawnRate;
+        mobTimer.WaitTime = 1 / spawnRate;
+
+    }
+
     public void StartWave()
     {
         ClearScreen();

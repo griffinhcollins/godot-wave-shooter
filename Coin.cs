@@ -10,9 +10,10 @@ public partial class Coin : Area2D
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-
-        GetNode<AnimatedSprite2D>("AnimatedSprite2D").Animation = "default";
-        GetNode<AnimatedSprite2D>("AnimatedSprite2D").Play();
+        AnimatedSprite2D sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+        sprite.Animation = "default";
+        sprite.Frame = GD.RandRange(0, 4);
+        sprite.Play();
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.

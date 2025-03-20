@@ -4,7 +4,7 @@ using System;
 public partial class Bullet : RigidBody2D
 {
 
-    float dmg = 5;
+    float dmg;
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -14,7 +14,10 @@ public partial class Bullet : RigidBody2D
     public override void _Process(double delta)
     {
     }
-
+    public void SetDamage(float newDmg)
+    {
+        dmg = newDmg;
+    }
 
     private void OnCollision(Node2D body)
     {

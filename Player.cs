@@ -49,6 +49,7 @@ public partial class Player : Area2D
     public void UpdateStats()
     {
         damage = Stats.Player.BaseDamage;
+
         firingspeed = Stats.Player.FiringSpeed;
         bulletTimer.WaitTime = 1 / firingspeed;
         hp = Stats.Player.HP;
@@ -83,7 +84,9 @@ public partial class Player : Area2D
             bulletTimer.Start();
             RigidBody2D newBullet = bullet.Instantiate<RigidBody2D>();
             newBullet.LinearVelocity = new Vector2(0, -1000).Rotated(reticule.Rotation);
-            AddChild(newBullet);
+            Bullet bulBehaviour = (Bullet)newBullet;
+            bulBehaviour.SetDamage(damage);
+            AddChild(bulBehaviour);
         }
 
 
@@ -158,7 +161,7 @@ public partial class Player : Area2D
         // Need to use deferred because this is called on a physics callback, and can't edit physics properties in a physics callback
         collShape.SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
         sprite.Modulate = Color.Color8(255, 0, 0);
-        await ToSignal(GetTree().CreateTimer(0.3f), SceneTreeTimer.SignalName.Timeout);
+        await ToSignal(GetTree().CreateTimer(0.5f), SceneTreeTimer.SignalName.Timeout);
         collShape.SetDeferred(CollisionShape2D.PropertyName.Disabled, false);
         sprite.Modulate = Color.Color8(255, 255, 255);
 

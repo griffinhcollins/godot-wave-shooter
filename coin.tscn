@@ -54,6 +54,6 @@ shape = SubResource("CircleShape2D_6hqjw")
 texture_filter = 1
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_52hv0")
-frame_progress = 0.452216
+frame_progress = 0.00114711
 
 [connection signal="area_entered" from="." to="." method="OnTouchPlayer"]

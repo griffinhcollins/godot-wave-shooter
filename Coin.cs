@@ -6,7 +6,7 @@ public partial class Coin : Area2D
 
 
 
-    int value = 5;
+    int value = 1;
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {

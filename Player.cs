@@ -1,24 +1,26 @@
 using Godot;
 using System;
+using System.Runtime.ExceptionServices;
 
 public partial class Player : Area2D
 {
 
     [Signal]
-    public delegate void HitEventHandler();
+    public delegate void KilledEventHandler();
 
     [Export]
     public PackedScene bullet;
 
-
-
+    float damage; // Default damage per shot
+    float firingspeed; // Shots/second
+    int hp;
     int money;
 
     public int speed { get; set; } = 400; // player movement in pixels/sec
 
     public Vector2 screenSize; // pixel screen size
 
-    AnimatedSprite2D animSprite;
+    AnimatedSprite2D sprite;
     CollisionShape2D collShape;
 
     Node2D reticule;
@@ -27,12 +29,13 @@ public partial class Player : Area2D
 
     Hud hud;
 
+
     bool canFire = true;
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         screenSize = GetViewportRect().Size;
-        animSprite = GetNode<AnimatedSprite2D>("PlayerSprite");
+        sprite = GetNode<AnimatedSprite2D>("PlayerSprite");
         collShape = GetNode<CollisionShape2D>("CollisionShape2D");
 
         reticule = GetNode<Node2D>("ReticuleHolder");
@@ -41,6 +44,15 @@ public partial class Player : Area2D
         hud = GetParent().GetNode<Hud>("HUD");
 
         // Hide();
+    }
+
+    public void UpdateStats()
+    {
+        damage = Stats.Player.BaseDamage;
+        firingspeed = Stats.Player.FiringSpeed;
+        bulletTimer.WaitTime = 1 / firingspeed;
+        hp = Stats.Player.HP;
+        hud.UpdateHealth(hp);
     }
 
 
@@ -102,11 +114,11 @@ public partial class Player : Area2D
         if (velocity.LengthSquared() > 0)
         {
             velocity = velocity.Normalized() * speed;
-            animSprite.Play();
+            sprite.Play();
         }
         else
         {
-            animSprite.Stop();
+            sprite.Stop();
         }
 
         // Move
@@ -117,31 +129,46 @@ public partial class Player : Area2D
         // Update animations
         if (velocity.X != 0)
         {
-            animSprite.Animation = "walk";
-            animSprite.FlipV = false;
-            animSprite.FlipH = velocity.X < 0;
+            sprite.Animation = "walk";
+            sprite.FlipV = false;
+            sprite.FlipH = velocity.X < 0;
         }
         else if (velocity.Y != 0)
         {
-            animSprite.Animation = "up";
-            animSprite.FlipV = velocity.Y > 0;
+            sprite.Animation = "up";
+            sprite.FlipV = velocity.Y > 0;
 
         }
 
     }
 
-    private void OnBodyEntered(Node2D body)
+    private async void OnBodyEntered(Node2D body)
     {
+        // GD.Print("ouch!");
+        hp--;
+        hud.UpdateHealth(hp);
+        if (hp <= 0)
+        {
 
-        Hide();
-        EmitSignal(SignalName.Hit);
-        // Activate I-frames, die in one hit but don't want to emit the signal multiple times
+            EmitSignal(SignalName.Killed);
+            Hide();
+            return;
+        }
+        // Activate I-frames
         // Need to use deferred because this is called on a physics callback, and can't edit physics properties in a physics callback
         collShape.SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
+        sprite.Modulate = Color.Color8(255, 0, 0);
+        await ToSignal(GetTree().CreateTimer(0.3f), SceneTreeTimer.SignalName.Timeout);
+        collShape.SetDeferred(CollisionShape2D.PropertyName.Disabled, false);
+        sprite.Modulate = Color.Color8(255, 255, 255);
+
+
     }
 
     public void Start(Vector2 position)
     {
+        money = 0;
+        UpdateStats();
         Position = position;
         Show();
         collShape.Disabled = false;

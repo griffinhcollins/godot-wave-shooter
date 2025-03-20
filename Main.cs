@@ -16,9 +16,12 @@ public partial class Main : Node
     Timer mobTimer;
     Hud hud;
 
+    // 0 = in game, 1 = between waves, 2 = dead
+    int state;
+
     int waveLength = 20;
 
-    int waveCounter = 1;
+    int waveCounter;
 
     public override void _Ready()
     {
@@ -34,9 +37,11 @@ public partial class Main : Node
 
     public void GameOver()
     {
+        state = State.dead;
         hud.ShowGameOver();
         mobTimer.Stop();
         waveTimer.Stop();
+
     }
 
     private void ClearScreen()
@@ -46,7 +51,7 @@ public partial class Main : Node
 
     public override void _Process(double delta)
     {
-        if (Input.IsActionJustPressed("restart"))
+        if (Input.IsActionJustPressed("restart") && (state == State.dead))
         {
             StartWave();
         }
@@ -54,6 +59,8 @@ public partial class Main : Node
 
     private void NewGame()
     {
+        waveCounter = 1;
+        state = State.alive;
         StartWave();
     }
     public void StartWave()
@@ -75,16 +82,24 @@ public partial class Main : Node
         hud.UpdateWaveTime(timeRemaining);
         if (timeRemaining == 0)
         {
-            waveTimer.Stop();
-            mobTimer.Stop();
             EndWave();
         }
     }
 
     private void EndWave()
     {
-        waveCounter++;
+        waveTimer.Stop();
+        mobTimer.Stop();
         ClearScreen();
+        hud.ShowMessage(string.Format("Wave {0} Complete!", waveCounter));
+        waveCounter++;
+        state = State.shop;
+        LoadShop();
+    }
+
+    private void LoadShop()
+    {
+
     }
 
     private void OnStartTimerTimeout()

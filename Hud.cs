@@ -6,9 +6,9 @@ public partial class Hud : CanvasLayer
     [Signal]
     public delegate void StartGameEventHandler();
 
-    public void UpdateScore(int score)
+    public void UpdateWaveTime(int wavetime)
     {
-        GetNode<Label>("ScoreLabel").Text = score.ToString();
+        GetNode<Label>("WaveLabel").Text = wavetime.ToString();
     }
 
 
@@ -34,17 +34,9 @@ public partial class Hud : CanvasLayer
     }
 
 
-    async public void ShowGameOver()
+    public void ShowGameOver()
     {
-        Timer messageTimer = GetNode<Timer>("MessageTimer");
         ShowMessage("Game Over");
-        await ToSignal(messageTimer, Timer.SignalName.Timeout);
-        Label message = GetNode<Label>("Message");
-        message.Text = "Dodge the Creeps!";
-        message.Show();
-
-        await ToSignal(GetTree().CreateTimer(1.0), SceneTreeTimer.SignalName.Timeout);
-        GetNode<Button>("StartButton").Show();
 
     }
 }

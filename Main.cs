@@ -7,21 +7,25 @@ public partial class Main : Node
     [Export]
     public PackedScene MobScene { get; set; }
 
-    private int score;
+    private int timeRemaining;
     Player player;
     Marker2D startPos;
 
     Timer startTimer;
-    Timer scoreTimer;
+    Timer waveTimer;
     Timer mobTimer;
     Hud hud;
+
+    int waveLength = 20;
+
+    int waveCounter = 1;
 
     public override void _Ready()
     {
         player = GetNode<Player>("Player");
         startPos = GetNode<Marker2D>("StartPosition");
         startTimer = GetNode<Timer>("StartTimer");
-        scoreTimer = GetNode<Timer>("ScoreTimer");
+        waveTimer = GetNode<Timer>("WaveTimer");
         mobTimer = GetNode<Timer>("MobTimer");
         hud = GetNode<Hud>("HUD");
 
@@ -32,45 +36,61 @@ public partial class Main : Node
     {
         hud.ShowGameOver();
         mobTimer.Stop();
-        scoreTimer.Stop();
+        waveTimer.Stop();
     }
 
     private void ClearScreen()
     {
-        GetTree().CallGroup("mobs", Node.MethodName.QueueFree);
+        GetTree().CallGroup("cleanup", Node.MethodName.QueueFree);
     }
 
     public override void _Process(double delta)
     {
         if (Input.IsActionJustPressed("restart"))
         {
-            NewGame();
+            StartWave();
         }
     }
 
-    public void NewGame()
+    private void NewGame()
+    {
+        StartWave();
+    }
+    public void StartWave()
     {
         ClearScreen();
-        score = 0;
-        hud.UpdateScore(score);
-        hud.ShowMessage("Get Ready!");
+        timeRemaining = waveLength;
+        hud.UpdateWaveTime(timeRemaining);
+        hud.ShowMessage(string.Format("Starting Wave {0}", waveCounter));
         player.Start(startPos.Position);
 
         startTimer.Start();
         mobTimer.Start();
-        scoreTimer.Start();
+        waveTimer.Start();
     }
 
-    private void OnScoreTimeout()
+    private void OnWaveTimeout()
     {
-        score++;
-        hud.UpdateScore(score);
+        timeRemaining--;
+        hud.UpdateWaveTime(timeRemaining);
+        if (timeRemaining == 0)
+        {
+            waveTimer.Stop();
+            mobTimer.Stop();
+            EndWave();
+        }
+    }
+
+    private void EndWave()
+    {
+        waveCounter++;
+        ClearScreen();
     }
 
     private void OnStartTimerTimeout()
     {
         mobTimer.Start();
-        scoreTimer.Start();
+        waveTimer.Start();
     }
 
 

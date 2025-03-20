@@ -23,7 +23,7 @@ bullet = ExtResource("4_15sad")
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 0.5
 
-[node name="ScoreTimer" type="Timer" parent="."]
+[node name="WaveTimer" type="Timer" parent="."]
 
 [node name="StartTimer" type="Timer" parent="."]
 wait_time = 2.0
@@ -41,6 +41,6 @@ curve = SubResource("Curve2D_oc665")
 
 [connection signal="Hit" from="Player" to="." method="GameOver"]
 [connection signal="timeout" from="MobTimer" to="." method="OnMobTimerTimeout"]
-[connection signal="timeout" from="ScoreTimer" to="." method="OnScoreTimeout"]
+[connection signal="timeout" from="WaveTimer" to="." method="OnWaveTimeout"]
 [connection signal="timeout" from="StartTimer" to="." method="OnStartTimerTimeout"]
 [connection signal="StartGame" from="HUD" to="." method="NewGame"]

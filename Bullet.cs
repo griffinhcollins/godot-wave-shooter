@@ -3,6 +3,8 @@ using System;
 
 public partial class Bullet : RigidBody2D
 {
+
+    float dmg = 5;
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -16,7 +18,11 @@ public partial class Bullet : RigidBody2D
 
     private void OnCollision(Node2D body)
     {
-        GD.Print("fuck");
+        if (body.IsInGroup("mobs"))
+        {
+            Mob mobHit = (Mob)body;
+            mobHit.TakeDamage(dmg);
+        }
         Hide();
         QueueFree();
     }

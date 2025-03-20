@@ -5,7 +5,7 @@ public partial class Mob : RigidBody2D
 
     Player player;
 
-
+    float health = 10;
     float speedLimit = 500;
 
     // Called when the node enters the scene tree for the first time.
@@ -18,6 +18,17 @@ public partial class Mob : RigidBody2D
         string[] mobTypes = animSprite.SpriteFrames.GetAnimationNames();
         animSprite.Play(mobTypes[GD.Randi() % mobTypes.Length]);
     }
+
+
+    public void TakeDamage(float dmg)
+    {
+        health -= dmg;
+        if (health <= 0)
+        {
+            QueueFree();
+        }
+    }
+
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)

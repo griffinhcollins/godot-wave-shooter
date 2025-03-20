@@ -25,6 +25,10 @@ window/stretch/mode="canvas_items"
 
 project/assembly_name="Godot Tutorial Dodge the Creeps"
 
+[global_group]
+
+cleanup=""
+
 [input]
 
 move_right={

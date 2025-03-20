@@ -35,6 +35,7 @@ public partial class Player : Area2D
         // Hide();
     }
 
+
     private void OnBulletTimerFinished()
     {
         canFire = true;

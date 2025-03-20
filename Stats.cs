@@ -27,6 +27,7 @@ public static class Stats
     // Enemy attributes
     public static class Enemy
     {
+        public static int WaveLength;
         public static float SpawnRate; // How many enemies spawn per second
         public static float HealthMult;
         public static float SpeedMult;
@@ -35,10 +36,11 @@ public static class Stats
 
         public static void SetDefaults()
         {
-            SpawnRate = 0.5f;
+            WaveLength = 20;
+            SpawnRate = 1;
             HealthMult = 1;
             SpeedMult = 1;
-            DropRate = 0.2f;
+            DropRate = 1.5f;
         }
 
     }

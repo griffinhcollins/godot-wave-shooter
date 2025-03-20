@@ -11,6 +11,9 @@ public partial class Player : Area2D
     public PackedScene bullet;
 
 
+
+    int money;
+
     public int speed { get; set; } = 400; // player movement in pixels/sec
 
     public Vector2 screenSize; // pixel screen size
@@ -21,6 +24,9 @@ public partial class Player : Area2D
     Node2D reticule;
 
     Timer bulletTimer;
+
+    Hud hud;
+
     bool canFire = true;
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -32,9 +38,17 @@ public partial class Player : Area2D
         reticule = GetNode<Node2D>("ReticuleHolder");
         bulletTimer = GetNode<Timer>("BulletTimer");
 
+        hud = GetParent().GetNode<Hud>("HUD");
+
         // Hide();
     }
 
+
+    public void AddMoney(int amount)
+    {
+        money += amount;
+        hud.UpdateMoneyCounter(money);
+    }
 
     private void OnBulletTimerFinished()
     {

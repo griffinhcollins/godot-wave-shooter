@@ -33,10 +33,14 @@ public partial class Hud : CanvasLayer
         GetNode<Label>("Message").Hide();
     }
 
+    public void UpdateMoneyCounter(int money)
+    {
+        GetNode<Label>("MoneyLabel").Text = money.ToString();
+    }
 
     public void ShowGameOver()
     {
-        ShowMessage("Game Over");
+        ShowMessage("Game Over, press R to Restart!");
 
     }
 }

@@ -15,12 +15,16 @@ public partial class Player : Area2D
     AnimatedSprite2D animSprite;
     CollisionShape2D collShape;
 
+    Node2D reticule;
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         screenSize = GetViewportRect().Size;
-        animSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+        animSprite = GetNode<AnimatedSprite2D>("PlayerSprite");
         collShape = GetNode<CollisionShape2D>("CollisionShape2D");
+
+        reticule = GetNode<Node2D>("ReticuleHolder");
 
         // Hide();
     }
@@ -28,6 +32,14 @@ public partial class Player : Area2D
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
+
+        // Point reticule at mouse
+        Vector2 pointVec = GetGlobalMousePosition() - Position;
+
+        reticule.Rotation = -1 * pointVec.AngleTo(Vector2.Up);
+
+
+
         // Be still by default
         Vector2 velocity = Vector2.Zero;
 

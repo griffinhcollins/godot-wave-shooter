@@ -46,6 +46,30 @@ public static class Stats
     }
 
 
+    public static class Upgrades{
+        public static class ID{
+
+            public static readonly int dmgUp = 0;
+            public static readonly int dmgDown = 1;
+            public static readonly int firerateUp = 2;
+            public static readonly int firerateDown = 3;
+            public static readonly int hpUp = 4;
+            public static readonly int hpDown = 5;
+            public static readonly int hpRewardUp = 6;
+            public static readonly int hpRewardDown = 7;
+            public static readonly int droprateUp = 8;
+            public static readonly int droprateDown = 9;
+        }
+
+        
+
+        public static Texture2D GetUpgradeIcon(int statChangeID){
+            string[] paths = {"dmg_up.png", "dmg_down.png", "firerate_up.png", "firerate_down.png", "hp_up.png", "hp_down.png", "hpreward_up.png", "hpreward_down.png", "moneyrate_up.png", "moneyrate_down.png"};
+            return (Texture2D)GD.Load("res://custom assets/upgrade icons/" + paths[statChangeID]);
+        }
+    }
+
+
     public static void Reset()
     {
         Player.SetDefaults();

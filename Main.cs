@@ -62,6 +62,7 @@ public partial class Main : Node
     private void NewGame()
     {
         Stats.Reset();
+        player.UpdateStats();
         UpdateEnemyStats();
         waveCounter = 1;
         state = State.alive;
@@ -109,13 +110,9 @@ public partial class Main : Node
         hud.ShowMessage(string.Format("Wave {0} Complete!", waveCounter));
         waveCounter++;
         state = State.shop;
-        LoadShop();
+        hud.GenerateShop();
     }
 
-    private void LoadShop()
-    {
-
-    }
 
     private void OnStartTimerTimeout()
     {

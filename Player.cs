@@ -48,7 +48,7 @@ public partial class Player : Area2D
 
     public void UpdateStats()
     {
-        damage = Stats.Player.BaseDamage;
+
 
         firingspeed = Stats.Player.FiringSpeed;
         bulletTimer.WaitTime = 1 / firingspeed;
@@ -59,8 +59,24 @@ public partial class Player : Area2D
 
     public void AddMoney(int amount)
     {
+        GD.Print(string.Format("adding {0} money!", amount));
         money += amount;
         hud.UpdateMoneyCounter(money);
+    }
+
+    public bool ChargeMoney(int amount)
+    {
+        if (money < amount)
+        {
+            return false;
+        }
+        else
+        {
+            GD.Print(string.Format("Charging {0} money!", amount));
+            money -= amount;
+            hud.UpdateMoneyCounter(money);
+            return true;
+        }
     }
 
     private void OnBulletTimerFinished()
@@ -145,6 +161,13 @@ public partial class Player : Area2D
 
     }
 
+    private void Die()
+    {
+        money = 0;
+        EmitSignal(SignalName.Killed);
+        Hide();
+    }
+
     private async void OnBodyEntered(Node2D body)
     {
         // GD.Print("ouch!");
@@ -153,8 +176,7 @@ public partial class Player : Area2D
         if (hp <= 0)
         {
 
-            EmitSignal(SignalName.Killed);
-            Hide();
+            Die();
             return;
         }
         // Activate I-frames
@@ -170,7 +192,6 @@ public partial class Player : Area2D
 
     public void Start(Vector2 position)
     {
-        money = 0;
         UpdateStats();
         Position = position;
         Show();

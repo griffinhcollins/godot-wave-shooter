@@ -6,20 +6,61 @@ public partial class Hud : CanvasLayer
     [Signal]
     public delegate void StartGameEventHandler();
 
+    [Signal]
+    public delegate void NextWaveEventHandler();
 
     [Export]
     public PackedScene heart;
+    [Export]
+    public PackedScene upgrade;
+
+    CanvasLayer waveElements;
+    CanvasLayer shopElements;
+
+    public override void _Ready()
+	{
+        waveElements = GetNode<CanvasLayer>("WaveElements");
+        shopElements = GetNode<CanvasLayer>("ShopElements");
+
+	}
+
+
+    public void ShowWave(){
+        waveElements.Show();
+        shopElements.Hide();
+    }
+    
+    public void ShowShop(){
+        waveElements.Hide();
+        shopElements.Show();
+    }
+
+    private void OnNextWavePressed(){
+        ShowWave();
+        EmitSignal(SignalName.NextWave);
+        foreach (Upgrade upgrade in shopElements.GetNode("Upgrades").GetChildren())
+        {
+            upgrade.QueueFree();
+        }
+    }
 
     public void UpdateWaveTime(int wavetime)
     {
-        GetNode<Label>("WaveLabel").Text = wavetime.ToString();
+        GetNode<Label>("WaveElements/WaveLabel").Text = wavetime.ToString();
     }
 
-
+    public void GenerateShop(){
+        ShowShop();
+        HBoxContainer upgradeBar = shopElements.GetNode<HBoxContainer>("Upgrades");
+        for (int i = 0; i < 3; i++)
+        {
+            upgradeBar.AddChild(upgrade.Instantiate<Upgrade>());
+        }
+    }
 
     public void UpdateHealth(int HP)
     {
-        HBoxContainer healthbar = GetNode<HBoxContainer>("HealthBar");
+        HBoxContainer healthbar = GetNode<HBoxContainer>("WaveElements/HealthBar");
         foreach (TextureRect heart in healthbar.GetChildren())
         {
             heart.QueueFree();
@@ -32,23 +73,24 @@ public partial class Hud : CanvasLayer
 
     public void ShowMessage(string text)
     {
-        Label message = GetNode<Label>("Message");
+        Label message = GetNode<Label>("WaveElements/Message");
         message.Text = text;
         message.Show();
 
-        GetNode<Timer>("MessageTimer").Start();
+        GetNode<Timer>("WaveElements/MessageTimer").Start();
     }
 
     private void OnStartButtonPressed()
     {
-        GetNode<Button>("StartButton").Hide();
+        ShowWave();
+        GetNode<Button>("WaveElements/StartButton").Hide();
         EmitSignal(SignalName.StartGame);
     }
 
 
     private void OnMessageTimerTimeout()
     {
-        GetNode<Label>("Message").Hide();
+        GetNode<Label>("WaveElements/Message").Hide();
     }
 
     public void UpdateMoneyCounter(int money)

@@ -1,9 +1,59 @@
-[gd_scene load_steps=2 format=3 uid="uid://76di2adj135a"]
+[gd_scene load_steps=5 format=3 uid="uid://76di2adj135a"]
 
 [ext_resource type="Texture2D" uid="uid://cny28xtbmqr2" path="res://custom assets/upgrade background.png" id="1_5sc25"]
+[ext_resource type="Script" path="res://Upgrade.cs" id="2_x5rl2"]
+[ext_resource type="FontFile" uid="uid://o3v60vi8k4on" path="res://fonts/Xolonium-Regular.ttf" id="3_clk1i"]
 
-[node name="TextureRect" type="TextureRect"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_614jn"]
+
+[node name="Upgrade" type="Button"]
 texture_filter = 1
-offset_right = 40.0
-offset_bottom = 40.0
-texture = ExtResource("1_5sc25")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_614jn")
+icon = ExtResource("1_5sc25")
+flat = true
+script = ExtResource("2_x5rl2")
+
+[node name="IconHolder" type="HFlowContainer" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -22.5
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Cost" type="Label" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -21.5
+offset_top = -3.0
+offset_right = 21.5
+offset_bottom = 34.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.972549, 0.796078, 0, 1)
+theme_override_fonts/font = ExtResource("3_clk1i")
+theme_override_font_sizes/font_size = 30
+text = "$NA"
+horizontal_alignment = 1
+
+[connection signal="button_up" from="." to="." method="OnClicked"]

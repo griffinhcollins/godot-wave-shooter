@@ -84,7 +84,8 @@ public partial class Mob : RigidBody2D
         float currentSpeedSq = LinearVelocity.LengthSquared();
         if (currentSpeedSq > speedLimit * speedLimit)
         {
-            ApplyForce(LinearVelocity * (speedLimit - Mathf.Pow(currentSpeedSq, 0.5f)));
+            LinearVelocity = LinearVelocity.Normalized() * speedLimit;
+            // ApplyForce(LinearVelocity * (speedLimit - Mathf.Pow(currentSpeedSq, 0.5f)));
         }
 
 

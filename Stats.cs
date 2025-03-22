@@ -31,6 +31,15 @@ public static class Stats
             HP = BaseHP;
             HPReward = BaseHPReward;
         }
+
+
+
+        
+
+
+
+        
+
     }
 
 
@@ -95,8 +104,7 @@ public static class Stats
 
         public static void ExecuteUpgrade(int ID, float magnitude)
         {
-            // These are exponential at the moment, but that's kinda funny
-            GD.Print(string.Format("ID {0} affected with magnitude {1}", ID, magnitude));
+            
             switch (ID)
             {
                 case 0:
@@ -130,6 +138,7 @@ public static class Stats
                     Enemy.DropRate -= magnitude * Enemy.BaseDropRate;
                     break;
             }
+            PrintStats();
         }
 
 
@@ -141,6 +150,14 @@ public static class Stats
         Player.SetDefaults();
         Enemy.SetDefaults();
     }
+
+    public static void PrintStats(){
+            GD.Print(string.Format("Damage = {0}", Player.Damage));
+            GD.Print(string.Format("FiringSpeed = {0}", Player.FiringSpeed));
+            GD.Print(string.Format("HP = {0}", Player.HP));
+            GD.Print(string.Format("HPReward = {0}", Player.HPReward));
+            GD.Print(string.Format("DropRate = {0}", Enemy.DropRate));
+        }
 
 
 }

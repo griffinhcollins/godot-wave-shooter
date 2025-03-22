@@ -1,5 +1,3 @@
 - add HUD element for enemies off screen, gets larger as they approach
-- upgrade amounts need a lot of tweaks, exponential probably not the play, especially with negatives applying after positives
-- probably prevent an upgrade increasing and decreasing the same stat
 - more upgrades: multishot, speed boost, size (bullet and player)
 - enemy mutations, more enemy types

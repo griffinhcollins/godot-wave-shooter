@@ -41,7 +41,7 @@ public partial class Upgrade : Button
 		}
 
 
-		// TODO: Make this better, maybe have real bad upgrades that cost negative money?
+		// TODO: Make this better, maybe have real bad "upgrades" that cost negative money?
 		cost = 4*(rarity + 1) + GD.RandRange(-2, 2);
 		HashSet<int> pickedStats = new HashSet<int>();
 

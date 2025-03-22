@@ -59,7 +59,6 @@ public partial class Player : Area2D
 
     public void AddMoney(int amount)
     {
-        GD.Print(string.Format("adding {0} money!", amount));
         money += amount;
         hud.UpdateMoneyCounter(money);
     }
@@ -72,7 +71,6 @@ public partial class Player : Area2D
         }
         else
         {
-            GD.Print(string.Format("Charging {0} money!", amount));
             money -= amount;
             hud.UpdateMoneyCounter(money);
             return true;

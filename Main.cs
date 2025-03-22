@@ -39,6 +39,8 @@ public partial class Main : Node
 
     public void GameOver()
     {
+        Stats.Reset();
+        
         state = State.dead;
         hud.ShowGameOver();
         mobTimer.Stop();
@@ -62,6 +64,7 @@ public partial class Main : Node
     private void NewGame()
     {
         Stats.Reset();
+        ClearScreen();
         player.UpdateStats();
         UpdateEnemyStats();
         waveCounter = 1;
@@ -104,6 +107,7 @@ public partial class Main : Node
 
     private void EndWave()
     {
+        Stats.Enemy.IncreaseRandomStats();
         waveTimer.Stop();
         mobTimer.Stop();
         ClearScreen();

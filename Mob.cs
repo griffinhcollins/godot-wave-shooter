@@ -1,4 +1,5 @@
 using System;
+using static Stats.Enemy;
 using Godot;
 
 public partial class Mob : RigidBody2D
@@ -7,38 +8,28 @@ public partial class Mob : RigidBody2D
     Player player;
 
     float baseHealth = 2;
-    float hp;
     float baseSpeedLimit = 500;
+    float baseAcceleration = 1;
+    float hp;
     float speedLimit;
+    float acceleration;
 
 
     [Export]
     public PackedScene coin;
 
-    float healthMult;
-    float speedMult;
-    float dropRate; // How likely an enemy is to drop money. If above 100, enemy can drop more than 1 coin
-
-
-
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        UpdateStats();
-        hp = baseHealth * healthMult;
+        hp = HealthMult * baseHealth;
+        acceleration = baseAcceleration * AccelerationMult;
         player = (Player)GetTree().GetNodesInGroup("player")[0];
-        speedLimit = baseSpeedLimit * speedMult;
+        speedLimit = SpeedMult * baseSpeedLimit;
         AnimatedSprite2D animSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         string[] mobTypes = animSprite.SpriteFrames.GetAnimationNames();
         animSprite.Play(mobTypes[GD.Randi() % mobTypes.Length]);
     }
 
-    private void UpdateStats()
-    {
-        healthMult = Stats.Enemy.HealthMult;
-        speedMult = Stats.Enemy.SpeedMult;
-        dropRate = Stats.Enemy.DropRate;
-    }
 
 
     public void TakeDamage(float dmg)
@@ -53,7 +44,7 @@ public partial class Mob : RigidBody2D
 
     private void Die()
     {
-        float tempDropRate = dropRate;
+        float tempDropRate = DropRate;
         // If drop rate is above 1, get 1 guaranteed coin plus a chance at another
         while (tempDropRate > 0)
         {
@@ -79,7 +70,7 @@ public partial class Mob : RigidBody2D
     public override void _Process(double delta)
     {
         // Point towards the player
-        ApplyForce(player.Position - Position);
+        ApplyForce((player.Position - Position) * ((player.Position - Position).Length() * 1/1000 + speedLimit/500) * acceleration);
         ApplyTorque(LinearVelocity.AngleTo(ToGlobal(Vector2.Up)) * 1000);
         float currentSpeedSq = LinearVelocity.LengthSquared();
         if (currentSpeedSq > speedLimit * speedLimit)

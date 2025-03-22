@@ -53,6 +53,7 @@ public static class Stats
         public static readonly float BaseHealthMult = 1;
         public static readonly float BaseSpeedMult = 1;
         public static readonly float BaseDropRate = 1.5f; // How likely an enemy is to drop money. If above 100, enemy can drop more than 1 coin
+        public static readonly float BaseAccelerationMult = 1;
 
 
         // Dynamic stats
@@ -61,6 +62,7 @@ public static class Stats
         public static float HealthMult;
         public static float SpeedMult;
         public static float DropRate; // How likely an enemy is to drop money. If above 100, enemy can drop more than 1 coin
+        public static float AccelerationMult; 
 
 
         public static void SetDefaults()
@@ -70,6 +72,28 @@ public static class Stats
             HealthMult = BaseHealthMult;
             SpeedMult = BaseSpeedMult;
             DropRate = BaseDropRate;
+            AccelerationMult = BaseAccelerationMult;
+        }
+
+        public static void IncreaseRandomStats(){
+            switch(GD.RandRange(0,3)){
+                case 0:
+                    GD.Print("Spawn Rate Increased!");
+                    SpawnRate *= 1.5f;
+                    break;
+                case 1:
+                    GD.Print("Enemy HP increased!");
+                    HealthMult *= 1.5f;
+                    break;
+                case 2:
+                    GD.Print("Enemy speed increased!");
+                    AccelerationMult *= 1.5f;
+                    break;
+                case 3:
+                    GD.Print("Enemy acceleration increased!");
+                    AccelerationMult *= 1.5f;
+                    break;
+            }
         }
 
     }

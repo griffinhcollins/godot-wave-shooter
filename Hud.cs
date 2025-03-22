@@ -56,6 +56,9 @@ public partial class Hud : CanvasLayer
         {
             upgradeBar.AddChild(upgrade.Instantiate<Upgrade>());
         }
+        // This is hacky but it will stop the upgrade bar sometimes appearing offset 
+        upgradeBar.Visible = false;
+        upgradeBar.Visible = true;
     }
 
     public void UpdateHealth(int HP)

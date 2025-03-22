@@ -43,12 +43,18 @@ public partial class Upgrade : Button
 
 		// TODO: Make this better, maybe have real bad upgrades that cost negative money?
 		cost = 4*(rarity + 1) + GD.RandRange(-2, 2);
-
+		HashSet<int> pickedStats = new HashSet<int>();
 
 		int pos1 = RandEven(); 
-		int pos2 = RandEven(pos1); 
-		int neg1 = RandOdd(); 
-		int neg2 = RandOdd(neg1);
+		pickedStats.Add(pos1);
+		pickedStats.Add(pos1 + 1);
+		int pos2 = RandEven(pickedStats); 
+		pickedStats.Add(pos2);
+		pickedStats.Add(pos2 + 1);
+		int neg1 = RandOdd(pickedStats); 
+		pickedStats.Add(neg1);
+		pickedStats.Add(neg1 - 1);
+		int neg2 = RandOdd(pickedStats);
 		// All rarities get pos1
 		AddIcon(pos1);
 		// Every rarity except cursed contains a standard range positive, rare gets an extreme
@@ -130,14 +136,26 @@ public partial class Upgrade : Button
 		iconHolder.AddChild(textureRect);
 	}
 
-	int RandEven(int exclude = -1){
-		int val = exclude;
-		while (val == exclude){
+	int RandEven(HashSet<int> exclude = null){
+		if (exclude is null){
+			exclude = new HashSet<int>();
+		}
+		exclude.Add(-1);
+		int val = -1;
+		while (exclude.Contains(val)){
 			val = 2*(GD.RandRange(0,ID.numUpgrades - 1) / 2);
 		}
 		return val;
 	}
-	int RandOdd(int exclude = 0){
-		return RandEven(exclude - 1) + 1;
+	int RandOdd(HashSet<int> exclude = null){
+		if (exclude is null){
+			exclude = new HashSet<int>();
+		}
+		exclude.Add(-1);
+		int val = -1;
+		while (exclude.Contains(val)){
+			val = 2*(GD.RandRange(0,ID.numUpgrades - 1) / 2) + 1;
+		}
+		return val;
 	}
 }

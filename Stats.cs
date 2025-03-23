@@ -34,11 +34,10 @@ public static class Stats
 
 
 
-        
 
 
 
-        
+
 
     }
 
@@ -62,7 +61,7 @@ public static class Stats
         public static float HealthMult;
         public static float SpeedMult;
         public static float DropRate; // How likely an enemy is to drop money. If above 100, enemy can drop more than 1 coin
-        public static float AccelerationMult; 
+        public static float AccelerationMult;
 
 
         public static void SetDefaults()
@@ -74,23 +73,22 @@ public static class Stats
             DropRate = BaseDropRate;
             AccelerationMult = BaseAccelerationMult;
         }
-
-        public static void IncreaseRandomStats(){
-            switch(GD.RandRange(0,3)){
+        
+        public static string LastMutation;
+        public static void IncreaseRandomStats()
+        {
+            switch (GD.RandRange(0, 2))
+            {
                 case 0:
-                    GD.Print("Spawn Rate Increased!");
+                    LastMutation = "Spawn Rate Increased!";
                     SpawnRate *= 1.5f;
                     break;
                 case 1:
-                    GD.Print("Enemy HP increased!");
+                    LastMutation = "Enemy HP increased!";
                     HealthMult *= 1.5f;
                     break;
                 case 2:
-                    GD.Print("Enemy speed increased!");
-                    AccelerationMult *= 1.5f;
-                    break;
-                case 3:
-                    GD.Print("Enemy acceleration increased!");
+                    LastMutation = "Enemy speed increased!";
                     AccelerationMult *= 1.5f;
                     break;
             }
@@ -115,7 +113,18 @@ public static class Stats
             public static readonly int hpRewardDown = 7;
             public static readonly int droprateUp = 8;
             public static readonly int droprateDown = 9;
+
+            public static readonly string[] nameLookup = {"Damage Up", "Damage Down",
+            "Firerate Up", "Firerate Down",
+            "HP Up", "HP Down",
+            "HP Interest Up", "HP Interest Down",
+            "Coin Droprate Up", "Coin Droprate Down"};
+
+
+            
         }
+
+
 
 
         public static Texture2D GetUpgradeIcon(int statChangeID)
@@ -128,7 +137,7 @@ public static class Stats
 
         public static void ExecuteUpgrade(int ID, float magnitude)
         {
-            
+
             switch (ID)
             {
                 case 0:
@@ -175,13 +184,14 @@ public static class Stats
         Enemy.SetDefaults();
     }
 
-    public static void PrintStats(){
-            GD.Print(string.Format("Damage = {0}", Player.Damage));
-            GD.Print(string.Format("FiringSpeed = {0}", Player.FiringSpeed));
-            GD.Print(string.Format("HP = {0}", Player.HP));
-            GD.Print(string.Format("HPReward = {0}", Player.HPReward));
-            GD.Print(string.Format("DropRate = {0}", Enemy.DropRate));
-        }
+    public static void PrintStats()
+    {
+        GD.Print(string.Format("Damage = {0}", Player.Damage));
+        GD.Print(string.Format("FiringSpeed = {0}", Player.FiringSpeed));
+        GD.Print(string.Format("HP = {0}", Player.HP));
+        GD.Print(string.Format("HPReward = {0}", Player.HPReward));
+        GD.Print(string.Format("DropRate = {0}", Enemy.DropRate));
+    }
 
 
 }

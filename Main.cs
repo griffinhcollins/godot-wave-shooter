@@ -34,6 +34,7 @@ public partial class Main : Node
         mobTimer = GetNode<Timer>("MobTimer");
         hud = GetNode<Hud>("HUD");
 
+        hud.ShowWave();
         // NewGame();
     }
 
@@ -87,7 +88,11 @@ public partial class Main : Node
         ClearScreen();
         timeRemaining = waveLength;
         hud.UpdateWaveTime(timeRemaining);
-        hud.ShowMessage(string.Format("Starting Wave {0}", waveCounter));
+        string waveUpdate = string.Format("Starting Wave {0}", waveCounter);
+        if (Stats.Enemy.LastMutation is not null){
+            waveUpdate += string.Format(", {0}", Stats.Enemy.LastMutation);
+        }
+        hud.ShowMessage(waveUpdate);
         player.Start(startPos.Position);
 
         startTimer.Start();
@@ -113,6 +118,10 @@ public partial class Main : Node
         ClearScreen();
         hud.ShowMessage(string.Format("Wave {0} Complete!", waveCounter));
         waveCounter++;
+
+        player.AddMoney(Stats.Player.BaseHPReward * player.CurrentHP());
+
+
         state = State.shop;
         hud.GenerateShop();
     }

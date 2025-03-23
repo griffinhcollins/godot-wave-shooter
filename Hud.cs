@@ -17,25 +17,33 @@ public partial class Hud : CanvasLayer
     CanvasLayer waveElements;
     CanvasLayer shopElements;
 
+
+    Player player;
     public override void _Ready()
-	{
+    {
+
+        player = (Player)GetTree().GetNodesInGroup("player")[0];
         waveElements = GetNode<CanvasLayer>("WaveElements");
         shopElements = GetNode<CanvasLayer>("ShopElements");
 
-	}
+    }
 
 
-    public void ShowWave(){
+    public void ShowWave()
+    {
         waveElements.Show();
         shopElements.Hide();
     }
-    
-    public void ShowShop(){
+
+    public void ShowShop()
+    {
+        player.Hide();
         waveElements.Hide();
         shopElements.Show();
     }
 
-    private void OnNextWavePressed(){
+    private void OnNextWavePressed()
+    {
         ShowWave();
         EmitSignal(SignalName.NextWave);
         foreach (Upgrade upgrade in shopElements.GetNode("Upgrades").GetChildren())
@@ -49,7 +57,8 @@ public partial class Hud : CanvasLayer
         GetNode<Label>("WaveElements/WaveLabel").Text = wavetime.ToString();
     }
 
-    public void GenerateShop(){
+    public void GenerateShop()
+    {
         ShowShop();
         HBoxContainer upgradeBar = shopElements.GetNode<HBoxContainer>("Upgrades");
         for (int i = 0; i < 3; i++)
@@ -74,13 +83,32 @@ public partial class Hud : CanvasLayer
         }
     }
 
-    public void ShowMessage(string text)
+    public void HideMessage()
     {
-        Label message = GetNode<Label>("WaveElements/Message");
+        GetNode<Label>("WaveElements/Message").Hide();
+        GetNode<Label>("ShopElements/Message").Hide();
+    }
+
+    public void ShowMessage(string text, bool timeout = true)
+    {
+        Label message;
+        if (waveElements.Visible)
+        {
+            message = GetNode<Label>("WaveElements/Message");
+
+        }
+        else
+        {
+            message = GetNode<Label>("ShopElements/Message");
+        }
         message.Text = text;
         message.Show();
 
-        GetNode<Timer>("WaveElements/MessageTimer").Start();
+        if (timeout)
+        {
+            GetNode<Timer>("MessageTimer").Start();
+
+        }
     }
 
     private void OnStartButtonPressed()
@@ -94,6 +122,7 @@ public partial class Hud : CanvasLayer
     private void OnMessageTimerTimeout()
     {
         GetNode<Label>("WaveElements/Message").Hide();
+        GetNode<Label>("ShopElements/Message").Hide();
     }
 
     public void UpdateMoneyCounter(int money)

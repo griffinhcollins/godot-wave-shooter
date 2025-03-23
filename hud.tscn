@@ -5,10 +5,14 @@
 [ext_resource type="PackedScene" uid="uid://bxit5dji56jci" path="res://heart.tscn" id="2_wn6k0"]
 [ext_resource type="PackedScene" uid="uid://76di2adj135a" path="res://upgrade.tscn" id="3_jnc8j"]
 
-[node name="HUD" type="CanvasLayer"]
+[node name="HUD" type="CanvasLayer" groups=["HUD"]]
 script = ExtResource("1_nq4qa")
 heart = ExtResource("2_wn6k0")
 upgrade = ExtResource("3_jnc8j")
+
+[node name="MessageTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
 
 [node name="MoneyLabel" type="Label" parent="."]
 anchors_preset = 3
@@ -78,10 +82,6 @@ theme_override_fonts/font = ExtResource("2_262y3")
 theme_override_font_sizes/font_size = 64
 text = "Start"
 
-[node name="MessageTimer" type="Timer" parent="WaveElements"]
-wait_time = 2.0
-one_shot = true
-
 [node name="HealthBar" type="HBoxContainer" parent="WaveElements"]
 layout_direction = 2
 anchors_preset = 2
@@ -94,7 +94,6 @@ offset_bottom = -10.0
 grow_vertical = 0
 
 [node name="ShopElements" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="ShopTitle" type="Label" parent="ShopElements"]
 anchors_preset = 5
@@ -136,6 +135,24 @@ theme_override_fonts/font = ExtResource("2_262y3")
 theme_override_font_sizes/font_size = 64
 text = "Next Wave"
 
+[node name="Message" type="Label" parent="ShopElements"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -640.0
+offset_top = -210.0
+offset_right = 640.0
+offset_bottom = -132.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_262y3")
+theme_override_font_sizes/font_size = 40
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[connection signal="timeout" from="MessageTimer" to="." method="OnMessageTimerTimeout"]
 [connection signal="pressed" from="WaveElements/StartButton" to="." method="OnStartButtonPressed"]
-[connection signal="timeout" from="WaveElements/MessageTimer" to="." method="OnMessageTimerTimeout"]
 [connection signal="pressed" from="ShopElements/NextWave" to="." method="OnNextWavePressed"]

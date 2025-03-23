@@ -57,3 +57,5 @@ text = "$NA"
 horizontal_alignment = 1
 
 [connection signal="button_up" from="." to="." method="OnClicked"]
+[connection signal="mouse_entered" from="." to="." method="OnMouseOver"]
+[connection signal="mouse_exited" from="." to="." method="OnMouseLeave"]

@@ -34,6 +34,7 @@ public partial class Player : Area2D
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        Hide();
         screenSize = GetViewportRect().Size;
         sprite = GetNode<AnimatedSprite2D>("PlayerSprite");
         collShape = GetNode<CollisionShape2D>("CollisionShape2D");
@@ -164,6 +165,10 @@ public partial class Player : Area2D
         money = 0;
         EmitSignal(SignalName.Killed);
         Hide();
+    }
+
+    public int CurrentHP(){
+        return hp;
     }
 
     private async void OnBodyEntered(Node2D body)

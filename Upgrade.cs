@@ -95,10 +95,36 @@ public partial class Upgrade : Button
 				AddIcon(neg2);
 				upgradeMagnitudes.Add(neg2, CalculateMagnitude(neg2, 2));
 				break;
-
-
 		}
 
+		RarityColour(rarity);
+
+	}
+
+	private void RarityColour(int rarity)
+	{
+
+		Color backgroundColour = new Color();
+
+
+		switch (rarity)
+		{
+			case 0:
+				backgroundColour = new Color(1, 1, 1);
+				break;
+			case 1:
+				backgroundColour = new Color(0.7f, 0.7f, 1);
+				break;
+			case 2:
+				backgroundColour = new Color(0.8f, 0.5f, 0.3f);
+				break;
+			case 3:
+				backgroundColour = new Color(1, 0, 1);
+
+				break;
+		}
+
+		SelfModulate = backgroundColour;
 	}
 
 	private void OnMouseOver()
@@ -122,7 +148,8 @@ public partial class Upgrade : Button
 		hud.ShowMessage(infoMessage, false);
 	}
 
-	private void OnMouseLeave(){
+	private void OnMouseLeave()
+	{
 		hud.HideMessage();
 	}
 

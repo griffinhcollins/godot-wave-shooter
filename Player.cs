@@ -13,6 +13,7 @@ public partial class Player : Area2D
     [Export]
     public PackedScene bullet;
 
+    Vector2 fireFromPos;
     float damage; // Default damage per shot
     float firingspeed; // Shots/second
     int hp;
@@ -91,6 +92,7 @@ public partial class Player : Area2D
         canFire = false;
         bulletTimer.Start();
         RigidBody2D newBullet = bullet.Instantiate<RigidBody2D>();
+        newBullet.Position = fireFromPos;
         newBullet.LinearVelocity = new Vector2(0, -1000 * DynamicStats[ID.ShotSpeed]).Rotated(reticule.Rotation + Mathf.DegToRad(DynamicStats[ID.Spread]) * (float)GD.RandRange(-1,1f));
         Bullet bulBehaviour = (Bullet)newBullet;
         bulBehaviour.SetDamage(damage);
@@ -113,6 +115,7 @@ public partial class Player : Area2D
         // Fire if clicking 
         if (Input.IsMouseButtonPressed(MouseButton.Left) && canFire)
         {
+            fireFromPos = new Vector2(0, 0);
             // Multishot
             float shots = DynamicStats[ID.Multishot];
             while (shots > 0)
@@ -121,6 +124,7 @@ public partial class Player : Area2D
                 {
                     ShootBullet();
                 }
+                fireFromPos += new Vector2(10 + (GD.Randi() % 5), 0).Rotated(reticule.Rotation) * (GD.Randi() % 2 == 0 ? 1 : -1);
                 shots--;
             }
 

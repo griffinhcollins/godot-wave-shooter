@@ -13,6 +13,8 @@ public static class Stats
         public static readonly float BaseFiringSpeed = 2; // Shots/second
         public static readonly int BaseHP = 3; // Player HP
         public static readonly int BaseHPReward = 2; // How much extra money the player gets per remaining HP at the end of a wave
+        public static readonly float BaseMultishot = 1; // How many shots per fire. 1.5 means every shot is 50% of firing 1 and 50% of firing 2
+        public static readonly float BaseSpread = 5; // Angle in degrees that shots can deviate
 
 
 
@@ -21,6 +23,8 @@ public static class Stats
         public static float FiringSpeed; // Shots/second
         public static int HP; // Player HP
         public static int HPReward; // How much extra money the player gets per remaining HP at the end of a wave
+        public static float Multishot; // How many shots per fire. 1.5 means every shot is 50% of firing 1 and 50% of firing 2
+        public static float Spread; // Angle in degrees that shots can deviate
 
 
 
@@ -30,6 +34,8 @@ public static class Stats
             FiringSpeed = BaseFiringSpeed;
             HP = BaseHP;
             HPReward = BaseHPReward;
+            Multishot = BaseMultishot;
+            Spread = BaseSpread;
         }
 
 
@@ -73,7 +79,7 @@ public static class Stats
             DropRate = BaseDropRate;
             AccelerationMult = BaseAccelerationMult;
         }
-        
+
         public static string LastMutation;
         public static void IncreaseRandomStats()
         {
@@ -101,7 +107,7 @@ public static class Stats
     {
         public static class ID
         {
-            public static readonly int numUpgrades = 10;
+            public static readonly int numUpgrades = 14;
             // Evens are positive, negatives are odd
             public static readonly int dmgUp = 0;
             public static readonly int dmgDown = 1;
@@ -113,15 +119,23 @@ public static class Stats
             public static readonly int hpRewardDown = 7;
             public static readonly int droprateUp = 8;
             public static readonly int droprateDown = 9;
+            public static readonly int multishotUp = 10;
+            public static readonly int multishotDown = 11;
+            public static readonly int accuracyUp = 12;
+            public static readonly int accuracyDown = 13;
 
-            public static readonly string[] nameLookup = {"Damage Up", "Damage Down",
-            "Firerate Up", "Firerate Down",
-            "HP Up", "HP Down",
-            "HP Interest Up", "HP Interest Down",
-            "Coin Droprate Up", "Coin Droprate Down"};
+            public static readonly string[] nameLookup = {
+                "Damage Up", "Damage Down",
+                "Firerate Up", "Firerate Down",
+                "HP Up", "HP Down",
+                "HP Interest Up", "HP Interest Down",
+                "Coin Droprate Up", "Coin Droprate Down",
+                "Multishot Up", "Multishot Down",
+                "Accuracy Up", "Accuracy Down"
+            };
 
 
-            
+
         }
 
 
@@ -130,7 +144,15 @@ public static class Stats
         public static Texture2D GetUpgradeIcon(int statChangeID)
         {
 
-            string[] paths = { "dmg_up.png", "dmg_down.png", "firerate_up.png", "firerate_down.png", "hp_up.png", "hp_down.png", "hpreward_up.png", "hpreward_down.png", "moneyrate_up.png", "moneyrate_down.png" };
+            string[] paths = {
+                "dmg_up.png", "dmg_down.png",
+                "firerate_up.png", "firerate_down.png",
+                "hp_up.png", "hp_down.png",
+                "hpreward_up.png", "hpreward_down.png",
+                "moneyrate_up.png", "moneyrate_down.png",
+                "multishot_up", "multishot_down",
+                "accuracy_up", "accuracy_down"
+                };
             return (Texture2D)GD.Load("res://custom assets/upgrade icons/" + paths[statChangeID]);
         }
 
@@ -169,6 +191,18 @@ public static class Stats
                     break;
                 case 9:
                     Enemy.DropRate -= magnitude * Enemy.BaseDropRate;
+                    break;
+                case 10:
+                    Player.Multishot += magnitude * Player.BaseMultishot;
+                    break;
+                case 11:
+                    Player.Multishot -= magnitude * Player.BaseMultishot;
+                    break;
+                case 12:
+                    Player.Spread -= magnitude * Player.BaseSpread;
+                    break;
+                case 13:
+                    Player.Spread += magnitude * Player.BaseSpread;
                     break;
             }
             PrintStats();

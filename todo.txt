@@ -1,3 +1,4 @@
 - add HUD element for enemies off screen, gets larger as they approach
-- more upgrades: multishot, speed boost, size (bullet and player)
+- more upgrades: homing, size (bullet and player), 
+- 1-off upgrades, e.g. path editors, acceleration curves, styles, etc. 
 - enemy mutations, more enemy types

@@ -19,7 +19,9 @@ public static class Upgrades
 	public static PlayerUpgrade multishotDown = new PlayerUpgrade(11, PlayerStats.ID.Multishot, "Multishot Down", false, false, false, "multishot_down.png");
 	public static PlayerUpgrade spreadUp = new PlayerUpgrade(12, PlayerStats.ID.Spread, "Spread Up", false, false, true, "spread_up.png");
 	public static PlayerUpgrade spreadDown = new PlayerUpgrade(13, PlayerStats.ID.Spread, "Spread Down", false, true, false, "spread_down.png");
+	public static PlayerUpgrade shotspeedUp = new PlayerUpgrade(14, PlayerStats.ID.ShotSpeed, "Shotspeed Up", false, true, true, "shotspeed_up.png");
+	public static PlayerUpgrade shotspeedDown = new PlayerUpgrade(15, PlayerStats.ID.ShotSpeed, "Shotspeed Down", false, false, false, "shotspeed_down.png");
 
-	public static PlayerUpgrade[] allUpgrades = { dmgUp, dmgDown, firerateUp, firerateDown, hpUp, hpDown, hpRewardUp, hpRewardDown, droprateUp, droprateDown, multishotUp, multishotDown, spreadUp, spreadDown };
+	public static PlayerUpgrade[] allUpgrades = { dmgUp, dmgDown, firerateUp, firerateDown, hpUp, hpDown, hpRewardUp, hpRewardDown, droprateUp, droprateDown, multishotUp, multishotDown, spreadUp, spreadDown, shotspeedUp, shotspeedDown };
 
 }

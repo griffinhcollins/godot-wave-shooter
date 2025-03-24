@@ -14,6 +14,11 @@ public partial class Mob : RigidBody2D
     float speedLimit;
     float acceleration;
 
+    [Export]
+    PackedScene offscreenIndicator;
+
+
+    OffscreenIndicator pairedIndicator;
 
     [Export]
     public PackedScene coin;
@@ -28,6 +33,7 @@ public partial class Mob : RigidBody2D
         AnimatedSprite2D animSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         string[] mobTypes = animSprite.SpriteFrames.GetAnimationNames();
         animSprite.Play(mobTypes[GD.Randi() % mobTypes.Length]);
+        CreateIndicator();
     }
 
 
@@ -70,7 +76,7 @@ public partial class Mob : RigidBody2D
     public override void _Process(double delta)
     {
         // Point towards the player
-        ApplyForce((player.Position - Position) * ((player.Position - Position).Length() * 1/1000 + speedLimit/500) * acceleration);
+        ApplyForce((player.Position - Position) * ((player.Position - Position).Length() * 1 / 1000 + speedLimit / 500) * acceleration);
         ApplyTorque(LinearVelocity.AngleTo(ToGlobal(Vector2.Up)) * 1000);
         float currentSpeedSq = LinearVelocity.LengthSquared();
         if (currentSpeedSq > speedLimit * speedLimit)
@@ -82,8 +88,26 @@ public partial class Mob : RigidBody2D
 
     }
 
+    private void CreateIndicator()
+    {
+        pairedIndicator = offscreenIndicator.Instantiate<OffscreenIndicator>();
+        pairedIndicator.SetMobParent(this);
+        GetTree().Root.AddChild(pairedIndicator);
+        pairedIndicator.Position = Position;
+    }
+
     private void OnScreenExit()
     {
-        //QueueFree();
+        CreateIndicator();
     }
+
+    private void OnScreenEnter()
+    {
+        if (pairedIndicator is not null)
+        {
+            pairedIndicator.QueueFree();
+        }
+    }
+
+
 }

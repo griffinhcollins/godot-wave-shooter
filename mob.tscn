@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://daepl4ypavfsl"]
+[gd_scene load_steps=12 format=3 uid="uid://daepl4ypavfsl"]
 
 [ext_resource type="Script" path="res://Mob.cs" id="1_cola1"]
 [ext_resource type="Texture2D" uid="uid://bo0vqo4bi47by" path="res://art/enemyFlyingAlt_1.png" id="1_y2nxy"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://cq25tjj4vrypy" path="res://art/enemySwimming_2.png" id="4_v7jam"]
 [ext_resource type="Texture2D" uid="uid://cmybmq7x7ouhd" path="res://art/enemyWalking_1.png" id="5_p6sgb"]
 [ext_resource type="Texture2D" uid="uid://dswtdtimyd77s" path="res://art/enemyWalking_2.png" id="6_ypr7h"]
+[ext_resource type="PackedScene" uid="uid://bp21m4kr2kvxa" path="res://offscreen_indicator.tscn" id="9_w0vnq"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_jq8ss"]
 animations = [{
@@ -55,6 +56,7 @@ collision_layer = 2
 collision_mask = 7
 gravity_scale = 0.0
 script = ExtResource("1_cola1")
+offscreenIndicator = ExtResource("9_w0vnq")
 coin = ExtResource("2_7wvnd")
 metadata/_edit_group_ = true
 
@@ -70,7 +72,8 @@ rotation = 1.5708
 shape = SubResource("CapsuleShape2D_118ht")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." groups=["mobs"]]
-position = Vector2(11, 1.90735e-06)
-scale = Vector2(5.8, 3.6)
+position = Vector2(-2.86102e-06, 1.90735e-06)
+scale = Vector2(4.7, 3.6)
 
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="OnScreenEnter"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="OnScreenExit"]

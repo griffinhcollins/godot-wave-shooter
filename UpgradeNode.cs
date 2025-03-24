@@ -98,11 +98,13 @@ public partial class UpgradeNode : Button
 			float mag = upgradeMagnitudes[upgrade];
 			if (upgrade.intChange)
 			{
-				infoMessage += string.Format("{0} by {1}, ", upgrade.Name, ((int)Math.Round(mag)).ToString("D"));
+				float preview = Stats.PlayerStats.DynamicStats[upgrade.statID] + mag * (upgrade.increase ? 1 : -1);;
+				infoMessage += string.Format("{0} by {1:D} ({2:D}), ", upgrade.Name, (int)Math.Round(mag), (int)preview);
 			}
 			else
 			{
-				infoMessage += string.Format("{0} by {1}%, ", upgrade.Name, ((int)Math.Round(mag * 100)).ToString("D"));
+				float preview = Stats.PlayerStats.DynamicStats[upgrade.statID] + mag * Stats.PlayerStats.BaseStats[upgrade.statID] * (upgrade.increase ? 1 : -1);
+				infoMessage += string.Format("{0} by {1:D}% ({2:n2}), ", upgrade.Name, (int)Math.Round(mag * 100), preview);
 
 			}
 		}

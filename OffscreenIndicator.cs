@@ -19,7 +19,7 @@ public partial class OffscreenIndicator : Node2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		if (trackedMob is null){
+		if (!IsInstanceValid(trackedMob)){
 			QueueFree();
 			return;
 		}

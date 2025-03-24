@@ -41,7 +41,7 @@ public partial class Main : Node
 
     public void GameOver()
     {
-        Stats.ResetStats();
+        ResetStats();
         
         state = State.dead;
         hud.ShowGameOver();
@@ -66,9 +66,9 @@ public partial class Main : Node
     private void NewGame()
     {
         ResetStats();
+        UpdateEnemyStats();
         ClearScreen();
         player.UpdateStats();
-        UpdateEnemyStats();
         waveCounter = 1;
         state = State.alive;
         StartWave();
@@ -86,6 +86,7 @@ public partial class Main : Node
 
     public void StartWave()
     {
+        UpdateEnemyStats();
         ClearScreen();
         timeRemaining = waveLength;
         hud.UpdateWaveTime(timeRemaining);

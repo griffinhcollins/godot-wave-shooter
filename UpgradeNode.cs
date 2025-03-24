@@ -1,5 +1,5 @@
 using Godot;
-using static Stats.Upgrades;
+using static Upgrades;
 using System;
 using System.Linq;
 using System.Collections.Generic;

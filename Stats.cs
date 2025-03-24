@@ -6,98 +6,111 @@ public static class Stats
 {
 
     // Player attributes
-    public static class Player
+    public static class PlayerStats
     {
-        // Starting/default stats (what is used to calculate upgrades)
-        public static readonly float BaseDamage = 1; // Default damage per shot
-        public static readonly float BaseFiringSpeed = 2; // Shots/second
-        public static readonly int BaseHP = 3; // Player HP
-        public static readonly int BaseHPReward = 2; // How much extra money the player gets per remaining HP at the end of a wave
-        public static readonly float BaseMultishot = 1; // How many shots per fire. 1.5 means every shot is 50% of firing 1 and 50% of firing 2
-        public static readonly float BaseSpread = 5; // Angle in degrees that shots can deviate
 
-
-
-        // Current stats
-        public static float Damage; // Default damage per shot
-        public static float FiringSpeed; // Shots/second
-        public static int HP; // Player HP
-        public static int HPReward; // How much extra money the player gets per remaining HP at the end of a wave
-        public static float Multishot; // How many shots per fire. 1.5 means every shot is 50% of firing 1 and 50% of firing 2
-        public static float Spread; // Angle in degrees that shots can deviate
-
-
-
-        public static void SetDefaults()
+        public static class ID
         {
-            Damage = BaseDamage;
-            FiringSpeed = BaseFiringSpeed;
-            HP = BaseHP;
-            HPReward = BaseHPReward;
-            Multishot = BaseMultishot;
-            Spread = BaseSpread;
+            public static readonly int Damage = 0;
+            public static readonly int FireRate = 1;
+            public static readonly int HP = 2;
+            public static readonly int HPReward = 3;
+            public static readonly int Multishot = 4;
+            public static readonly int Spread = 5;
+            public static readonly int ShotSpeed = 6;
+            public static readonly int DropRate = 7;
+
+            public static readonly string[] nameLookup = {
+                "Damage",
+                "Firerate",
+                "HP",
+                "HP Interest",
+                "Multishot",
+                "Spread",
+                "Shot Speed",
+                "Drop Rate"
+            };
+
+
         }
 
 
+        // Starting/default stats (what is used to calculate upgrades)
 
+        public static readonly float[] BaseStats = {
+            // Player Starting Stats
+            1,      // 0: Damage
+            2,      // 1: Firing Rate (Shots/second)
+            3,      // 2: HP 
+            2,      // 3: HPReward (How much extra money the player gets per remaining HP at the end of a wave)
+            1,      // 4: Multishot (How many shots per fire. 1.5 means every shot is 50% of firing 1 and 50% of firing 2)
+            5,      // 5: Spread (Angle in radians that shots can deviate)
+            1,      // 6: Shot Speed (1000pixel/s that shots travel at)
+            1.5f    // 7: Drop Rate (Number of coins dropped by enemies killed)
+        };
 
+        // Current stats
+        public static float[] DynamicStats = new float[BaseStats.Length];
 
-
-
+        public static void SetDefaults()
+        {
+            for (int i = 0; i < BaseStats.Length; i++)
+            {
+                DynamicStats[i] = BaseStats[i];
+            }
+        }
 
     }
 
 
     // Enemy attributes
-    public static class Enemy
+    public static class EnemyStats
     {
 
-        // Starting/default stats (what is used to calculate upgrades)
-        public static readonly int BaseWaveLength = 15;
-        public static readonly float BaseSpawnRate = 1; // How many enemies spawn per second
-        public static readonly float BaseHealthMult = 1;
-        public static readonly float BaseSpeedMult = 1;
-        public static readonly float BaseDropRate = 1.5f; // How likely an enemy is to drop money. If above 100, enemy can drop more than 1 coin
-        public static readonly float BaseAccelerationMult = 1;
+        public static class ID
+        {
+            public static readonly int WaveLength = 0;
+            public static readonly int SpawnRate = 1;
+            public static readonly int HPMult = 2;
+            public static readonly int AccelerationMult = 3;
+            public static readonly int DropRate = 4;
+
+            public static readonly string[] nameLookup = {
+                "Wave Length",
+                "Spawn Rate",
+                "HP",
+                "Acceleration"
+            };
 
 
-        // Dynamic stats
-        public static int WaveLength;
-        public static float SpawnRate; // How many enemies spawn per second
-        public static float HealthMult;
-        public static float SpeedMult;
-        public static float DropRate; // How likely an enemy is to drop money. If above 100, enemy can drop more than 1 coin
-        public static float AccelerationMult;
+        }
 
+        // Starting/Default Stats
+        public static readonly float[] BaseStats = {
+            // Enemy Starting Stats
+            15,     // 0: Wave Length
+            1,      // 1: Spawn Rate (Spawns/second)
+            1,      // 2: HP Mult
+            1,      // 3: Acceleration Mult 
+        };
+
+        // Current stats
+        public static float[] DynamicStats = new float[BaseStats.Length];
 
         public static void SetDefaults()
         {
-            WaveLength = BaseWaveLength;
-            SpawnRate = BaseSpawnRate;
-            HealthMult = BaseHealthMult;
-            SpeedMult = BaseSpeedMult;
-            DropRate = BaseDropRate;
-            AccelerationMult = BaseAccelerationMult;
+            for (int i = 0; i < BaseStats.Length; i++)
+            {
+                DynamicStats[i] = BaseStats[i];
+            }
         }
 
         public static string LastMutation;
         public static void IncreaseRandomStats()
         {
-            switch (GD.RandRange(0, 2))
-            {
-                case 0:
-                    LastMutation = "Spawn Rate Increased!";
-                    SpawnRate *= 1.5f;
-                    break;
-                case 1:
-                    LastMutation = "Enemy HP increased!";
-                    HealthMult *= 1.5f;
-                    break;
-                case 2:
-                    LastMutation = "Enemy speed increased!";
-                    AccelerationMult *= 1.5f;
-                    break;
-            }
+            int mutationIndex = GD.RandRange(0, DynamicStats.Length - 1); // only have as many as you have mutation upgrades
+            LastMutation = string.Format("{0} increased!", ID.nameLookup[mutationIndex]);
+            DynamicStats[mutationIndex] *= 1.5f;
         }
 
     }
@@ -105,126 +118,39 @@ public static class Stats
 
     public static class Upgrades
     {
-        public static class ID
-        {
-            public static readonly int numUpgrades = 14;
-            // Evens are positive, negatives are odd
-            public static readonly int dmgUp = 0;
-            public static readonly int dmgDown = 1;
-            public static readonly int firerateUp = 2;
-            public static readonly int firerateDown = 3;
-            public static readonly int hpUp = 4;
-            public static readonly int hpDown = 5;
-            public static readonly int hpRewardUp = 6;
-            public static readonly int hpRewardDown = 7;
-            public static readonly int droprateUp = 8;
-            public static readonly int droprateDown = 9;
-            public static readonly int multishotUp = 10;
-            public static readonly int multishotDown = 11;
-            public static readonly int accuracyUp = 12;
-            public static readonly int accuracyDown = 13;
 
-            public static readonly string[] nameLookup = {
-                "Damage Up", "Damage Down",
-                "Firerate Up", "Firerate Down",
-                "HP Up", "HP Down",
-                "HP Interest Up", "HP Interest Down",
-                "Coin Droprate Up", "Coin Droprate Down",
-                "Multishot Up", "Multishot Down",
-                "Accuracy Up", "Accuracy Down"
-            };
+        public static PlayerUpgrade dmgUp = new PlayerUpgrade(0, PlayerStats.ID.Damage, "Damage Up", false, true, true, "dmg_up.png");
+        public static PlayerUpgrade dmgDown = new PlayerUpgrade(1, PlayerStats.ID.Damage, "Damage Down", false, false, false, "dmg_down.png");
+        public static PlayerUpgrade firerateUp = new PlayerUpgrade(2, PlayerStats.ID.FireRate, "Firerate Up", false, true, true, "firerate_up.png");
+        public static PlayerUpgrade firerateDown = new PlayerUpgrade(3, PlayerStats.ID.FireRate, "Firerate Down", false, false, false, "firerate_down.png");
+        public static PlayerUpgrade hpUp = new PlayerUpgrade(4, PlayerStats.ID.HP, "HP Up", true, true, true, "hp_up.png");
+        public static PlayerUpgrade hpDown = new PlayerUpgrade(5, PlayerStats.ID.HP, "HP Down", true, false, false, "hp_down.png");
+        public static PlayerUpgrade hpRewardUp = new PlayerUpgrade(6, PlayerStats.ID.HPReward, "HP Interest Up", true, true, true, "hpreward_up.png");
+        public static PlayerUpgrade hpRewardDown = new PlayerUpgrade(7, PlayerStats.ID.HPReward, "HP Interest Down", true, false, false, "hpreward_down.png");
+        public static PlayerUpgrade droprateUp = new PlayerUpgrade(8, PlayerStats.ID.DropRate, "Coin Droprate Up", false, true, true, "moneyrate_up.png");
+        public static PlayerUpgrade droprateDown = new PlayerUpgrade(9, PlayerStats.ID.DropRate, "Coin Droprate Down", false, false, false, "moneyrate_down.png");
+        public static PlayerUpgrade multishotUp = new PlayerUpgrade(10, PlayerStats.ID.Multishot, "Multishot Up", false, true, true, "multishot_up.png");
+        public static PlayerUpgrade multishotDown = new PlayerUpgrade(11, PlayerStats.ID.Multishot, "Multishot Down", false, false, false, "multishot_down.png");
+        public static PlayerUpgrade spreadUp = new PlayerUpgrade(12, PlayerStats.ID.Spread, "Spread Up", false, false, true, "spread_up.png");
+        public static PlayerUpgrade spreadDown = new PlayerUpgrade(13, PlayerStats.ID.Spread, "Spread Down", false, true, false, "spread_down.png");
 
-
-
-        }
-
-
-
-
-        public static Texture2D GetUpgradeIcon(int statChangeID)
-        {
-
-            string[] paths = {
-                "dmg_up.png", "dmg_down.png",
-                "firerate_up.png", "firerate_down.png",
-                "hp_up.png", "hp_down.png",
-                "hpreward_up.png", "hpreward_down.png",
-                "moneyrate_up.png", "moneyrate_down.png",
-                "multishot_up", "multishot_down",
-                "accuracy_up", "accuracy_down"
-                };
-            return (Texture2D)GD.Load("res://custom assets/upgrade icons/" + paths[statChangeID]);
-        }
-
-
-        public static void ExecuteUpgrade(int ID, float magnitude)
-        {
-
-            switch (ID)
-            {
-                case 0:
-                    Player.Damage += magnitude * Player.BaseDamage;
-                    break;
-                case 1:
-                    Player.Damage -= magnitude * Player.BaseDamage;
-                    break;
-                case 2:
-                    Player.FiringSpeed += magnitude * Player.BaseFiringSpeed;
-                    break;
-                case 3:
-                    Player.FiringSpeed -= magnitude * Player.BaseFiringSpeed;
-                    break;
-                case 4:
-                    Player.HP += (int)magnitude;
-                    break;
-                case 5:
-                    Player.HP -= (int)magnitude;
-                    break;
-                case 6:
-                    Player.HPReward += (int)magnitude;
-                    break;
-                case 7:
-                    Player.HPReward -= (int)magnitude;
-                    break;
-                case 8:
-                    Enemy.DropRate += magnitude * Enemy.BaseDropRate;
-                    break;
-                case 9:
-                    Enemy.DropRate -= magnitude * Enemy.BaseDropRate;
-                    break;
-                case 10:
-                    Player.Multishot += magnitude * Player.BaseMultishot;
-                    break;
-                case 11:
-                    Player.Multishot -= magnitude * Player.BaseMultishot;
-                    break;
-                case 12:
-                    Player.Spread -= magnitude * Player.BaseSpread;
-                    break;
-                case 13:
-                    Player.Spread += magnitude * Player.BaseSpread;
-                    break;
-            }
-            PrintStats();
-        }
-
+        public static PlayerUpgrade[] allUpgrades = { dmgUp, dmgDown, firerateUp, firerateDown, hpUp, hpDown, hpRewardUp, hpRewardDown, droprateUp, droprateDown, multishotUp, multishotDown, spreadUp, spreadDown };
 
     }
 
 
-    public static void Reset()
+    public static void ResetStats()
     {
-        Player.SetDefaults();
-        Enemy.SetDefaults();
+        PlayerStats.SetDefaults();
+        EnemyStats.SetDefaults();
     }
 
     public static void PrintStats()
     {
-        GD.Print(string.Format("Damage = {0}", Player.Damage));
-        GD.Print(string.Format("FiringSpeed = {0}", Player.FiringSpeed));
-        GD.Print(string.Format("HP = {0}", Player.HP));
-        GD.Print(string.Format("HPReward = {0}", Player.HPReward));
-        GD.Print(string.Format("DropRate = {0}", Enemy.DropRate));
+        for (int i = 0; i < PlayerStats.ID.nameLookup.Length; i++)
+        {
+            GD.Print(string.Format("{0} = {1}", PlayerStats.ID.nameLookup[i], PlayerStats.DynamicStats[i]));
+        }
     }
 
 

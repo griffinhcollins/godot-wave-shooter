@@ -1,5 +1,7 @@
 using Godot;
+using static Stats.PlayerStats;
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 
 public partial class Player : Area2D
@@ -51,9 +53,9 @@ public partial class Player : Area2D
     {
 
 
-        firingspeed = Stats.Player.FiringSpeed;
+        firingspeed = DynamicStats[ID.FireRate];
         bulletTimer.WaitTime = 1 / firingspeed;
-        hp = Stats.Player.HP;
+        hp = (int)DynamicStats[ID.HP];
         hud.UpdateHealth(hp);
     }
 
@@ -83,6 +85,19 @@ public partial class Player : Area2D
         canFire = true;
     }
 
+    private void ShootBullet()
+    {
+
+        canFire = false;
+        bulletTimer.Start();
+        RigidBody2D newBullet = bullet.Instantiate<RigidBody2D>();
+        newBullet.LinearVelocity = new Vector2(0, -1000 * DynamicStats[ID.ShotSpeed]).Rotated(reticule.Rotation + Mathf.DegToRad(DynamicStats[ID.Spread]) * (float)GD.RandRange(-1,1f));
+        Bullet bulBehaviour = (Bullet)newBullet;
+        bulBehaviour.SetDamage(damage);
+        AddChild(bulBehaviour);
+
+    }
+
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
@@ -92,18 +107,24 @@ public partial class Player : Area2D
 
         reticule.Rotation = -1 * pointVec.AngleTo(Vector2.Up);
 
-        // Fire if clicking
+
+
+
+        // Fire if clicking 
         if (Input.IsMouseButtonPressed(MouseButton.Left) && canFire)
         {
-            canFire = false;
-            bulletTimer.Start();
-            RigidBody2D newBullet = bullet.Instantiate<RigidBody2D>();
-            newBullet.LinearVelocity = new Vector2(0, -1000).Rotated(reticule.Rotation);
-            Bullet bulBehaviour = (Bullet)newBullet;
-            bulBehaviour.SetDamage(damage);
-            AddChild(bulBehaviour);
-        }
+            // Multishot
+            float shots = DynamicStats[ID.Multishot];
+            while (shots > 0)
+            {
+                if (GD.RandRange(0f, 1) <= shots)
+                {
+                    ShootBullet();
+                }
+                shots--;
+            }
 
+        }
 
         // Be still by default
         Vector2 velocity = Vector2.Zero;
@@ -167,7 +188,8 @@ public partial class Player : Area2D
         Hide();
     }
 
-    public int CurrentHP(){
+    public int CurrentHP()
+    {
         return hp;
     }
 

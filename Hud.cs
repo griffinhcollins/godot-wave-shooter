@@ -46,7 +46,7 @@ public partial class Hud : CanvasLayer
     {
         ShowWave();
         EmitSignal(SignalName.NextWave);
-        foreach (Upgrade upgrade in shopElements.GetNode("Upgrades").GetChildren())
+        foreach (UpgradeNode upgrade in shopElements.GetNode("Upgrades").GetChildren())
         {
             upgrade.QueueFree();
         }
@@ -63,7 +63,7 @@ public partial class Hud : CanvasLayer
         HBoxContainer upgradeBar = shopElements.GetNode<HBoxContainer>("Upgrades");
         for (int i = 0; i < 3; i++)
         {
-            upgradeBar.AddChild(upgrade.Instantiate<Upgrade>());
+            upgradeBar.AddChild(upgrade.Instantiate<UpgradeNode>());
         }
         // This is hacky but it will stop the upgrade bar sometimes appearing offset 
         upgradeBar.Visible = false;

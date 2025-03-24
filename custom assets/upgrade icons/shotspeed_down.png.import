@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c25w8o36bkg82"
-path="res://.godot/imported/firerate_up.png-cbb67934648a4d769c0d76400d3e1ff6.ctex"
+uid="uid://bxcl44ysmnf4e"
+path="res://.godot/imported/shotspeed_down.png-fa9108834af9a52c81d88d5e73e77c02.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/upgrade icons/firerate_up.png"
-dest_files=["res://.godot/imported/firerate_up.png-cbb67934648a4d769c0d76400d3e1ff6.ctex"]
+source_file="res://custom assets/upgrade icons/shotspeed_down.png"
+dest_files=["res://.godot/imported/shotspeed_down.png-fa9108834af9a52c81d88d5e73e77c02.ctex"]
 
 [params]
 

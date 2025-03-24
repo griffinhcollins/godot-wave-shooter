@@ -1,5 +1,5 @@
 using System;
-using static Stats.Enemy;
+using static Stats.EnemyStats;
 using Godot;
 
 public partial class Mob : RigidBody2D
@@ -21,10 +21,10 @@ public partial class Mob : RigidBody2D
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        hp = HealthMult * baseHealth;
-        acceleration = baseAcceleration * AccelerationMult;
+        hp = DynamicStats[ID.HPMult] * baseHealth;
+        acceleration = baseAcceleration * DynamicStats[ID.AccelerationMult];
         player = (Player)GetTree().GetNodesInGroup("player")[0];
-        speedLimit = SpeedMult * baseSpeedLimit;
+        speedLimit = baseSpeedLimit;
         AnimatedSprite2D animSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         string[] mobTypes = animSprite.SpriteFrames.GetAnimationNames();
         animSprite.Play(mobTypes[GD.Randi() % mobTypes.Length]);
@@ -44,7 +44,7 @@ public partial class Mob : RigidBody2D
 
     private void Die()
     {
-        float tempDropRate = DropRate;
+        float tempDropRate = Stats.PlayerStats.DynamicStats[Stats.PlayerStats.ID.DropRate];
         // If drop rate is above 1, get 1 guaranteed coin plus a chance at another
         while (tempDropRate > 0)
         {

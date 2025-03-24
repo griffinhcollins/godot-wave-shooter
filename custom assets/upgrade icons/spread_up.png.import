@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://br5nr22knjsm1"
-path="res://.godot/imported/accuracy_down.png-e95917e3842595916e67044ecc9f404d.ctex"
+uid="uid://pk7v3qqcsilj"
+path="res://.godot/imported/spread_up.png-6aacdda3ba65e259ef60c09a8ea36f07.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/upgrade icons/accuracy_down.png"
-dest_files=["res://.godot/imported/accuracy_down.png-e95917e3842595916e67044ecc9f404d.ctex"]
+source_file="res://custom assets/upgrade icons/spread_up.png"
+dest_files=["res://.godot/imported/spread_up.png-6aacdda3ba65e259ef60c09a8ea36f07.ctex"]
 
 [params]
 

@@ -1,10 +1,12 @@
 using Godot;
 using static Stats;
 using System;
+using System.Collections.Generic;
 
 public static class Upgrades
 {
 
+	// Upgrades that can always show up
 	public static PlayerUpgrade dmgUp = new PlayerUpgrade(0, PlayerStats.ID.Damage, "Damage Up", false, true, true, "dmg_up.png");
 	public static PlayerUpgrade dmgDown = new PlayerUpgrade(1, PlayerStats.ID.Damage, "Damage Down", false, false, false, "dmg_down.png");
 	public static PlayerUpgrade firerateUp = new PlayerUpgrade(2, PlayerStats.ID.FireRate, "Firerate Up", false, true, true, "firerate_up.png");
@@ -22,6 +24,18 @@ public static class Upgrades
 	public static PlayerUpgrade shotspeedUp = new PlayerUpgrade(14, PlayerStats.ID.ShotSpeed, "Shotspeed Up", false, true, true, "shotspeed_up.png");
 	public static PlayerUpgrade shotspeedDown = new PlayerUpgrade(15, PlayerStats.ID.ShotSpeed, "Shotspeed Down", false, false, false, "shotspeed_down.png");
 
-	public static PlayerUpgrade[] allUpgrades = { dmgUp, dmgDown, firerateUp, firerateDown, hpUp, hpDown, hpRewardUp, hpRewardDown, droprateUp, droprateDown, multishotUp, multishotDown, spreadUp, spreadDown, shotspeedUp, shotspeedDown };
+	public static PlayerUpgrade[] basicUpgrades = { dmgUp, dmgDown, firerateUp, firerateDown, hpUp, hpDown, hpRewardUp, hpRewardDown, droprateUp, droprateDown, multishotUp, multishotDown, spreadUp, spreadDown, shotspeedUp, shotspeedDown };
+
+	// Stat Conditions, check if any of these can be added to the pool whenever a stat changes
+
+	// If you reach high enough shotspeed and firerate, you get LASER BEAM as an option
+	public static Condition laser = new ConjunctCondition(new List<Condition> {new StatCondition(PlayerStats.ID.FireRate, true, 5, true), new StatCondition(PlayerStats.ID.ShotSpeed, true, 3, true)});
+
+
+	// Upgrades that can only show up if you reduce your max HP to less than 1 (ie 0)
+	public static StatCondition lich = new StatCondition(PlayerStats.ID.HP, true, 1, false);
+
+
+
 
 }

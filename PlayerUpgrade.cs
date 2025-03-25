@@ -12,7 +12,9 @@ public class PlayerUpgrade
 		public bool increase; // True if this upgrade should increase its given stat
         private string iconName;
 
-        public PlayerUpgrade(int _ID, int _statID, string _Name, bool _intChange, bool _positive, bool _increase, string _iconName){
+        Condition appearCondition; // A condition that must be met before this upgrade will appear
+
+        public PlayerUpgrade(int _ID, int _statID, string _Name, bool _intChange, bool _positive, bool _increase, string _iconName, Condition _condition = null){
             ID = _ID;
 			statID = _statID;
 			Name = _Name;
@@ -20,6 +22,13 @@ public class PlayerUpgrade
 			positive = _positive;
 			increase = _increase;
 			iconName = _iconName;
+        }
+
+        public bool CheckCondition(){
+            if (appearCondition is null){
+                return true;
+            }
+            return appearCondition.CheckCondition();
         }
 
 

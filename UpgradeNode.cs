@@ -33,8 +33,8 @@ public partial class UpgradeNode : Button
 		// How good this upgrade is, ie how much it should cost
 		cost = 5;
 
-		PlayerUpgrade[] posUpgrades = allUpgrades.Where(u => u.positive).ToArray();
-		PlayerUpgrade[] negUpgrades = allUpgrades.Where(u => !u.positive).ToArray();
+		PlayerUpgrade[] posUpgrades = basicUpgrades.Where(u => u.positive).ToArray();
+		PlayerUpgrade[] negUpgrades = basicUpgrades.Where(u => !u.positive).ToArray();
 		// Roll 1-2 positive upgrades
 		int numPos = GD.RandRange(1, 2);
 		for (int i = 0; i < numPos; i++)

@@ -33,13 +33,13 @@ public partial class UpgradeNode : Button
 		// How good this upgrade is, ie how much it should cost
 		cost = 5;
 
-		PlayerUpgrade[] posUpgrades = basicUpgrades.Where(u => u.positive).ToArray();
-		PlayerUpgrade[] negUpgrades = basicUpgrades.Where(u => !u.positive).ToArray();
+		PlayerStatUpgrade[] posUpgrades = basicUpgrades.Where(u => u.positive).ToArray();
+		PlayerStatUpgrade[] negUpgrades = basicUpgrades.Where(u => !u.positive).ToArray();
 		// Roll 1-2 positive upgrades
 		int numPos = GD.RandRange(1, 2);
 		for (int i = 0; i < numPos; i++)
 		{
-			PlayerUpgrade newPos = posUpgrades[GD.RandRange(0, posUpgrades.Length - 1)];
+			PlayerStatUpgrade newPos = posUpgrades[GD.RandRange(0, posUpgrades.Length - 1)];
 			AddIcon(newPos);
 			int strength = GD.RandRange(0, 2);
 			upgradeMagnitudes.Add(newPos, CalculateMagnitude(newPos.intChange, strength));
@@ -52,7 +52,7 @@ public partial class UpgradeNode : Button
 		int numNeg = GD.RandRange(0, 2);
 		for (int i = 0; i < numNeg; i++)
 		{
-			PlayerUpgrade newNeg = negUpgrades[GD.RandRange(0, negUpgrades.Length - 1)];
+			PlayerStatUpgrade newNeg = negUpgrades[GD.RandRange(0, negUpgrades.Length - 1)];
 			AddIcon(newNeg);
 			int strength = GD.RandRange(0, 2);
 			upgradeMagnitudes.Add(newNeg, CalculateMagnitude(newNeg.intChange, strength));
@@ -93,20 +93,10 @@ public partial class UpgradeNode : Button
 	private void OnMouseOver()
 	{
 		string infoMessage = "";
-		foreach (PlayerUpgrade upgrade in upgradeMagnitudes.Keys)
+		foreach (PlayerStatUpgrade upgrade in upgradeMagnitudes.Keys)
 		{
 			float mag = upgradeMagnitudes[upgrade];
-			if (upgrade.intChange)
-			{
-				float preview = Stats.PlayerStats.DynamicStats[upgrade.statID] + mag * (upgrade.increase ? 1 : -1);;
-				infoMessage += string.Format("{0} by {1:D} ({2:D}), ", upgrade.Name, (int)Math.Round(mag), (int)preview);
-			}
-			else
-			{
-				float preview = Stats.PlayerStats.DynamicStats[upgrade.statID] + mag * Stats.PlayerStats.BaseStats[upgrade.statID] * (upgrade.increase ? 1 : -1);
-				infoMessage += string.Format("{0} by {1:D}% ({2:n2}), ", upgrade.Name, (int)Math.Round(mag * 100), preview);
-
-			}
+			infoMessage += upgrade.GetDescription(mag);
 		}
 		infoMessage = infoMessage.Remove(infoMessage.Length - 2);
 		hud.ShowMessage(infoMessage, false);
@@ -124,7 +114,7 @@ public partial class UpgradeNode : Button
 			return;
 		}
 
-		foreach (PlayerUpgrade upgrade in upgradeMagnitudes.Keys)
+		foreach (PlayerStatUpgrade upgrade in upgradeMagnitudes.Keys)
 		{
 			upgrade.Execute(upgradeMagnitudes[upgrade]);
 		}

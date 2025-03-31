@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bioj3xubltl3u"]
+[gd_scene load_steps=9 format=3 uid="uid://bioj3xubltl3u"]
 
 [ext_resource type="PackedScene" uid="uid://dphno2aha4dnk" path="res://player.tscn" id="1_5dyaw"]
 [ext_resource type="Script" path="res://Main.cs" id="1_yum70"]
 [ext_resource type="PackedScene" uid="uid://daepl4ypavfsl" path="res://mob.tscn" id="2_8h3n6"]
+[ext_resource type="PackedScene" uid="uid://cmmo7eugaemg7" path="res://bullet_bouncing.tscn" id="4_axj3r"]
 [ext_resource type="PackedScene" uid="uid://bv6wktb7wsx2x" path="res://hud.tscn" id="4_c2pip"]
+[ext_resource type="PackedScene" uid="uid://bed170bj6kt5s" path="res://bullet_piercing.tscn" id="5_fdrhb"]
 [ext_resource type="PackedScene" uid="uid://cmp3ey8qdvuu1" path="res://damage_num.tscn" id="5_iwnu3"]
 
 [sub_resource type="Curve2D" id="Curve2D_oc665"]
@@ -18,6 +20,8 @@ MobScene = ExtResource("2_8h3n6")
 
 [node name="Player" parent="." instance=ExtResource("1_5dyaw")]
 position = Vector2(405, 328)
+bounceBullet = ExtResource("4_axj3r")
+pierceBullet = ExtResource("5_fdrhb")
 
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 0.5

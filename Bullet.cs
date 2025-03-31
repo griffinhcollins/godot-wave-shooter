@@ -1,21 +1,28 @@
 using Godot;
-using static Stats;
+using static Stats.PlayerStats;
 using System;
+using System.Collections.Generic;
 
-public partial class Bullet : RigidBody2D
+public abstract partial class Bullet : Node2D
 {
 
     float dmg;
+
+    // A bullet can only hit the same mob once
+    HashSet<Node2D> mobsHit;
+
+    int numHit;
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        SetDamage(PlayerStats.DynamicStats[PlayerStats.ID.Damage]);
+        SetDamage(DynamicStats[ID.Damage]);
+        numHit = 0;
+        mobsHit = new HashSet<Node2D>();
+        
     }
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta)
-    {
-    }
+   
     public void SetDamage(float newDmg)
     {
         dmg = newDmg;
@@ -23,15 +30,32 @@ public partial class Bullet : RigidBody2D
 
     private void OnCollision(Node2D body)
     {
-        if (body.IsInGroup("mobs"))
+        if (body.IsInGroup("mobs") && !mobsHit.Contains(body))
         {
+            numHit++;
+            mobsHit.Add(body);
             Mob mobHit = (Mob)body;
             mobHit.TakeDamage(dmg);
         }
-        Hide();
-        QueueFree();
+        if (numHit >= Mathf.Max(DynamicStats[ID.Bounces], DynamicStats[ID.Pierces]))
+        {
+            HandleDeath();
+
+        }
+        else
+        {
+            // We hit a mob but we have hits remaining
+            // What this means changes depending on what kind of bullet we are
+            HandleCollision();
+        }
     }
 
+    protected abstract void HandleCollision();
+    protected virtual void HandleDeath(){
+        Node2D parent = GetParent<Node2D>();
+        parent.Hide();
+        parent.QueueFree();
+    }
 
 
 }

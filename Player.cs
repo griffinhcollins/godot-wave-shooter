@@ -11,7 +11,9 @@ public partial class Player : Area2D
     public delegate void KilledEventHandler();
 
     [Export]
-    public PackedScene bullet;
+    public PackedScene bounceBullet;
+    [Export]
+    public PackedScene pierceBullet;
     [Export]
     public PackedScene laserBeam;
 
@@ -104,17 +106,34 @@ public partial class Player : Area2D
             Area2D newBeam = laserBeam.Instantiate<Area2D>();
             newBeam.Position = fireFromPos;
             newBeam.Rotate(spreadRotate);
-            
+
             AddChild(newBeam);
         }
         else
         {
+
             // Regular bullet
-            RigidBody2D newBullet = bullet.Instantiate<RigidBody2D>();
-            newBullet.Position = fireFromPos;
-            newBullet.LinearVelocity = new Vector2(0, -1000 * DynamicStats[ID.ShotSpeed]).Rotated(spreadRotate);
-            Bullet bulBehaviour = (Bullet)newBullet;
-            AddChild(bulBehaviour);
+            bool bouncy = DynamicStats[ID.Pierces] <= 1;
+            Vector2 velocity = new Vector2(0, -1000 * DynamicStats[ID.ShotSpeed]).Rotated(spreadRotate);
+            if (bouncy)
+            {
+                // Bouncing, it's a rigidbody
+                RigidBody2D newBullet = bounceBullet.Instantiate<RigidBody2D>();
+                newBullet.LinearVelocity = velocity;
+                newBullet.Position = fireFromPos;
+                AddChild(newBullet);
+            }
+            else
+            {
+                // Piercing, it's an Area2D
+                Area2D newBullet = pierceBullet.Instantiate<Area2D>();
+                newBullet.Rotate(spreadRotate);
+                PiercingBullet pierceBehaviour = newBullet.GetNode<PiercingBullet>("ScriptHolder");
+                pierceBehaviour.velocity = velocity;
+                newBullet.Position = Position + fireFromPos;
+                AddChild(newBullet);
+            }
+
 
         }
 

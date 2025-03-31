@@ -19,6 +19,8 @@ public static class Stats
             public static readonly int Spread = 5;
             public static readonly int ShotSpeed = 6;
             public static readonly int DropRate = 7;
+            public static readonly int Bounces = 8;
+            public static readonly int Pierces = 9;
 
 
 
@@ -30,7 +32,9 @@ public static class Stats
                 "Multishot",
                 "Spread",
                 "Shot Speed",
-                "Drop Rate"
+                "Drop Rate",
+                "Bounces",
+                "Pierces"
             };
 
 
@@ -49,7 +53,9 @@ public static class Stats
             1,      // 4: Multishot (How many shots per fire. 1.5 means every shot is 50% of firing 1 and 50% of firing 2)
             5,      // 5: Spread (Angle in radians that shots can deviate)
             1,      // 6: Shot Speed (1000pixel/s that shots travel at)
-            1.5f    // 7: Drop Rate (Number of coins dropped by enemies killed)
+            1.5f,   // 7: Drop Rate (Number of coins dropped by enemies killed)
+            1,      // 8: Bouncing (After bouncing off this many mobs the bullet will self-destruct)
+            1       // 9: Piercing (After piercing through this many mobs the bullet will self-destruct) (MUTUALLY EXCLUSIVE WITH BOUNCING)
         };
 
         // Current stats

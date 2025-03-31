@@ -111,7 +111,7 @@ public static class Stats
 
                 public static readonly float[] BaseStats = {
                     // Laser Starting Stats
-                    0.5f      // 0: lifetime (s)
+                    0.2f      // 0: lifetime (s)
                 };
 
                 // This gets reset when the laser pickup is first acquired

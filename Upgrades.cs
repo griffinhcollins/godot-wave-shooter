@@ -30,7 +30,7 @@ public static class Upgrades
 	// Stat Conditions, check if any of these can be added to the pool whenever a stat changes
 
 	// If you reach high enough shotspeed and firerate, you get LASER BEAM as an option
-	public static Condition laser = new ConjunctCondition(new List<Condition> { new StatCondition(PlayerStats.ID.FireRate, true, 1, true), new StatCondition(PlayerStats.ID.ShotSpeed, true, 1, true) });
+	public static Condition laser = new ConjunctCondition(new List<Condition> { new StatCondition(PlayerStats.ID.FireRate, true, 1.5f, true), new StatCondition(PlayerStats.ID.ShotSpeed, true, 1.5f, true) });
 
 
 	// Upgrades that can only show up if you reduce your max HP to less than 1 (ie 0)

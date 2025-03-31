@@ -23,7 +23,6 @@ public partial class LaserBeam : Area2D
 		hitbox.Shape = collisionShape;
 
 		lifeLeft = Unlocks.LaserStats.DynamicStats[Unlocks.LaserStats.lifetime];
-		GD.Print(lifeLeft);
 
 	}
 
@@ -42,7 +41,8 @@ public partial class LaserBeam : Area2D
 	{
 	
 		lifeLeft -= delta;
-		if (lifeLeft <= 0)
+		// Introduce a bit of randomness with how long lasers last makes them look a bit less jank with multishot
+		if (lifeLeft <= 0 && GD.Randi() % 3 == 0)
 		{
 			particles.Hide();
 			QueueFree();

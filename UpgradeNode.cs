@@ -47,12 +47,14 @@ public partial class UpgradeNode : Button
 			{
 				strength = GD.RandRange(0, 2);
 				upgradeMagnitudes.Add(newPos, CalculateMagnitude(((PlayerStatUpgrade)newPos).intChange, strength));
-				
+
 				// Eliminate any other upgrades that affect this stat from the pool 
 				posUpgrades = posUpgrades.Where(u => u is PlayerStatUpgrade ? ((PlayerStatUpgrade)u).statID != ((PlayerStatUpgrade)newPos).statID : true).ToList();
 				negUpgrades = negUpgrades.Where(u => u is PlayerStatUpgrade ? ((PlayerStatUpgrade)u).statID != ((PlayerStatUpgrade)newPos).statID : true).ToList();
 
-			}else{
+			}
+			else
+			{
 				// upgrade is an unlock
 				strength = 3;
 				upgradeMagnitudes.Add(newPos, 1);

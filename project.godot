@@ -29,6 +29,10 @@ project/assembly_name="Godot Tutorial Dodge the Creeps"
 
 cleanup=""
 
+[gui]
+
+theme/custom_font="res://fonts/Xolonium-Regular.ttf"
+
 [input]
 
 move_right={

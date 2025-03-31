@@ -40,6 +40,9 @@ public partial class Mob : RigidBody2D
 
     public void TakeDamage(float dmg)
     {
+        Hud hud = GetParent().GetNode<Hud>("HUD");
+        hud.CreateDamageNumber(Position, dmg);
+
         hp -= dmg;
         if (hp <= 0)
         {

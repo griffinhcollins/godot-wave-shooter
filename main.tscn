@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://bioj3xubltl3u"]
+[gd_scene load_steps=7 format=3 uid="uid://bioj3xubltl3u"]
 
 [ext_resource type="PackedScene" uid="uid://dphno2aha4dnk" path="res://player.tscn" id="1_5dyaw"]
 [ext_resource type="Script" path="res://Main.cs" id="1_yum70"]
 [ext_resource type="PackedScene" uid="uid://daepl4ypavfsl" path="res://mob.tscn" id="2_8h3n6"]
 [ext_resource type="PackedScene" uid="uid://bv6wktb7wsx2x" path="res://hud.tscn" id="4_c2pip"]
+[ext_resource type="PackedScene" uid="uid://cmp3ey8qdvuu1" path="res://damage_num.tscn" id="5_iwnu3"]
 
 [sub_resource type="Curve2D" id="Curve2D_oc665"]
 _data = {
@@ -36,6 +37,7 @@ curve = SubResource("Curve2D_oc665")
 [node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
 
 [node name="HUD" parent="." instance=ExtResource("4_c2pip")]
+damageNumber = ExtResource("5_iwnu3")
 
 [connection signal="Killed" from="Player" to="." method="GameOver"]
 [connection signal="timeout" from="MobTimer" to="." method="OnMobTimerTimeout"]

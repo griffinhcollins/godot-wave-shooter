@@ -13,6 +13,8 @@ public partial class Hud : CanvasLayer
     public PackedScene heart;
     [Export]
     public PackedScene upgrade;
+    [Export]
+    public PackedScene damageNumber;
 
     CanvasLayer waveElements;
     CanvasLayer shopElements;
@@ -55,6 +57,13 @@ public partial class Hud : CanvasLayer
     public void UpdateWaveTime(int wavetime)
     {
         GetNode<Label>("WaveElements/WaveLabel").Text = wavetime.ToString();
+    }
+
+    public void CreateDamageNumber(Vector2 pos, float amount){
+        Label dmgNum = damageNumber.Instantiate<Label>();
+        dmgNum.Text = string.Format("{0:n0}", amount);
+        dmgNum.Position = pos;
+        AddChild(dmgNum);
     }
 
     public void GenerateShop()

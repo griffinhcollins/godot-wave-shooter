@@ -33,32 +33,43 @@ public partial class UpgradeNode : Button
 		// How good this upgrade is, ie how much it should cost
 		cost = 5;
 
-		PlayerStatUpgrade[] posUpgrades = basicUpgrades.Where(u => u.positive).ToArray();
-		PlayerStatUpgrade[] negUpgrades = basicUpgrades.Where(u => !u.positive).ToArray();
+		List<PlayerUpgrade> posUpgrades = allUpgrades.Where(u => u.positive && u.CheckCondition()).ToList<PlayerUpgrade>();
+
+		List<PlayerStatUpgrade> negUpgrades = basicUpgrades.Where(u => !u.positive && u.CheckCondition()).ToList<PlayerStatUpgrade>();
 		// Roll 1-2 positive upgrades
 		int numPos = GD.RandRange(1, 2);
 		for (int i = 0; i < numPos; i++)
 		{
-			PlayerStatUpgrade newPos = posUpgrades[GD.RandRange(0, posUpgrades.Length - 1)];
+			PlayerUpgrade newPos = posUpgrades[GD.RandRange(0, posUpgrades.Count - 1)];
 			AddIcon(newPos);
-			int strength = GD.RandRange(0, 2);
-			upgradeMagnitudes.Add(newPos, CalculateMagnitude(newPos.intChange, strength));
+			int strength;
+			if (newPos is PlayerStatUpgrade)
+			{
+				strength = GD.RandRange(0, 2);
+				upgradeMagnitudes.Add(newPos, CalculateMagnitude(((PlayerStatUpgrade)newPos).intChange, strength));
+				
+				// Eliminate any other upgrades that affect this stat from the pool 
+				posUpgrades = posUpgrades.Where(u => u is PlayerStatUpgrade ? ((PlayerStatUpgrade)u).statID != ((PlayerStatUpgrade)newPos).statID : true).ToList();
+				negUpgrades = negUpgrades.Where(u => u is PlayerStatUpgrade ? ((PlayerStatUpgrade)u).statID != ((PlayerStatUpgrade)newPos).statID : true).ToList();
+
+			}else{
+				// upgrade is an unlock
+				strength = 3;
+				upgradeMagnitudes.Add(newPos, 1);
+				return;
+			}
 			cost += strength * 3;
-			// Eliminate any other upgrades that affect this stat from the pool 
-			posUpgrades = posUpgrades.Where(u => u.statID != newPos.statID).ToArray();
-			negUpgrades = negUpgrades.Where(u => u.statID != newPos.statID).ToArray();
 		}
 		// Have 0-2 negative upgrades
 		int numNeg = GD.RandRange(0, 2);
 		for (int i = 0; i < numNeg; i++)
 		{
-			PlayerStatUpgrade newNeg = negUpgrades[GD.RandRange(0, negUpgrades.Length - 1)];
+			PlayerStatUpgrade newNeg = negUpgrades[GD.RandRange(0, negUpgrades.Count - 1)];
 			AddIcon(newNeg);
 			int strength = GD.RandRange(0, 2);
 			upgradeMagnitudes.Add(newNeg, CalculateMagnitude(newNeg.intChange, strength));
 			cost -= strength * 3;
-			posUpgrades = posUpgrades.Where(u => u.statID != newNeg.statID).ToArray();
-			negUpgrades = negUpgrades.Where(u => u.statID != newNeg.statID).ToArray();
+			negUpgrades = negUpgrades.Where(u => u.statID != newNeg.statID).ToList();
 		}
 	}
 
@@ -93,10 +104,10 @@ public partial class UpgradeNode : Button
 	private void OnMouseOver()
 	{
 		string infoMessage = "";
-		foreach (PlayerStatUpgrade upgrade in upgradeMagnitudes.Keys)
+		foreach (PlayerUpgrade upgrade in upgradeMagnitudes.Keys)
 		{
 			float mag = upgradeMagnitudes[upgrade];
-			infoMessage += upgrade.GetDescription(mag);
+			infoMessage += upgrade.GetDescription(mag) + ", ";
 		}
 		infoMessage = infoMessage.Remove(infoMessage.Length - 2);
 		hud.ShowMessage(infoMessage, false);
@@ -114,7 +125,7 @@ public partial class UpgradeNode : Button
 			return;
 		}
 
-		foreach (PlayerStatUpgrade upgrade in upgradeMagnitudes.Keys)
+		foreach (PlayerUpgrade upgrade in upgradeMagnitudes.Keys)
 		{
 			upgrade.Execute(upgradeMagnitudes[upgrade]);
 		}

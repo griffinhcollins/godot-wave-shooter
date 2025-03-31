@@ -20,6 +20,8 @@ public static class Stats
             public static readonly int ShotSpeed = 6;
             public static readonly int DropRate = 7;
 
+
+
             public static readonly string[] nameLookup = {
                 "Damage",
                 "Firerate",
@@ -33,6 +35,7 @@ public static class Stats
 
 
         }
+
 
 
         // Starting/default stats (what is used to calculate upgrades)
@@ -58,6 +61,74 @@ public static class Stats
             {
                 DynamicStats[i] = BaseStats[i];
             }
+            for (int i = 0; i < Unlocks.DynamicUnlocks.Length; i++)
+            {
+                Unlocks.DynamicUnlocks[i] = false;
+            }
+        }
+
+        public static class Unlocks
+        {
+
+            public static class UnlockID
+            {
+                public static readonly int Laser = 0;
+                public static readonly int Lich = 1;
+
+                public static readonly string[] nameLookup = {
+                "Laser Beam",
+                "Lich"
+            };
+
+
+
+
+            }
+
+            public static void ResetUnlockStats(int ID)
+            {
+                if (ID == UnlockID.Laser)
+                {
+                    for (int i = 0; i < LaserStats.BaseStats.Length; i++)
+                    {
+                        LaserStats.DynamicStats[i] = LaserStats.BaseStats[i];
+                    }
+                }
+            }
+
+
+            public static bool[] DynamicUnlocks = new bool[UnlockID.nameLookup.Length];
+
+
+
+            public static class LaserStats
+            {
+                public static readonly int lifetime = 0;
+
+                public static readonly string[] nameLookup = {
+                    "Lifetime"
+                };
+
+                public static readonly float[] BaseStats = {
+                    // Laser Starting Stats
+                    0.5f      // 0: lifetime (s)
+                };
+
+                // This gets reset when the laser pickup is first acquired
+                public static readonly float[] DynamicStats = new float[BaseStats.Length];
+
+
+                public static void ResetStats()
+                {
+                    for (int i = 0; i < BaseStats.Length; i++)
+                    {
+                        DynamicStats[i] = BaseStats[i];
+                    }
+                }
+
+            }
+
+
         }
 
     }
@@ -88,7 +159,7 @@ public static class Stats
         // Starting/Default Stats
         public static readonly float[] BaseStats = {
             // Enemy Starting Stats
-            15,     // 0: Wave Length
+            5,     // 0: Wave Length
             1,      // 1: Spawn Rate (Spawns/second)
             1,      // 2: HP Mult
             1,      // 3: Acceleration Mult 
@@ -116,7 +187,7 @@ public static class Stats
     }
 
 
-    
+
 
 
     public static void ResetStats()

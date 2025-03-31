@@ -7,12 +7,12 @@ public abstract class PlayerUpgrade
         public int ID;
         public string Name;
 		public bool positive; // True if this upgrade should be seen as a good thing
-        private string iconName;
+        protected string iconName;
 
-        Condition appearCondition; // A condition that must be met before this upgrade will appear
+        protected Condition appearCondition; // A condition that must be met before this upgrade will appear
 
         
-        public bool CheckCondition(){
+        public virtual bool CheckCondition(){
             if (appearCondition is null){
                 return true;
             }

@@ -2,6 +2,7 @@ using Godot;
 using static Stats;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public static class Upgrades
 {
@@ -29,13 +30,18 @@ public static class Upgrades
 	// Stat Conditions, check if any of these can be added to the pool whenever a stat changes
 
 	// If you reach high enough shotspeed and firerate, you get LASER BEAM as an option
-	public static Condition laser = new ConjunctCondition(new List<Condition> {new StatCondition(PlayerStats.ID.FireRate, true, 5, true), new StatCondition(PlayerStats.ID.ShotSpeed, true, 3, true)});
+	public static Condition laser = new ConjunctCondition(new List<Condition> { new StatCondition(PlayerStats.ID.FireRate, true, 1, true), new StatCondition(PlayerStats.ID.ShotSpeed, true, 1, true) });
 
 
 	// Upgrades that can only show up if you reduce your max HP to less than 1 (ie 0)
 	public static StatCondition lich = new StatCondition(PlayerStats.ID.HP, true, 1, false);
 
+	public static PlayerUnlockable laserBeam = new PlayerUnlockable(16, PlayerStats.Unlocks.UnlockID.Laser, "Laser Beam", true, "unlock_laser.png", laser);
 
+	public static PlayerUnlockable[] unlockables = { laserBeam };
+
+
+	public static List<PlayerUpgrade> allUpgrades = basicUpgrades.ToList<PlayerUpgrade>().Concat(unlockables.ToList<PlayerUpgrade>()).ToList();
 
 
 }

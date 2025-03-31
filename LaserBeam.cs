@@ -1,0 +1,51 @@
+using Godot;
+using static Stats.PlayerStats;
+using System;
+
+public partial class LaserBeam : Area2D
+{
+
+	GpuParticles2D particles;
+	CollisionShape2D hitbox;
+
+	double lifeLeft;
+
+
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
+	{
+		particles = GetNode<GpuParticles2D>("BeamParticles");
+		hitbox = GetNode<CollisionShape2D>("CollisionShape2D");
+
+		RectangleShape2D collisionShape = new RectangleShape2D();
+		collisionShape.Size = new Vector2(20, 400 * DynamicStats[ID.ShotSpeed]);
+
+		hitbox.Shape = collisionShape;
+
+		lifeLeft = Unlocks.LaserStats.DynamicStats[Unlocks.LaserStats.lifetime];
+		GD.Print(lifeLeft);
+
+	}
+
+
+	private void OnHit(Node2D body){
+		if (body.IsInGroup("mobs"))
+        {
+            Mob mobHit = (Mob)body;
+            mobHit.TakeDamage(DynamicStats[ID.Damage]);
+        }
+	}
+
+
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta)
+	{
+	
+		lifeLeft -= delta;
+		if (lifeLeft <= 0)
+		{
+			particles.Hide();
+			QueueFree();
+		}
+	}
+}

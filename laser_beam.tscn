@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://s47tunx2vl7"]
+
+[ext_resource type="Script" path="res://LaserBeam.cs" id="1_a8ijb"]
+[ext_resource type="Texture2D" uid="uid://cjilwsmy35you" path="res://custom assets/bullet.png" id="1_uq1fs"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8ciuh"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(0, -400, 0)
+emission_shape = 3
+emission_box_extents = Vector3(10, 400, 1)
+direction = Vector3(0, -1, 0)
+spread = 180.0
+initial_velocity_min = 10.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_max = 0.5
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f4rt8"]
+size = Vector2(20, 800)
+
+[node name="LaserBeam" type="Area2D" groups=["cleanup"]]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_a8ijb")
+
+[node name="BeamParticles" type="GPUParticles2D" parent="."]
+amount = 800
+process_material = SubResource("ParticleProcessMaterial_8ciuh")
+texture = ExtResource("1_uq1fs")
+lifetime = 0.1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -400)
+shape = SubResource("RectangleShape2D_f4rt8")
+
+[connection signal="body_entered" from="." to="." method="OnHit"]

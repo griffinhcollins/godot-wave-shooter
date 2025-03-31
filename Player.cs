@@ -12,6 +12,8 @@ public partial class Player : Area2D
 
     [Export]
     public PackedScene bullet;
+    [Export]
+    public PackedScene laserBeam;
 
     Vector2 fireFromPos;
     float damage; // Default damage per shot
@@ -33,10 +35,12 @@ public partial class Player : Area2D
     Hud hud;
 
 
+
     bool canFire = true;
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+
         Hide();
         screenSize = GetViewportRect().Size;
         sprite = GetNode<AnimatedSprite2D>("PlayerSprite");
@@ -46,6 +50,7 @@ public partial class Player : Area2D
         bulletTimer = GetNode<Timer>("BulletTimer");
 
         hud = GetParent().GetNode<Hud>("HUD");
+
 
         // Hide();
     }
@@ -91,12 +96,27 @@ public partial class Player : Area2D
 
         canFire = false;
         bulletTimer.Start();
-        RigidBody2D newBullet = bullet.Instantiate<RigidBody2D>();
-        newBullet.Position = fireFromPos;
-        newBullet.LinearVelocity = new Vector2(0, -1000 * DynamicStats[ID.ShotSpeed]).Rotated(reticule.Rotation + Mathf.DegToRad(DynamicStats[ID.Spread]) * (float)GD.RandRange(-1,1f));
-        Bullet bulBehaviour = (Bullet)newBullet;
-        bulBehaviour.SetDamage(damage);
-        AddChild(bulBehaviour);
+
+        float spreadRotate = reticule.Rotation + Mathf.DegToRad(DynamicStats[ID.Spread]) * (float)GD.RandRange(-1, 1f);
+
+        if (Unlocks.DynamicUnlocks[Unlocks.UnlockID.Laser])
+        {
+            Area2D newBeam = laserBeam.Instantiate<Area2D>();
+            newBeam.Position = fireFromPos;
+            newBeam.Rotate(spreadRotate);
+            
+            AddChild(newBeam);
+        }
+        else
+        {
+            // Regular bullet
+            RigidBody2D newBullet = bullet.Instantiate<RigidBody2D>();
+            newBullet.Position = fireFromPos;
+            newBullet.LinearVelocity = new Vector2(0, -1000 * DynamicStats[ID.ShotSpeed]).Rotated(spreadRotate);
+            Bullet bulBehaviour = (Bullet)newBullet;
+            AddChild(bulBehaviour);
+
+        }
 
     }
 
@@ -110,10 +130,8 @@ public partial class Player : Area2D
         reticule.Rotation = -1 * pointVec.AngleTo(Vector2.Up);
 
 
-
-
-        // Fire if clicking 
-        if (Input.IsMouseButtonPressed(MouseButton.Left) && canFire)
+        // Regular Fire if clicking 
+        if (Input.IsActionPressed("fire") && canFire)
         {
             fireFromPos = new Vector2(0, 0);
             // Multishot
@@ -129,6 +147,10 @@ public partial class Player : Area2D
             }
 
         }
+
+
+
+
 
         // Be still by default
         Vector2 velocity = Vector2.Zero;

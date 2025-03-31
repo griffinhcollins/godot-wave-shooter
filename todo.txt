@@ -1,4 +1,4 @@
-- more upgrades: homing, size (bullet and player), 
+- more upgrades: homing, size (bullet and player), speed, piercing
 - 1-off upgrades, e.g. path editors, acceleration curves, styles, etc. 
 - enemy mutations, more enemy types
 - upgrade trees: when you hit 0 hp, you unlock powerful lich upgrades, an upgrade that makes bullets explode into effects after a period of time

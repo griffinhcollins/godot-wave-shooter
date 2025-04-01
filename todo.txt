@@ -1,4 +1,7 @@
-- more upgrades: homing, size (bullet and player), speed, piercing
+- add conditions so that piercing and bouncing are mutually exclusive - act like unlockables? 
+- Add on-hit unlock for bouncing, since piercing gets laser
+- more enemy mutations, more enemy types
+- more upgrades: homing, size (bullet and player)
 - 1-off upgrades, e.g. path editors, acceleration curves, styles, etc. 
-- enemy mutations, more enemy types
-- upgrade trees: when you hit 0 hp, you unlock powerful lich upgrades, an upgrade that makes bullets explode into effects after a period of time
+- upgrade trees: when you hit 0 hp, you unlock powerful lich upgrades, change character sprite
+- need new sprites for enemies and the player, while we're on that

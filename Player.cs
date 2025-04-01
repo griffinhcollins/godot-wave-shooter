@@ -113,7 +113,7 @@ public partial class Player : Area2D
         {
 
             // Regular bullet
-            bool bouncy = DynamicStats[ID.Pierces] <= 1;
+            bool bouncy = DynamicStats[ID.Pierces] <= DynamicStats[ID.Bounces];
             Vector2 velocity = new Vector2(0, -1000 * DynamicStats[ID.ShotSpeed]).Rotated(spreadRotate);
             if (bouncy)
             {
@@ -197,7 +197,7 @@ public partial class Player : Area2D
 
         if (velocity.LengthSquared() > 0)
         {
-            velocity = velocity.Normalized() * speed;
+            velocity = velocity.Normalized() * speed * Mathf.Pow(DynamicStats[ID.Speed], 0.5f);
             sprite.Play();
         }
         else

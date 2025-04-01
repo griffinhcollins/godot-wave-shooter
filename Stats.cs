@@ -21,6 +21,7 @@ public static class Stats
             public static readonly int DropRate = 7;
             public static readonly int Bounces = 8;
             public static readonly int Pierces = 9;
+            public static readonly int Speed = 10;
 
 
 
@@ -34,7 +35,8 @@ public static class Stats
                 "Shot Speed",
                 "Drop Rate",
                 "Bounces",
-                "Pierces"
+                "Pierces",
+                "Speed"
             };
 
 
@@ -55,7 +57,8 @@ public static class Stats
             1,      // 6: Shot Speed (1000pixel/s that shots travel at)
             1.5f,   // 7: Drop Rate (Number of coins dropped by enemies killed)
             1,      // 8: Bouncing (After bouncing off this many mobs the bullet will self-destruct)
-            1       // 9: Piercing (After piercing through this many mobs the bullet will self-destruct) (MUTUALLY EXCLUSIVE WITH BOUNCING)
+            1,      // 9: Piercing (After piercing through this many mobs the bullet will self-destruct) (MUTUALLY EXCLUSIVE WITH BOUNCING)
+            1       // 10: Player speed (400p/s)
         };
 
         // Current stats

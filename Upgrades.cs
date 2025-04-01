@@ -29,6 +29,8 @@ public static class Upgrades
 	public static PlayerStatUpgrade bouncesDown = new PlayerStatUpgrade(17, PlayerStats.ID.Bounces, "Bounces Down", true, false, false, "bounce_down.png");
 	public static PlayerStatUpgrade piercesUp = new PlayerStatUpgrade(18, PlayerStats.ID.Pierces, "Piercing Up", true, true, true, "pierce_up.png");
 	public static PlayerStatUpgrade piercesDown = new PlayerStatUpgrade(19, PlayerStats.ID.Pierces, "Piercing Down", true, false, false, "pierce_down.png");
+	public static PlayerStatUpgrade speedUp = new PlayerStatUpgrade(20, PlayerStats.ID.Speed, "Speed Up", false, true, true, "speed_up.png");
+	public static PlayerStatUpgrade speedDown = new PlayerStatUpgrade(21, PlayerStats.ID.Speed, "Speed Down", false, false, false, "speed_down.png");
 
 	public static PlayerStatUpgrade[] basicUpgrades = { 
 		dmgUp, dmgDown,
@@ -40,7 +42,8 @@ public static class Upgrades
 		spreadUp, spreadDown,
 		shotspeedUp, shotspeedDown,
 		bouncesUp, bouncesDown,
-		piercesUp, piercesDown
+		piercesUp, piercesDown,
+		speedUp, speedDown
 	};
 
 	// Stat Conditions, check if any of these can be added to the pool whenever a stat changes

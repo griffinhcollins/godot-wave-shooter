@@ -7,7 +7,7 @@ public partial class Mob : RigidBody2D
 
     Player player;
 
-    float baseHealth = 2;
+    float baseHealth = 20;
     float baseSpeedLimit = 500;
     float baseAcceleration = 1;
     float hp;

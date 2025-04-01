@@ -48,7 +48,7 @@ public static class Stats
 
         public static readonly float[] BaseStats = {
             // Player Starting Stats
-            1,      // 0: Damage
+            10,      // 0: Damage
             2,      // 1: Firing Rate (Shots/second)
             3,      // 2: HP 
             2,      // 3: HPReward (How much extra money the player gets per remaining HP at the end of a wave)
@@ -58,7 +58,7 @@ public static class Stats
             1.5f,   // 7: Drop Rate (Number of coins dropped by enemies killed)
             1,      // 8: Bouncing (After bouncing off this many mobs the bullet will self-destruct)
             1,      // 9: Piercing (After piercing through this many mobs the bullet will self-destruct) (MUTUALLY EXCLUSIVE WITH BOUNCING)
-            1       // 10: Player speed (400p/s)
+            1       // 10: Player speed (400p/s * sqrt(mult))
         };
 
         // Current stats
@@ -168,7 +168,7 @@ public static class Stats
         // Starting/Default Stats
         public static readonly float[] BaseStats = {
             // Enemy Starting Stats
-            5,     // 0: Wave Length
+            15,     // 0: Wave Length
             1,      // 1: Spawn Rate (Spawns/second)
             1,      // 2: HP Mult
             1,      // 3: Acceleration Mult 

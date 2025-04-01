@@ -25,9 +25,9 @@ public static class Upgrades
 	public static PlayerStatUpgrade spreadDown = new PlayerStatUpgrade(13, PlayerStats.ID.Spread, "Spread Down", false, true, false, "spread_down.png");
 	public static PlayerStatUpgrade shotspeedUp = new PlayerStatUpgrade(14, PlayerStats.ID.ShotSpeed, "Shotspeed Up", false, true, true, "shotspeed_up.png");
 	public static PlayerStatUpgrade shotspeedDown = new PlayerStatUpgrade(15, PlayerStats.ID.ShotSpeed, "Shotspeed Down", false, false, false, "shotspeed_down.png");
-	public static PlayerStatUpgrade bouncesUp = new PlayerStatUpgrade(16, PlayerStats.ID.Bounces, "Bounces Up", true, true, true, "bounce_up.png");
+	public static PlayerStatUpgrade bouncesUp = new PlayerStatUpgrade(16, PlayerStats.ID.Bounces, "Bounces Up", true, true, true, "bounce_up.png", new StatCondition(PlayerStats.ID.Pierces, true, 1, false));
 	public static PlayerStatUpgrade bouncesDown = new PlayerStatUpgrade(17, PlayerStats.ID.Bounces, "Bounces Down", true, false, false, "bounce_down.png");
-	public static PlayerStatUpgrade piercesUp = new PlayerStatUpgrade(18, PlayerStats.ID.Pierces, "Piercing Up", true, true, true, "pierce_up.png");
+	public static PlayerStatUpgrade piercesUp = new PlayerStatUpgrade(18, PlayerStats.ID.Pierces, "Piercing Up", true, true, true, "pierce_up.png", new StatCondition(PlayerStats.ID.Bounces, true, 1, false));
 	public static PlayerStatUpgrade piercesDown = new PlayerStatUpgrade(19, PlayerStats.ID.Pierces, "Piercing Down", true, false, false, "pierce_down.png");
 	public static PlayerStatUpgrade speedUp = new PlayerStatUpgrade(20, PlayerStats.ID.Speed, "Speed Up", false, true, true, "speed_up.png");
 	public static PlayerStatUpgrade speedDown = new PlayerStatUpgrade(21, PlayerStats.ID.Speed, "Speed Down", false, false, false, "speed_down.png");

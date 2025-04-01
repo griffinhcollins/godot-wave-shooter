@@ -146,7 +146,7 @@ public partial class UpgradeNode : Button
 		}
 		else
 		{
-			return (0.2f + GD.Randf() / 5) * (1 + strength);
+			return (0.24f + GD.Randf() / 4) * (1 + strength/2);
 		}
 
 

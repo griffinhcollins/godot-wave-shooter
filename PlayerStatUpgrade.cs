@@ -1,6 +1,7 @@
 using Godot;
 using static Stats.PlayerStats;
 using System;
+using System.Collections.Generic;
 
 public class PlayerStatUpgrade : PlayerUpgrade
 {
@@ -18,9 +19,23 @@ public class PlayerStatUpgrade : PlayerUpgrade
         positive = _positive;
         increase = _increase;
         iconName = _iconName;
-        if (_condition is not null)
+
+        List<Condition> conditions = new List<Condition>();
+
+        if (!increase){
+
+            conditions.Add(new StatCondition(statID, true, 1, true)); // A stat has to be >= 1 for an upgrade to show up that reduces it. Notably, this lets intchange stats hit 0
+
+
+        }
+
+        if (_condition is not null) 
         {
-            appearCondition = _condition;
+            conditions.Add(_condition);
+        }
+
+        if (conditions.Count > 0){
+            appearCondition = new ConjunctCondition(conditions);
         }
     }
 

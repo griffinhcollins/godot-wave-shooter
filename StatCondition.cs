@@ -30,7 +30,7 @@ public class StatCondition : Condition
 	{
 		float stat = playerStat ? PlayerStats.DynamicStats[statID] : EnemyStats.DynamicStats[statID];
 
-		return greaterThan ? stat > threshold : stat < threshold;
+		return greaterThan ? stat >= threshold : stat <= threshold;
 	}
 
 

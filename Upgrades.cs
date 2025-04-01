@@ -8,6 +8,7 @@ public static class Upgrades
 {
 
 	// Upgrades that can always show up
+
 	public static PlayerStatUpgrade dmgUp = new PlayerStatUpgrade(0, PlayerStats.ID.Damage, "Damage Up", false, true, true, "dmg_up.png");
 	public static PlayerStatUpgrade dmgDown = new PlayerStatUpgrade(1, PlayerStats.ID.Damage, "Damage Down", false, false, false, "dmg_down.png");
 	public static PlayerStatUpgrade firerateUp = new PlayerStatUpgrade(2, PlayerStats.ID.FireRate, "Firerate Up", false, true, true, "firerate_up.png");
@@ -24,13 +25,28 @@ public static class Upgrades
 	public static PlayerStatUpgrade spreadDown = new PlayerStatUpgrade(13, PlayerStats.ID.Spread, "Spread Down", false, true, false, "spread_down.png");
 	public static PlayerStatUpgrade shotspeedUp = new PlayerStatUpgrade(14, PlayerStats.ID.ShotSpeed, "Shotspeed Up", false, true, true, "shotspeed_up.png");
 	public static PlayerStatUpgrade shotspeedDown = new PlayerStatUpgrade(15, PlayerStats.ID.ShotSpeed, "Shotspeed Down", false, false, false, "shotspeed_down.png");
+	public static PlayerStatUpgrade bouncesUp = new PlayerStatUpgrade(16, PlayerStats.ID.Bounces, "Bounces Up", true, true, true, "bounce_up.png");
+	public static PlayerStatUpgrade bouncesDown = new PlayerStatUpgrade(17, PlayerStats.ID.Bounces, "Bounces Down", true, false, false, "bounce_down.png");
+	public static PlayerStatUpgrade piercesUp = new PlayerStatUpgrade(18, PlayerStats.ID.Pierces, "Piercing Up", true, true, true, "pierce_up.png");
+	public static PlayerStatUpgrade piercesDown = new PlayerStatUpgrade(19, PlayerStats.ID.Pierces, "Piercing Down", true, false, false, "pierce_down.png");
 
-	public static PlayerStatUpgrade[] basicUpgrades = { dmgUp, dmgDown, firerateUp, firerateDown, hpUp, hpDown, hpRewardUp, hpRewardDown, droprateUp, droprateDown, multishotUp, multishotDown, spreadUp, spreadDown, shotspeedUp, shotspeedDown };
+	public static PlayerStatUpgrade[] basicUpgrades = { 
+		dmgUp, dmgDown,
+		firerateUp, firerateDown,
+		hpUp, hpDown,
+		hpRewardUp, hpRewardDown,
+		droprateUp, droprateDown,
+		multishotUp, multishotDown,
+		spreadUp, spreadDown,
+		shotspeedUp, shotspeedDown,
+		bouncesUp, bouncesDown,
+		piercesUp, piercesDown
+	};
 
 	// Stat Conditions, check if any of these can be added to the pool whenever a stat changes
 
 	// If you reach high enough shotspeed and firerate, you get LASER BEAM as an option
-	public static Condition laser = new ConjunctCondition(new List<Condition> { new StatCondition(PlayerStats.ID.FireRate, true, 1.5f, true), new StatCondition(PlayerStats.ID.ShotSpeed, true, 1.5f, true) });
+	public static Condition laser = new ConjunctCondition(new List<Condition> { new StatCondition(PlayerStats.ID.FireRate, true, 1.5f, true), new StatCondition(PlayerStats.ID.ShotSpeed, true, 1.5f, true), new StatCondition(PlayerStats.ID.Pierces, true, 2, true) });
 
 
 	// Upgrades that can only show up if you reduce your max HP to less than 1 (ie 0)

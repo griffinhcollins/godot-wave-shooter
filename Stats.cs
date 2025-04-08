@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 public static class Stats
@@ -33,33 +34,32 @@ public static class Stats
             {
                 allStats[i].Reset();
             }
-            for (int i = 0; i < Unlocks.DynamicUnlocks.Length; i++)
+            foreach (Unlockable u in Unlocks.allUnlockables)
             {
-                Unlocks.DynamicUnlocks[i] = false;
+                u.unlocked = false;
+                Unlocks.ResetUnlockStats(u);
             }
         }
 
         public static class Unlocks
         {
 
-            public static class UnlockID
+            // If you reach high enough shotspeed and firerate, you get LASER BEAM as an option
+            public static Condition laser = new ConjunctCondition(new List<Condition> { new StatCondition(FireRate, 1.5f, true), new StatCondition(ShotSpeed, 1.5f, true), new StatCondition(Pierces, 2, true) });
+
+
+            // Upgrades that can only show up if you reduce your max HP to less than 1 (ie 0)
+            public static StatCondition lich = new StatCondition(MaxHP, 1, false);
+
+            public static Unlockable Laser = new Unlockable("Laser Beam", laser);
+            public static Unlockable WallBounce = new Unlockable("Wall Bounce", new StatCondition(Bounces, 2, true));
+
+
+            public static Unlockable[] allUnlockables = { Laser, WallBounce };
+
+            public static void ResetUnlockStats(Unlockable unlockable)
             {
-                public static readonly int Laser = 0;
-                public static readonly int Lich = 1;
-
-                public static readonly string[] nameLookup = {
-                "Laser Beam",
-                "Lich"
-            };
-
-
-
-
-            }
-
-            public static void ResetUnlockStats(int ID)
-            {
-                if (ID == UnlockID.Laser)
+                if (unlockable == Laser)
                 {
                     for (int i = 0; i < LaserStats.BaseStats.Length; i++)
                     {
@@ -69,11 +69,9 @@ public static class Stats
             }
 
 
-            public static bool[] DynamicUnlocks = new bool[UnlockID.nameLookup.Length];
 
 
-
-            public static class LaserStats
+            public static class LaserStats // TODO: actually implement this
             {
                 public static readonly int lifetime = 0;
 

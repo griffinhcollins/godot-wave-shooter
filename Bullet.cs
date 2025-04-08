@@ -19,10 +19,10 @@ public abstract partial class Bullet : Node2D
         SetDamage(Damage.GetDynamicVal());
         numHit = 0;
         mobsHit = new HashSet<Node2D>();
-        
+
     }
 
-   
+
     public void SetDamage(float newDmg)
     {
         dmg = newDmg;
@@ -36,6 +36,11 @@ public abstract partial class Bullet : Node2D
             mobsHit.Add(body);
             Mob mobHit = (Mob)body;
             mobHit.TakeDamage(dmg);
+        }
+        if (body.IsInGroup("border"))
+        {
+            numHit++;
+
         }
         if (numHit >= Mathf.Max(Bounces.GetDynamicVal(), Pierces.GetDynamicVal()))
         {
@@ -51,7 +56,8 @@ public abstract partial class Bullet : Node2D
     }
 
     protected abstract void HandleCollision();
-    protected virtual void HandleDeath(){
+    protected virtual void HandleDeath()
+    {
         Node2D parent = GetParent<Node2D>();
         parent.Hide();
         parent.QueueFree();

@@ -100,7 +100,7 @@ public partial class Player : Area2D
 
         float spreadRotate = reticule.Rotation + Mathf.DegToRad(Spread.GetDynamicVal()) * (float)GD.RandRange(-1, 1f);
 
-        if (Unlocks.DynamicUnlocks[Unlocks.UnlockID.Laser])
+        if (Unlocks.Laser.unlocked)
         {
             Area2D newBeam = laserBeam.Instantiate<Area2D>();
             newBeam.Position = fireFromPos;

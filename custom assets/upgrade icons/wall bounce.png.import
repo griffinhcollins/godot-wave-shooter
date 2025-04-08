@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d31q6xxt54t2b"
-path="res://.godot/imported/unlock_laser.png-ca58f257433eb82ee0557450cbac52e7.ctex"
+uid="uid://cnr2uhaolyqqn"
+path="res://.godot/imported/wall bounce.png-09e47c2d14b62cac5cea8140f98284f5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/upgrade icons/unlock_laser.png"
-dest_files=["res://.godot/imported/unlock_laser.png-ca58f257433eb82ee0557450cbac52e7.ctex"]
+source_file="res://custom assets/upgrade icons/wall bounce.png"
+dest_files=["res://.godot/imported/wall bounce.png-09e47c2d14b62cac5cea8140f98284f5.ctex"]
 
 [params]
 

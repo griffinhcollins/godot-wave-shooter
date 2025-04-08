@@ -5,22 +5,21 @@ using System.Collections.Generic;
 
 public class PlayerStatUpgrade : PlayerUpgrade
 {
-    public int statID; // ID of the stat this changes
-
-    bool increase; // Whether this upgrade increases or decreases the given stat (unrelated to whether that's positive or negative)
+    public PlayerStat stat; // ID of the stat this changes
 
 
-    public PlayerStatUpgrade(int _statID, bool _increase, string _iconName, Condition _condition = null)
+
+    public PlayerStatUpgrade(PlayerStat _stat, bool _increasing, string _iconName, Condition _condition = null)
     {
-        statID = _statID;
-        increase = _increase;
+        stat = _stat;
+        positive = _increasing ^ stat.invert;
         iconName = _iconName;
 
         List<Condition> conditions = new List<Condition>();
 
-        if (!increase)
+        if (!Increasing())
         {
-            conditions.Add(new StatCondition(statID, true, 1, true)); // A stat has to be >= 1 for an upgrade to show up that reduces it. Notably, this lets intchange stats hit 0
+            conditions.Add(new StatCondition(stat, 1, true)); // A stat has to be >= 1 for an upgrade to show up that reduces it. Notably, this lets intchange stats hit 0
         }
 
         if (_condition is not null)
@@ -38,22 +37,26 @@ public class PlayerStatUpgrade : PlayerUpgrade
 
     public override void Execute(float magnitude)
     {
-        allStats[statID].ApplyUpgrade(magnitude, increase);
+        stat.ApplyUpgrade(magnitude, Increasing());
     }
 
     public bool IntIncrease()
     {
-        return allStats[statID].intChange;
+        return stat.intChange;
     }
 
     public override string GetDescription(float magnitude)
     {
-        PlayerStat stat = allStats[statID];
-        return stat.GetPreview(magnitude, increase);
+        return stat.GetPreview(magnitude, Increasing());
+    }
+
+    public override bool Increasing()
+    {
+        return positive ^ stat.invert;
     }
 
     public override bool IsPositive()
     {
-        return increase ^ allStats[statID].invert;
+        return positive;
     }
 }

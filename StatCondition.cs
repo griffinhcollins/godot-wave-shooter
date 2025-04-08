@@ -7,9 +7,8 @@ public class StatCondition : Condition
 
 
 
-	public int statID;
+	public PlayerStat stat;
 
-	public bool playerStat;
 
 	public bool greaterThan;
 
@@ -17,10 +16,9 @@ public class StatCondition : Condition
 	// If positive, stat needs to be greater than threshold. if negative, stat needs to be less than threshold
 	public float threshold;
 
-	public StatCondition(int _statID, bool _playerStat, float _threshold, bool _greaterThan)
+	public StatCondition(PlayerStat _stat, float _threshold, bool _greaterThan)
 	{
-		statID = _statID;
-		playerStat = _playerStat;
+		stat = _stat;
 		threshold = _threshold;
 		greaterThan = _greaterThan;
 	}
@@ -28,9 +26,9 @@ public class StatCondition : Condition
 
 	public override bool CheckCondition()
 	{
-		float stat = playerStat ? PlayerStats.allStats[statID].GetDynamicVal() : EnemyStats.DynamicStats[statID];
+		float statVal = stat.GetDynamicVal();
 
-		return greaterThan ? stat >= threshold : stat <= threshold;
+		return greaterThan ? statVal >= threshold : statVal <= threshold;
 	}
 
 

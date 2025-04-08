@@ -70,7 +70,7 @@ public partial class Hud : CanvasLayer
     {
         ShowShop();
         HBoxContainer upgradeBar = shopElements.GetNode<HBoxContainer>("Upgrades");
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 7; i++)
         {
             upgradeBar.AddChild(upgrade.Instantiate<UpgradeNode>());
         }

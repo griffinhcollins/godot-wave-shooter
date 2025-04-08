@@ -7,6 +7,8 @@ public abstract class PlayerUpgrade
         public string Name;
         protected string iconName;
 
+        public bool positive;
+
         protected Condition appearCondition; // A condition that must be met before this upgrade will appear
 
         
@@ -30,6 +32,7 @@ public abstract class PlayerUpgrade
         public abstract string GetDescription(float magnitude);
 
         
+        public abstract bool Increasing(); // True if this upgrade increases the given stat
         public abstract bool IsPositive(); // True if this upgrade is a good thing
 
     }

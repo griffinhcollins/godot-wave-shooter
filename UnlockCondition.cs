@@ -7,7 +7,7 @@ public class UnlockCondition : Condition
 
 
 
-	public int unlockableID;
+	public Unlockable u;
 
 
 	public bool equalTo;
@@ -16,16 +16,16 @@ public class UnlockCondition : Condition
 	// If positive, stat needs to be greater than threshold. if negative, stat needs to be less than threshold
 	public float threshold;
 
-	public UnlockCondition(int _unlockID, bool _equalTo)
+	public UnlockCondition(Unlockable _unlockable, bool _equalTo)
 	{
-		unlockableID = _unlockID;
+		u = _unlockable;
 		equalTo = _equalTo;
 	}
 
 
 	public override bool CheckCondition()
 	{
-		return DynamicUnlocks[unlockableID] == equalTo;
+		return u.unlocked == equalTo;
 	}
 
 

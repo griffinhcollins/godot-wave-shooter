@@ -29,17 +29,14 @@ public class PlayerStat
 
     public void ApplyUpgrade(float magnitude, bool increase)
     {
-        float changeAmount = 0;
         if (intChange)
         {
-            changeAmount= magnitude * (invert ? 1 : -1);
+            dynamicValue += magnitude * (increase ? 1 : -1);
         }
         else
         {
-            changeAmount= magnitude * Mathf.Pow(baseValue, changePolynomial) * (invert ? 1 : -1);
+            dynamicValue += magnitude * Mathf.Pow(baseValue, changePolynomial) * (increase ? 1 : -1);
         }
-
-        dynamicValue += changeAmount * (increase ? 1 : -1);
     }
 
     public string GetPreview(float magnitude, bool increase)

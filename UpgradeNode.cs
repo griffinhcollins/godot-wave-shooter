@@ -48,8 +48,8 @@ public partial class UpgradeNode : Button
 				upgradeMagnitudes.Add(newPos, CalculateMagnitude(((PlayerStatUpgrade)newPos).IntIncrease(), strength));
 
 				// Eliminate any other upgrades that affect this stat from the pool 
-				posUpgrades = posUpgrades.Where(u => u is PlayerStatUpgrade ? ((PlayerStatUpgrade)u).statID != ((PlayerStatUpgrade)newPos).statID : true).ToList();
-				negUpgrades = negUpgrades.Where(u => u is PlayerStatUpgrade ? ((PlayerStatUpgrade)u).statID != ((PlayerStatUpgrade)newPos).statID : true).ToList();
+				posUpgrades = posUpgrades.Where(u => u is PlayerStatUpgrade ? ((PlayerStatUpgrade)u).stat != ((PlayerStatUpgrade)newPos).stat : true).ToList();
+				negUpgrades = negUpgrades.Where(u => u is PlayerStatUpgrade ? ((PlayerStatUpgrade)u).stat != ((PlayerStatUpgrade)newPos).stat : true).ToList();
 
 			}
 			else
@@ -73,7 +73,7 @@ public partial class UpgradeNode : Button
 			int negStrength = GD.RandRange(0, 2);
 			upgradeMagnitudes.Add(newNeg, CalculateMagnitude(newNeg.IntIncrease(), negStrength));
 			cost -= negStrength * 3;
-			negUpgrades = negUpgrades.Where(u => u.statID != newNeg.statID).ToList();
+			negUpgrades = negUpgrades.Where(u => u.stat != newNeg.stat).ToList();
 		}
 	}
 
@@ -91,7 +91,7 @@ public partial class UpgradeNode : Button
 				backgroundColour = new Color(1, 1, 1);
 				break;
 			case 1:
-				backgroundColour = new Color(0.9f, 0.9f, 1);
+				backgroundColour = new Color(0.8f, 0.8f, 1);
 				break;
 			case 2:
 				backgroundColour = new Color(0.8f, 0.4f, 1f);

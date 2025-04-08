@@ -28,7 +28,7 @@ public class StatCondition : Condition
 
 	public override bool CheckCondition()
 	{
-		float stat = playerStat ? PlayerStats.DynamicStats[statID] : EnemyStats.DynamicStats[statID];
+		float stat = playerStat ? PlayerStats.allStats[statID].GetDynamicVal() : EnemyStats.DynamicStats[statID];
 
 		return greaterThan ? stat >= threshold : stat <= threshold;
 	}

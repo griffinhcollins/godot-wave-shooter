@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bwphkwtn7824c"
-path="res://.godot/imported/hpreward_up.png-3052421948fa6cb3e69a52cd2bc3ca85.ctex"
+uid="uid://ciks4csimvdq1"
+path="res://.godot/imported/damage_up.png-310e26545736601f5f07a023f9e1a328.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/upgrade icons/hpreward_up.png"
-dest_files=["res://.godot/imported/hpreward_up.png-3052421948fa6cb3e69a52cd2bc3ca85.ctex"]
+source_file="res://custom assets/upgrade icons/damage_up.png"
+dest_files=["res://.godot/imported/damage_up.png-310e26545736601f5f07a023f9e1a328.ctex"]
 
 [params]
 

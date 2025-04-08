@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bemq6fs0tcjqv"
-path="res://.godot/imported/dmg_up.png-b4d51f4e98fe2ddf9b1600c2511c4f24.ctex"
+uid="uid://cb806lkimaofg"
+path="res://.godot/imported/drop rate_up.png-9ce0e2ab206806881e095ab3c0c5d5ea.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/upgrade icons/dmg_up.png"
-dest_files=["res://.godot/imported/dmg_up.png-b4d51f4e98fe2ddf9b1600c2511c4f24.ctex"]
+source_file="res://custom assets/upgrade icons/drop rate_up.png"
+dest_files=["res://.godot/imported/drop rate_up.png-9ce0e2ab206806881e095ab3c0c5d5ea.ctex"]
 
 [params]
 

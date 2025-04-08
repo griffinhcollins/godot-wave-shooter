@@ -20,10 +20,9 @@ public partial class Player : Area2D
     Vector2 fireFromPos;
     float damage; // Default damage per shot
     float firingspeed; // Shots/second
-    int hp;
+    int currentHP;
     int money;
 
-    public int speed { get; set; } = 400; // player movement in pixels/sec
 
     public Vector2 screenSize; // pixel screen size
 
@@ -61,10 +60,10 @@ public partial class Player : Area2D
     {
 
 
-        firingspeed = DynamicStats[ID.FireRate];
+        firingspeed = FireRate.GetDynamicVal();
         bulletTimer.WaitTime = 1 / firingspeed;
-        hp = (int)DynamicStats[ID.HP];
-        hud.UpdateHealth(hp);
+        currentHP = (int)MaxHP.GetDynamicVal();
+        hud.UpdateHealth(currentHP);
     }
 
 
@@ -99,7 +98,7 @@ public partial class Player : Area2D
         canFire = false;
         bulletTimer.Start();
 
-        float spreadRotate = reticule.Rotation + Mathf.DegToRad(DynamicStats[ID.Spread]) * (float)GD.RandRange(-1, 1f);
+        float spreadRotate = reticule.Rotation + Mathf.DegToRad(Spread.GetDynamicVal()) * (float)GD.RandRange(-1, 1f);
 
         if (Unlocks.DynamicUnlocks[Unlocks.UnlockID.Laser])
         {
@@ -113,8 +112,8 @@ public partial class Player : Area2D
         {
 
             // Regular bullet
-            bool bouncy = DynamicStats[ID.Pierces] <= DynamicStats[ID.Bounces];
-            Vector2 velocity = new Vector2(0, -1000 * DynamicStats[ID.ShotSpeed]).Rotated(spreadRotate);
+            bool bouncy = Pierces.GetDynamicVal() <= Bounces.GetDynamicVal();
+            Vector2 velocity = new Vector2(0, -1000 * ShotSpeed.GetDynamicVal()).Rotated(spreadRotate);
             if (bouncy)
             {
                 // Bouncing, it's a rigidbody
@@ -154,7 +153,7 @@ public partial class Player : Area2D
         {
             fireFromPos = new Vector2(0, 0);
             // Multishot
-            float shots = DynamicStats[ID.Multishot];
+            float shots = Multishot.GetDynamicVal();
             while (shots > 0)
             {
                 if (GD.RandRange(0f, 1) <= shots)
@@ -197,7 +196,7 @@ public partial class Player : Area2D
 
         if (velocity.LengthSquared() > 0)
         {
-            velocity = velocity.Normalized() * speed * Mathf.Pow(DynamicStats[ID.Speed], 0.5f);
+            velocity = velocity.Normalized() * Speed.GetDynamicVal();
             sprite.Play();
         }
         else
@@ -235,15 +234,15 @@ public partial class Player : Area2D
 
     public int CurrentHP()
     {
-        return hp;
+        return currentHP;
     }
 
     private async void OnBodyEntered(Node2D body)
     {
         // GD.Print("ouch!");
-        hp--;
-        hud.UpdateHealth(hp);
-        if (hp <= 0)
+        currentHP--;
+        hud.UpdateHealth(currentHP);
+        if (currentHP <= 0)
         {
 
             Die();

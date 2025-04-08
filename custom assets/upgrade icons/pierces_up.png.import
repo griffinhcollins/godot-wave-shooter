@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://o7r00p4vlm6"
-path="res://.godot/imported/moneyrate_up.png-c7b10633b02fb5e0f9181fe333a08183.ctex"
+uid="uid://mosi8er4jd0"
+path="res://.godot/imported/pierces_up.png-1f472d49b01196105965f9734813a0f4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/upgrade icons/moneyrate_up.png"
-dest_files=["res://.godot/imported/moneyrate_up.png-c7b10633b02fb5e0f9181fe333a08183.ctex"]
+source_file="res://custom assets/upgrade icons/pierces_up.png"
+dest_files=["res://.godot/imported/pierces_up.png-1f472d49b01196105965f9734813a0f4.ctex"]
 
 [params]
 

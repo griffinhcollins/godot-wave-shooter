@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b2oo3wwdwa5rm"
-path="res://.godot/imported/pierce_down.png-a037a3926299809910fb1af1373e42bd.ctex"
+uid="uid://c4ilnwadgv87e"
+path="res://.godot/imported/bounces_down.png-a503695316d3e94acade016d53516ca7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/upgrade icons/pierce_down.png"
-dest_files=["res://.godot/imported/pierce_down.png-a037a3926299809910fb1af1373e42bd.ctex"]
+source_file="res://custom assets/upgrade icons/bounces_down.png"
+dest_files=["res://.godot/imported/bounces_down.png-a503695316d3e94acade016d53516ca7.ctex"]
 
 [params]
 

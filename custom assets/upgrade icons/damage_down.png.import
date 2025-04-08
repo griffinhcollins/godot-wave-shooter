@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cv6qho8ylxlhk"
-path="res://.godot/imported/moneyrate_down.png-c797f3141b8f185ec0b227c5f931f4f0.ctex"
+uid="uid://ce6to5vqfmwpm"
+path="res://.godot/imported/damage_down.png-7de942572b5912e900d8be66b3ccda5d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/upgrade icons/moneyrate_down.png"
-dest_files=["res://.godot/imported/moneyrate_down.png-c797f3141b8f185ec0b227c5f931f4f0.ctex"]
+source_file="res://custom assets/upgrade icons/damage_down.png"
+dest_files=["res://.godot/imported/damage_down.png-7de942572b5912e900d8be66b3ccda5d.ctex"]
 
 [params]
 

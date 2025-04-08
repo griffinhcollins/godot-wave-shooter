@@ -16,7 +16,7 @@ public abstract partial class Bullet : Node2D
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        SetDamage(DynamicStats[ID.Damage]);
+        SetDamage(Damage.GetDynamicVal());
         numHit = 0;
         mobsHit = new HashSet<Node2D>();
         
@@ -37,7 +37,7 @@ public abstract partial class Bullet : Node2D
             Mob mobHit = (Mob)body;
             mobHit.TakeDamage(dmg);
         }
-        if (numHit >= Mathf.Max(DynamicStats[ID.Bounces], DynamicStats[ID.Pierces]))
+        if (numHit >= Mathf.Max(Bounces.GetDynamicVal(), Pierces.GetDynamicVal()))
         {
             HandleDeath();
 

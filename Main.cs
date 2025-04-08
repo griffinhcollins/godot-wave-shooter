@@ -121,9 +121,9 @@ public partial class Main : Node
         hud.ShowMessage(string.Format("Wave {0} Complete!", waveCounter));
         waveCounter++;
 
-        player.AddMoney((int)PlayerStats.DynamicStats[PlayerStats.ID.HPReward] * player.CurrentHP());
+        player.AddMoney((int)PlayerStats.HPReward.GetDynamicVal() * player.CurrentHP());
 
-
+        Upgrades.GenerateUpgrades();
         state = State.shop;
         hud.GenerateShop();
     }

@@ -7,11 +7,9 @@ public class PlayerUnlockable : PlayerUpgrade
 
     public int unlockableID;
 
-public PlayerUnlockable(int _ID, int _unlockableID, string _Name, bool _positive, string _iconName, Condition _condition = null)
+public PlayerUnlockable(int _unlockableID, string _Name, string _iconName, Condition _condition = null)
     {
-        ID = _ID;
         Name = _Name;
-        positive = _positive;
         iconName = _iconName;
         unlockableID = _unlockableID;
         if (_condition is not null)
@@ -35,5 +33,10 @@ public PlayerUnlockable(int _ID, int _unlockableID, string _Name, bool _positive
     public override string GetDescription(float magnitude)
     {
         return string.Format("Unlocks {0}", UnlockID.nameLookup[unlockableID]);
+    }
+
+    public override bool IsPositive()
+    {
+        return true; // Unlockables are always positive
     }
 }

@@ -32,21 +32,20 @@ public partial class UpgradeNode : Button
 	{
 		// How good this upgrade is, ie how much it should cost
 		cost = 5;
+		List<PlayerUpgrade> posUpgrades = GetAllUpgrades().Where(u => u.IsPositive() && u.CheckCondition()).ToList<PlayerUpgrade>();
 
-		List<PlayerUpgrade> posUpgrades = allUpgrades.Where(u => u.positive && u.CheckCondition()).ToList<PlayerUpgrade>();
-
-		List<PlayerStatUpgrade> negUpgrades = basicUpgrades.Where(u => !u.positive && u.CheckCondition()).ToList<PlayerStatUpgrade>();
-		// Roll 1-2 positive upgrades
-		int numPos = GD.RandRange(1, 2);
+		List<PlayerStatUpgrade> negUpgrades = basicUpgrades.Where(u => !u.IsPositive() && u.CheckCondition()).ToList<PlayerStatUpgrade>();
+		// Roll a positive upgrade
+		int numPos = 1; // roll 1 upgrade
+		int strength = 0;
 		for (int i = 0; i < numPos; i++)
 		{
 			PlayerUpgrade newPos = posUpgrades[GD.RandRange(0, posUpgrades.Count - 1)];
 			AddIcon(newPos);
-			int strength;
 			if (newPos is PlayerStatUpgrade)
 			{
 				strength = GD.RandRange(0, 2);
-				upgradeMagnitudes.Add(newPos, CalculateMagnitude(((PlayerStatUpgrade)newPos).intChange, strength));
+				upgradeMagnitudes.Add(newPos, CalculateMagnitude(((PlayerStatUpgrade)newPos).IntIncrease(), strength));
 
 				// Eliminate any other upgrades that affect this stat from the pool 
 				posUpgrades = posUpgrades.Where(u => u is PlayerStatUpgrade ? ((PlayerStatUpgrade)u).statID != ((PlayerStatUpgrade)newPos).statID : true).ToList();
@@ -57,20 +56,23 @@ public partial class UpgradeNode : Button
 			{
 				// upgrade is an unlock
 				strength = 3;
+				cost += strength * 3;
 				upgradeMagnitudes.Add(newPos, 1);
+				RarityColour(strength);
 				return;
 			}
 			cost += strength * 3;
 		}
-		// Have 0-2 negative upgrades
-		int numNeg = GD.RandRange(0, 2);
-		for (int i = 0; i < numNeg; i++)
+		RarityColour(strength);
+		// Have 0-1 negative upgrades, more likely if the positive upgrade is strong
+		float negChance = (GD.Randf() + 2 * strength) / 5;
+		if (GD.Randf() <= negChance)
 		{
 			PlayerStatUpgrade newNeg = negUpgrades[GD.RandRange(0, negUpgrades.Count - 1)];
 			AddIcon(newNeg);
-			int strength = GD.RandRange(0, 2);
-			upgradeMagnitudes.Add(newNeg, CalculateMagnitude(newNeg.intChange, strength));
-			cost -= strength * 3;
+			int negStrength = GD.RandRange(0, 2);
+			upgradeMagnitudes.Add(newNeg, CalculateMagnitude(newNeg.IntIncrease(), negStrength));
+			cost -= negStrength * 3;
 			negUpgrades = negUpgrades.Where(u => u.statID != newNeg.statID).ToList();
 		}
 	}
@@ -89,13 +91,13 @@ public partial class UpgradeNode : Button
 				backgroundColour = new Color(1, 1, 1);
 				break;
 			case 1:
-				backgroundColour = new Color(0.7f, 0.7f, 1);
+				backgroundColour = new Color(0.9f, 0.9f, 1);
 				break;
 			case 2:
-				backgroundColour = new Color(0.8f, 0.5f, 0.3f);
+				backgroundColour = new Color(0.8f, 0.4f, 1f);
 				break;
 			case 3:
-				backgroundColour = new Color(1, 0, 1);
+				backgroundColour = new Color(1, 0.8f, 0);
 
 				break;
 		}
@@ -146,7 +148,7 @@ public partial class UpgradeNode : Button
 		}
 		else
 		{
-			return (0.24f + GD.Randf() / 4) * (1 + strength/2);
+			return (0.24f + GD.Randf() / 4) * (1 + strength / 2);
 		}
 
 

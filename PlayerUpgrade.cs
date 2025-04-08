@@ -4,9 +4,7 @@ using System;
 
 public abstract class PlayerUpgrade
     {
-        public int ID;
         public string Name;
-		public bool positive; // True if this upgrade should be seen as a good thing
         protected string iconName;
 
         protected Condition appearCondition; // A condition that must be met before this upgrade will appear
@@ -30,5 +28,8 @@ public abstract class PlayerUpgrade
 
         
         public abstract string GetDescription(float magnitude);
+
+        
+        public abstract bool IsPositive(); // True if this upgrade is a good thing
 
     }

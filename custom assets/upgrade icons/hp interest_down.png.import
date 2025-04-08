@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bimo83dbrxukb"
-path="res://.godot/imported/bounce_up.png-452bef4be698044bf644089a437ff833.ctex"
+uid="uid://yoiyh3pbskq2"
+path="res://.godot/imported/hp interest_down.png-863ff81d70ee452786a45daa0bd761a3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/upgrade icons/bounce_up.png"
-dest_files=["res://.godot/imported/bounce_up.png-452bef4be698044bf644089a437ff833.ctex"]
+source_file="res://custom assets/upgrade icons/hp interest_down.png"
+dest_files=["res://.godot/imported/hp interest_down.png-863ff81d70ee452786a45daa0bd761a3.ctex"]
 
 [params]
 

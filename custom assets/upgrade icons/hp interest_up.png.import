@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dblj2rkui1cxm"
-path="res://.godot/imported/pierce_up.png-8a0ff853db22d45908f1052298165456.ctex"
+uid="uid://dljofq26oix15"
+path="res://.godot/imported/hp interest_up.png-518e46af0bb285224d0a538dcea7e0ab.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/upgrade icons/pierce_up.png"
-dest_files=["res://.godot/imported/pierce_up.png-8a0ff853db22d45908f1052298165456.ctex"]
+source_file="res://custom assets/upgrade icons/hp interest_up.png"
+dest_files=["res://.godot/imported/hp interest_up.png-518e46af0bb285224d0a538dcea7e0ab.ctex"]
 
 [params]
 

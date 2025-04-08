@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dw6ol6cfib6yd"
-path="res://.godot/imported/shotspeed_up.png-f4a1bbc6d4603f21b9df6cb98ee84097.ctex"
+uid="uid://dtvhnrn3gx56d"
+path="res://.godot/imported/shot speed_down.png-96a6a66cbc9655d2e884c1ca934a1973.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/upgrade icons/shotspeed_up.png"
-dest_files=["res://.godot/imported/shotspeed_up.png-f4a1bbc6d4603f21b9df6cb98ee84097.ctex"]
+source_file="res://custom assets/upgrade icons/shot speed_down.png"
+dest_files=["res://.godot/imported/shot speed_down.png-96a6a66cbc9655d2e884c1ca934a1973.ctex"]
 
 [params]
 

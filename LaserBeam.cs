@@ -18,7 +18,7 @@ public partial class LaserBeam : Area2D
 		hitbox = GetNode<CollisionShape2D>("CollisionShape2D");
 
 		RectangleShape2D collisionShape = new RectangleShape2D();
-		collisionShape.Size = new Vector2(20, 400 * DynamicStats[ID.ShotSpeed]);
+		collisionShape.Size = new Vector2(20, 400 * ShotSpeed.GetDynamicVal());
 
 		hitbox.Shape = collisionShape;
 
@@ -31,7 +31,7 @@ public partial class LaserBeam : Area2D
 		if (body.IsInGroup("mobs"))
         {
             Mob mobHit = (Mob)body;
-            mobHit.TakeDamage(DynamicStats[ID.Damage]);
+            mobHit.TakeDamage(Damage.GetDynamicVal());
         }
 	}
 

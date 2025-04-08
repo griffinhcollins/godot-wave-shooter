@@ -9,58 +9,45 @@ public static class Upgrades
 
 	// Upgrades that can always show up
 
-	public static PlayerStatUpgrade dmgUp = new PlayerStatUpgrade(0, PlayerStats.ID.Damage, "Damage Up", false, true, true, "dmg_up.png");
-	public static PlayerStatUpgrade dmgDown = new PlayerStatUpgrade(1, PlayerStats.ID.Damage, "Damage Down", false, false, false, "dmg_down.png");
-	public static PlayerStatUpgrade firerateUp = new PlayerStatUpgrade(2, PlayerStats.ID.FireRate, "Firerate Up", false, true, true, "firerate_up.png");
-	public static PlayerStatUpgrade firerateDown = new PlayerStatUpgrade(3, PlayerStats.ID.FireRate, "Firerate Down", false, false, false, "firerate_down.png");
-	public static PlayerStatUpgrade hpUp = new PlayerStatUpgrade(4, PlayerStats.ID.HP, "HP Up", true, true, true, "hp_up.png");
-	public static PlayerStatUpgrade hpDown = new PlayerStatUpgrade(5, PlayerStats.ID.HP, "HP Down", true, false, false, "hp_down.png");
-	public static PlayerStatUpgrade hpRewardUp = new PlayerStatUpgrade(6, PlayerStats.ID.HPReward, "HP Interest Up", true, true, true, "hpreward_up.png");
-	public static PlayerStatUpgrade hpRewardDown = new PlayerStatUpgrade(7, PlayerStats.ID.HPReward, "HP Interest Down", true, false, false, "hpreward_down.png");
-	public static PlayerStatUpgrade droprateUp = new PlayerStatUpgrade(8, PlayerStats.ID.DropRate, "Coin Droprate Up", false, true, true, "moneyrate_up.png");
-	public static PlayerStatUpgrade droprateDown = new PlayerStatUpgrade(9, PlayerStats.ID.DropRate, "Coin Droprate Down", false, false, false, "moneyrate_down.png");
-	public static PlayerStatUpgrade multishotUp = new PlayerStatUpgrade(10, PlayerStats.ID.Multishot, "Multishot Up", false, true, true, "multishot_up.png");
-	public static PlayerStatUpgrade multishotDown = new PlayerStatUpgrade(11, PlayerStats.ID.Multishot, "Multishot Down", false, false, false, "multishot_down.png");
-	public static PlayerStatUpgrade spreadUp = new PlayerStatUpgrade(12, PlayerStats.ID.Spread, "Spread Up", false, false, true, "spread_up.png");
-	public static PlayerStatUpgrade spreadDown = new PlayerStatUpgrade(13, PlayerStats.ID.Spread, "Spread Down", false, true, false, "spread_down.png");
-	public static PlayerStatUpgrade shotspeedUp = new PlayerStatUpgrade(14, PlayerStats.ID.ShotSpeed, "Shotspeed Up", false, true, true, "shotspeed_up.png");
-	public static PlayerStatUpgrade shotspeedDown = new PlayerStatUpgrade(15, PlayerStats.ID.ShotSpeed, "Shotspeed Down", false, false, false, "shotspeed_down.png");
-	public static PlayerStatUpgrade bouncesUp = new PlayerStatUpgrade(16, PlayerStats.ID.Bounces, "Bounces Up", true, true, true, "bounce_up.png", new StatCondition(PlayerStats.ID.Pierces, true, 1, false));
-	public static PlayerStatUpgrade bouncesDown = new PlayerStatUpgrade(17, PlayerStats.ID.Bounces, "Bounces Down", true, false, false, "bounce_down.png");
-	public static PlayerStatUpgrade piercesUp = new PlayerStatUpgrade(18, PlayerStats.ID.Pierces, "Piercing Up", true, true, true, "pierce_up.png", new StatCondition(PlayerStats.ID.Bounces, true, 1, false));
-	public static PlayerStatUpgrade piercesDown = new PlayerStatUpgrade(19, PlayerStats.ID.Pierces, "Piercing Down", true, false, false, "pierce_down.png");
-	public static PlayerStatUpgrade speedUp = new PlayerStatUpgrade(20, PlayerStats.ID.Speed, "Speed Up", false, true, true, "speed_up.png");
-	public static PlayerStatUpgrade speedDown = new PlayerStatUpgrade(21, PlayerStats.ID.Speed, "Speed Down", false, false, false, "speed_down.png");
 
-	public static PlayerStatUpgrade[] basicUpgrades = { 
-		dmgUp, dmgDown,
-		firerateUp, firerateDown,
-		hpUp, hpDown,
-		hpRewardUp, hpRewardDown,
-		droprateUp, droprateDown,
-		multishotUp, multishotDown,
-		spreadUp, spreadDown,
-		shotspeedUp, shotspeedDown,
-		bouncesUp, bouncesDown,
-		piercesUp, piercesDown,
-		speedUp, speedDown
-	};
+	public static List<PlayerStatUpgrade> basicUpgrades = new List<PlayerStatUpgrade>();
+
+	public static void GenerateUpgrades()
+	{
+		basicUpgrades.Clear();
+		foreach (PlayerStat stat in PlayerStats.allStats)
+		{
+			basicUpgrades.Add(new PlayerStatUpgrade(stat.ID, true, string.Format("{0}_up.png", stat.name.ToLower())));
+			basicUpgrades.Add(new PlayerStatUpgrade(stat.ID, false, string.Format("{0}_down.png", stat.name.ToLower())));
+		}
+		GD.Print(basicUpgrades.Count);
+	}
 
 	// Stat Conditions, check if any of these can be added to the pool whenever a stat changes
 
 	// If you reach high enough shotspeed and firerate, you get LASER BEAM as an option
-	public static Condition laser = new ConjunctCondition(new List<Condition> { new StatCondition(PlayerStats.ID.FireRate, true, 1.5f, true), new StatCondition(PlayerStats.ID.ShotSpeed, true, 1.5f, true), new StatCondition(PlayerStats.ID.Pierces, true, 2, true) });
+	public static Condition laser = new ConjunctCondition(new List<Condition> { new StatCondition(PlayerStats.FireRate.ID, true, 1.5f, true), new StatCondition(PlayerStats.ShotSpeed.ID, true, 1.5f, true), new StatCondition(PlayerStats.Pierces.ID, true, 2, true) });
 
 
 	// Upgrades that can only show up if you reduce your max HP to less than 1 (ie 0)
-	public static StatCondition lich = new StatCondition(PlayerStats.ID.HP, true, 1, false);
+	public static StatCondition lich = new StatCondition(PlayerStats.MaxHP.ID, true, 1, false);
 
-	public static PlayerUnlockable laserBeam = new PlayerUnlockable(16, PlayerStats.Unlocks.UnlockID.Laser, "Laser Beam", true, "unlock_laser.png", laser);
+	public static PlayerUnlockable laserBeam = new PlayerUnlockable(PlayerStats.Unlocks.UnlockID.Laser, "Laser Beam", "unlock_laser.png", laser);
 
 	public static PlayerUnlockable[] unlockables = { laserBeam };
 
-
-	public static List<PlayerUpgrade> allUpgrades = basicUpgrades.ToList<PlayerUpgrade>().Concat(unlockables.ToList<PlayerUpgrade>()).ToList();
+	public static List<PlayerUpgrade> GetAllUpgrades(){
+		List<PlayerUpgrade> allUpgrades = new List<PlayerUpgrade>();
+		foreach (PlayerUpgrade statUpgrade in basicUpgrades)
+		{
+			allUpgrades.Add(statUpgrade);
+		}
+		foreach (PlayerUpgrade unlockable in unlockables)
+		{
+			allUpgrades.Add(unlockable);
+		}
+		return allUpgrades;
+	}
 
 
 }

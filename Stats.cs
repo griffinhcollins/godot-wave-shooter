@@ -5,70 +5,33 @@ using System.Runtime.CompilerServices;
 public static class Stats
 {
 
+
+
+
     // Player attributes
     public static class PlayerStats
     {
 
-        public static class ID
-        {
-            public static readonly int Damage = 0;
-            public static readonly int FireRate = 1;
-            public static readonly int HP = 2;
-            public static readonly int HPReward = 3;
-            public static readonly int Multishot = 4;
-            public static readonly int Spread = 5;
-            public static readonly int ShotSpeed = 6;
-            public static readonly int DropRate = 7;
-            public static readonly int Bounces = 8;
-            public static readonly int Pierces = 9;
-            public static readonly int Speed = 10;
+        public static PlayerStat Damage = new PlayerStat(0, "Damage", 10);
+        public static PlayerStat FireRate = new PlayerStat(1, "Firerate", 2);
+        public static PlayerStat MaxHP = new PlayerStat(2, "HP", 3, true);
+        public static PlayerStat HPReward = new PlayerStat(3, "HP Interest", 2, true);
+        public static PlayerStat Multishot = new PlayerStat(4, "Multishot", 1);
+        public static PlayerStat Spread = new PlayerStat(5, "Spread", 5, false, true);
+        public static PlayerStat ShotSpeed = new PlayerStat(6, "Shot Speed", 1);
+        public static PlayerStat DropRate = new PlayerStat(7, "Drop Rate", 1.5f);
+        public static PlayerStat Bounces = new PlayerStat(8, "Bounces", 1, true);
+        public static PlayerStat Pierces = new PlayerStat(9, "Pierces", 1, true);
+        public static PlayerStat Speed = new PlayerStat(10, "Speed", 400, false, false, 0.5f);
 
+        public static PlayerStat[] allStats = { Damage, FireRate, MaxHP, HPReward, Multishot, Spread, ShotSpeed, DropRate, Bounces, Pierces, Speed };
 
-
-            public static readonly string[] nameLookup = {
-                "Damage",
-                "Firerate",
-                "HP",
-                "HP Interest",
-                "Multishot",
-                "Spread",
-                "Shot Speed",
-                "Drop Rate",
-                "Bounces",
-                "Pierces",
-                "Speed"
-            };
-
-
-        }
-
-
-
-        // Starting/default stats (what is used to calculate upgrades)
-
-        public static readonly float[] BaseStats = {
-            // Player Starting Stats
-            10,      // 0: Damage
-            2,      // 1: Firing Rate (Shots/second)
-            3,      // 2: HP 
-            2,      // 3: HPReward (How much extra money the player gets per remaining HP at the end of a wave)
-            1,      // 4: Multishot (How many shots per fire. 1.5 means every shot is 50% of firing 1 and 50% of firing 2)
-            5,      // 5: Spread (Angle in radians that shots can deviate)
-            1,      // 6: Shot Speed (1000pixel/s that shots travel at)
-            1.5f,   // 7: Drop Rate (Number of coins dropped by enemies killed)
-            1,      // 8: Bouncing (After bouncing off this many mobs the bullet will self-destruct)
-            1,      // 9: Piercing (After piercing through this many mobs the bullet will self-destruct) (MUTUALLY EXCLUSIVE WITH BOUNCING)
-            1       // 10: Player speed (400p/s * sqrt(mult))
-        };
-
-        // Current stats
-        public static float[] DynamicStats = new float[BaseStats.Length];
 
         public static void SetDefaults()
         {
-            for (int i = 0; i < BaseStats.Length; i++)
+            for (int i = 0; i < allStats.Length; i++)
             {
-                DynamicStats[i] = BaseStats[i];
+                allStats[i].Reset();
             }
             for (int i = 0; i < Unlocks.DynamicUnlocks.Length; i++)
             {
@@ -207,9 +170,9 @@ public static class Stats
 
     public static void PrintStats()
     {
-        for (int i = 0; i < PlayerStats.ID.nameLookup.Length; i++)
+        for (int i = 0; i < PlayerStats.allStats.Length; i++)
         {
-            GD.Print(string.Format("{0} = {1}", PlayerStats.ID.nameLookup[i], PlayerStats.DynamicStats[i]));
+            GD.Print(string.Format("{0} = {1}", PlayerStats.allStats[i].name, PlayerStats.allStats[i].GetDynamicVal()));
         }
     }
 

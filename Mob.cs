@@ -53,7 +53,7 @@ public partial class Mob : RigidBody2D
 
     private void Die()
     {
-        float tempDropRate = Stats.PlayerStats.DynamicStats[Stats.PlayerStats.ID.DropRate];
+        float tempDropRate = Stats.PlayerStats.DropRate.GetDynamicVal();
         // If drop rate is above 1, get 1 guaranteed coin plus a chance at another
         while (tempDropRate > 0)
         {

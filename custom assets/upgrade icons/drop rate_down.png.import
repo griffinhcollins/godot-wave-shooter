@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bxcl44ysmnf4e"
-path="res://.godot/imported/shotspeed_down.png-fa9108834af9a52c81d88d5e73e77c02.ctex"
+uid="uid://kkhcs81043vx"
+path="res://.godot/imported/drop rate_down.png-05afe1c3047728ff88ec083dc1c47db6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/upgrade icons/shotspeed_down.png"
-dest_files=["res://.godot/imported/shotspeed_down.png-fa9108834af9a52c81d88d5e73e77c02.ctex"]
+source_file="res://custom assets/upgrade icons/drop rate_down.png"
+dest_files=["res://.godot/imported/drop rate_down.png-05afe1c3047728ff88ec083dc1c47db6.ctex"]
 
 [params]
 

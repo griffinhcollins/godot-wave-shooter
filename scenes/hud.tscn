@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://bv6wktb7wsx2x"]
 
-[ext_resource type="Script" path="res://Hud.cs" id="1_nq4qa"]
+[ext_resource type="Script" path="res://scripts/Hud.cs" id="1_nq4qa"]
 [ext_resource type="FontFile" uid="uid://o3v60vi8k4on" path="res://fonts/Xolonium-Regular.ttf" id="2_262y3"]
-[ext_resource type="PackedScene" uid="uid://bxit5dji56jci" path="res://heart.tscn" id="2_wn6k0"]
-[ext_resource type="PackedScene" uid="uid://76di2adj135a" path="res://upgrade.tscn" id="3_jnc8j"]
+[ext_resource type="PackedScene" uid="uid://bxit5dji56jci" path="res://scenes/heart.tscn" id="2_wn6k0"]
+[ext_resource type="PackedScene" uid="uid://76di2adj135a" path="res://scenes/upgrade.tscn" id="3_jnc8j"]
 
 [node name="HUD" type="CanvasLayer" groups=["HUD"]]
 script = ExtResource("1_nq4qa")

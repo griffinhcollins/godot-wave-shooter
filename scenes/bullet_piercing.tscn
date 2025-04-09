@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bed170bj6kt5s"]
 
-[ext_resource type="Script" path="res://PiercingBullet.cs" id="1_2fpha"]
+[ext_resource type="Script" path="res://scripts/PiercingBullet.cs" id="1_2fpha"]
 [ext_resource type="Texture2D" uid="uid://dvio14uuu5dx0" path="res://custom assets/bullet_piercing.png" id="1_xmiob"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gr8yg"]

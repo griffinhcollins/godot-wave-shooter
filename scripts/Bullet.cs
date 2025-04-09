@@ -19,7 +19,7 @@ public abstract partial class Bullet : Node2D
         SetDamage(Damage.GetDynamicVal());
         numHit = 0;
         mobsHit = new HashSet<Node2D>();
-
+        GetParent().GetNode<AudioStreamPlayer>("FireSound").Play();
     }
 
 

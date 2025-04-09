@@ -59,7 +59,7 @@ public partial class Main : Node
     {
         if (Input.IsActionJustPressed("restart") && (state == State.dead))
         {
-            StartWave();
+            NewGame();
         }
     }
 

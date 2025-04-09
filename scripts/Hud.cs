@@ -122,6 +122,7 @@ public partial class Hud : CanvasLayer
 
     private void OnStartButtonPressed()
     {
+        GD.Print("buh");
         ShowWave();
         GetNode<Button>("WaveElements/StartButton").Hide();
         EmitSignal(SignalName.StartGame);

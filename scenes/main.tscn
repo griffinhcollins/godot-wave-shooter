@@ -76,6 +76,9 @@ shape = SubResource("WorldBoundaryShape2D_liw8u")
 [node name="Right" type="CollisionShape2D" parent="Border"]
 shape = SubResource("WorldBoundaryShape2D_7axoi")
 
+[connection signal="Killed" from="Player" to="." method="GameOver"]
 [connection signal="timeout" from="MobTimer" to="." method="OnMobTimerTimeout"]
 [connection signal="timeout" from="WaveTimer" to="." method="OnWaveTimeout"]
 [connection signal="timeout" from="StartTimer" to="." method="OnStartTimerTimeout"]
+[connection signal="NextWave" from="HUD" to="." method="StartWave"]
+[connection signal="StartGame" from="HUD" to="." method="NewGame"]

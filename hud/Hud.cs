@@ -75,7 +75,6 @@ public partial class Hud : CanvasLayer
         List<PlayerUpgrade> upgradePool = Upgrades.GetAllUpgrades();
         for (int i = 0; i < 7; i++)
         {
-            GD.Print(upgradePool.Count);
             UpgradeNode newUpgrade = upgrade.Instantiate<UpgradeNode>();
             upgradeBar.AddChild(newUpgrade);
             upgradePool = newUpgrade.Generate(upgradePool);

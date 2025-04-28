@@ -34,6 +34,8 @@ public abstract partial class Bullet : Node2D
 
     private void OnCollision(Node2D body)
     {
+        GD.Print(GetParent<Node2D>().Scale);
+        GD.Print(BulletSize.GetDynamicVal());
         if (body.IsInGroup("mobs") && !mobsHit.Contains(body))
         {
             numHit++;

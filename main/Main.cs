@@ -62,6 +62,7 @@ public partial class Main : Node
 
     private void NewGame()
     {
+        GetNode<Label>("Title").Hide();
         ResetStats();
         UpdateEnemyStats();
         ClearScreen();

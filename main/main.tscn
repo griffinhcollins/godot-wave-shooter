@@ -34,6 +34,24 @@ distance = -1280.0
 script = ExtResource("1_7h5d5")
 MobScene = ExtResource("2_rc8qt")
 
+[node name="Title" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -57.5
+offset_top = -10.0
+offset_right = 57.5
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 120
+text = "Wave Shoot Game"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
 [node name="Player" parent="." instance=ExtResource("3_vww5f")]

@@ -1,12 +1,12 @@
 [gd_scene load_steps=14 format=3 uid="uid://b8xdrbjqw4dbh"]
 
 [ext_resource type="Script" path="res://main/Main.cs" id="1_7h5d5"]
-[ext_resource type="PackedScene" uid="uid://daepl4ypavfsl" path="res://scenes/mob.tscn" id="2_rc8qt"]
-[ext_resource type="PackedScene" uid="uid://dphno2aha4dnk" path="res://scenes/player.tscn" id="3_vww5f"]
-[ext_resource type="PackedScene" uid="uid://i3lhgidaa505" path="res://scenes/bullet_bouncing.tscn" id="4_vfndo"]
-[ext_resource type="PackedScene" uid="uid://bed170bj6kt5s" path="res://scenes/bullet_piercing.tscn" id="5_58dxr"]
-[ext_resource type="PackedScene" uid="uid://bv6wktb7wsx2x" path="res://scenes/hud.tscn" id="6_xp7op"]
-[ext_resource type="PackedScene" uid="uid://cmp3ey8qdvuu1" path="res://scenes/damage_num.tscn" id="7_v3guq"]
+[ext_resource type="PackedScene" uid="uid://daepl4ypavfsl" path="res://entities/mob.tscn" id="2_rc8qt"]
+[ext_resource type="PackedScene" uid="uid://dphno2aha4dnk" path="res://player/player.tscn" id="3_vww5f"]
+[ext_resource type="PackedScene" uid="uid://i3lhgidaa505" path="res://player/projectiles/bullet_bouncing.tscn" id="4_vfndo"]
+[ext_resource type="PackedScene" uid="uid://bed170bj6kt5s" path="res://player/projectiles/bullet_piercing.tscn" id="5_58dxr"]
+[ext_resource type="PackedScene" uid="uid://bv6wktb7wsx2x" path="res://hud/hud.tscn" id="6_xp7op"]
+[ext_resource type="PackedScene" uid="uid://cmp3ey8qdvuu1" path="res://hud/damage_num.tscn" id="7_v3guq"]
 
 [sub_resource type="Curve2D" id="Curve2D_oc665"]
 _data = {

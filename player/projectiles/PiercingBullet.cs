@@ -17,7 +17,13 @@ public partial class PiercingBullet : Bullet
 
     public override void _Process(double delta)
     {
+        if (parent is null)
+        {
+            parent = GetParent<Area2D>();
+
+        }
         base._Process(delta);
+        GD.Print(parent.Position);
         parent.Position += velocity * (float)delta;
     }
 

@@ -46,7 +46,7 @@ public abstract partial class Bullet : Node2D
             numHit++;
 
         }
-        if (numHit >= Mathf.Max(Bounces.GetDynamicVal(), Pierces.GetDynamicVal()))
+        if (numHit > Mathf.Max(Bounces.GetDynamicVal(), Pierces.GetDynamicVal()))
         {
             HandleDeath();
 

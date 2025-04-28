@@ -122,6 +122,7 @@ public partial class Player : Area2D
                 RigidBody2D newBullet = bounceBullet.Instantiate<RigidBody2D>();
                 newBullet.LinearVelocity = velocity;
                 newBullet.Position = fireFromPos;
+                newBullet.Scale *= BulletSize.GetDynamicVal();
                 AddChild(newBullet);
             }
             else
@@ -132,6 +133,7 @@ public partial class Player : Area2D
                 PiercingBullet pierceBehaviour = newBullet.GetNode<PiercingBullet>("ScriptHolder");
                 pierceBehaviour.velocity = velocity;
                 newBullet.Position = Position + fireFromPos;
+                newBullet.Scale *= BulletSize.GetDynamicVal();
                 AddChild(newBullet);
             }
 

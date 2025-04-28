@@ -29,3 +29,4 @@ script = ExtResource("2_kxnli")
 stream = ExtResource("3_0w13g")
 
 [connection signal="body_entered" from="." to="ScriptHolder" method="OnCollision"]
+[connection signal="finished" from="FireSound" to="ScriptHolder" method="SoundFinished"]

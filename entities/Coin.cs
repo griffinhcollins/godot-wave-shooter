@@ -33,12 +33,17 @@ public partial class Coin : Area2D
         {
             return;
         }
+
         AudioStreamPlayer soundEffect = GetNode<AudioStreamPlayer>("PickupNoise");
         soundEffect.Play();
         player.AddMoney(value);
         Hide();
-        QueueFree();
+        CollisionLayer = 0; // Disable collision
+    }
 
+    private void SoundFinished()
+    {
+        QueueFree();
     }
 
 }

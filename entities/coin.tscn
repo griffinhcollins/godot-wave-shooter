@@ -62,3 +62,4 @@ stream = ExtResource("5_81fum")
 playback_type = 1
 
 [connection signal="area_entered" from="." to="." method="OnTouchPlayer"]
+[connection signal="finished" from="PickupNoise" to="." method="SoundFinished"]

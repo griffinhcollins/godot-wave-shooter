@@ -2,11 +2,15 @@ using Godot;
 using static Stats.PlayerStats;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public abstract partial class Bullet : Node2D
 {
 
     float dmg;
+
+    // Whether the firing sound has finished sounding - can't delete until it has
+    bool soundFinished = false;
 
     // A bullet can only hit the same mob once
     HashSet<Node2D> mobsHit;
@@ -60,7 +64,24 @@ public abstract partial class Bullet : Node2D
     {
         Node2D parent = GetParent<Node2D>();
         parent.Hide();
-        parent.QueueFree();
+        ((CollisionObject2D)parent).CollisionLayer = 0; // Disable collision
+        if (soundFinished)
+        {
+            GD.Print(soundFinished);
+            parent.QueueFree();
+
+        }
+    }
+
+    private void SoundFinished()
+    {
+        GD.Print("fuck you");
+        soundFinished = true;
+        if (GetParent<Node2D>().ProcessMode == ProcessModeEnum.Disabled)
+        {
+            QueueFree();
+
+        }
     }
 
 

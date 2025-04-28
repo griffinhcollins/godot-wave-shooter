@@ -1,12 +1,12 @@
 [gd_scene load_steps=14 format=3 uid="uid://b8xdrbjqw4dbh"]
 
-[ext_resource type="PackedScene" uid="uid://dphno2aha4dnk" path="res://scenes/player.tscn" id="1_5dyaw"]
-[ext_resource type="Script" path="res://scripts/Main.cs" id="1_yum70"]
-[ext_resource type="PackedScene" uid="uid://daepl4ypavfsl" path="res://scenes/mob.tscn" id="2_8h3n6"]
-[ext_resource type="PackedScene" uid="uid://bv6wktb7wsx2x" path="res://scenes/hud.tscn" id="4_c2pip"]
-[ext_resource type="PackedScene" uid="uid://i3lhgidaa505" path="res://scenes/bullet_bouncing.tscn" id="4_sldb3"]
-[ext_resource type="PackedScene" uid="uid://bed170bj6kt5s" path="res://scenes/bullet_piercing.tscn" id="5_i0de5"]
-[ext_resource type="PackedScene" uid="uid://cmp3ey8qdvuu1" path="res://scenes/damage_num.tscn" id="7_hae4e"]
+[ext_resource type="Script" path="res://main/Main.cs" id="1_7h5d5"]
+[ext_resource type="PackedScene" uid="uid://daepl4ypavfsl" path="res://scenes/mob.tscn" id="2_rc8qt"]
+[ext_resource type="PackedScene" uid="uid://dphno2aha4dnk" path="res://scenes/player.tscn" id="3_vww5f"]
+[ext_resource type="PackedScene" uid="uid://i3lhgidaa505" path="res://scenes/bullet_bouncing.tscn" id="4_vfndo"]
+[ext_resource type="PackedScene" uid="uid://bed170bj6kt5s" path="res://scenes/bullet_piercing.tscn" id="5_58dxr"]
+[ext_resource type="PackedScene" uid="uid://bv6wktb7wsx2x" path="res://scenes/hud.tscn" id="6_xp7op"]
+[ext_resource type="PackedScene" uid="uid://cmp3ey8qdvuu1" path="res://scenes/damage_num.tscn" id="7_v3guq"]
 
 [sub_resource type="Curve2D" id="Curve2D_oc665"]
 _data = {
@@ -31,13 +31,15 @@ normal = Vector2(-1, 0)
 distance = -1280.0
 
 [node name="Main" type="Node"]
-script = ExtResource("1_yum70")
-MobScene = ExtResource("2_8h3n6")
+script = ExtResource("1_7h5d5")
+MobScene = ExtResource("2_rc8qt")
 
-[node name="Player" parent="." instance=ExtResource("1_5dyaw")]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="Player" parent="." instance=ExtResource("3_vww5f")]
 position = Vector2(405, 328)
-bounceBullet = ExtResource("4_sldb3")
-pierceBullet = ExtResource("5_i0de5")
+bounceBullet = ExtResource("4_vfndo")
+pierceBullet = ExtResource("5_58dxr")
 
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 0.5
@@ -56,8 +58,8 @@ curve = SubResource("Curve2D_oc665")
 
 [node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
 
-[node name="HUD" parent="." instance=ExtResource("4_c2pip")]
-damageNumber = ExtResource("7_hae4e")
+[node name="HUD" parent="." instance=ExtResource("6_xp7op")]
+damageNumber = ExtResource("7_v3guq")
 
 [node name="Border" type="StaticBody2D" parent="." groups=["border"]]
 collision_layer = 16

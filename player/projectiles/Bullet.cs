@@ -67,7 +67,6 @@ public abstract partial class Bullet : Node2D
         ((CollisionObject2D)parent).CollisionLayer = 0; // Disable collision
         if (soundFinished)
         {
-            GD.Print(soundFinished);
             parent.QueueFree();
 
         }
@@ -75,7 +74,6 @@ public abstract partial class Bullet : Node2D
 
     private void SoundFinished()
     {
-        GD.Print("fuck you");
         soundFinished = true;
         if (GetParent<Node2D>().ProcessMode == ProcessModeEnum.Disabled)
         {

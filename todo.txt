@@ -5,3 +5,4 @@
 - 1-off upgrades, e.g. path editors, acceleration curves, styles, etc. 
 - upgrade trees: when you hit 0 hp, you unlock powerful lich upgrades, change character sprite
 - need new sprites for enemies and the player, while we're on that
+- make number of upgrades in the shop a stat

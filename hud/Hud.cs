@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class Hud : CanvasLayer
 {
@@ -59,7 +60,8 @@ public partial class Hud : CanvasLayer
         GetNode<Label>("WaveElements/WaveLabel").Text = wavetime.ToString();
     }
 
-    public void CreateDamageNumber(Vector2 pos, float amount){
+    public void CreateDamageNumber(Vector2 pos, float amount)
+    {
         Label dmgNum = damageNumber.Instantiate<Label>();
         dmgNum.Text = string.Format("{0:n0}", amount);
         dmgNum.Position = pos;
@@ -70,9 +72,13 @@ public partial class Hud : CanvasLayer
     {
         ShowShop();
         HBoxContainer upgradeBar = shopElements.GetNode<HBoxContainer>("Upgrades");
+        List<PlayerUpgrade> upgradePool = Upgrades.GetAllUpgrades();
         for (int i = 0; i < 7; i++)
         {
-            upgradeBar.AddChild(upgrade.Instantiate<UpgradeNode>());
+            GD.Print(upgradePool.Count);
+            UpgradeNode newUpgrade = upgrade.Instantiate<UpgradeNode>();
+            upgradeBar.AddChild(newUpgrade);
+            upgradePool = newUpgrade.Generate(upgradePool);
         }
         // This is hacky but it will stop the upgrade bar sometimes appearing offset 
         upgradeBar.Visible = false;

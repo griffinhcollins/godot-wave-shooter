@@ -21,18 +21,24 @@ public partial class UpgradeNode : Button
 	public override void _Ready()
 	{
 
+
+	}
+
+	public List<PlayerUpgrade> Generate(List<PlayerUpgrade> upgradePool)
+	{
 		hud = (Hud)GetTree().GetNodesInGroup("HUD")[0];
 		upgradeMagnitudes = new Dictionary<PlayerUpgrade, float>();
 		iconHolder = GetNode<HFlowContainer>("IconHolder");
-		Randomize();
+		upgradePool = Randomize(upgradePool);
 		UpdateCost();
+		return upgradePool;
 	}
 
-	void Randomize()
+	List<PlayerUpgrade> Randomize(List<PlayerUpgrade> pool)
 	{
 		// How good this upgrade is, ie how much it should cost
 		cost = 5;
-		List<PlayerUpgrade> posUpgrades = GetAllUpgrades().Where(u => u.IsPositive() && u.CheckCondition()).ToList<PlayerUpgrade>();
+		List<PlayerUpgrade> posUpgrades = pool.Where(u => u.IsPositive() && u.CheckCondition()).ToList<PlayerUpgrade>();
 
 		List<PlayerStatUpgrade> negUpgrades = basicUpgrades.Where(u => !u.IsPositive() && u.CheckCondition()).ToList<PlayerStatUpgrade>();
 		// Roll a positive upgrade
@@ -41,13 +47,15 @@ public partial class UpgradeNode : Button
 		for (int i = 0; i < numPos; i++)
 		{
 			PlayerUpgrade newPos = posUpgrades[GD.RandRange(0, posUpgrades.Count - 1)];
+			// Make sure this upgrade isn't repeated in this shop
+			pool.Remove(newPos);
 			AddIcon(newPos);
 			if (newPos is PlayerStatUpgrade)
 			{
 				strength = GD.RandRange(0, 2);
 				upgradeMagnitudes.Add(newPos, CalculateMagnitude(((PlayerStatUpgrade)newPos).IntIncrease(), strength));
 
-				// Eliminate any other upgrades that affect this stat from the pool 
+				// Make sure this stat isn't repeated within this upgrade
 				posUpgrades = posUpgrades.Where(u => u is PlayerStatUpgrade ? ((PlayerStatUpgrade)u).stat != ((PlayerStatUpgrade)newPos).stat : true).ToList();
 				negUpgrades = negUpgrades.Where(u => u is PlayerStatUpgrade ? ((PlayerStatUpgrade)u).stat != ((PlayerStatUpgrade)newPos).stat : true).ToList();
 
@@ -59,7 +67,7 @@ public partial class UpgradeNode : Button
 				cost += strength * 3;
 				upgradeMagnitudes.Add(newPos, 1);
 				RarityColour(strength);
-				return;
+				return pool;
 			}
 			cost += strength * 3;
 		}
@@ -75,6 +83,7 @@ public partial class UpgradeNode : Button
 			cost -= negStrength * 3;
 			negUpgrades = negUpgrades.Where(u => u.stat != newNeg.stat).ToList();
 		}
+		return pool;
 	}
 
 

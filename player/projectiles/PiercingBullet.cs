@@ -23,7 +23,6 @@ public partial class PiercingBullet : Bullet
 
         }
         base._Process(delta);
-        GD.Print(parent.Position);
         parent.Position += velocity * (float)delta;
     }
 

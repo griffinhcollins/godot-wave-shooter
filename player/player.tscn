@@ -1,10 +1,10 @@
 [gd_scene load_steps=10 format=3 uid="uid://dphno2aha4dnk"]
 
 [ext_resource type="Texture2D" uid="uid://cxxc2leij01vs" path="res://art/playerGrey_up1.png" id="1_333lq"]
-[ext_resource type="Script" path="res://scripts/Player.cs" id="1_empth"]
+[ext_resource type="Script" path="res://player/Player.cs" id="1_empth"]
 [ext_resource type="Texture2D" uid="uid://dkgo0v8k3ef30" path="res://art/playerGrey_up2.png" id="2_jf2ap"]
 [ext_resource type="Texture2D" uid="uid://cep626uarssxs" path="res://art/playerGrey_walk1.png" id="3_3x6b2"]
-[ext_resource type="PackedScene" uid="uid://s47tunx2vl7" path="res://scenes/laser_beam.tscn" id="3_lvtdk"]
+[ext_resource type="PackedScene" uid="uid://s47tunx2vl7" path="res://player/projectiles/laser_beam.tscn" id="3_lvtdk"]
 [ext_resource type="Texture2D" uid="uid://d31l0w61nop2n" path="res://art/playerGrey_walk2.png" id="4_2p2gm"]
 [ext_resource type="Texture2D" uid="uid://e4f0lfg30k3i" path="res://custom assets/firing reticule.png" id="6_arkfn"]
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cmp3ey8qdvuu1"]
 
-[ext_resource type="Script" path="res://scripts/DamageNum.cs" id="1_i5ixy"]
+[ext_resource type="Script" path="res://hud/DamageNum.cs" id="1_i5ixy"]
 
 [node name="DamageNum" type="Label"]
 offset_right = 40.0

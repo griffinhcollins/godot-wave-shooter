@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://i3lhgidaa505"]
 
 [ext_resource type="Texture2D" uid="uid://cjilwsmy35you" path="res://custom assets/bullet.png" id="1_shdhe"]
-[ext_resource type="Script" path="res://scripts/BouncyBullet.cs" id="2_kxnli"]
+[ext_resource type="Script" path="res://player/projectiles/BouncyBullet.cs" id="2_kxnli"]
 [ext_resource type="AudioStream" uid="uid://b2kro6y6sewt7" path="res://sounds/laser pip.wav" id="3_0w13g"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gr8yg"]

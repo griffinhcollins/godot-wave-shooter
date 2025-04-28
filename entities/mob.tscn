@@ -1,14 +1,14 @@
 [gd_scene load_steps=12 format=3 uid="uid://daepl4ypavfsl"]
 
-[ext_resource type="Script" path="res://scripts/Mob.cs" id="1_cola1"]
+[ext_resource type="Script" path="res://entities/Mob.cs" id="1_cola1"]
 [ext_resource type="Texture2D" uid="uid://bo0vqo4bi47by" path="res://art/enemyFlyingAlt_1.png" id="1_y2nxy"]
-[ext_resource type="PackedScene" uid="uid://cx23hqh3pjy5l" path="res://scenes/coin.tscn" id="2_7wvnd"]
+[ext_resource type="PackedScene" uid="uid://cx23hqh3pjy5l" path="res://entities/coin.tscn" id="2_7wvnd"]
 [ext_resource type="Texture2D" uid="uid://b0kc3k872filp" path="res://art/enemyFlyingAlt_2.png" id="2_eo23j"]
 [ext_resource type="Texture2D" uid="uid://g7h30cxqdo11" path="res://art/enemySwimming_1.png" id="3_6svnx"]
 [ext_resource type="Texture2D" uid="uid://cq25tjj4vrypy" path="res://art/enemySwimming_2.png" id="4_v7jam"]
 [ext_resource type="Texture2D" uid="uid://cmybmq7x7ouhd" path="res://art/enemyWalking_1.png" id="5_p6sgb"]
 [ext_resource type="Texture2D" uid="uid://dswtdtimyd77s" path="res://art/enemyWalking_2.png" id="6_ypr7h"]
-[ext_resource type="PackedScene" uid="uid://bp21m4kr2kvxa" path="res://scenes/offscreen_indicator.tscn" id="9_w0vnq"]
+[ext_resource type="PackedScene" uid="uid://bp21m4kr2kvxa" path="res://hud/offscreen_indicator.tscn" id="9_w0vnq"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_jq8ss"]
 animations = [{

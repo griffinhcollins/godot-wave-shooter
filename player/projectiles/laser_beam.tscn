@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://s47tunx2vl7"]
 
-[ext_resource type="Script" path="res://scripts/LaserBeam.cs" id="1_a8ijb"]
+[ext_resource type="Script" path="res://player/projectiles/LaserBeam.cs" id="1_a8ijb"]
 [ext_resource type="Texture2D" uid="uid://cjilwsmy35you" path="res://custom assets/bullet.png" id="1_uq1fs"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8ciuh"]

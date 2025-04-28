@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://76di2adj135a"]
 
 [ext_resource type="Texture2D" uid="uid://cny28xtbmqr2" path="res://custom assets/upgrade background.png" id="1_5sc25"]
-[ext_resource type="Script" path="res://scripts/UpgradeNode.cs" id="2_x5rl2"]
+[ext_resource type="Script" path="res://hud/UpgradeNode.cs" id="2_x5rl2"]
 [ext_resource type="FontFile" uid="uid://o3v60vi8k4on" path="res://fonts/Xolonium-Regular.ttf" id="3_clk1i"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_614jn"]

@@ -17,9 +17,6 @@ public partial class Main : Node
     Timer mobTimer;
     Hud hud;
 
-    // 0 = in game, 1 = between waves, 2 = dead
-    int state;
-
     int waveLength;
 
     float spawnRate; // How many enemies spawn per second
@@ -43,7 +40,7 @@ public partial class Main : Node
     {
         ResetStats();
         
-        state = State.dead;
+        State.currentState = State.dead;
         hud.ShowGameOver();
         mobTimer.Stop();
         waveTimer.Stop();
@@ -57,7 +54,7 @@ public partial class Main : Node
 
     public override void _Process(double delta)
     {
-        if (Input.IsActionJustPressed("restart") && (state == State.dead))
+        if (Input.IsActionJustPressed("restart") && (State.currentState == State.dead))
         {
             NewGame();
         }
@@ -70,7 +67,6 @@ public partial class Main : Node
         ClearScreen();
         player.UpdateStats();
         waveCounter = 1;
-        state = State.alive;
         StartWave();
     }
 
@@ -86,6 +82,7 @@ public partial class Main : Node
 
     public void StartWave()
     {
+        State.currentState = State.alive;
         UpdateEnemyStats();
         ClearScreen();
         timeRemaining = waveLength;
@@ -124,7 +121,7 @@ public partial class Main : Node
         player.AddMoney((int)PlayerStats.HPReward.GetDynamicVal() * player.CurrentHP());
 
         Upgrades.GenerateUpgrades();
-        state = State.shop;
+        State.currentState = State.shop;
         hud.GenerateShop();
     }
 

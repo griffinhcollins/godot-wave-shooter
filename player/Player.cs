@@ -113,10 +113,9 @@ public partial class Player : Area2D
         else
         {
 
-            // Regular bullet
-            bool bouncy = Pierces.GetDynamicVal() <= Bounces.GetDynamicVal();
+            // A bullet is piercing first, then when piercing runs out becomes bouncy. If there is no piercing, it starts bouncy.
             Vector2 velocity = new Vector2(0, -1000 * ShotSpeed.GetDynamicVal()).Rotated(spreadRotate);
-            if (bouncy)
+            if (Piercing.GetDynamicVal() <= 0)
             {
                 // Bouncing, it's a rigidbody
                 RigidBody2D newBullet = bounceBullet.Instantiate<RigidBody2D>();

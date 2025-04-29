@@ -22,18 +22,19 @@ public static class Stats
         public static PlayerStat ShotSpeed = new PlayerStat(6, "Shot Speed", 1, new Vector2(0.25f, 10));
         public static PlayerStat DropRate = new PlayerStat(7, "Drop Rate", 1.5f, new Vector2(0.25f, 4));
         public static PlayerStat Bounces = new PlayerStat(8, "Bounces", 0, new Vector2(0, 10), true);
-        public static PlayerStat Pierces = new PlayerStat(9, "Pierces", 0, new Vector2(0, 10), true);
+        public static PlayerStat Piercing = new PlayerStat(9, "Piercing Time", 0, new Vector2(0, 10), true);
         public static PlayerStat Speed = new PlayerStat(10, "Speed", 400, new Vector2(100, 1000), false, false, 0.5f);
         public static PlayerStat BulletSize = new PlayerStat(11, "Bullet Size", 1, new Vector2(0.25f, 3), false, false, 1);
 
-        public static PlayerStat[] allStats = { Damage, FireRate, MaxHP, HPReward, Multishot, Spread, ShotSpeed, DropRate, Bounces, Pierces, Speed, BulletSize };
+        // Stats that have the generic "<stat> up" and "<stat> down" purchasable upgrades
+        public static PlayerStat[] upgradeableStats = { Damage, FireRate, MaxHP, HPReward, Multishot, Spread, ShotSpeed, DropRate, Bounces, Piercing, Speed, BulletSize };
 
 
         public static void SetDefaults()
         {
-            for (int i = 0; i < allStats.Length; i++)
+            for (int i = 0; i < upgradeableStats.Length; i++)
             {
-                allStats[i].Reset();
+                upgradeableStats[i].Reset();
             }
             foreach (Unlockable u in Unlocks.allUnlockables)
             {
@@ -46,7 +47,7 @@ public static class Stats
         {
 
             // If you reach high enough shotspeed and firerate, you get LASER BEAM as an option
-            public static Condition laser = new ConjunctCondition(new List<Condition> { new StatCondition(FireRate, 1.5f, true), new StatCondition(ShotSpeed, 1.5f, true), new StatCondition(Pierces, 2, true) });
+            public static Condition laser = new ConjunctCondition(new List<Condition> { new StatCondition(FireRate, 1.5f, true), new StatCondition(ShotSpeed, 1.5f, true), new StatCondition(Piercing, 2, true) });
 
 
             // Upgrades that can only show up if you reduce your max HP to less than 1 (ie 0)
@@ -169,9 +170,9 @@ public static class Stats
 
     public static void PrintStats()
     {
-        for (int i = 0; i < PlayerStats.allStats.Length; i++)
+        for (int i = 0; i < PlayerStats.upgradeableStats.Length; i++)
         {
-            GD.Print(string.Format("{0} = {1}", PlayerStats.allStats[i].name, PlayerStats.allStats[i].GetDynamicVal()));
+            GD.Print(string.Format("{0} = {1}", PlayerStats.upgradeableStats[i].name, PlayerStats.upgradeableStats[i].GetDynamicVal()));
         }
     }
 

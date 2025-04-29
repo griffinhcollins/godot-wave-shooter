@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1b138xxxns7b"
-path="res://.godot/imported/pierces_down.png-5c37d57068a1e367dee39892a9b24963.ctex"
+uid="uid://cu820wcag5ceu"
+path="res://.godot/imported/piercing time_up.png-e5acda7de458f92924c9d1aa07938ce0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/upgrade icons/pierces_down.png"
-dest_files=["res://.godot/imported/pierces_down.png-5c37d57068a1e367dee39892a9b24963.ctex"]
+source_file="res://custom assets/upgrade icons/piercing time_up.png"
+dest_files=["res://.godot/imported/piercing time_up.png-e5acda7de458f92924c9d1aa07938ce0.ctex"]
 
 [params]
 

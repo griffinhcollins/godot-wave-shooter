@@ -15,7 +15,7 @@ public static class Upgrades
 	public static void GenerateUpgrades()
 	{
 		basicUpgrades.Clear();
-		foreach (PlayerStat stat in PlayerStats.allStats)
+		foreach (PlayerStat stat in PlayerStats.upgradeableStats)
 		{
 			basicUpgrades.Add(new PlayerStatUpgrade(stat, true, string.Format("{0}_up.png", stat.name.ToLower())));
 			basicUpgrades.Add(new PlayerStatUpgrade(stat, false, string.Format("{0}_down.png", stat.name.ToLower())));

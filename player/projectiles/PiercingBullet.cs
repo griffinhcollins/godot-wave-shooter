@@ -6,8 +6,12 @@ using System.Collections.Generic;
 public partial class PiercingBullet : Bullet
 {
 
+    [Export]
+    PackedScene bounceBullet;
+
     public Area2D parent;
     public Vector2 velocity;
+
 
     public override void _Ready()
     {
@@ -24,6 +28,17 @@ public partial class PiercingBullet : Bullet
         }
         base._Process(delta);
         parent.Position += velocity * (float)delta;
+
+        if (!dead && timeAlive > PlayerStats.Piercing.GetDynamicVal() && PlayerStats.Bounces.GetDynamicVal() > 0)
+        {
+            Player player = GetParent().GetParent<Player>();
+            // If any bounces have been unlocked, become a bouncy bullet
+            RigidBody2D newBullet = bounceBullet.Instantiate<RigidBody2D>();
+            player.AddChild(newBullet);
+            newBullet.LinearVelocity = velocity;
+            newBullet.GlobalPosition = GlobalPosition;
+            HandleDeath();
+        }
     }
 
 

@@ -6,8 +6,10 @@ using System.Diagnostics;
 
 public abstract partial class Bullet : Node2D
 {
-
+    protected bool dead;
     float dmg;
+
+    protected float timeAlive;
 
     // Whether the firing sound has finished sounding - can't delete until it has
     bool soundFinished = false;
@@ -20,12 +22,26 @@ public abstract partial class Bullet : Node2D
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        dead = false;
         SetDamage(Damage.GetDynamicVal());
         numHit = 0;
         mobsHit = new HashSet<Node2D>();
         GetParent().GetNode<AudioStreamPlayer>("FireSound").Play();
         GD.Print("val");
         GD.Print(Vector2.One * BulletSize.GetDynamicVal());
+        timeAlive = 0;
+        CollisionObject2D parent = GetParent<CollisionObject2D>();
+
+        if (Unlocks.WallBounce.unlocked)
+        {
+            parent.SetCollisionMaskValue(5, true);
+
+        }
+    }
+
+    public override void _Process(double delta)
+    {
+        timeAlive += (float)delta;
     }
 
 
@@ -36,8 +52,6 @@ public abstract partial class Bullet : Node2D
 
     private void OnCollision(Node2D body)
     {
-        GD.Print("Parent scale:");
-        GD.Print(GetParent<Node2D>().Scale);
         if (body.IsInGroup("mobs") && !mobsHit.Contains(body))
         {
             numHit++;
@@ -48,12 +62,16 @@ public abstract partial class Bullet : Node2D
         if (body.IsInGroup("border"))
         {
             numHit++;
+            // If a piercing shot hits a wall while wall bounces are unlocked, instantly convert it into bouncy
+            if (Piercing.GetDynamicVal() > 0)
+            {
+                timeAlive = Piercing.GetDynamicVal();
+            }
 
         }
-        if (numHit > Mathf.Max(Bounces.GetDynamicVal(), Pierces.GetDynamicVal()))
+        if (numHit > Bounces.GetDynamicVal() && timeAlive > Piercing.GetDynamicVal())
         {
             HandleDeath();
-
         }
         else
         {
@@ -66,6 +84,7 @@ public abstract partial class Bullet : Node2D
     protected abstract void HandleCollision();
     protected virtual void HandleDeath()
     {
+        dead = true;
         Node2D parent = GetParent<Node2D>();
         parent.Hide();
         ((CollisionObject2D)parent).CollisionLayer = 0; // Disable collision
@@ -79,7 +98,7 @@ public abstract partial class Bullet : Node2D
     private void SoundFinished()
     {
         soundFinished = true;
-        if (GetParent<Node2D>().ProcessMode == ProcessModeEnum.Disabled)
+        if (dead)
         {
             QueueFree();
 

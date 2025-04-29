@@ -44,6 +44,7 @@ animations = [{
 }]
 
 [node name="Coin" type="Area2D" groups=["cleanup"]]
+z_index = -1
 collision_layer = 8
 priority = 1
 script = ExtResource("1_i7maf")

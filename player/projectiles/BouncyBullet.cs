@@ -6,19 +6,25 @@ using System.Collections.Generic;
 public partial class BouncyBullet : Bullet
 {
 
+	RigidBody2D parent;
+
 	public override void _Ready()
 	{
 		base._Ready();
+
+		parent = GetParent<RigidBody2D>();
+		
+		parent.GetNode<CollisionShape2D>("CollisionShape2D").Scale = Vector2.One * PlayerStats.BulletSize.GetDynamicVal();
+		parent.GetNode<Sprite2D>("Sprite2D").Scale = Vector2.One * PlayerStats.BulletSize.GetDynamicVal();
 		if (PlayerStats.Unlocks.WallBounce.unlocked)
 		{
-			GetParent<RigidBody2D>().SetCollisionMaskValue(5, true);
+			parent.SetCollisionMaskValue(5, true);
 
 		}
 	}
 
 	protected override void HandleCollision()
 	{
-		RigidBody2D myRigidbody = GetParent<RigidBody2D>();
-		myRigidbody.LinearVelocity = myRigidbody.LinearVelocity.Normalized() * 1000 * PlayerStats.ShotSpeed.GetDynamicVal();
+		parent.LinearVelocity = parent.LinearVelocity.Normalized() * 1000 * PlayerStats.ShotSpeed.GetDynamicVal();
 	}
 }

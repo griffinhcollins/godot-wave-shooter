@@ -123,8 +123,6 @@ public partial class Player : Area2D
                 newBullet.LinearVelocity = velocity;
                 newBullet.Position = fireFromPos;
                 AddChild(newBullet);
-                newBullet.Scale = new Vector2(1,1) * BulletSize.GetDynamicVal();
-                GD.Print(newBullet.Scale);
             }
             else
             {
@@ -135,7 +133,6 @@ public partial class Player : Area2D
                 pierceBehaviour.velocity = velocity;
                 newBullet.Position = Position + fireFromPos;
                 AddChild(newBullet);
-                newBullet.Scale = new Vector2(1,1) * BulletSize.GetDynamicVal();
             }
 
 

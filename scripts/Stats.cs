@@ -24,7 +24,7 @@ public static class Stats
         public static PlayerStat Bounces = new PlayerStat(8, "Bounces", 0, new Vector2(0, 10), true);
         public static PlayerStat Pierces = new PlayerStat(9, "Pierces", 0, new Vector2(0, 10), true);
         public static PlayerStat Speed = new PlayerStat(10, "Speed", 400, new Vector2(100, 1000), false, false, 0.5f);
-        public static PlayerStat BulletSize = new PlayerStat(11, "Bullet Size", 1, new Vector2(0.25f, 4), false, false, 1);
+        public static PlayerStat BulletSize = new PlayerStat(11, "Bullet Size", 1, new Vector2(0.25f, 3), false, false, 1);
 
         public static PlayerStat[] allStats = { Damage, FireRate, MaxHP, HPReward, Multishot, Spread, ShotSpeed, DropRate, Bounces, Pierces, Speed, BulletSize };
 

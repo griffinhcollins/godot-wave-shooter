@@ -19,6 +19,9 @@ public abstract partial class Bullet : Node2D
 
     int numHit;
 
+    // true only if this was sent by the player (not by another bullet)
+    public bool originalBullet;
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -26,9 +29,11 @@ public abstract partial class Bullet : Node2D
         SetDamage(Damage.GetDynamicVal());
         numHit = 0;
         mobsHit = new HashSet<Node2D>();
-        GetParent().GetNode<AudioStreamPlayer>("FireSound").Play();
-        GD.Print("val");
-        GD.Print(Vector2.One * BulletSize.GetDynamicVal());
+        if (originalBullet)
+        {
+            GetParent().GetNode<AudioStreamPlayer>("FireSound").Play();
+
+        }
         timeAlive = 0;
         CollisionObject2D parent = GetParent<CollisionObject2D>();
 

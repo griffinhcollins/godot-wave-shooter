@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://cq25tjj4vrypy" path="res://art/enemySwimming_2.png" id="4_v7jam"]
 [ext_resource type="Texture2D" uid="uid://cmybmq7x7ouhd" path="res://art/enemyWalking_1.png" id="5_p6sgb"]
 [ext_resource type="Texture2D" uid="uid://dswtdtimyd77s" path="res://art/enemyWalking_2.png" id="6_ypr7h"]
-[ext_resource type="PackedScene" uid="uid://bp21m4kr2kvxa" path="res://hud/offscreen_indicator.tscn" id="9_w0vnq"]
+[ext_resource type="PackedScene" uid="uid://bp21m4kr2kvxa" path="res://entities/offscreen_indicator.tscn" id="9_w0vnq"]
 [ext_resource type="AudioStream" uid="uid://cl6887ed40bm7" path="res://sounds/enemy hurt.wav" id="10_b2wwc"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_jq8ss"]

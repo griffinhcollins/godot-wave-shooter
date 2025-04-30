@@ -27,9 +27,16 @@ public partial class Mob : RigidBody2D
     [Export]
     public PackedScene coin;
 
+    float size;
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+
+
+
+
+
         hp = DynamicStats[ID.HPMult] * baseHealth;
         acceleration = baseAcceleration * DynamicStats[ID.AccelerationMult];
         player = (Player)GetTree().GetNodesInGroup("player")[0];
@@ -38,6 +45,12 @@ public partial class Mob : RigidBody2D
         string[] mobTypes = animSprite.SpriteFrames.GetAnimationNames();
         animSprite.Play(mobTypes[GD.Randi() % mobTypes.Length]);
         damageSound = GetNode<AudioStreamPlayer2D>("DamageSound");
+
+
+        // Set Size
+        size = ((GD.Randf() * 0.5f) + 1) * DynamicStats[ID.SizeMult];
+        animSprite.Scale *= size;
+        GetNode<CollisionShape2D>("CollisionShape2D").Scale *= size;
         CreateIndicator();
     }
 
@@ -107,6 +120,7 @@ public partial class Mob : RigidBody2D
         pairedIndicator.SetMobParent(this);
         GetTree().Root.AddChild(pairedIndicator);
         pairedIndicator.Position = Position;
+        pairedIndicator.GetNode<Sprite2D>("Sprite2D").Scale *= size;
     }
 
     private void OnScreenExit()

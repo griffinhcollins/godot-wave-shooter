@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Runtime.CompilerServices;
 
 public static class Stats
@@ -116,13 +117,14 @@ public static class Stats
             public static readonly int SpawnRate = 1;
             public static readonly int HPMult = 2;
             public static readonly int AccelerationMult = 3;
-            public static readonly int DropRate = 4;
+            public static readonly int SizeMult = 4;
 
             public static readonly string[] nameLookup = {
                 "Wave Length",
                 "Spawn Rate",
                 "HP",
-                "Acceleration"
+                "Acceleration",
+                "Size"
             };
 
 
@@ -135,6 +137,7 @@ public static class Stats
             1,      // 1: Spawn Rate (Spawns/second)
             1,      // 2: HP Mult
             1,      // 3: Acceleration Mult 
+            1       // 4: Size Mult
         };
 
         // Current stats
@@ -149,8 +152,11 @@ public static class Stats
         }
 
         public static string LastMutation;
-        public static void IncreaseRandomStats()
+        public static void IncreaseDifficulty()
         {
+
+            DynamicStats[ID.SpawnRate] *= 1.2f;
+
             int mutationIndex = GD.RandRange(0, DynamicStats.Length - 1); // only have as many as you have mutation upgrades
             LastMutation = string.Format("{0} increased!", ID.nameLookup[mutationIndex]);
             DynamicStats[mutationIndex] *= 1.5f;

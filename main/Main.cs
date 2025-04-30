@@ -39,7 +39,7 @@ public partial class Main : Node
     public void GameOver()
     {
         ResetStats();
-        
+
         State.currentState = State.dead;
         hud.ShowGameOver();
         mobTimer.Stop();
@@ -89,7 +89,8 @@ public partial class Main : Node
         timeRemaining = waveLength;
         hud.UpdateWaveTime(timeRemaining);
         string waveUpdate = string.Format("Starting Wave {0}", waveCounter);
-        if (EnemyStats.LastMutation is not null){
+        if (EnemyStats.LastMutation is not null)
+        {
             waveUpdate += string.Format("\n{0}", EnemyStats.LastMutation);
         }
         hud.ShowMessage(waveUpdate);
@@ -112,7 +113,7 @@ public partial class Main : Node
 
     private void EndWave()
     {
-        EnemyStats.IncreaseRandomStats();
+        EnemyStats.IncreaseDifficulty();
         waveTimer.Stop();
         mobTimer.Stop();
         ClearScreen();
@@ -148,7 +149,9 @@ public partial class Main : Node
         mob.Position = mobSpawnLocation.Position;
         direction += (float)GD.RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);
         mob.Rotation = direction;
-        mob.Position -= Vector2.FromAngle(direction) * 200f;
+        mob.Position -= Vector2.FromAngle(direction) * 200f * EnemyStats.DynamicStats[EnemyStats.ID.SizeMult];
+
+
 
         // Vector2 velocity = new Vector2((float)GD.RandRange(150f, 250f), 0);
         // mob.LinearVelocity = velocity.Rotated(direction);

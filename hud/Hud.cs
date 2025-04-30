@@ -64,7 +64,7 @@ public partial class Hud : CanvasLayer
     {
         Label dmgNum = damageNumber.Instantiate<Label>();
         dmgNum.Text = string.Format("{0:n0}", amount);
-        dmgNum.Position = pos;
+        dmgNum.Position = pos + new Vector2(GD.Randf() * 10 - 5, GD.Randf() * 10 - 5);
         AddChild(dmgNum);
     }
 

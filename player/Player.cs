@@ -94,7 +94,8 @@ public partial class Player : Area2D
 
     private void ShootBullet()
     {
-        if (State.currentState != State.alive){
+        if (State.currentState != State.alive)
+        {
             return;
         }
         canFire = false;

@@ -20,20 +20,25 @@ public partial class Hud : CanvasLayer
     CanvasLayer waveElements;
     CanvasLayer shopElements;
 
+    Label upgradeCost;
+    HBoxContainer upgradeBar;
+
+    List<PlayerUpgrade> upgradePool;
 
     Player player;
     public override void _Ready()
     {
-
         player = (Player)GetTree().GetNodesInGroup("player")[0];
         waveElements = GetNode<CanvasLayer>("WaveElements");
         shopElements = GetNode<CanvasLayer>("ShopElements");
-
+        upgradeCost = shopElements.GetNode("BuySlot").GetNode<Label>("Cost");
     }
 
 
     public void ShowWave()
     {
+        waveElements = GetNode<CanvasLayer>("WaveElements");
+        shopElements = GetNode<CanvasLayer>("ShopElements");
         waveElements.Show();
         shopElements.Hide();
     }
@@ -43,6 +48,7 @@ public partial class Hud : CanvasLayer
         player.Hide();
         waveElements.Hide();
         shopElements.Show();
+
     }
 
     private void OnNextWavePressed()
@@ -53,6 +59,21 @@ public partial class Hud : CanvasLayer
         {
             upgrade.QueueFree();
         }
+    }
+
+    private void OnBuySlotClicked()
+    {
+        if (player.ChargeMoney(10))
+        {
+            AddUpgrade();
+            Stats.PlayerStats.UpgradeSlots.ApplyUpgrade(1, true);
+            if (Stats.PlayerStats.UpgradeSlots.GetDynamicVal() >= Stats.PlayerStats.UpgradeSlots.range.Y)
+            {
+                shopElements.GetNode<Button>("BuySlot").Hide();
+                shopElements.GetNode<Button>("BuySlot").Disabled = true;
+            }
+        }
+
     }
 
     public void UpdateWaveTime(int wavetime)
@@ -70,18 +91,35 @@ public partial class Hud : CanvasLayer
 
     public void GenerateShop()
     {
+        upgradeBar = shopElements.GetNode<HBoxContainer>("Upgrades");
         ShowShop();
-        HBoxContainer upgradeBar = shopElements.GetNode<HBoxContainer>("Upgrades");
-        List<PlayerUpgrade> upgradePool = Upgrades.GetAllUpgrades();
-        for (int i = 0; i < 7; i++)
+        int upgradeSlotNum = (int)Stats.PlayerStats.UpgradeSlots.GetDynamicVal();
+        if (upgradeSlotNum >= Stats.PlayerStats.UpgradeSlots.range.Y)
         {
-            UpgradeNode newUpgrade = upgrade.Instantiate<UpgradeNode>();
-            upgradeBar.AddChild(newUpgrade);
-            upgradePool = newUpgrade.Generate(upgradePool);
+            shopElements.GetNode<Button>("BuySlot").Hide();
+            shopElements.GetNode<Button>("BuySlot").Disabled = true;
+        }
+        else
+        {
+
+            shopElements.GetNode<Button>("BuySlot").Show();
+            shopElements.GetNode<Button>("BuySlot").Disabled = false;
+        }
+        upgradePool = Upgrades.GetAllUpgrades();
+        for (int i = 0; i < upgradeSlotNum; i++)
+        {
+            AddUpgrade();
         }
         // This is hacky but it will stop the upgrade bar sometimes appearing offset 
         upgradeBar.Visible = false;
         upgradeBar.Visible = true;
+    }
+
+    private void AddUpgrade()
+    {
+        UpgradeNode newUpgrade = upgrade.Instantiate<UpgradeNode>();
+        upgradeBar.AddChild(newUpgrade);
+        upgradePool = newUpgrade.Generate(upgradePool);
     }
 
     public void UpdateHealth(int HP)

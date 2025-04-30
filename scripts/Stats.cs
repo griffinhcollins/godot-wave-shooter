@@ -14,28 +14,36 @@ public static class Stats
     public static class PlayerStats
     {
 
-        public static PlayerStat Damage = new PlayerStat(0, "Damage", 10, new Vector2(5, Mathf.Inf));
-        public static PlayerStat FireRate = new PlayerStat(1, "Firerate", 2, new Vector2(0.5f, 10));
-        public static PlayerStat MaxHP = new PlayerStat(2, "HP", 3, new Vector2(0, 6), true);
-        public static PlayerStat HPReward = new PlayerStat(3, "HP Interest", 2, new Vector2(0, 4), true);
-        public static PlayerStat Multishot = new PlayerStat(4, "Multishot", 1, new Vector2(1, 10));
-        public static PlayerStat Spread = new PlayerStat(5, "Spread", 5, new Vector2(0, 180), false, true);
-        public static PlayerStat ShotSpeed = new PlayerStat(6, "Shot Speed", 1, new Vector2(0.25f, 10));
-        public static PlayerStat DropRate = new PlayerStat(7, "Drop Rate", 1.5f, new Vector2(0.25f, 4));
-        public static PlayerStat Bounces = new PlayerStat(8, "Bounces", 0, new Vector2(0, 10), true);
-        public static PlayerStat Piercing = new PlayerStat(9, "Piercing Time", 0, new Vector2(0, 10), true);
-        public static PlayerStat Speed = new PlayerStat(10, "Speed", 400, new Vector2(100, 1000), false, false, 0.5f);
-        public static PlayerStat BulletSize = new PlayerStat(11, "Bullet Size", 1, new Vector2(0.25f, 3), false, false, 1);
-
         // Stats that have the generic "<stat> up" and "<stat> down" purchasable upgrades
+
+        public static PlayerStat Damage = new PlayerStat("Damage", 10, new Vector2(5, Mathf.Inf));
+        public static PlayerStat FireRate = new PlayerStat("Firerate", 2, new Vector2(0.5f, 10));
+        public static PlayerStat MaxHP = new PlayerStat("HP", 3, new Vector2(0, 6), true);
+        public static PlayerStat HPReward = new PlayerStat("HP Interest", 2, new Vector2(0, 4), true);
+        public static PlayerStat Multishot = new PlayerStat("Multishot", 1, new Vector2(1, 10));
+        public static PlayerStat Spread = new PlayerStat("Spread", 5, new Vector2(0, 180), false, true);
+        public static PlayerStat ShotSpeed = new PlayerStat("Shot Speed", 1, new Vector2(0.25f, 10));
+        public static PlayerStat DropRate = new PlayerStat("Drop Rate", 1.5f, new Vector2(0.25f, 4));
+        public static PlayerStat Bounces = new PlayerStat("Bounces", 0, new Vector2(0, 10), true);
+        public static PlayerStat Piercing = new PlayerStat("Piercing Time", 0, new Vector2(0, 10), true);
+        public static PlayerStat Speed = new PlayerStat("Speed", 400, new Vector2(100, 1000), false, false, 0.5f);
+        public static PlayerStat BulletSize = new PlayerStat("Bullet Size", 1, new Vector2(0.25f, 3), false, false, 1);
         public static PlayerStat[] upgradeableStats = { Damage, FireRate, MaxHP, HPReward, Multishot, Spread, ShotSpeed, DropRate, Bounces, Piercing, Speed, BulletSize };
 
+        // Misc. Stats
+        public static PlayerStat UpgradeSlots = new PlayerStat("Upgrade Slots", 3, new Vector2(3, 7), true);
+
+        public static PlayerStat[] miscellaneousStats = { UpgradeSlots };
 
         public static void SetDefaults()
         {
             for (int i = 0; i < upgradeableStats.Length; i++)
             {
                 upgradeableStats[i].Reset();
+            }
+            for (int i = 0; i < miscellaneousStats.Length; i++)
+            {
+                miscellaneousStats[i].Reset();
             }
             foreach (Unlockable u in Unlocks.allUnlockables)
             {

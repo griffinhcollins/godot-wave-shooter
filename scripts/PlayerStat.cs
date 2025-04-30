@@ -4,7 +4,6 @@ using Godot;
 
 public class PlayerStat
 {
-    public int ID;
     public string name;
     public float baseValue;
     public Vector2 range;
@@ -13,9 +12,8 @@ public class PlayerStat
     public bool invert; // Invert is true if increasing this stat is bad, and decreasing it is good
     public float changePolynomial;
 
-    public PlayerStat(int _ID, string _name, float _baseValue, Vector2 _range, bool _intChange = false, bool _invert = false, float _changePolynomial = 1)
+    public PlayerStat(string _name, float _baseValue, Vector2 _range, bool _intChange = false, bool _invert = false, float _changePolynomial = 1)
     {
-        ID = _ID;
         name = _name;
         baseValue = _baseValue;
         range = _range;

@@ -88,6 +88,7 @@ public abstract partial class Bullet : Node2D
         Node2D parent = GetParent<Node2D>();
         parent.Hide();
         ((CollisionObject2D)parent).CollisionLayer = 0; // Disable collision
+        ((CollisionObject2D)parent).CollisionMask = 0; // Disable collision
         if (soundFinished)
         {
             parent.QueueFree();

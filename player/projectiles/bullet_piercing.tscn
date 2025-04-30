@@ -27,5 +27,6 @@ bounceBullet = ExtResource("3_d1mif")
 
 [node name="FireSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_b1yh7")
+volume_db = -20.0
 
 [connection signal="body_entered" from="." to="ScriptHolder" method="OnCollision"]

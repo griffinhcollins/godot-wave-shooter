@@ -60,6 +60,7 @@ frame_progress = 0.902981
 
 [node name="PickupNoise" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_81fum")
+volume_db = -20.931
 playback_type = 1
 
 [connection signal="area_entered" from="." to="." method="OnTouchPlayer"]

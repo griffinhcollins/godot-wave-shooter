@@ -27,6 +27,7 @@ script = ExtResource("2_kxnli")
 
 [node name="FireSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_0w13g")
+volume_db = -20.0
 
 [connection signal="body_entered" from="." to="ScriptHolder" method="OnCollision"]
 [connection signal="finished" from="FireSound" to="ScriptHolder" method="SoundFinished"]

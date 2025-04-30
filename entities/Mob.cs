@@ -14,11 +14,15 @@ public partial class Mob : RigidBody2D
     float speedLimit;
     float acceleration;
 
+    bool dead = false;
+
     [Export]
     PackedScene offscreenIndicator;
 
 
     OffscreenIndicator pairedIndicator;
+
+    AudioStreamPlayer2D damageSound;
 
     [Export]
     public PackedScene coin;
@@ -33,6 +37,7 @@ public partial class Mob : RigidBody2D
         AnimatedSprite2D animSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         string[] mobTypes = animSprite.SpriteFrames.GetAnimationNames();
         animSprite.Play(mobTypes[GD.Randi() % mobTypes.Length]);
+        damageSound = GetNode<AudioStreamPlayer2D>("DamageSound");
         CreateIndicator();
     }
 
@@ -42,7 +47,7 @@ public partial class Mob : RigidBody2D
     {
         Hud hud = GetParent().GetNode<Hud>("HUD");
         hud.CreateDamageNumber(Position, dmg);
-
+        damageSound.Play();
         hp -= dmg;
         if (hp <= 0)
         {
@@ -53,6 +58,7 @@ public partial class Mob : RigidBody2D
 
     private void Die()
     {
+        dead = true;
         float tempDropRate = Stats.PlayerStats.DropRate.GetDynamicVal();
         // If drop rate is above 1, get 1 guaranteed coin plus a chance at another
         while (tempDropRate > 0)
@@ -63,7 +69,11 @@ public partial class Mob : RigidBody2D
             }
             tempDropRate--;
         }
-        QueueFree();
+        // Don't queuefree yet, that happens once the damage sound is complete
+        Hide();
+        CollisionLayer = 0;
+        CollisionMask = 0;
+
 
     }
 
@@ -101,7 +111,11 @@ public partial class Mob : RigidBody2D
 
     private void OnScreenExit()
     {
-        CreateIndicator();
+        if (!dead)
+        {
+            CreateIndicator();
+
+        }
     }
 
     private void OnScreenEnter()
@@ -109,6 +123,15 @@ public partial class Mob : RigidBody2D
         if (pairedIndicator is not null)
         {
             pairedIndicator.QueueFree();
+        }
+    }
+
+
+    private void OnDamageSoundFinished()
+    {
+        if (dead)
+        {
+            QueueFree();
         }
     }
 

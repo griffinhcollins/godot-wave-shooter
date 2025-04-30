@@ -69,6 +69,9 @@ public abstract partial class Bullet : Node2D
             }
 
         }
+        // This always happens when we hit something, regardless of if it is the final hit
+        HandleCollision();
+        //  Now do checks for things that are only on final or non-final hit
         if (numHit > Bounces.GetDynamicVal() && timeAlive > Piercing.GetDynamicVal())
         {
             HandleDeath();
@@ -77,7 +80,7 @@ public abstract partial class Bullet : Node2D
         {
             // We hit a mob but we have hits remaining
             // What this means changes depending on what kind of bullet we are
-            HandleCollision();
+
         }
     }
 

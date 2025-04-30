@@ -68,6 +68,7 @@ public partial class Main : Node
         ClearScreen();
         player.UpdateStats();
         waveCounter = 1;
+        hud.UpdateMoneyCounter(PlayerStats.Money);
         StartWave();
     }
 

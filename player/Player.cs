@@ -21,7 +21,6 @@ public partial class Player : Area2D
     float damage; // Default damage per shot
     float firingspeed; // Shots/second
     int currentHP;
-    int money;
 
 
     public Vector2 screenSize; // pixel screen size
@@ -34,6 +33,8 @@ public partial class Player : Area2D
     Timer bulletTimer;
 
     Hud hud;
+
+
 
 
 
@@ -69,20 +70,20 @@ public partial class Player : Area2D
 
     public void AddMoney(int amount)
     {
-        money += amount;
-        hud.UpdateMoneyCounter(money);
+        Money += amount;
+        hud.UpdateMoneyCounter(Money);
     }
 
     public bool ChargeMoney(int amount)
     {
-        if (money < amount)
+        if (Money < amount)
         {
             return false;
         }
         else
         {
-            money -= amount;
-            hud.UpdateMoneyCounter(money);
+            Money -= amount;
+            hud.UpdateMoneyCounter(Money);
             return true;
         }
     }
@@ -120,6 +121,7 @@ public partial class Player : Area2D
             {
                 // Bouncing, it's a rigidbody
                 RigidBody2D newBullet = bounceBullet.Instantiate<RigidBody2D>();
+                newBullet.GetNode<Bullet>("ScriptHolder").originalBullet = true;
                 newBullet.LinearVelocity = velocity;
                 newBullet.Position = fireFromPos;
                 AddChild(newBullet);
@@ -128,6 +130,7 @@ public partial class Player : Area2D
             {
                 // Piercing, it's an Area2D
                 Area2D newBullet = pierceBullet.Instantiate<Area2D>();
+                newBullet.GetNode<Bullet>("ScriptHolder").originalBullet = true;
                 newBullet.Rotate(spreadRotate);
                 PiercingBullet pierceBehaviour = newBullet.GetNode<PiercingBullet>("ScriptHolder");
                 pierceBehaviour.velocity = velocity;
@@ -229,7 +232,7 @@ public partial class Player : Area2D
 
     private void Die()
     {
-        money = 0;
+        Money = 0;
         EmitSignal(SignalName.Killed);
         Hide();
     }

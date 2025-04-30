@@ -16,6 +16,8 @@ public static class Stats
 
         // Stats that have the generic "<stat> up" and "<stat> down" purchasable upgrades
 
+        public static int Money;
+
         public static PlayerStat Damage = new PlayerStat("Damage", 10, new Vector2(5, Mathf.Inf));
         public static PlayerStat FireRate = new PlayerStat("Firerate", 2, new Vector2(0.5f, 10));
         public static PlayerStat MaxHP = new PlayerStat("HP", 3, new Vector2(0, 6), true);
@@ -37,6 +39,7 @@ public static class Stats
 
         public static void SetDefaults()
         {
+            Money = 0;
             for (int i = 0; i < upgradeableStats.Length; i++)
             {
                 upgradeableStats[i].Reset();
@@ -178,6 +181,7 @@ public static class Stats
 
     public static void ResetStats()
     {
+
         PlayerStats.SetDefaults();
         EnemyStats.SetDefaults();
     }

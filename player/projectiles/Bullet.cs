@@ -46,6 +46,9 @@ public abstract partial class Bullet : Node2D
 
     public override void _Process(double delta)
     {
+        if (State.currentState == State.paused){
+            return;
+        }
         timeAlive += (float)delta;
     }
 

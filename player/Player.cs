@@ -145,6 +145,10 @@ public partial class Player : Area2D
     public override void _Process(double delta)
     {
 
+        if (State.currentState == State.paused){
+            return;
+        }
+
         // Point reticule at mouse
         Vector2 pointVec = GetGlobalMousePosition() - Position;
 

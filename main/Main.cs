@@ -58,6 +58,16 @@ public partial class Main : Node
         {
             NewGame();
         }
+
+        if (Input.IsActionJustPressed("pause"))
+        {
+            if (State.currentState != State.paused){
+                State.unPauseState = State.currentState;
+                State.currentState = State.paused;
+            }else{
+                State.currentState = State.unPauseState;
+            }
+        }
     }
 
     private void NewGame()

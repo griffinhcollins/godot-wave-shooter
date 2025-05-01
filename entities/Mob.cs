@@ -101,6 +101,9 @@ public partial class Mob : RigidBody2D
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
+        if (State.currentState == State.paused){
+            return;
+        }
         // Point towards the player
         ApplyForce((player.Position - Position) * ((player.Position - Position).Length() * 1 / 1000 + speedLimit / 500) * acceleration);
         ApplyTorque(LinearVelocity.AngleTo(ToGlobal(Vector2.Up)) * 1000);

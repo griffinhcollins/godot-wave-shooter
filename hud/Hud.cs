@@ -63,9 +63,12 @@ public partial class Hud : CanvasLayer
 
     private void OnBuySlotClicked()
     {
-        if (player.ChargeMoney(10))
+        int currentUpgradeSlots = (int)Stats.PlayerStats.UpgradeSlots.GetDynamicVal();
+        int cost = (currentUpgradeSlots - 1) * 5;
+        if (player.ChargeMoney(cost))
         {
             AddUpgrade();
+            shopElements.GetNode<Button>("BuySlot").GetNode<Label>("Cost").Text = string.Format("${0}", cost + 5);
             Stats.PlayerStats.UpgradeSlots.ApplyUpgrade(1, true);
             if (Stats.PlayerStats.UpgradeSlots.GetDynamicVal() >= Stats.PlayerStats.UpgradeSlots.range.Y)
             {

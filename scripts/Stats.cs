@@ -21,7 +21,7 @@ public static class Stats
         public static PlayerStat Damage = new PlayerStat("Damage", 10, new Vector2(5, Mathf.Inf));
         public static PlayerStat FireRate = new PlayerStat("Firerate", 2, new Vector2(0.5f, 10));
         public static PlayerStat MaxHP = new PlayerStat("HP", 3, new Vector2(0, 6), true);
-        public static PlayerStat HPReward = new PlayerStat("HP Interest", 2, new Vector2(0, 4), true);
+        public static PlayerStat HPReward = new PlayerStat("HP Interest", 1, new Vector2(0, 4), true);
         public static PlayerStat Multishot = new PlayerStat("Multishot", 1, new Vector2(1, 10));
         public static PlayerStat Spread = new PlayerStat("Spread", 5, new Vector2(0, 180), false, true);
         public static PlayerStat ShotSpeed = new PlayerStat("Shot Speed", 1, new Vector2(0.25f, 10));

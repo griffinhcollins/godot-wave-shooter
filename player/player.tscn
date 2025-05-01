@@ -1,18 +1,31 @@
-[gd_scene load_steps=13 format=3 uid="uid://dphno2aha4dnk"]
+[gd_scene load_steps=16 format=3 uid="uid://dphno2aha4dnk"]
 
 [ext_resource type="Texture2D" uid="uid://cxxc2leij01vs" path="res://art/playerGrey_up1.png" id="1_333lq"]
 [ext_resource type="Script" path="res://player/Player.cs" id="1_empth"]
 [ext_resource type="Texture2D" uid="uid://dkgo0v8k3ef30" path="res://art/playerGrey_up2.png" id="2_jf2ap"]
 [ext_resource type="Texture2D" uid="uid://cep626uarssxs" path="res://art/playerGrey_walk1.png" id="3_3x6b2"]
 [ext_resource type="Texture2D" uid="uid://cxcloiidhrgwk" path="res://custom assets/Submarine.png" id="3_dpa7h"]
+[ext_resource type="Texture2D" uid="uid://bury5lajrwpyk" path="res://custom assets/Jupes Sub 2.png" id="3_ijnwh"]
 [ext_resource type="PackedScene" uid="uid://s47tunx2vl7" path="res://player/projectiles/laser_beam.tscn" id="3_lvtdk"]
 [ext_resource type="Texture2D" uid="uid://d31l0w61nop2n" path="res://art/playerGrey_walk2.png" id="4_2p2gm"]
 [ext_resource type="Texture2D" uid="uid://xqvwdwn3j1k1" path="res://custom assets/Submarine_1.png" id="4_g1ugk"]
+[ext_resource type="Texture2D" uid="uid://0flj77ulxejl" path="res://custom assets/Jupes Sub 1.png" id="4_jmb8p"]
 [ext_resource type="Texture2D" uid="uid://dnf6w5ihpeicv" path="res://custom assets/Submarine_2.png" id="5_c687v"]
 [ext_resource type="Texture2D" uid="uid://e4f0lfg30k3i" path="res://custom assets/firing reticule.png" id="6_arkfn"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_v23md"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_ijnwh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_jmb8p")
+}],
+"loop": true,
+"name": &"jupes_sub",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("3_dpa7h")
@@ -53,25 +66,39 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tq2xl"]
-radius = 27.0
-height = 68.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_u73tf"]
+radius = 13.0
+height = 46.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4fjki"]
+radius = 4.29822
+height = 13.1603
 
 [node name="Player" type="Area2D" groups=["player"]]
-position = Vector2(584, 334)
+position = Vector2(584.034, 348.614)
 collision_mask = 10
 script = ExtResource("1_empth")
 laserBeam = ExtResource("3_lvtdk")
 metadata/_edit_group_ = true
 
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.03, 0.03)
 sprite_frames = SubResource("SpriteFrames_v23md")
-animation = &"submarine"
-frame_progress = 0.883064
+animation = &"jupes_sub"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CapsuleShape2D_tq2xl")
+[node name="BodyCollision" type="CollisionShape2D" parent="."]
+position = Vector2(-4.5, 1)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_u73tf")
+
+[node name="PropellerCollision" type="CollisionShape2D" parent="."]
+position = Vector2(20.7418, 3.39685)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_4fjki")
+
+[node name="FinCollision" type="CollisionPolygon2D" parent="."]
+position = Vector2(-4.56366, -15.3198)
+polygon = PackedVector2Array(4.82172, -5.91849, -1.31671, -3.70865, -15.7827, 4.95074, 15.9487, 4.77399, 7.20697, -0.411407, 6.57556, -2.48096, 9.73248, -4.97141, 9.17126, -5.91849)
 
 [node name="ReticuleHolder" type="Node2D" parent="."]
 

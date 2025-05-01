@@ -26,7 +26,6 @@ public partial class Player : Area2D
     public Vector2 screenSize; // pixel screen size
 
     AnimatedSprite2D sprite;
-    CollisionShape2D collShape;
 
     Node2D reticule;
 
@@ -46,7 +45,6 @@ public partial class Player : Area2D
         Hide();
         screenSize = GetViewportRect().Size;
         sprite = GetNode<AnimatedSprite2D>("PlayerSprite");
-        collShape = GetNode<CollisionShape2D>("CollisionShape2D");
 
         reticule = GetNode<Node2D>("ReticuleHolder");
         bulletTimer = GetNode<Timer>("BulletTimer");
@@ -217,13 +215,13 @@ public partial class Player : Area2D
         // Update animations
         if (velocity.X != 0)
         {
-            sprite.Animation = "walk";
+            sprite.Animation = "jupes_sub";
             sprite.FlipV = false;
             sprite.FlipH = velocity.X < 0;
         }
         else if (velocity.Y != 0)
         {
-            sprite.Animation = "up";
+            sprite.Animation = "jupes_sub";
             sprite.FlipV = velocity.Y > 0;
 
         }
@@ -255,10 +253,10 @@ public partial class Player : Area2D
         }
         // Activate I-frames
         // Need to use deferred because this is called on a physics callback, and can't edit physics properties in a physics callback
-        collShape.SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
+        ToggleCollision(false);
         sprite.Modulate = Color.Color8(255, 0, 0);
         await ToSignal(GetTree().CreateTimer(0.5f), SceneTreeTimer.SignalName.Timeout);
-        collShape.SetDeferred(CollisionShape2D.PropertyName.Disabled, false);
+        ToggleCollision(true);
         sprite.Modulate = Color.Color8(255, 255, 255);
 
 
@@ -269,7 +267,13 @@ public partial class Player : Area2D
         UpdateStats();
         Position = position;
         Show();
-        collShape.Disabled = false;
+        ToggleCollision(true);
+    }
+
+    void ToggleCollision(bool toggle){
+        GetNode<CollisionShape2D>("BodyCollision").SetDeferred(CollisionShape2D.PropertyName.Disabled, !toggle);
+        GetNode<CollisionShape2D>("PropellerCollision").SetDeferred(CollisionShape2D.PropertyName.Disabled, !toggle);
+        GetNode<CollisionPolygon2D>("FinCollision").SetDeferred(CollisionShape2D.PropertyName.Disabled, !toggle);
     }
 
 

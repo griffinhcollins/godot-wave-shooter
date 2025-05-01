@@ -84,6 +84,16 @@ public partial class Hud : CanvasLayer
         GetNode<Label>("WaveElements/WaveLabel").Text = wavetime.ToString();
     }
 
+    public void ShowPauseMenu()
+    {
+        GetNode<CanvasLayer>("PauseElements").Show();
+    }
+
+    public void HidePauseMenu()
+    {
+        GetNode<CanvasLayer>("PauseElements").Hide();
+    }
+
     public void CreateDamageNumber(Vector2 pos, float amount)
     {
         Label dmgNum = damageNumber.Instantiate<Label>();

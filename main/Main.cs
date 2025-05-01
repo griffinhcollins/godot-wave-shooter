@@ -69,6 +69,7 @@ public partial class Main : Node
     {
         if (State.currentState != State.paused)
         {
+            hud.ShowPauseMenu();
             State.unPauseState = State.currentState;
             State.currentState = State.paused;
             startTimer.Paused = true;
@@ -77,6 +78,7 @@ public partial class Main : Node
         }
         else
         {
+            hud.HidePauseMenu();
             State.currentState = State.unPauseState;
             startTimer.Paused = false;
             waveTimer.Paused = false;

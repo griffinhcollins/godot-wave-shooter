@@ -53,7 +53,7 @@ public partial class Mob : RigidBody2D
 
 
         // Set Size
-        size = ((GD.Randf() * 0.5f) + 1) * DynamicStats[ID.SizeMult];
+        size = GD.Randf() * 0.5f * DynamicStats[ID.SizeMult] + 1;
         animSprite.Scale *= size;
         GetNode<CollisionShape2D>("CollisionShape2D").Scale *= size;
         CreateIndicator();

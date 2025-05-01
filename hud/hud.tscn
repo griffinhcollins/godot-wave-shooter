@@ -97,6 +97,7 @@ offset_bottom = -10.0
 grow_vertical = 0
 
 [node name="ShopElements" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="ShopTitle" type="Label" parent="ShopElements"]
 anchors_preset = 5

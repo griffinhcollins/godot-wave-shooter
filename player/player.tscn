@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dphno2aha4dnk"]
+[gd_scene load_steps=30 format=3 uid="uid://dphno2aha4dnk"]
 
 [ext_resource type="Texture2D" uid="uid://cxxc2leij01vs" path="res://art/playerGrey_up1.png" id="1_333lq"]
 [ext_resource type="Script" path="res://player/Player.cs" id="1_empth"]
@@ -11,10 +11,107 @@
 [ext_resource type="Texture2D" uid="uid://xqvwdwn3j1k1" path="res://custom assets/player stuff/Submarine_1.png" id="4_g1ugk"]
 [ext_resource type="Texture2D" uid="uid://0flj77ulxejl" path="res://custom assets/player stuff/Jupes Sub 1.png" id="4_jmb8p"]
 [ext_resource type="Texture2D" uid="uid://dnf6w5ihpeicv" path="res://custom assets/player stuff/Submarine_2.png" id="5_c687v"]
+[ext_resource type="Texture2D" uid="uid://ctt8k5k3xxvre" path="res://custom assets/player stuff/slides/1.png" id="5_sbfnh"]
 [ext_resource type="Texture2D" uid="uid://e4f0lfg30k3i" path="res://custom assets/player stuff/firing reticule.png" id="6_arkfn"]
+[ext_resource type="Texture2D" uid="uid://yxhhnpiqghxa" path="res://custom assets/player stuff/slides/2.png" id="6_jo5d7"]
+[ext_resource type="Texture2D" uid="uid://dvy2871d3a77j" path="res://custom assets/player stuff/slides/3.png" id="7_ei23j"]
+[ext_resource type="Texture2D" uid="uid://kutpcq01tqmx" path="res://custom assets/player stuff/slides/4.png" id="8_kdchx"]
+[ext_resource type="Texture2D" uid="uid://dktyl88eu8dvd" path="res://custom assets/player stuff/slides/5.png" id="9_5kvry"]
+[ext_resource type="Texture2D" uid="uid://d2ffrn26et54m" path="res://custom assets/player stuff/slides/6.png" id="10_ldh3s"]
+[ext_resource type="Texture2D" uid="uid://bwfhx6d5awrgx" path="res://custom assets/player stuff/slides/7.png" id="11_1i70b"]
+[ext_resource type="Texture2D" uid="uid://dusnoikv7tcmc" path="res://custom assets/player stuff/slides/8.png" id="12_1u8oy"]
+[ext_resource type="Texture2D" uid="uid://bqkobm30syy1h" path="res://custom assets/player stuff/slides/9.png" id="13_xma82"]
+[ext_resource type="Texture2D" uid="uid://dcimebi3qmml" path="res://custom assets/player stuff/slides/10.png" id="14_qxsh6"]
+[ext_resource type="Texture2D" uid="uid://egvcyvdp667e" path="res://custom assets/player stuff/slides/11.png" id="15_rmq1w"]
+[ext_resource type="Texture2D" uid="uid://bgrv30ii7argt" path="res://custom assets/player stuff/slides/12.png" id="16_yy53w"]
+[ext_resource type="Texture2D" uid="uid://orpx632buhi8" path="res://custom assets/player stuff/slides/13.png" id="17_dggnx"]
+[ext_resource type="Texture2D" uid="uid://dvolwn1sg2ijp" path="res://custom assets/player stuff/slides/14.png" id="18_4xg6r"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_v23md"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_sbfnh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_jo5d7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_ei23j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_kdchx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_5kvry")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_ldh3s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_1i70b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_1u8oy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_xma82")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_qxsh6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_rmq1w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_yy53w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_dggnx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_4xg6r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_dggnx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_yy53w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_rmq1w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_qxsh6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_xma82")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_1u8oy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_1i70b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_ldh3s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_5kvry")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_kdchx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_ei23j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_jo5d7")
+}],
+"loop": true,
+"name": &"jupes_sub",
+"speed": 60.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("3_ijnwh")
@@ -23,7 +120,7 @@ animations = [{
 "texture": ExtResource("4_jmb8p")
 }],
 "loop": true,
-"name": &"jupes_sub",
+"name": &"jupes_sub1",
 "speed": 5.0
 }, {
 "frames": [{
@@ -81,9 +178,10 @@ script = ExtResource("1_empth")
 laserBeam = ExtResource("3_lvtdk")
 
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.05, 0.05)
+scale = Vector2(0.019, 0.019)
 sprite_frames = SubResource("SpriteFrames_v23md")
 animation = &"jupes_sub"
+frame_progress = 0.482818
 
 [node name="BodyCollision" type="CollisionShape2D" parent="."]
 position = Vector2(-7.45471, 2.13916)

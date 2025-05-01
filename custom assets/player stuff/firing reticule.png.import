@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ck4mgninhfop2"
-path="res://.godot/imported/coin.png-84c4b5d414f55d482f5bbbf6a049b39b.ctex"
+uid="uid://e4f0lfg30k3i"
+path="res://.godot/imported/firing reticule.png-648984345557cec495752b3356b1c782.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/coin.png"
-dest_files=["res://.godot/imported/coin.png-84c4b5d414f55d482f5bbbf6a049b39b.ctex"]
+source_file="res://custom assets/player stuff/firing reticule.png"
+dest_files=["res://.godot/imported/firing reticule.png-648984345557cec495752b3356b1c782.ctex"]
 
 [params]
 

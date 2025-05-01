@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dnf6w5ihpeicv"
-path="res://.godot/imported/Submarine_2.png-3f80de8c63548582d74e32557b91bfee.ctex"
+uid="uid://cjilwsmy35you"
+path="res://.godot/imported/bullet.png-84899cde969762d32f400bdff6746961.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/Submarine_2.png"
-dest_files=["res://.godot/imported/Submarine_2.png-3f80de8c63548582d74e32557b91bfee.ctex"]
+source_file="res://custom assets/projectiles/bullet.png"
+dest_files=["res://.godot/imported/bullet.png-84899cde969762d32f400bdff6746961.ctex"]
 
 [params]
 

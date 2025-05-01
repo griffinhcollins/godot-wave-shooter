@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://0flj77ulxejl"
-path="res://.godot/imported/Jupes Sub 1.png-e600878355668cbf61d2d32895c72c69.ctex"
+uid="uid://cisokkljx3h1g"
+path="res://.godot/imported/shallow_water.png-f2da2a29329969bc9a8405d551499fdf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/Jupes Sub 1.png"
-dest_files=["res://.godot/imported/Jupes Sub 1.png-e600878355668cbf61d2d32895c72c69.ctex"]
+source_file="res://custom assets/background/shallow_water.png"
+dest_files=["res://.godot/imported/shallow_water.png-f2da2a29329969bc9a8405d551499fdf.ctex"]
 
 [params]
 

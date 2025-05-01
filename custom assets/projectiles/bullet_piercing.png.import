@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bury5lajrwpyk"
-path="res://.godot/imported/Jupes Sub 2.png-3758dc58a65777b6ecea7d8ea7f10b5b.ctex"
+uid="uid://dvio14uuu5dx0"
+path="res://.godot/imported/bullet_piercing.png-3346c3742e51d5c7a4a27b46a9ad8ac8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/Jupes Sub 2.png"
-dest_files=["res://.godot/imported/Jupes Sub 2.png-3758dc58a65777b6ecea7d8ea7f10b5b.ctex"]
+source_file="res://custom assets/projectiles/bullet_piercing.png"
+dest_files=["res://.godot/imported/bullet_piercing.png-3346c3742e51d5c7a4a27b46a9ad8ac8.ctex"]
 
 [params]
 

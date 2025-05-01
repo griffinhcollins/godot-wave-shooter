@@ -1,9 +1,9 @@
 [gd_scene load_steps=8 format=3 uid="uid://cx23hqh3pjy5l"]
 
-[ext_resource type="Texture2D" uid="uid://ck4mgninhfop2" path="res://custom assets/coin.png" id="1_0gat8"]
+[ext_resource type="Texture2D" uid="uid://ck4mgninhfop2" path="res://custom assets/coin/coin.png" id="1_0gat8"]
 [ext_resource type="Script" path="res://entities/Coin.cs" id="1_i7maf"]
-[ext_resource type="Texture2D" uid="uid://baroeo6gey6t4" path="res://custom assets/coin spin 1.png" id="2_wnkwq"]
-[ext_resource type="Texture2D" uid="uid://btif3iypm1o6k" path="res://custom assets/coin spin 2.png" id="3_01745"]
+[ext_resource type="Texture2D" uid="uid://baroeo6gey6t4" path="res://custom assets/coin/coin spin 1.png" id="2_wnkwq"]
+[ext_resource type="Texture2D" uid="uid://btif3iypm1o6k" path="res://custom assets/coin/coin spin 2.png" id="3_01745"]
 [ext_resource type="AudioStream" uid="uid://bnvklg03vuxqh" path="res://sounds/coin pickup.wav" id="5_81fum"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6hqjw"]

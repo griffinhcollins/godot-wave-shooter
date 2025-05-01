@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cny28xtbmqr2"
-path="res://.godot/imported/upgrade background.png-bcd07a3dfca437d189f51eaf7faff508.ctex"
+uid="uid://dx3e52175autf"
+path="res://.godot/imported/heart.png-d500523a5103ba450949f739440fe1ef.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/upgrade background.png"
-dest_files=["res://.godot/imported/upgrade background.png-bcd07a3dfca437d189f51eaf7faff508.ctex"]
+source_file="res://custom assets/hud/heart.png"
+dest_files=["res://.godot/imported/heart.png-d500523a5103ba450949f739440fe1ef.ctex"]
 
 [params]
 

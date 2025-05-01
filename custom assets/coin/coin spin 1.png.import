@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cxcloiidhrgwk"
-path="res://.godot/imported/Submarine.png-52665fecec6a6a2f62a3407d2bf6e8a4.ctex"
+uid="uid://baroeo6gey6t4"
+path="res://.godot/imported/coin spin 1.png-e74120e79d85caa61e51b43db79c1b18.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/Submarine.png"
-dest_files=["res://.godot/imported/Submarine.png-52665fecec6a6a2f62a3407d2bf6e8a4.ctex"]
+source_file="res://custom assets/coin/coin spin 1.png"
+dest_files=["res://.godot/imported/coin spin 1.png-e74120e79d85caa61e51b43db79c1b18.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cjilwsmy35you"
-path="res://.godot/imported/bullet.png-27f595c03b237ba8ca5a9310ab826e94.ctex"
+uid="uid://cny28xtbmqr2"
+path="res://.godot/imported/upgrade background.png-f434d1d8afa849d8604fb994c6396049.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/bullet.png"
-dest_files=["res://.godot/imported/bullet.png-27f595c03b237ba8ca5a9310ab826e94.ctex"]
+source_file="res://custom assets/hud/upgrade background.png"
+dest_files=["res://.godot/imported/upgrade background.png-f434d1d8afa849d8604fb994c6396049.ctex"]
 
 [params]
 

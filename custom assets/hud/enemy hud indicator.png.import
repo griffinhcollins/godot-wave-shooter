@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dvio14uuu5dx0"
-path="res://.godot/imported/bullet_piercing.png-e9d0872064640b851b3985dada0244ed.ctex"
+uid="uid://b4xdf8e1ttp6j"
+path="res://.godot/imported/enemy hud indicator.png-a4f37ede215a37957c526994642777c7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/bullet_piercing.png"
-dest_files=["res://.godot/imported/bullet_piercing.png-e9d0872064640b851b3985dada0244ed.ctex"]
+source_file="res://custom assets/hud/enemy hud indicator.png"
+dest_files=["res://.godot/imported/enemy hud indicator.png-a4f37ede215a37957c526994642777c7.ctex"]
 
 [params]
 

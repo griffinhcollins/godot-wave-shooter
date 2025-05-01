@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" path="res://main/Main.cs" id="1_7h5d5"]
 [ext_resource type="PackedScene" uid="uid://daepl4ypavfsl" path="res://entities/mob.tscn" id="2_rc8qt"]
+[ext_resource type="Texture2D" uid="uid://cisokkljx3h1g" path="res://custom assets/background/shallow_water.png" id="3_m4tj1"]
 [ext_resource type="PackedScene" uid="uid://dphno2aha4dnk" path="res://player/player.tscn" id="3_vww5f"]
 [ext_resource type="PackedScene" uid="uid://i3lhgidaa505" path="res://player/projectiles/bullet_bouncing.tscn" id="4_vfndo"]
 [ext_resource type="PackedScene" uid="uid://bed170bj6kt5s" path="res://player/projectiles/bullet_piercing.tscn" id="5_58dxr"]
 [ext_resource type="PackedScene" uid="uid://bv6wktb7wsx2x" path="res://hud/hud.tscn" id="6_xp7op"]
-[ext_resource type="PackedScene" uid="uid://cmp3ey8qdvuu1" path="res://hud/damage_num.tscn" id="7_v3guq"]
 
 [sub_resource type="Curve2D" id="Curve2D_oc665"]
 _data = {
@@ -33,6 +33,11 @@ distance = -1280.0
 [node name="Main" type="Node"]
 script = ExtResource("1_7h5d5")
 MobScene = ExtResource("2_rc8qt")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -2
+texture = ExtResource("3_m4tj1")
+centered = false
 
 [node name="Title" type="Label" parent="."]
 anchors_preset = 8
@@ -77,7 +82,6 @@ curve = SubResource("Curve2D_oc665")
 [node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
 
 [node name="HUD" parent="." instance=ExtResource("6_xp7op")]
-damageNumber = ExtResource("7_v3guq")
 
 [node name="Border" type="StaticBody2D" parent="." groups=["border"]]
 collision_layer = 16

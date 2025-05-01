@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://e4f0lfg30k3i"
-path="res://.godot/imported/firing reticule.png-8420ef5966aa3814d8b8f37f96bf784e.ctex"
+uid="uid://bury5lajrwpyk"
+path="res://.godot/imported/Jupes Sub 2.png-9e46cba67ba53c599ad531a8db48ab3c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/firing reticule.png"
-dest_files=["res://.godot/imported/firing reticule.png-8420ef5966aa3814d8b8f37f96bf784e.ctex"]
+source_file="res://custom assets/player stuff/Jupes Sub 2.png"
+dest_files=["res://.godot/imported/Jupes Sub 2.png-9e46cba67ba53c599ad531a8db48ab3c.ctex"]
 
 [params]
 

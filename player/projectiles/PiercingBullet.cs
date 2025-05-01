@@ -27,6 +27,9 @@ public partial class PiercingBullet : Bullet
 
         }
         base._Process(delta);
+        if (State.currentState == State.paused){
+            return;
+        }
         parent.Position += velocity * (float)delta;
 
         if (!dead && timeAlive > PlayerStats.Piercing.GetDynamicVal() && PlayerStats.Bounces.GetDynamicVal() > 0)
@@ -47,4 +50,18 @@ public partial class PiercingBullet : Bullet
         return;
     }
 
+    protected override Vector2 GetCurrentVelocity()
+    {
+        return velocity;
+    }
+
+    protected override void Pause()
+    {
+        return;
+    }
+
+    protected override void UnPause()
+    {
+        return;
+    }
 }

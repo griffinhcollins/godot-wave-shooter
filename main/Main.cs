@@ -61,12 +61,26 @@ public partial class Main : Node
 
         if (Input.IsActionJustPressed("pause"))
         {
-            if (State.currentState != State.paused){
-                State.unPauseState = State.currentState;
-                State.currentState = State.paused;
-            }else{
-                State.currentState = State.unPauseState;
-            }
+            TogglePause();
+        }
+    }
+
+    private void TogglePause()
+    {
+        if (State.currentState != State.paused)
+        {
+            State.unPauseState = State.currentState;
+            State.currentState = State.paused;
+            startTimer.Paused = true;
+            waveTimer.Paused = true;
+            mobTimer.Paused = true;
+        }
+        else
+        {
+            State.currentState = State.unPauseState;
+            startTimer.Paused = false;
+            waveTimer.Paused = false;
+            mobTimer.Paused = false;
         }
     }
 

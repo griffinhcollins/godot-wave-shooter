@@ -221,7 +221,7 @@ public partial class Player : Area2D
         {
             sprite.Animation = "jupes_sub";
             sprite.FlipV = false;
-            sprite.FlipH = velocity.X < 0;
+            sprite.FlipH = velocity.X > 0;
         }
         else if (velocity.Y != 0)
         {

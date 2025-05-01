@@ -14,6 +14,11 @@ public partial class Mob : RigidBody2D
     float speedLimit;
     float acceleration;
 
+
+    protected Vector2 beforePauseVelocity;
+    protected Vector2 beforePausePosition;
+    protected float beforePauseAngularVelocity;
+
     bool dead = false;
 
     [Export]
@@ -101,8 +106,22 @@ public partial class Mob : RigidBody2D
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
-        if (State.currentState == State.paused){
+        if (State.currentState == State.paused)
+        {
+            if (beforePauseVelocity == Vector2.Zero)
+            {
+                beforePausePosition = Position;
+                beforePauseVelocity = LinearVelocity;
+                beforePauseAngularVelocity = AngularVelocity;
+            }
+            Pause();
             return;
+        }
+        if (beforePauseVelocity != Vector2.Zero)
+        {
+            UnPause();
+            beforePauseVelocity = Vector2.Zero;
+
         }
         // Point towards the player
         ApplyForce((player.Position - Position) * ((player.Position - Position).Length() * 1 / 1000 + speedLimit / 500) * acceleration);
@@ -116,6 +135,23 @@ public partial class Mob : RigidBody2D
 
 
     }
+
+    private void UnPause()
+    {
+        Sleeping = false;
+        LinearVelocity = beforePauseVelocity;
+        AngularVelocity = beforePauseAngularVelocity;
+    }
+
+
+    private void Pause()
+    {
+        Sleeping = true;
+        LinearVelocity = Vector2.Zero;
+
+        AngularVelocity = 0;
+    }
+
 
     private void CreateIndicator()
     {

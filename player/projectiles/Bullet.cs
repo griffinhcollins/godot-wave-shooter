@@ -14,6 +14,8 @@ public abstract partial class Bullet : Node2D
     // Whether the firing sound has finished sounding - can't delete until it has
     bool soundFinished = false;
 
+    protected Vector2 beforePauseVelocity;
+
     // A bullet can only hit the same mob once
     HashSet<Node2D> mobsHit;
 
@@ -44,10 +46,26 @@ public abstract partial class Bullet : Node2D
         }
     }
 
+    protected abstract Vector2 GetCurrentVelocity();
+    protected abstract void Pause();
+    protected abstract void UnPause();
+
     public override void _Process(double delta)
     {
-        if (State.currentState == State.paused){
+        if (State.currentState == State.paused)
+        {
+            if (beforePauseVelocity == Vector2.Zero)
+            {
+                beforePauseVelocity = GetCurrentVelocity();
+                Pause();
+            }
             return;
+        }
+        if (beforePauseVelocity != Vector2.Zero)
+        {
+            UnPause();
+            beforePauseVelocity = Vector2.Zero;
+
         }
         timeAlive += (float)delta;
     }

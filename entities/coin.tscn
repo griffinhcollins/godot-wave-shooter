@@ -63,5 +63,10 @@ stream = ExtResource("5_81fum")
 volume_db = -20.931
 playback_type = 1
 
+[node name="ExpireTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
 [connection signal="area_entered" from="." to="." method="OnTouchPlayer"]
 [connection signal="finished" from="PickupNoise" to="." method="SoundFinished"]
+[connection signal="timeout" from="ExpireTimer" to="." method="Expire"]

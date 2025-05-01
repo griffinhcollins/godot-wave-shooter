@@ -14,6 +14,11 @@ public partial class Coin : Area2D
         sprite.Animation = "default";
         sprite.Frame = GD.RandRange(0, 4);
         sprite.Play();
+        GetNode<Timer>("ExpireTimer").Start();
+    }
+
+    private void Expire(){
+        QueueFree();
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.

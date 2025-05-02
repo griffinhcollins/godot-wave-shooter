@@ -14,8 +14,7 @@ public partial class BouncyBullet : Bullet
 
 		parent = GetParent<RigidBody2D>();
 		
-		parent.GetNode<CollisionShape2D>("CollisionShape2D").Scale = Vector2.One * PlayerStats.BulletSize.GetDynamicVal();
-		parent.GetNode<Sprite2D>("Sprite2D").Scale = Vector2.One * PlayerStats.BulletSize.GetDynamicVal();
+		
 		
 	}
 

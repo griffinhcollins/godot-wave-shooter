@@ -27,20 +27,30 @@ public partial class PiercingBullet : Bullet
 
         }
         base._Process(delta);
-        if (State.currentState == State.paused){
+        if (State.currentState == State.paused)
+        {
             return;
         }
         parent.Position += velocity * (float)delta;
 
-        if (!dead && timeAlive > PlayerStats.Piercing.GetDynamicVal() && PlayerStats.Bounces.GetDynamicVal() > 0)
+        if (!dead && timeAlive > PlayerStats.Piercing.GetDynamicVal())
         {
-            Player player = GetParent().GetParent<Player>();
-            // If any bounces have been unlocked, become a bouncy bullet
-            RigidBody2D newBullet = bounceBullet.Instantiate<RigidBody2D>();
-            player.AddChild(newBullet);
-            newBullet.LinearVelocity = velocity;
-            newBullet.GlobalPosition = GlobalPosition;
-            HandleDeath();
+            if (PlayerStats.Bounces.GetDynamicVal() <= 0)
+            {
+                // Turn grey when piercing is done
+                GetParent().GetNode<Sprite2D>("Sprite2D").Modulate = Color.Color8(0, 0, 0);
+            }
+            else
+            {
+                Player player = GetParent().GetParent<Player>();
+                // If any bounces have been unlocked, become a bouncy bullet
+                RigidBody2D newBullet = bounceBullet.Instantiate<RigidBody2D>();
+                player.AddChild(newBullet);
+                newBullet.LinearVelocity = velocity;
+                newBullet.GlobalPosition = GlobalPosition;
+                HandleDeath();
+            }
+
         }
     }
 

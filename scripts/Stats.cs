@@ -27,7 +27,7 @@ public static class Stats
         public static PlayerStat ShotSpeed = new PlayerStat("Shot Speed", 1, new Vector2(0.25f, 10));
         public static PlayerStat DropRate = new PlayerStat("Drop Rate", 1.5f, new Vector2(0.25f, 4));
         public static PlayerStat Bounces = new PlayerStat("Bounces", 0, new Vector2(0, 10), true);
-        public static PlayerStat Piercing = new PlayerStat("Piercing Time", 0, new Vector2(0, 10), true);
+        public static PlayerStat Piercing = new PlayerStat("Piercing Time", 0, new Vector2(0, 10), false, false, 0.5f);
         public static PlayerStat Speed = new PlayerStat("Speed", 400, new Vector2(100, 1000), false, false, 0.5f);
         public static PlayerStat BulletSize = new PlayerStat("Bullet Size", 1, new Vector2(0.25f, 3), false, false, 1);
         public static PlayerStat[] upgradeableStats = { Damage, FireRate, MaxHP, HPReward, Multishot, Spread, ShotSpeed, DropRate, Bounces, Piercing, Speed, BulletSize };

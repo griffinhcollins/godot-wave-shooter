@@ -31,6 +31,9 @@ public abstract partial class Bullet : Node2D
         SetDamage(Damage.GetDynamicVal());
         numHit = 0;
         mobsHit = new HashSet<Node2D>();
+
+        GetParent().GetNode<CollisionShape2D>("CollisionShape2D").Scale = Vector2.One * BulletSize.GetDynamicVal();
+		GetParent().GetNode<Sprite2D>("Sprite2D").Scale = Vector2.One * BulletSize.GetDynamicVal();
         if (originalBullet)
         {
             GetParent().GetNode<AudioStreamPlayer>("FireSound").Play();

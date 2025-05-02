@@ -1,5 +1,6 @@
 
 using System;
+using System.ComponentModel.Design.Serialization;
 using Godot;
 
 public class PlayerStat
@@ -29,14 +30,8 @@ public class PlayerStat
 
     public void ApplyUpgrade(float magnitude, bool increase)
     {
-        if (intChange)
-        {
-            dynamicValue += magnitude * (increase ? 1 : -1);
-        }
-        else
-        {
-            dynamicValue += magnitude * Mathf.Pow(baseValue, changePolynomial) * (increase ? 1 : -1);
-        }
+
+        dynamicValue = CalculateStatUpgrade(magnitude, increase);
 
         if (dynamicValue > range.Y)
         {
@@ -53,7 +48,7 @@ public class PlayerStat
         bool hitCap = false;
         if (intChange)
         {
-            float preview = dynamicValue + magnitude * (increase ? 1 : -1);
+            float preview = CalculateStatUpgrade(magnitude, increase);
             if (preview > range.Y)
             {
                 hitCap = true;
@@ -68,7 +63,7 @@ public class PlayerStat
         }
         else
         {
-            float preview = dynamicValue + magnitude * baseValue * (increase ? 1 : -1);
+            float preview = CalculateStatUpgrade(magnitude, increase);
             if (preview > range.Y)
             {
                 hitCap = true;
@@ -81,6 +76,18 @@ public class PlayerStat
             }
             return string.Format("{0} {1} by {2:D}% ({3:n2} -> {4:n2}){5}", name, increase ? "Up" : "Down", (int)Math.Round(magnitude * 100), dynamicValue, preview, hitCap ? " (cap)" : "");
 
+        }
+    }
+
+    private float CalculateStatUpgrade(float magnitude, bool increase)
+    {
+        if (intChange)
+        {
+            return dynamicValue + magnitude * (increase ? 1 : -1);
+        }
+        else
+        {
+            return dynamicValue + magnitude * Mathf.Pow(Mathf.Max(baseValue, 1), changePolynomial) * (increase ? 1 : -1);
         }
     }
 

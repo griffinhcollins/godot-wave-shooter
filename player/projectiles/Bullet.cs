@@ -141,6 +141,12 @@ public abstract partial class Bullet : Node2D
                 }
             }
 
+            // Contingency for if there are no mobs
+            if (target is null)
+            {
+                return;
+            }
+
 
             float arcRange = Unlocks.LightningStats.DynamicStats[Unlocks.LightningStats.range];
             if ((target.GlobalPosition - GlobalPosition).LengthSquared() < arcRange * arcRange)

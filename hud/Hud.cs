@@ -19,6 +19,7 @@ public partial class Hud : CanvasLayer
 
     CanvasLayer waveElements;
     CanvasLayer shopElements;
+    CanvasLayer gameOverElements;
 
     Label upgradeCost;
     HBoxContainer upgradeBar;
@@ -31,6 +32,7 @@ public partial class Hud : CanvasLayer
         player = (Player)GetTree().GetNodesInGroup("player")[0];
         waveElements = GetNode<CanvasLayer>("WaveElements");
         shopElements = GetNode<CanvasLayer>("ShopElements");
+        gameOverElements = GetNode<CanvasLayer>("GameOverElements");
         upgradeCost = shopElements.GetNode("BuySlot").GetNode<Label>("Cost");
     }
 
@@ -41,6 +43,7 @@ public partial class Hud : CanvasLayer
         shopElements = GetNode<CanvasLayer>("ShopElements");
         waveElements.Show();
         shopElements.Hide();
+        gameOverElements.Hide();
     }
 
     public void ShowShop()
@@ -80,6 +83,9 @@ public partial class Hud : CanvasLayer
 
     }
 
+    public void ClearGameOver(){
+        gameOverElements.Hide();
+    }
     public void UpdateWaveTime(int wavetime)
     {
         GetNode<Label>("WaveElements/WaveLabel").Text = wavetime.ToString();
@@ -195,6 +201,7 @@ public partial class Hud : CanvasLayer
         ShowWave();
         GetNode<Button>("WaveElements/StartButton").Hide();
         EmitSignal(SignalName.StartGame);
+        gameOverElements.Hide();
     }
 
 
@@ -211,7 +218,12 @@ public partial class Hud : CanvasLayer
 
     public void ShowGameOver()
     {
-        ShowMessage("Game Over, press R to Restart!");
+
+        gameOverElements.Show();
+        VBoxContainer statsHolder = gameOverElements.GetNode<Label>("Stats").GetNode<VBoxContainer>("VBoxContainer");
+        statsHolder.GetNode<Label>("WaveCount").Text = string.Format("Highest Wave Reached: {0}", Stats.Counters.WaveCounter);
+        statsHolder.GetNode<Label>("KillCount").Text = string.Format("Enemies Killed: {0}", Stats.Counters.KillCounter);
+        statsHolder.GetNode<Label>("CoinCount").Text = string.Format("Total Coins Collected: {0}", Stats.Counters.CoinCounter);
 
     }
 }

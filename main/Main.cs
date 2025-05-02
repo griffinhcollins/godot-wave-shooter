@@ -1,6 +1,7 @@
 using Godot;
 using static Stats;
 using System;
+using System.Diagnostics.Metrics;
 
 public partial class Main : Node
 {
@@ -17,11 +18,8 @@ public partial class Main : Node
     Timer mobTimer;
     Hud hud;
 
-    int waveLength;
 
-    float spawnRate; // How many enemies spawn per second
 
-    int waveCounter;
 
     public override void _Ready()
     {
@@ -43,7 +41,6 @@ public partial class Main : Node
 
     public void GameOver()
     {
-        ResetStats();
 
         State.currentState = State.dead;
         hud.ShowGameOver();
@@ -91,7 +88,8 @@ public partial class Main : Node
 
     public void Pause()
     {
-        if (State.currentState == State.paused){
+        if (State.currentState == State.paused)
+        {
             return;
         }
         hud.ShowPauseMenu();
@@ -116,9 +114,11 @@ public partial class Main : Node
         ResetStats();
         UpdateEnemyStats();
         ClearScreen();
+        UnPause();
         player.UpdateStats();
-        waveCounter = 1;
+        Counters.WaveCounter = 1;
         hud.UpdateMoneyCounter(PlayerStats.Money);
+        hud.ClearGameOver();
         StartWave();
     }
 
@@ -126,9 +126,7 @@ public partial class Main : Node
     public void UpdateEnemyStats()
     {
 
-        waveLength = (int)EnemyStats.DynamicStats[EnemyStats.ID.WaveLength];
-        spawnRate = EnemyStats.DynamicStats[EnemyStats.ID.SpawnRate];
-        mobTimer.WaitTime = 1 / spawnRate;
+        mobTimer.WaitTime = 1 / EnemyStats.DynamicStats[EnemyStats.ID.SpawnRate];
 
     }
 
@@ -137,9 +135,9 @@ public partial class Main : Node
         State.currentState = State.alive;
         UpdateEnemyStats();
         ClearScreen();
-        timeRemaining = waveLength;
+        timeRemaining = (int)EnemyStats.DynamicStats[EnemyStats.ID.WaveLength];
         hud.UpdateWaveTime(timeRemaining);
-        string waveUpdate = string.Format("Starting Wave {0}", waveCounter);
+        string waveUpdate = string.Format("Starting Wave {0}", Counters.WaveCounter);
         if (EnemyStats.mostRecentMutation is not null)
         {
             waveUpdate += string.Format("\n{0}", EnemyStats.mostRecentMutation);
@@ -168,8 +166,8 @@ public partial class Main : Node
         waveTimer.Stop();
         mobTimer.Stop();
         ClearScreen();
-        hud.ShowMessage(string.Format("Wave {0} Complete!", waveCounter));
-        waveCounter++;
+        hud.ShowMessage(string.Format("Wave {0} Complete!", Counters.WaveCounter));
+        Counters.WaveCounter++;
 
         player.AddMoney((int)PlayerStats.HPReward.GetDynamicVal() * player.CurrentHP());
 

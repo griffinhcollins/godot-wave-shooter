@@ -189,14 +189,32 @@ horizontal_alignment = 1
 [node name="PauseElements" type="CanvasLayer" parent="."]
 visible = false
 
+[node name="ColorRect" type="ColorRect" parent="PauseElements"]
+z_index = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -250.0
+offset_right = 300.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0.344076, 0.344076, 0.344076, 1)
+
 [node name="PausedTitle" type="Label" parent="PauseElements"]
+z_index = 2
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -640.0
 offset_top = 200.0
 offset_right = 640.0
-offset_bottom = 278.0
+offset_bottom = 320.0
 grow_horizontal = 2
 theme_override_fonts/font = ExtResource("2_262y3")
 theme_override_font_sizes/font_size = 100
@@ -206,6 +224,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="Button" type="Button" parent="PauseElements"]
+z_index = 2
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -221,6 +240,92 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_font_sizes/font_size = 60
 text = "Resume"
+
+[node name="GameOverElements" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="GameOver" type="Label" parent="GameOverElements"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -233.0
+offset_top = -160.0
+offset_right = 233.0
+offset_bottom = -63.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 100
+text = "Game Over"
+horizontal_alignment = 1
+
+[node name="Stats" type="Label" parent="GameOverElements"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -233.0
+offset_top = -48.5
+offset_right = 233.0
+offset_bottom = 48.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 50
+text = "Stats"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOverElements/Stats"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -258.0
+offset_top = 60.0
+offset_right = 258.0
+offset_bottom = 215.0
+grow_horizontal = 2
+
+[node name="WaveCount" type="Label" parent="GameOverElements/Stats/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 40
+text = "Highest Wave Reached: "
+horizontal_alignment = 1
+
+[node name="KillCount" type="Label" parent="GameOverElements/Stats/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 40
+text = "Enemies Killed:"
+horizontal_alignment = 1
+
+[node name="CoinCount" type="Label" parent="GameOverElements/Stats/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 40
+text = "Total Coins Collected:"
+horizontal_alignment = 1
+
+[node name="RestartLabel" type="Label" parent="GameOverElements"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -387.0
+offset_top = 190.0
+offset_right = 387.0
+offset_bottom = 287.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 70
+text = "Press R to Restart"
+horizontal_alignment = 1
 
 [connection signal="timeout" from="MessageTimer" to="." method="OnMessageTimerTimeout"]
 [connection signal="pressed" from="WaveElements/StartButton" to="." method="OnStartButtonPressed"]

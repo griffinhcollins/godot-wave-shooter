@@ -29,6 +29,7 @@ public partial class Coin : Area2D
 
     private void OnTouchPlayer(Area2D touchedArea)
     {
+        Stats.Counters.CoinCounter++;
         Player player;
         if (touchedArea.IsInGroup("player"))
         {

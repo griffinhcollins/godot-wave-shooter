@@ -212,12 +212,24 @@ public static class Stats
     }
 
 
+    public static class Counters
+    {
+        public static int WaveCounter = 0;
+        public static int KillCounter = 0;
+        public static int CoinCounter = 0;
 
+        public static void Reset()
+        {
+            WaveCounter = 0;
+            KillCounter = 0;
+            CoinCounter = 0;
+        }
+    }
 
 
     public static void ResetStats()
     {
-
+        Counters.Reset();
         PlayerStats.SetDefaults();
         EnemyStats.SetDefaults();
     }

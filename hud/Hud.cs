@@ -67,14 +67,15 @@ public partial class Hud : CanvasLayer
         int cost = (currentUpgradeSlots - 1) * 5;
         if (player.ChargeMoney(cost))
         {
-            AddUpgrade();
-            shopElements.GetNode<Button>("BuySlot").GetNode<Label>("Cost").Text = string.Format("${0}", cost + 5);
+            AddUpgrade(); 
             Stats.PlayerStats.UpgradeSlots.ApplyUpgrade(1, true);
             if (Stats.PlayerStats.UpgradeSlots.GetDynamicVal() >= Stats.PlayerStats.UpgradeSlots.range.Y)
             {
                 shopElements.GetNode<Button>("BuySlot").Hide();
                 shopElements.GetNode<Button>("BuySlot").Disabled = true;
             }
+            
+            UpdateUpgradeSlotCost();
         }
 
     }
@@ -126,6 +127,13 @@ public partial class Hud : CanvasLayer
         // This is hacky but it will stop the upgrade bar sometimes appearing offset 
         upgradeBar.Visible = false;
         upgradeBar.Visible = true;
+        UpdateUpgradeSlotCost();
+
+    }
+
+    private void UpdateUpgradeSlotCost()
+    {
+        shopElements.GetNode<Button>("BuySlot").GetNode<Label>("Cost").Text = string.Format("${0}", ((int)Stats.PlayerStats.UpgradeSlots.GetDynamicVal() - 1) * 5);
     }
 
     private void AddUpgrade()

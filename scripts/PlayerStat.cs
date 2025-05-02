@@ -69,6 +69,16 @@ public class PlayerStat
         else
         {
             float preview = dynamicValue + magnitude * baseValue * (increase ? 1 : -1);
+            if (preview > range.Y)
+            {
+                hitCap = true;
+                preview = range.Y;
+            }
+            if (preview < range.X)
+            {
+                hitCap = true;
+                preview = range.X;
+            }
             return string.Format("{0} {1} by {2:D}% ({3:n2} -> {4:n2}){5}", name, increase ? "Up" : "Down", (int)Math.Round(magnitude * 100), dynamicValue, preview, hitCap ? " (cap)" : "");
 
         }

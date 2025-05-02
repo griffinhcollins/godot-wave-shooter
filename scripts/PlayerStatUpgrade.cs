@@ -19,7 +19,12 @@ public class PlayerStatUpgrade : PlayerUpgrade
 
         if (!Increasing())
         {
-            conditions.Add(new StatCondition(stat, 1, true)); // A stat has to be >= 1 for an upgrade to show up that reduces it. Notably, this lets intchange stats hit 0
+            conditions.Add(new StatCondition(stat, stat.range.X, true));
+        }
+        else
+        {
+
+            conditions.Add(new StatCondition(stat, stat.range.Y, false));
         }
 
         if (_condition is not null)

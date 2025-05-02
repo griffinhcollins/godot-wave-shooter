@@ -28,7 +28,7 @@ public class StatCondition : Condition
 	{
 		float statVal = stat.GetDynamicVal();
 
-		return greaterThan ? statVal >= threshold : statVal <= threshold;
+		return greaterThan ? statVal > threshold : statVal < threshold;
 	}
 
 

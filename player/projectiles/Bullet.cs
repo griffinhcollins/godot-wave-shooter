@@ -6,6 +6,10 @@ using System.Diagnostics;
 
 public abstract partial class Bullet : Node2D
 {
+
+    [Export]
+    PackedScene lightningArc;
+
     protected bool dead;
     float dmg;
 
@@ -33,7 +37,7 @@ public abstract partial class Bullet : Node2D
         mobsHit = new HashSet<Node2D>();
 
         GetParent().GetNode<CollisionShape2D>("CollisionShape2D").Scale = Vector2.One * BulletSize.GetDynamicVal();
-		GetParent().GetNode<Sprite2D>("Sprite2D").Scale = Vector2.One * BulletSize.GetDynamicVal();
+        GetParent().GetNode<Sprite2D>("Sprite2D").Scale = Vector2.One * BulletSize.GetDynamicVal();
         if (originalBullet)
         {
             GetParent().GetNode<AudioStreamPlayer>("FireSound").Play();
@@ -99,7 +103,7 @@ public abstract partial class Bullet : Node2D
 
         }
         // This always happens when we hit something, regardless of if it is the final hit
-        HandleCollision();
+        HandleCollision(body);
         //  Now do checks for things that are only on final or non-final hit
         if (numHit > Bounces.GetDynamicVal() && timeAlive > Piercing.GetDynamicVal())
         {
@@ -113,7 +117,48 @@ public abstract partial class Bullet : Node2D
         }
     }
 
-    protected abstract void HandleCollision();
+    protected virtual void HandleCollision(Node2D hitNode)
+    {
+        // Activate any abilities that trigger on hit
+        if (Unlocks.Lightning.unlocked)
+        {
+            // Find the nearest mob
+            Mob target = null;
+            foreach (Mob mob in GetTree().GetNodesInGroup("mobs"))
+            {
+                if (mob == hitNode)
+                {
+                    continue;
+                }
+                if (target is null) // just to give an initial to start testing against
+                {
+                    target = mob;
+                }
+                float currentBestDistance = (target.GlobalPosition - GlobalPosition).LengthSquared();
+                if ((mob.GlobalPosition - GlobalPosition).LengthSquared() < currentBestDistance)
+                {
+                    target = mob;
+                }
+            }
+
+
+            float arcRange = Unlocks.LightningStats.DynamicStats[Unlocks.LightningStats.range];
+            if ((target.GlobalPosition - GlobalPosition).LengthSquared() < arcRange * arcRange)
+            {
+                Node2D arc = lightningArc.Instantiate<Node2D>();
+                Line2D line = arc.GetNode<Line2D>("Arc");
+                GetTree().Root.AddChild(arc);
+                line.AddPoint(GlobalPosition);
+                line.AddPoint(target.GlobalPosition);
+
+                target.TakeDamage(Damage.GetDynamicVal());
+            }
+            else
+            {
+
+            }
+        }
+    }
     protected virtual void HandleDeath()
     {
         dead = true;

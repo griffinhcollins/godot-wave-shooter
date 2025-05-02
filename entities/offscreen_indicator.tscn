@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://bp21m4kr2kvxa"]
+[gd_scene load_steps=3 format=3 uid="uid://cpsf1tpjvco18"]
 
-[ext_resource type="Texture2D" uid="uid://b4xdf8e1ttp6j" path="res://custom assets/enemy hud indicator.png" id="1_qkkwu"]
+[ext_resource type="Texture2D" uid="uid://b4xdf8e1ttp6j" path="res://custom assets/hud/enemy hud indicator.png" id="1_qkkwu"]
 [ext_resource type="Script" path="res://entities/OffscreenIndicator.cs" id="1_tm3t0"]
 
 [node name="OffscreenIndicator" type="Node2D" groups=["cleanup"]]

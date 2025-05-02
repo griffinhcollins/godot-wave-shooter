@@ -91,6 +91,9 @@ public partial class Main : Node
 
     public void Pause()
     {
+        if (State.currentState == State.paused){
+            return;
+        }
         hud.ShowPauseMenu();
         State.unPauseState = State.currentState;
         State.currentState = State.paused;

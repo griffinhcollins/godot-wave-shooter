@@ -184,19 +184,19 @@ animation = &"jupes_sub"
 frame_progress = 0.482818
 
 [node name="BodyCollision" type="CollisionShape2D" parent="."]
-position = Vector2(-7.45471, 2.13916)
+position = Vector2(-7.45471, 4.13916)
 rotation = 1.5708
 scale = Vector2(1.7, 1.7)
 shape = SubResource("CapsuleShape2D_u73tf")
 
 [node name="PropellerCollision" type="CollisionShape2D" parent="."]
-position = Vector2(35.4564, 6.21381)
+position = Vector2(35.4564, 8.21381)
 rotation = 1.5708
 scale = Vector2(1.7, 1.7)
 shape = SubResource("CapsuleShape2D_4fjki")
 
 [node name="FinCollision" type="CollisionPolygon2D" parent="."]
-position = Vector2(-7.56293, -25.6045)
+position = Vector2(-7.56293, -23.6045)
 scale = Vector2(1.7, 1.7)
 polygon = PackedVector2Array(4.82172, -5.91849, -1.31671, -3.70865, -15.7827, 4.95074, 15.9487, 4.77399, 7.20697, -0.411407, 6.57556, -2.48096, 9.73248, -4.97141, 9.17126, -5.91849)
 

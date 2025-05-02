@@ -38,6 +38,7 @@ MobScene = ExtResource("2_rc8qt")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -2
+position = Vector2(0, -240)
 texture = ExtResource("3_4rbai")
 centered = false
 

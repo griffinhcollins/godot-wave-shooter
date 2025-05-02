@@ -18,7 +18,7 @@ public static class Stats
 
         public static int Money;
 
-        public static PlayerStat Damage = new PlayerStat("Damage", 10, new Vector2(5, Mathf.Inf));
+        public static PlayerStat Damage = new PlayerStat("Damage", 100, new Vector2(5, Mathf.Inf));
         public static PlayerStat FireRate = new PlayerStat("Firerate", 2, new Vector2(0.5f, 10));
         public static PlayerStat MaxHP = new PlayerStat("HP", 3, new Vector2(0, 6), true);
         public static PlayerStat HPReward = new PlayerStat("HP Interest", 1, new Vector2(0, 4), true);
@@ -33,7 +33,7 @@ public static class Stats
         public static PlayerStat[] upgradeableStats = { Damage, FireRate, MaxHP, HPReward, Multishot, Spread, ShotSpeed, DropRate, Bounces, Piercing, Speed, BulletSize };
 
         // Misc. Stats
-        public static PlayerStat UpgradeSlots = new PlayerStat("Upgrade Slots", 3, new Vector2(3, 7), true);
+        public static PlayerStat UpgradeSlots = new PlayerStat("Upgrade Slots", 7, new Vector2(3, 7), true);
 
         public static PlayerStat[] miscellaneousStats = { UpgradeSlots };
 
@@ -67,23 +67,48 @@ public static class Stats
 
             public static Unlockable Laser = new Unlockable("Laser Beam", laser);
             public static Unlockable WallBounce = new Unlockable("Wall Bounce", new StatCondition(Bounces, 2, true));
+            public static Unlockable Lightning = new Unlockable("Lightning Arc");
 
 
-            public static Unlockable[] allUnlockables = { Laser, WallBounce };
+            public static Unlockable[] allUnlockables = { Laser, WallBounce, Lightning };
 
             public static void ResetUnlockStats(Unlockable unlockable)
             {
                 if (unlockable == Laser)
                 {
-                    for (int i = 0; i < LaserStats.BaseStats.Length; i++)
-                    {
-                        LaserStats.DynamicStats[i] = LaserStats.BaseStats[i];
-                    }
+                    LaserStats.ResetStats();
+                }
+                if (unlockable == Lightning){
+                    LightningStats.ResetStats();
                 }
             }
 
 
+            public static class LightningStats
+            {
+                public static readonly int range = 0;
 
+                public static readonly string[] nameLookup = {
+                    "Arc Range"
+                };
+
+                public static readonly float[] BaseStats = {
+                    // Laser Starting Stats
+                    500      // 0: Arc range (px)
+                };
+
+                // This gets reset when the pickup is first acquired
+                public static readonly float[] DynamicStats = new float[BaseStats.Length];
+
+
+                public static void ResetStats()
+                {
+                    for (int i = 0; i < BaseStats.Length; i++)
+                    {
+                        DynamicStats[i] = BaseStats[i];
+                    }
+                }
+            }
 
             public static class LaserStats // TODO: actually implement this
             {

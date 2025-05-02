@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://entities/Mob.cs" id="1_cola1"]
 [ext_resource type="Texture2D" uid="uid://bo0vqo4bi47by" path="res://art/enemyFlyingAlt_1.png" id="1_y2nxy"]
-[ext_resource type="PackedScene" path="res://entities/offscreen_indicator.tscn" id="2_0son3"]
+[ext_resource type="PackedScene" uid="uid://cpsf1tpjvco18" path="res://entities/offscreen_indicator.tscn" id="2_0son3"]
 [ext_resource type="PackedScene" uid="uid://cx23hqh3pjy5l" path="res://entities/coin.tscn" id="2_7wvnd"]
 [ext_resource type="Texture2D" uid="uid://b0kc3k872filp" path="res://art/enemyFlyingAlt_2.png" id="2_eo23j"]
 [ext_resource type="Texture2D" uid="uid://g7h30cxqdo11" path="res://art/enemySwimming_1.png" id="3_6svnx"]
@@ -73,7 +73,7 @@ rotation = 1.5708
 scale = Vector2(0.66, 0.66)
 shape = SubResource("CapsuleShape2D_118ht")
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." groups=["mobs"]]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 position = Vector2(-2.86102e-06, 1.90735e-06)
 scale = Vector2(3.5, 2.681)
 

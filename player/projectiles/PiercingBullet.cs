@@ -55,8 +55,9 @@ public partial class PiercingBullet : Bullet
     }
 
 
-    protected override void HandleCollision()
+    protected override void HandleCollision(Node2D hitNode)
     {
+        base.HandleCollision(hitNode);
         return;
     }
 

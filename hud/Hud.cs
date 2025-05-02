@@ -67,14 +67,14 @@ public partial class Hud : CanvasLayer
         int cost = (currentUpgradeSlots - 1) * 5;
         if (player.ChargeMoney(cost))
         {
-            AddUpgrade(); 
+            AddUpgrade();
             Stats.PlayerStats.UpgradeSlots.ApplyUpgrade(1, true);
             if (Stats.PlayerStats.UpgradeSlots.GetDynamicVal() >= Stats.PlayerStats.UpgradeSlots.range.Y)
             {
                 shopElements.GetNode<Button>("BuySlot").Hide();
                 shopElements.GetNode<Button>("BuySlot").Disabled = true;
             }
-            
+
             UpdateUpgradeSlotCost();
         }
 
@@ -93,6 +93,11 @@ public partial class Hud : CanvasLayer
     public void HidePauseMenu()
     {
         GetNode<CanvasLayer>("PauseElements").Hide();
+    }
+
+    private void OnResumeClicked()
+    {
+        GetParent<Main>().UnPause();
     }
 
     public void CreateDamageNumber(Vector2 pos, float amount)

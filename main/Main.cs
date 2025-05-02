@@ -32,9 +32,14 @@ public partial class Main : Node
         mobTimer = GetNode<Timer>("MobTimer");
         hud = GetNode<Hud>("HUD");
 
+        GetViewport().GetWindow().FocusExited += OnLoseFocus;
+
         hud.ShowWave();
         // NewGame();
     }
+
+
+
 
     public void GameOver()
     {
@@ -65,25 +70,41 @@ public partial class Main : Node
         }
     }
 
+    private void OnLoseFocus()
+    {
+        Pause();
+    }
+
     private void TogglePause()
     {
+
         if (State.currentState != State.paused)
         {
-            hud.ShowPauseMenu();
-            State.unPauseState = State.currentState;
-            State.currentState = State.paused;
-            startTimer.Paused = true;
-            waveTimer.Paused = true;
-            mobTimer.Paused = true;
+            Pause();
+
         }
         else
         {
-            hud.HidePauseMenu();
-            State.currentState = State.unPauseState;
-            startTimer.Paused = false;
-            waveTimer.Paused = false;
-            mobTimer.Paused = false;
+            UnPause();
         }
+    }
+
+    public void Pause()
+    {
+        hud.ShowPauseMenu();
+        State.unPauseState = State.currentState;
+        State.currentState = State.paused;
+        startTimer.Paused = true;
+        waveTimer.Paused = true;
+        mobTimer.Paused = true;
+    }
+    public void UnPause()
+    {
+        hud.HidePauseMenu();
+        State.currentState = State.unPauseState;
+        startTimer.Paused = false;
+        waveTimer.Paused = false;
+        mobTimer.Paused = false;
     }
 
     private void NewGame()

@@ -34,6 +34,8 @@ distance = -1280.0
 script = ExtResource("1_7h5d5")
 MobScene = ExtResource("2_rc8qt")
 
+[node name="HUD" parent="." instance=ExtResource("6_xp7op")]
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -2
 texture = ExtResource("3_4rbai")
@@ -57,8 +59,6 @@ text = "Wave Shoot Game"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-
 [node name="Player" parent="." instance=ExtResource("3_vww5f")]
 position = Vector2(405, 328)
 bounceBullet = ExtResource("4_vfndo")
@@ -81,8 +81,6 @@ curve = SubResource("Curve2D_oc665")
 
 [node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
 
-[node name="HUD" parent="." instance=ExtResource("6_xp7op")]
-
 [node name="Border" type="StaticBody2D" parent="." groups=["border"]]
 collision_layer = 16
 collision_mask = 16
@@ -100,9 +98,9 @@ shape = SubResource("WorldBoundaryShape2D_liw8u")
 [node name="Right" type="CollisionShape2D" parent="Border"]
 shape = SubResource("WorldBoundaryShape2D_7axoi")
 
+[connection signal="NextWave" from="HUD" to="." method="StartWave"]
+[connection signal="StartGame" from="HUD" to="." method="NewGame"]
 [connection signal="Killed" from="Player" to="." method="GameOver"]
 [connection signal="timeout" from="MobTimer" to="." method="OnMobTimerTimeout"]
 [connection signal="timeout" from="WaveTimer" to="." method="OnWaveTimeout"]
 [connection signal="timeout" from="StartTimer" to="." method="OnStartTimerTimeout"]
-[connection signal="NextWave" from="HUD" to="." method="StartWave"]
-[connection signal="StartGame" from="HUD" to="." method="NewGame"]

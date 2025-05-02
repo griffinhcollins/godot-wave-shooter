@@ -78,7 +78,8 @@ public static class Stats
                 {
                     LaserStats.ResetStats();
                 }
-                if (unlockable == Lightning){
+                if (unlockable == Lightning)
+                {
                     LightningStats.ResetStats();
                 }
             }
@@ -187,14 +188,24 @@ public static class Stats
             }
         }
 
-        public static string LastMutation;
+        // The index of the mutation that was chosen last wave
+        static int previousMut = -1;
+        // Stores the most recent mutation for the wave announcer
+        public static string mostRecentMutation;
         public static void IncreaseDifficulty()
         {
-
-            DynamicStats[ID.SpawnRate] *= 1.2f;
-
             int mutationIndex = GD.RandRange(0, DynamicStats.Length - 1); // only have as many as you have mutation upgrades
-            LastMutation = string.Format("{0} increased!", ID.nameLookup[mutationIndex]);
+            DynamicStats[ID.SpawnRate] += 0.5f;
+            if (previousMut != -1)
+            {
+                // Make sure we don't get the same mutation twice in a row
+                while (mutationIndex == previousMut)
+                {
+                    mutationIndex = GD.RandRange(0, DynamicStats.Length - 1);
+                }
+            }
+            previousMut = mutationIndex;
+            mostRecentMutation = string.Format("{0} increased!", ID.nameLookup[mutationIndex]);
             DynamicStats[mutationIndex] *= 1.5f;
         }
 

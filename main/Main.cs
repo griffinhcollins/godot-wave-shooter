@@ -140,9 +140,9 @@ public partial class Main : Node
         timeRemaining = waveLength;
         hud.UpdateWaveTime(timeRemaining);
         string waveUpdate = string.Format("Starting Wave {0}", waveCounter);
-        if (EnemyStats.LastMutation is not null)
+        if (EnemyStats.mostRecentMutation is not null)
         {
-            waveUpdate += string.Format("\n{0}", EnemyStats.LastMutation);
+            waveUpdate += string.Format("\n{0}", EnemyStats.mostRecentMutation);
         }
         hud.ShowMessage(waveUpdate);
         player.Start(startPos.Position);

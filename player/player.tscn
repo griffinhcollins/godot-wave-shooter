@@ -1,12 +1,14 @@
-[gd_scene load_steps=30 format=3 uid="uid://dphno2aha4dnk"]
+[gd_scene load_steps=32 format=3 uid="uid://dphno2aha4dnk"]
 
 [ext_resource type="Texture2D" uid="uid://cxxc2leij01vs" path="res://art/playerGrey_up1.png" id="1_333lq"]
 [ext_resource type="Script" path="res://player/Player.cs" id="1_empth"]
 [ext_resource type="Texture2D" uid="uid://dkgo0v8k3ef30" path="res://art/playerGrey_up2.png" id="2_jf2ap"]
+[ext_resource type="PackedScene" uid="uid://i3lhgidaa505" path="res://player/projectiles/bullet_bouncing.tscn" id="2_qxbfg"]
 [ext_resource type="Texture2D" uid="uid://cep626uarssxs" path="res://art/playerGrey_walk1.png" id="3_3x6b2"]
 [ext_resource type="Texture2D" uid="uid://cxcloiidhrgwk" path="res://custom assets/player stuff/Submarine.png" id="3_dpa7h"]
 [ext_resource type="Texture2D" uid="uid://bury5lajrwpyk" path="res://custom assets/player stuff/Jupes Sub 2.png" id="3_ijnwh"]
 [ext_resource type="PackedScene" uid="uid://s47tunx2vl7" path="res://player/projectiles/laser_beam.tscn" id="3_lvtdk"]
+[ext_resource type="PackedScene" uid="uid://bed170bj6kt5s" path="res://player/projectiles/bullet_piercing.tscn" id="3_sfohy"]
 [ext_resource type="Texture2D" uid="uid://d31l0w61nop2n" path="res://art/playerGrey_walk2.png" id="4_2p2gm"]
 [ext_resource type="Texture2D" uid="uid://xqvwdwn3j1k1" path="res://custom assets/player stuff/Submarine_1.png" id="4_g1ugk"]
 [ext_resource type="Texture2D" uid="uid://0flj77ulxejl" path="res://custom assets/player stuff/Jupes Sub 1.png" id="4_jmb8p"]
@@ -175,6 +177,8 @@ height = 13.1603
 position = Vector2(571.219, 338.715)
 collision_mask = 10
 script = ExtResource("1_empth")
+bounceBullet = ExtResource("2_qxbfg")
+pierceBullet = ExtResource("3_sfohy")
 laserBeam = ExtResource("3_lvtdk")
 
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="."]

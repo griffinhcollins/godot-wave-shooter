@@ -145,7 +145,8 @@ public partial class Player : Area2D
     public override void _Process(double delta)
     {
 
-        if (State.currentState == State.paused){
+        if (State.currentState == State.paused)
+        {
             return;
         }
 
@@ -249,12 +250,18 @@ public partial class Player : Area2D
         // GD.Print("ouch!");
         currentHP--;
         hud.UpdateHealth(currentHP);
+        // tell mobs to back off
+        foreach (Mob mob in GetTree().GetNodesInGroup("mobs"))
+        {
+            mob.Recoil(GlobalPosition);
+        }
         if (currentHP <= 0)
         {
 
             Die();
             return;
         }
+        
         // Activate I-frames
         // Need to use deferred because this is called on a physics callback, and can't edit physics properties in a physics callback
         ToggleCollision(false);
@@ -266,6 +273,8 @@ public partial class Player : Area2D
 
     }
 
+
+
     public void Start(Vector2 position)
     {
         UpdateStats();
@@ -274,7 +283,8 @@ public partial class Player : Area2D
         ToggleCollision(true);
     }
 
-    void ToggleCollision(bool toggle){
+    void ToggleCollision(bool toggle)
+    {
         GetNode<CollisionShape2D>("BodyCollision").SetDeferred(CollisionShape2D.PropertyName.Disabled, !toggle);
         GetNode<CollisionShape2D>("PropellerCollision").SetDeferred(CollisionShape2D.PropertyName.Disabled, !toggle);
         GetNode<CollisionPolygon2D>("FinCollision").SetDeferred(CollisionShape2D.PropertyName.Disabled, !toggle);

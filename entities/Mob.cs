@@ -63,7 +63,7 @@ public partial class Mob : RigidBody2D
     // Used when the player is hit to give them some breathing room
     public void Recoil(Vector2 playerPosition)
     {
-        float recoilRange = 400;
+        float recoilRange = 800;
         if ((GlobalPosition - playerPosition).LengthSquared() < recoilRange * recoilRange)
         {
             float distance = (GlobalPosition - playerPosition).Length();

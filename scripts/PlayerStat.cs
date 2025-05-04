@@ -13,7 +13,9 @@ public class PlayerStat
     public bool invert; // Invert is true if increasing this stat is bad, and decreasing it is good
     public float changePolynomial;
 
-    public PlayerStat(string _name, float _baseValue, Vector2 _range, bool _intChange = false, bool _invert = false, float _changePolynomial = 1)
+    public Condition condition;
+
+    public PlayerStat(string _name, float _baseValue, Vector2 _range, bool _intChange = false, bool _invert = false, float _changePolynomial = 1, Condition _condition = null)
     {
         name = _name;
         baseValue = _baseValue;
@@ -21,6 +23,10 @@ public class PlayerStat
         intChange = _intChange;
         invert = _invert;
         changePolynomial = _changePolynomial;
+        if (_condition is not null)
+        {
+            condition = _condition;
+        }
     }
 
     public void Reset()
@@ -94,6 +100,22 @@ public class PlayerStat
     public float GetDynamicVal()
     {
         return dynamicValue;
+    }
+
+    public void Nullify()
+    {
+        dynamicValue = 0;
+    }
+
+    public PlayerStatUpgrade GenerateIncreasingUpgrade()
+    {
+        return new PlayerStatUpgrade(this, true, string.Format("{0}_up.png", name.ToLower()), condition);
+    }
+
+    public PlayerStatUpgrade GenerateDecreasingUpgrade()
+    {
+
+        return new PlayerStatUpgrade(this, false, string.Format("{0}_down.png", name.ToLower()), condition);
     }
 
 }

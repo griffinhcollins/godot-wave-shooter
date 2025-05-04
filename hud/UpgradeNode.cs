@@ -34,13 +34,14 @@ public partial class UpgradeNode : Button
 		return upgradePool;
 	}
 
+	// The pool is already checked for conditions
 	List<PlayerUpgrade> Randomize(List<PlayerUpgrade> pool)
 	{
 		// How good this upgrade is, ie how much it should cost
 		cost = 5;
-		List<PlayerUpgrade> posUpgrades = pool.Where(u => u.IsPositive() && u.CheckCondition()).ToList<PlayerUpgrade>();
+		List<PlayerUpgrade> posUpgrades = pool.Where(u => u.IsPositive()).ToList();
 
-		List<PlayerStatUpgrade> negUpgrades = basicUpgrades.Where(u => !u.IsPositive() && u.CheckCondition()).ToList<PlayerStatUpgrade>();
+		List<PlayerUpgrade> negUpgrades = pool.Where(u => !u.IsPositive()).ToList();
 		// Roll a positive upgrade
 		int numPos = 1; // roll 1 upgrade
 		int strength = 0;
@@ -72,17 +73,17 @@ public partial class UpgradeNode : Button
 			cost += strength * 3;
 		}
 		RarityColour(strength);
-		// Have 0-1 negative upgrades, more likely if the positive upgrade is strong
-		float negChance = (GD.Randf() + 2 * strength) / 5;
-		if (GD.Randf() <= negChance)
-		{
-			PlayerStatUpgrade newNeg = negUpgrades[GD.RandRange(0, negUpgrades.Count - 1)];
-			AddIcon(newNeg);
-			int negStrength = GD.RandRange(0, 2);
-			upgradeMagnitudes.Add(newNeg, CalculateMagnitude(newNeg.IntIncrease(), negStrength));
-			cost -= negStrength * 3;
-			negUpgrades = negUpgrades.Where(u => u.stat != newNeg.stat).ToList();
-		}
+		// // Have 0-1 negative upgrades, more likely if the positive upgrade is strong
+		// float negChance = (GD.Randf() + 2 * strength) / 5;
+		// if (GD.Randf() <= negChance)
+		// {
+		// 	PlayerStatUpgrade newNeg = (PlayerStatUpgrade)negUpgrades[GD.RandRange(0, negUpgrades.Count - 1)];
+		// 	AddIcon(newNeg);
+		// 	int negStrength = GD.RandRange(0, 2);
+		// 	upgradeMagnitudes.Add(newNeg, CalculateMagnitude(newNeg.IntIncrease(), negStrength));
+		// 	cost -= negStrength * 3;
+		// 	negUpgrades = negUpgrades.Where(u => u.stat != newNeg.stat).ToList();
+		// }
 		return pool;
 	}
 

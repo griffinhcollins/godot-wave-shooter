@@ -96,16 +96,16 @@ public abstract partial class Bullet : Node2D
         {
             numHit++;
             // If a piercing shot hits a wall while wall bounces are unlocked, instantly convert it into bouncy
-            if (Piercing.GetDynamicVal() > 0)
+            if (Unlocks.piercingBulletsPiercingTime.GetDynamicVal() > 0)
             {
-                timeAlive = Piercing.GetDynamicVal();
+                timeAlive = Unlocks.piercingBulletsPiercingTime.GetDynamicVal();
             }
 
         }
         // This always happens when we hit something, regardless of if it is the final hit
         HandleCollision(body);
         //  Now do checks for things that are only on final or non-final hit
-        if (numHit > Bounces.GetDynamicVal() && timeAlive > Piercing.GetDynamicVal())
+        if (numHit > Unlocks.bouncingBulletBounces.GetDynamicVal() && timeAlive > Unlocks.piercingBulletsPiercingTime.GetDynamicVal())
         {
             HandleDeath();
         }
@@ -148,7 +148,7 @@ public abstract partial class Bullet : Node2D
             }
 
 
-            float arcRange = Unlocks.LightningStats.DynamicStats[Unlocks.LightningStats.range];
+            float arcRange = Unlocks.lightningRange.GetDynamicVal();
             if ((target.GlobalPosition - GlobalPosition).LengthSquared() < arcRange * arcRange)
             {
                 Node2D arc = lightningArc.Instantiate<Node2D>();

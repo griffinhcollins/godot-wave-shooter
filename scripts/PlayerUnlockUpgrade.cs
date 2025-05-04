@@ -20,8 +20,7 @@ public class PlayerUnlockUpgrade : PlayerUpgrade
 
     public override void Execute(float magnitude)
     {
-        ResetUnlockStats(unlock);
-        unlock.unlocked = true;
+        unlock.Unlock();
     }
 
     public override bool CheckCondition()

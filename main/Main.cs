@@ -171,7 +171,6 @@ public partial class Main : Node
 
         player.AddMoney((int)PlayerStats.HPReward.GetDynamicVal() * player.CurrentHP());
 
-        Upgrades.GenerateUpgrades();
         State.currentState = State.shop;
         hud.GenerateShop();
     }

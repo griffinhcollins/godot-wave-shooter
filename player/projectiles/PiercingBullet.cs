@@ -33,9 +33,9 @@ public partial class PiercingBullet : Bullet
         }
         parent.Position += velocity * (float)delta;
 
-        if (!dead && timeAlive > PlayerStats.Piercing.GetDynamicVal())
+        if (!dead && timeAlive > PlayerStats.Unlocks.piercingBulletsPiercingTime.GetDynamicVal())
         {
-            if (PlayerStats.Bounces.GetDynamicVal() <= 0)
+            if (PlayerStats.Unlocks.bouncingBulletBounces.GetDynamicVal() <= 0)
             {
                 // Turn grey when piercing is done
                 GetParent().GetNode<Sprite2D>("Sprite2D").Modulate = Color.Color8(0, 0, 0);

@@ -22,7 +22,7 @@ public partial class LaserBeam : Area2D
 
 		hitbox.Shape = collisionShape;
 
-		lifeLeft = Unlocks.LaserStats.DynamicStats[Unlocks.LaserStats.lifetime];
+		lifeLeft = Unlocks.LaserLifetime.GetDynamicVal();
 
 	}
 

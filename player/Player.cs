@@ -115,7 +115,7 @@ public partial class Player : Area2D
 
             // A bullet is piercing first, then when piercing runs out becomes bouncy. If there is no piercing, it starts bouncy.
             Vector2 velocity = new Vector2(0, -1000 * ShotSpeed.GetDynamicVal()).Rotated(spreadRotate);
-            if (Piercing.GetDynamicVal() <= 0)
+            if (!Unlocks.PiercingBullets.unlocked)
             {
                 GD.Print("shoot bouncing");
                 // Bouncing, it's a rigidbody

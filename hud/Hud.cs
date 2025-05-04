@@ -130,7 +130,7 @@ public partial class Hud : CanvasLayer
             shopElements.GetNode<Button>("BuySlot").Show();
             shopElements.GetNode<Button>("BuySlot").Disabled = false;
         }
-        upgradePool = Upgrades.GetAllUpgrades();
+        upgradePool = Upgrades.GetAvailableUpgrades();
         for (int i = 0; i < upgradeSlotNum; i++)
         {
             AddUpgrade();

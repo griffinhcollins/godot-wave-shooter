@@ -13,8 +13,12 @@ public class Unlockable
     {
         name = _name;
         associatedStats = _stats;
-        condition = new UnlockCondition(this, true).And(_condition);
-        associatedStats.AddCondition(condition);
+        if (_condition is not null)
+        {
+            condition = _condition;
+
+        }
+        associatedStats.AddCondition(new UnlockCondition(this, true).And(condition));
 
     }
 

@@ -138,7 +138,7 @@ public partial class Main : Node
         timeRemaining = (int)EnemyStats.DynamicStats[EnemyStats.ID.WaveLength];
         hud.UpdateWaveTime(timeRemaining);
         string waveUpdate = string.Format("Starting Wave {0}", Counters.WaveCounter);
-        if (EnemyStats.mostRecentMutation is not null)
+        if (EnemyStats.mostRecentMutation is not null && Counters.WaveCounter % 3 == 0)
         {
             waveUpdate += string.Format("\n{0}", EnemyStats.mostRecentMutation);
         }
@@ -162,12 +162,17 @@ public partial class Main : Node
 
     private void EndWave()
     {
-        EnemyStats.IncreaseDifficulty();
+        
         waveTimer.Stop();
         mobTimer.Stop();
         ClearScreen();
         hud.ShowMessage(string.Format("Wave {0} Complete!", Counters.WaveCounter));
         Counters.WaveCounter++;
+        if (Counters.WaveCounter % 3 == 0)
+        {
+            EnemyStats.IncreaseDifficulty();
+
+        }
 
         player.AddMoney((int)PlayerStats.HPReward.GetDynamicVal() * player.CurrentHP());
 

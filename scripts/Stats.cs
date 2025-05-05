@@ -140,17 +140,6 @@ public static class Stats
         public static class Unlocks
         {
 
-
-
-
-            // Laser up first!
-            // If you reach high enough shotspeed and firerate, you get LASER BEAM as an option
-            static Condition laserUnlockCondition = new ConjunctCondition(new List<Condition> { new StatCondition(FireRate, 1.5f, true), new StatCondition(ShotSpeed, 1.5f, true), new StatCondition(piercingBulletsPiercingTime, 2, true) });
-            public static PlayerStat LaserLifetime = new PlayerStat("Lifetime", 0.2f, new Vector2(0.2f, 2));
-            static List<PlayerStat> laserStatList = new List<PlayerStat> { LaserLifetime };
-            static StatSet laserStats = new StatSet(laserStatList);
-            public static Unlockable Laser = new Unlockable("Laser Beam", laserStats, laserUnlockCondition);
-
             // Bouncing bullets
             public static PlayerStat bouncingBulletBounces = new PlayerStat("Bounces", 1, new Vector2(0, 10), true);
             static List<PlayerStat> bouncingBulletsStatList = new List<PlayerStat> { bouncingBulletBounces };
@@ -159,7 +148,7 @@ public static class Stats
 
 
             // Wallbounce, it's a direct upgrade to bouncing bullets
-            static Condition wallBounceUnlockCondition = new StatCondition(bouncingBulletBounces, 2, true).And(new UnlockCondition(BouncingBullets, true));
+            static Condition wallBounceUnlockCondition = new ConjunctCondition(new List<Condition> { new StatCondition(bouncingBulletBounces, 2, true), new UnlockCondition(BouncingBullets, true) });
             public static PlayerStat wallBounceDamageRetention = new PlayerStat("Wall Bounce Damage Retention", 0.5f, new Vector2(0.5f, 1), false, false, 0.5f);
             static List<PlayerStat> wallBounceStatList = new List<PlayerStat> { wallBounceDamageRetention };
             static StatSet wallBounceStats = new StatSet(wallBounceStatList, wallBounceUnlockCondition);
@@ -177,6 +166,14 @@ public static class Stats
             static List<PlayerStat> lightningStatList = new List<PlayerStat> { lightningRange };
             static StatSet lightningStats = new StatSet(lightningStatList);
             public static Unlockable Lightning = new Unlockable("Lightning Arc", lightningStats);
+
+            // Laser up first!
+            // If you reach high enough shotspeed and firerate, you get LASER BEAM as an option
+            static Condition laserUnlockCondition = new ConjunctCondition(new List<Condition> { new StatCondition(FireRate, 1.5f, true), new StatCondition(ShotSpeed, 1.5f, true), new StatCondition(piercingBulletsPiercingTime, 2, true) });
+            public static PlayerStat LaserLifetime = new PlayerStat("Lifetime", 0.2f, new Vector2(0.2f, 2));
+            static List<PlayerStat> laserStatList = new List<PlayerStat> { LaserLifetime };
+            static StatSet laserStats = new StatSet(laserStatList);
+            public static Unlockable Laser = new Unlockable("Laser Beam", laserStats, laserUnlockCondition);
 
 
             public static Unlockable[] allUnlockables = { Laser, BouncingBullets, PiercingBullets, WallBounce, Lightning };
@@ -236,8 +233,9 @@ public static class Stats
         public static string mostRecentMutation;
         public static void IncreaseDifficulty()
         {
+            GD.Print("raising difficulty");
             int mutationIndex = GD.RandRange(0, DynamicStats.Length - 1); // only have as many as you have mutation upgrades
-            DynamicStats[ID.SpawnRate] += 0.5f;
+            DynamicStats[ID.SpawnRate] += 0.2f;
             if (previousMut != -1)
             {
                 // Make sure we don't get the same mutation twice in a row

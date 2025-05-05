@@ -117,7 +117,6 @@ public partial class Player : Area2D
             Vector2 velocity = new Vector2(0, -1000 * ShotSpeed.GetDynamicVal()).Rotated(spreadRotate);
             if (!Unlocks.PiercingBullets.unlocked)
             {
-                GD.Print("shoot bouncing");
                 // Bouncing, it's a rigidbody
                 RigidBody2D newBullet = bounceBullet.Instantiate<RigidBody2D>();
                 newBullet.GetNode<Bullet>("ScriptHolder").originalBullet = true;
@@ -127,7 +126,6 @@ public partial class Player : Area2D
             }
             else
             {
-                GD.Print("shoot piercing");
                 // Piercing, it's an Area2D
                 Area2D newBullet = pierceBullet.Instantiate<Area2D>();
                 newBullet.GetNode<Bullet>("ScriptHolder").originalBullet = true;

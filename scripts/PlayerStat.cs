@@ -93,7 +93,7 @@ public class PlayerStat
         }
         else
         {
-            return dynamicValue + magnitude * Mathf.Pow(Mathf.Max(baseValue, 1), changePolynomial) * (increase ? 1 : -1);
+            return dynamicValue + magnitude * Mathf.Max(baseValue, 1) * (increase ? 1 : -1);
         }
     }
 

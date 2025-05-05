@@ -54,7 +54,7 @@ public partial class UpgradeNode : Button
 			if (newPos is PlayerStatUpgrade)
 			{
 				strength = GD.RandRange(0, 2);
-				upgradeMagnitudes.Add(newPos, CalculateMagnitude(((PlayerStatUpgrade)newPos).IntIncrease(), strength));
+				upgradeMagnitudes.Add(newPos, CalculateMagnitude(((PlayerStatUpgrade)newPos).IntIncrease(), strength, ((PlayerStatUpgrade)newPos).stat.changePolynomial));
 
 				// Make sure this stat isn't repeated within this upgrade
 				posUpgrades = posUpgrades.Where(u => u is PlayerStatUpgrade ? ((PlayerStatUpgrade)u).stat != ((PlayerStatUpgrade)newPos).stat : true).ToList();
@@ -149,7 +149,7 @@ public partial class UpgradeNode : Button
 	}
 
 	// strength can be 0 (standard), 1 (extended) or 2+ (extreme)
-	private float CalculateMagnitude(bool intChange, int strength)
+	private float CalculateMagnitude(bool intChange, int strength, float changePolynomial)
 	{
 		if (intChange)
 		{
@@ -158,7 +158,9 @@ public partial class UpgradeNode : Button
 		}
 		else
 		{
-			return (0.24f + GD.Randf() / 4) * (1 + strength / 2);
+			float x = (0.24f + GD.Randf() / 4) * (1 + strength / 2);
+
+			return Mathf.Pow(x, 1 / changePolynomial);
 		}
 
 

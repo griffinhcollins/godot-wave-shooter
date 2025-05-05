@@ -105,7 +105,7 @@ public abstract partial class Bullet : Node2D
         // This always happens when we hit something, regardless of if it is the final hit
         HandleCollision(body);
         //  Now do checks for things that are only on final or non-final hit
-        if (numHit > Unlocks.bouncingBulletBounces.GetDynamicVal() && timeAlive > Unlocks.piercingBulletsPiercingTime.GetDynamicVal())
+        if ((numHit > Mathf.Max(Unlocks.bouncingBulletBounces.GetDynamicVal(), 2)) || (timeAlive > Unlocks.piercingBulletsPiercingTime.GetDynamicVal() && numHit > Unlocks.bouncingBulletBounces.GetDynamicVal()))
         {
             HandleDeath();
         }

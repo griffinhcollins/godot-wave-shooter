@@ -42,7 +42,6 @@ public partial class Mob : RigidBody2D
 
 
 
-        hp = DynamicStats[ID.HPMult] * baseHealth;
         acceleration = baseAcceleration * DynamicStats[ID.AccelerationMult];
         player = (Player)GetTree().GetNodesInGroup("player")[0];
         speedLimit = baseSpeedLimit;
@@ -54,6 +53,7 @@ public partial class Mob : RigidBody2D
 
         // Set Size
         size = GD.Randf() * 0.5f * DynamicStats[ID.SizeMult] + 1;
+        hp = DynamicStats[ID.HPMult] * baseHealth * size * 0.75f;
         animSprite.Scale *= size;
         GetNode<CollisionShape2D>("CollisionShape2D").Scale *= size;
         CreateIndicator();

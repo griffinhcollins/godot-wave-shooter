@@ -162,7 +162,7 @@ public static class Stats
 
 
             // Lightning!
-            public static PlayerStat lightningRange = new PlayerStat("Lightning Arc Range", 500, new Vector2(400, 1000), false, false, 0.5f);
+            public static PlayerStat lightningRange = new PlayerStat("Lightning Arc Range", 300, new Vector2(200, 1000), false, false, 0.5f);
             static List<PlayerStat> lightningStatList = new List<PlayerStat> { lightningRange };
             static StatSet lightningStats = new StatSet(lightningStatList);
             public static Unlockable Lightning = new Unlockable("Lightning Arc", lightningStats);

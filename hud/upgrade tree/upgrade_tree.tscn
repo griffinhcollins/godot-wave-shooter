@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2h18ievpdrky"]
+
+[ext_resource type="Script" path="res://hud/upgrade tree/UpgradeTree.cs" id="1_8l6km"]
+[ext_resource type="PackedScene" uid="uid://bauqhu548bavp" path="res://hud/upgrade tree/upgrade_tree_node.tscn" id="2_logt3"]
+
+[node name="UpgradeTree" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8l6km")
+treeNode = ExtResource("2_logt3")
+
+[node name="Container" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 128.0
+offset_bottom = 128.0

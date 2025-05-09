@@ -119,6 +119,7 @@ public static class Stats
                 allAvailableUpgrades.Add(new PlayerUnlockUpgrade(u));
                 allAvailableUpgrades.AddRange(u.associatedStats.GenerateUpgrades());
             }
+            allUpgrades = allAvailableUpgrades;
             return allAvailableUpgrades;
         }
 

@@ -1,5 +1,8 @@
+using System.Collections.Generic;
+using System.Linq;
+using Godot;
 using static Stats;
-public class Unlockable
+public class Unlockable : Prerequisite
 {
     public bool unlocked { get; private set; }
     public string name;
@@ -8,6 +11,8 @@ public class Unlockable
     public Condition condition;
 
     public StatSet associatedStats;
+
+    public List<PlayerStat> prerequisites;
 
     public Unlockable(string _name, StatSet _stats, Condition _condition = null)
     {
@@ -38,4 +43,44 @@ public class Unlockable
 
 
 
+    public PlayerStat GetStat()
+    {
+        return null;
+    }
+
+    public Unlockable GetUnlockable()
+    {
+        return this;
+    }
+
+    public List<Prerequisite> GetPrerequisites(Condition c = null)
+    {
+        if (c is null)
+        {
+            c = condition;
+        }
+        if (c is StatCondition)
+        {
+            return new List<Prerequisite> { ((StatCondition)c).stat };
+        }
+        if (c is UnlockCondition)
+        {
+            return new List<Prerequisite> { ((UnlockCondition)c).unlock };
+        }
+        if (c is ConjunctCondition)
+        {
+            return ((ConjunctCondition)c).conditions.SelectMany(u => GetPrerequisites(u)).ToList();
+        }
+        throw new System.NotImplementedException();
+    }
+
+    public string GetName()
+    {
+        return name;
+    }
+
+    public string GetIconName()
+    {
+        return string.Format("{0}.png", name.ToLower());
+    }
 }

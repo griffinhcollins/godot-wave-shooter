@@ -1,9 +1,11 @@
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design.Serialization;
+using System.Linq;
 using Godot;
 
-public class PlayerStat
+public class PlayerStat : Prerequisite
 {
     public string name;
     public float baseValue;
@@ -118,4 +120,50 @@ public class PlayerStat
         return new PlayerStatUpgrade(this, false, string.Format("{0}_down.png", name.ToLower()), condition);
     }
 
+
+    public PlayerStat GetStat()
+    {
+        return this;
+    }
+
+    public Unlockable GetUnlockable()
+    {
+        return null;
+    }
+
+    public List<Prerequisite> GetPrerequisites(Condition c = null)
+    {
+        if (c is null)
+        {
+            if (condition is null){
+                return null;
+            }
+            c = condition;
+        }
+        if (c is StatCondition)
+        {
+            return new List<Prerequisite> { ((StatCondition)c).stat };
+        }
+        if (c is UnlockCondition)
+        {
+            return new List<Prerequisite> { ((UnlockCondition)c).unlock };
+        }
+        if (c is ConjunctCondition)
+        {
+            return ((ConjunctCondition)c).conditions.SelectMany(u => GetPrerequisites(u)).ToList();
+        }
+        throw new System.NotImplementedException();
+    }
+
+    public string GetName()
+    {
+        return name;
+    }
+
+
+
+    public string GetIconName()
+    {
+        return string.Format("{0}_up.png", name.ToLower());
+    }
 }

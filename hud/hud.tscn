@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://bv6wktb7wsx2x"]
+[gd_scene load_steps=7 format=3 uid="uid://bv6wktb7wsx2x"]
 
 [ext_resource type="Script" path="res://hud/Hud.cs" id="1_nq4qa"]
 [ext_resource type="FontFile" uid="uid://o3v60vi8k4on" path="res://fonts/Xolonium-Regular.ttf" id="2_262y3"]
 [ext_resource type="PackedScene" uid="uid://bxit5dji56jci" path="res://hud/heart.tscn" id="2_wn6k0"]
 [ext_resource type="PackedScene" uid="uid://76di2adj135a" path="res://hud/upgrade.tscn" id="3_jnc8j"]
 [ext_resource type="PackedScene" uid="uid://cmp3ey8qdvuu1" path="res://hud/damage_num.tscn" id="4_c1pox"]
+[ext_resource type="PackedScene" uid="uid://d2h18ievpdrky" path="res://hud/upgrade tree/upgrade_tree.tscn" id="6_yoble"]
 
 [node name="HUD" type="CanvasLayer" groups=["HUD"]]
 script = ExtResource("1_nq4qa")
@@ -35,6 +36,7 @@ horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="WaveElements" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="WaveLabel" type="Label" parent="WaveElements"]
 anchors_preset = 5
@@ -326,6 +328,8 @@ size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 70
 text = "Press R to Restart"
 horizontal_alignment = 1
+
+[node name="UpgradeTree" parent="." instance=ExtResource("6_yoble")]
 
 [connection signal="timeout" from="MessageTimer" to="." method="OnMessageTimerTimeout"]
 [connection signal="pressed" from="WaveElements/StartButton" to="." method="OnStartButtonPressed"]

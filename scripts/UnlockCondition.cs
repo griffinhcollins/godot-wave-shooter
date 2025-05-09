@@ -7,7 +7,7 @@ public class UnlockCondition : Condition
 
 
 
-	public Unlockable u;
+	public Unlockable unlock;
 
 
 	public bool equalTo;
@@ -18,14 +18,14 @@ public class UnlockCondition : Condition
 
 	public UnlockCondition(Unlockable _unlockable, bool _equalTo)
 	{
-		u = _unlockable;
+		unlock = _unlockable;
 		equalTo = _equalTo;
 	}
 
 
 	public override bool CheckCondition()
 	{
-		return u.unlocked == equalTo;
+		return unlock.unlocked == equalTo;
 	}
 
 

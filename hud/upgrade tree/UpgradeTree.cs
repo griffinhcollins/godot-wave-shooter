@@ -17,7 +17,7 @@ public partial class UpgradeTree : Control
 	public override void _Ready()
 	{
 		container = GetNode<HBoxContainer>("Container");
-		
+
 		SpawnPrereqs(Stats.PlayerStats.Unlocks.Laser);
 	}
 
@@ -45,11 +45,17 @@ public partial class UpgradeTree : Control
 		List<Prerequisite> prereqs = prereq.GetPrerequisites();
 		foreach (Prerequisite p in prereqs)
 		{
-			Node newNode = treeNode.Instantiate();
-			newNode.GetNode<TextureRect>("Icon").Texture = (Texture2D)GD.Load("res://custom assets/upgrade icons/" + p.GetIconName());
-			newNode.GetNode("Icon").GetNode<Label>("Name").Text = p.GetName();
-			container.AddChild(newNode);
+
+			container.AddChild(SpawnNode(p));
 		}
+	}
+
+	Node SpawnNode(Prerequisite p)
+	{
+		Node newNode = treeNode.Instantiate();
+		newNode.GetNode<TextureRect>("Icon").Texture = (Texture2D)GD.Load("res://custom assets/upgrade icons/" + p.GetIconName());
+		newNode.GetNode("Icon").GetNode<Label>("Name").Text = p.GetName();
+		return newNode;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

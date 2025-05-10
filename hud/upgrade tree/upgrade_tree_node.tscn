@@ -1,31 +1,44 @@
-[gd_scene load_steps=3 format=3 uid="uid://bauqhu548bavp"]
+[gd_scene load_steps=5 format=3 uid="uid://bauqhu548bavp"]
 
+[ext_resource type="Script" path="res://hud/upgrade tree/UpgradeTreeNode.cs" id="1_5vvm1"]
 [ext_resource type="Texture2D" uid="uid://c8bfyacacxi42" path="res://custom assets/upgrade icons/placeholder.png" id="1_kdfce"]
 [ext_resource type="Texture2D" uid="uid://cny28xtbmqr2" path="res://custom assets/hud/upgrade background.png" id="1_lt5lu"]
 
-[node name="UpgradeTreeNode" type="Control"]
-custom_minimum_size = Vector2(128, 128)
+[sub_resource type="CircleShape2D" id="CircleShape2D_0tpgu"]
+radius = 90.0
+
+[node name="UpgradeTreeNode" type="RigidBody2D"]
+gravity_scale = 0.0
+lock_rotation = true
+script = ExtResource("1_5vvm1")
+
+[node name="Control" type="Control" parent="."]
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -60.0
+offset_right = 60.0
+offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="Control"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 120.0
+offset_bottom = 120.0
 texture = ExtResource("1_lt5lu")
 
-[node name="Icon" type="TextureRect" parent="."]
+[node name="Icon" type="TextureRect" parent="Control"]
 texture_filter = 1
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("1_kdfce")
 
-[node name="Name" type="Label" parent="Icon"]
+[node name="Name" type="Label" parent="Control/Icon"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -39,3 +52,6 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "NA"
 horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_0tpgu")

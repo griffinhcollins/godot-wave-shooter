@@ -14,28 +14,62 @@ public partial class UpgradeTree : Node
 	HBoxContainer container;
 
 
+	Dictionary<string, UpgradeTreeNode> nodeLookup;
+
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		container = GetNode<HBoxContainer>("Container");
 
-		List<Prerequisite> prereqs = Unlocks.Laser.GetPrerequisites();
+		// Create our root
+		UpgradeTreeNode submarine = treeNode.Instantiate<UpgradeTreeNode>();
+		// Make it look right
+		Node visuals = submarine.GetNode("Control");
+		visuals.GetNode<TextureRect>("Icon").Texture = (Texture2D)GD.Load("res://custom assets/hud/upgrade background.png");
+		visuals.GetNode("Icon").GetNode<Label>("Name").Text = "Root";
+		AddChild(submarine);
 
-		UpgradeTreeNode rb1 = SpawnNode(prereqs[0]);
-		UpgradeTreeNode rb2 = SpawnNode(prereqs[1]);
-		UpgradeTreeNode rb3 = SpawnNode(prereqs[2]);
-		rb1.GlobalPosition = new Vector2(-100, 100);
-		rb2.GlobalPosition = new Vector2(100, -100);
-		rb3.GlobalPosition = new Vector2(100, 100);
-		
-		AddChild(rb1);
-		AddChild(rb2);
-		AddChild(rb3);
-		ConnectNodes(rb1, rb2);
-		ConnectNodes(rb2, rb3);
-		ConnectNodes(rb1, rb3);
-		
+
+		List<Prerequisite> allStatsAndUnlocks = GetDefaultStats().ToList<Prerequisite>(); // Just grabs the default stats for now
+		foreach (Unlockable u in Unlocks.allUnlockables)
+		{
+			allStatsAndUnlocks.Add(u);
+			foreach (Prerequisite stat in u.associatedStats.upgradeableStats)
+			{
+				allStatsAndUnlocks.Add(stat);
+			}
+		}
+
+
+		nodeLookup = new Dictionary<string, UpgradeTreeNode>();
+
+		foreach (Prerequisite p in allStatsAndUnlocks)
+		{
+			UpgradeTreeNode newNode = SpawnNode(p);
+			AddChild(newNode);
+			newNode.Position = new Vector2(GD.Randf() * 400 - 200, GD.Randf() * 400 - 200);
+			GD.Print(p.GetName());
+			nodeLookup.Add(p.GetName(), newNode);
+		}
+
+		foreach (Prerequisite p in allStatsAndUnlocks)
+		{
+			UpgradeTreeNode n = nodeLookup[p.GetName()];
+			List<Prerequisite> prereqs = p.GetPrerequisites();
+			if (prereqs is null)
+			{
+				// Connect it to the submarine
+				ConnectNodes(n, submarine);
+				continue;
+			}
+			
+			foreach (Prerequisite connection in prereqs)
+			{
+				ConnectNodes(n, nodeLookup[connection.GetName()]);
+			}
+		}
+
 
 
 
@@ -46,7 +80,7 @@ public partial class UpgradeTree : Node
 	{
 	}
 
-	
+
 
 	void PrintPrereqs(Prerequisite prereq)
 	{
@@ -70,13 +104,13 @@ public partial class UpgradeTree : Node
 	// Parent points to child
 	void ConnectNodes(UpgradeTreeNode parent, UpgradeTreeNode child)
 	{
-		
+
 		DampedSpringJoint2D spring = new DampedSpringJoint2D();
 		spring.GlobalPosition = parent.GlobalPosition;
 		Vector2 towardsChild = parent.Position - child.Position;
 		spring.Length = towardsChild.Length();
-		spring.RestLength = 300;
-		spring.Damping = 0.5f;
+		spring.RestLength = 200;
+		spring.Damping = 1f;
 		spring.Rotation = Vector2.Up.AngleTo(towardsChild);
 		AddChild(spring);
 		spring.NodeA = parent.GetPath();
@@ -109,15 +143,15 @@ public partial class UpgradeTree : Node
 	}
 
 
-	
-	List<RigidBody2D> SpawnPrereqs(Prerequisite prereq)
+
+	List<UpgradeTreeNode> SpawnPrereqs(Prerequisite prereq)
 	{
 		List<Prerequisite> prereqs = prereq.GetPrerequisites();
-		List<RigidBody2D> rigidbodies = new List<RigidBody2D>();
+		List<UpgradeTreeNode> rigidbodies = new List<UpgradeTreeNode>();
 		foreach (Prerequisite p in prereqs)
 		{
 
-			RigidBody2D newNode = SpawnNode(p);
+			UpgradeTreeNode newNode = SpawnNode(p);
 			AddChild(newNode);
 			newNode.Position = new Vector2(GD.Randf() * 400 - 200, GD.Randf() * 400 - 200);
 			rigidbodies.Add(newNode);
@@ -125,5 +159,5 @@ public partial class UpgradeTree : Node
 		return rigidbodies;
 	}
 
-	
+
 }

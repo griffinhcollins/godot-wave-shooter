@@ -97,6 +97,10 @@ public static class Stats
 
         static StatSet defaultStats = new StatSet(defaultStatList);
 
+        public static List<PlayerStat> GetDefaultStats(){
+            return defaultStatList;
+        }
+
         // Misc. Stats (not put into statsets because they don't have a combined condition or upgrades in the shop)
         public static int Money;
         public static PlayerStat UpgradeSlots = new PlayerStat("Upgrade Slots", 3, new Vector2(3, 7), true);
@@ -171,7 +175,7 @@ public static class Stats
             // Laser up first!
             // If you reach high enough shotspeed and firerate, you get LASER BEAM as an option
             static Condition laserUnlockCondition = new ConjunctCondition(new List<Condition> { new StatCondition(FireRate, 1.5f, true), new StatCondition(ShotSpeed, 1.5f, true), new StatCondition(piercingBulletsPiercingTime, 2, true) });
-            public static PlayerStat LaserLifetime = new PlayerStat("Lifetime", 0.2f, new Vector2(0.2f, 2));
+            public static PlayerStat LaserLifetime = new PlayerStat("Laser Lifetime", 0.2f, new Vector2(0.2f, 2));
             static List<PlayerStat> laserStatList = new List<PlayerStat> { LaserLifetime };
             static StatSet laserStats = new StatSet(laserStatList);
             public static Unlockable Laser = new Unlockable("Laser Beam", laserStats, laserUnlockCondition);

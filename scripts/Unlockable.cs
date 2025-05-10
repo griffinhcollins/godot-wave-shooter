@@ -57,6 +57,9 @@ public class Unlockable : Prerequisite
     {
         if (c is null)
         {
+            if (condition is null){
+                return null;
+            }
             c = condition;
         }
         if (c is StatCondition)

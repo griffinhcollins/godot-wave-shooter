@@ -83,24 +83,36 @@ public partial class UpgradeTree : Node
 			}
 		}
 
-		// Move the base upgrades out a bit
+		// Spread the upgrades out based on how far they are from the root
 		for (int i = 0; i < baseUpgrades.Count; i++)
 		{
 			Vector2 newPos = new Vector2(0, -linkRestDistance).Rotated(i * 2 * Mathf.Pi / baseUpgrades.Count);
-			GD.Print(newPos);
-			nameLookup[baseUpgrades[i].GetName()].Position = newPos;
-			if (!childrenLookup.Keys.Contains(baseUpgrades[i]))
-			{
-				continue;
-			}
-			// Move the things unlocked by this upgrade out a little more
-			foreach (Prerequisite p in childrenLookup[baseUpgrades[i]])
-			{
-				nameLookup[p.GetName()].Position = 2 * newPos;
-			}
+			PositionNodeAndChildren(baseUpgrades[i], newPos);
+
+
+		}
+
+		
+
+
+	}
+
+	void PositionNodeAndChildren(Prerequisite root, Vector2 direction)
+	{
+		UpgradeTreeNode nodeToPosition = nameLookup[root.GetName()];
+
+		nodeToPosition.Position = direction;
+		if (!childrenLookup.Keys.Contains(root))
+		{
+			return;
 		}
 
 
+		// Move the things unlocked by this upgrade out a little more
+		foreach (Prerequisite p in childrenLookup[root])
+		{
+			PositionNodeAndChildren(p, direction + direction.Normalized() * linkRestDistance);
+		}
 	}
 
 	void AddRequirement(Prerequisite unlocker, Prerequisite unlockee)
@@ -141,22 +153,33 @@ public partial class UpgradeTree : Node
 		}
 	}
 
+	void AddSpring(UpgradeTreeNode node1, UpgradeTreeNode node2, float damping = 1, float distance = -1)
+	{
+		if (distance == -1)
+		{
+			distance = linkRestDistance;
+		}
+		DampedSpringJoint2D spring = new DampedSpringJoint2D();
+		spring.GlobalPosition = node1.GlobalPosition;
+		Vector2 towardsChild = node1.Position - node2.Position;
+		spring.Length = towardsChild.Length();
+		spring.RestLength = linkRestDistance;
+		spring.Damping = damping;
+		spring.Rotation = Vector2.Up.AngleTo(towardsChild);
+		AddChild(spring);
+		spring.NodeA = node1.GetPath();
+		spring.NodeB = node2.GetPath();
+		node1.GlobalRotation = 0;
+		node2.GlobalRotation = 0;
+	}
+
 	// Parent points to child
 	void ConnectNodes(UpgradeTreeNode parent, UpgradeTreeNode child)
 	{
 
-		DampedSpringJoint2D spring = new DampedSpringJoint2D();
-		spring.GlobalPosition = parent.GlobalPosition;
-		Vector2 towardsChild = parent.Position - child.Position;
-		spring.Length = towardsChild.Length();
-		spring.RestLength = linkRestDistance;
-		spring.Damping = 1f;
-		spring.Rotation = Vector2.Up.AngleTo(towardsChild);
-		AddChild(spring);
-		spring.NodeA = parent.GetPath();
-		spring.NodeB = child.GetPath();
-		parent.GlobalRotation = 0;
-		child.GlobalRotation = 0;
+		// AddSpring(parent, child, 1);
+
+
 		// Now make the line renderer connecting them
 
 		Line2D connectionLine = new Line2D();

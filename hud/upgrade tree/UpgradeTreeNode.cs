@@ -26,7 +26,7 @@ public partial class UpgradeTreeNode : RigidBody2D
 		// Apply a gentle force away from the centre node
 		if (root != this)
 		{
-			ApplyCentralForce((GlobalPosition - root.GlobalPosition).Normalized() * 1000000/(GlobalPosition - root.GlobalPosition).LengthSquared());
+			// ApplyCentralForce((GlobalPosition - root.GlobalPosition).Normalized() * 1000000/(GlobalPosition - root.GlobalPosition).LengthSquared());
 
 		}
 

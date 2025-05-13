@@ -78,6 +78,7 @@ public abstract partial class Bullet : Node2D
     }
 
 
+    // The bullet's damage can change after certain events
     public void SetDamage(float newDmg)
     {
         dmg = newDmg;
@@ -100,7 +101,8 @@ public abstract partial class Bullet : Node2D
             {
                 timeAlive = Unlocks.piercingBulletsPiercingTime.GetDynamicVal();
             }
-
+            // Reduce damage of bullet when it hits a border
+            SetDamage(dmg * Unlocks.wallBounceDamageRetention.GetDynamicVal());
         }
         // This always happens when we hit something, regardless of if it is the final hit
         HandleCollision(body);

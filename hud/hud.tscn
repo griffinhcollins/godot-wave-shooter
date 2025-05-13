@@ -330,6 +330,7 @@ text = "Press R to Restart"
 horizontal_alignment = 1
 
 [node name="UpgradeTree" parent="." instance=ExtResource("6_yoble")]
+visible = false
 
 [connection signal="timeout" from="MessageTimer" to="." method="OnMessageTimerTimeout"]
 [connection signal="pressed" from="WaveElements/StartButton" to="." method="OnStartButtonPressed"]

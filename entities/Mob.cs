@@ -85,6 +85,11 @@ public partial class Mob : RigidBody2D
         }
     }
 
+    public float GetHP()
+    {
+        return hp;
+    }
+
 
     private void Die()
     {

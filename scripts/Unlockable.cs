@@ -35,7 +35,7 @@ public class Unlockable : Prerequisite
         associatedStats.SetToZero();
     }
 
-    public void Unlock()
+    public virtual void Unlock()
     {
         unlocked = true;
         associatedStats.SetToDefaultStartingValues();

@@ -97,7 +97,8 @@ public static class Stats
 
         static StatSet defaultStats = new StatSet(defaultStatList);
 
-        public static List<PlayerStat> GetDefaultStats(){
+        public static List<PlayerStat> GetDefaultStats()
+        {
             return defaultStatList;
         }
 
@@ -159,11 +160,21 @@ public static class Stats
             static StatSet wallBounceStats = new StatSet(wallBounceStatList, wallBounceUnlockCondition);
             public static Unlockable WallBounce = new Unlockable("Wall Bounce", wallBounceStats, wallBounceUnlockCondition);
 
-            // Piercing time
-            public static PlayerStat piercingBulletsPiercingTime = new PlayerStat("Piercing Time", 0.25f, new Vector2(0, 10), false, false, 0.5f);
+            // Piercing
+            public static PlayerStat piercingBulletsPiercingTime = new PlayerStat("Piercing Time", 0.25f, new Vector2(0, 2), false, false, 0.5f);
             static List<PlayerStat> piercingBulletsStatList = new List<PlayerStat> { piercingBulletsPiercingTime };
             static StatSet piercingBulletsStats = new StatSet(piercingBulletsStatList);
             public static Unlockable PiercingBullets = new Unlockable("Piercing Bullets", piercingBulletsStats);
+
+            // Piercing overwhammer style
+            static Condition overflowCondition = new ConjunctCondition(new List<Condition> { new StatCondition(piercingBulletsPiercingTime, 0.5f, true), new StatCondition(Damage, 20, true) });
+
+            // What fraction of the damage is reduced when hitting an enemy, e.g. if the enemy has 10 health and this stat is 0.5f, the overflow loses 5 damage
+            public static PlayerStat overflowLoss = new PlayerStat("Overflow Reduction", 1, new Vector2(0, 1), false, true);
+            static List<PlayerStat> overflowStatList = new List<PlayerStat> { overflowLoss };
+            static StatSet overflowStats = new StatSet(overflowStatList);
+            // Unlocking this also doubles your damage, AND gives you a +10 damage bonus to boot
+            public static Unlockable OverflowBullets = new UnlockableWithBonus("Overflow Bullets", overflowStats, Damage, 1, true, overflowCondition);
 
 
             // Lightning!
@@ -172,8 +183,8 @@ public static class Stats
             static StatSet lightningStats = new StatSet(lightningStatList);
             public static Unlockable Lightning = new Unlockable("Lightning Arc", lightningStats);
 
-            // Laser up first!
-            // If you reach high enough shotspeed and firerate, you get LASER BEAM as an option
+            // Laser
+            // If you reach high enough shotspeed, piercing and firerate, you get LASER BEAM as an option
             static Condition laserUnlockCondition = new ConjunctCondition(new List<Condition> { new StatCondition(FireRate, 1.5f, true), new StatCondition(ShotSpeed, 1.5f, true), new StatCondition(piercingBulletsPiercingTime, 2, true) });
             public static PlayerStat LaserLifetime = new PlayerStat("Laser Lifetime", 0.2f, new Vector2(0.2f, 2));
             static List<PlayerStat> laserStatList = new List<PlayerStat> { LaserLifetime };
@@ -181,7 +192,7 @@ public static class Stats
             public static Unlockable Laser = new Unlockable("Laser Beam", laserStats, laserUnlockCondition);
 
 
-            public static Unlockable[] allUnlockables = { Laser, BouncingBullets, PiercingBullets, WallBounce, Lightning };
+            public static Unlockable[] allUnlockables = { Laser, BouncingBullets, PiercingBullets, WallBounce, Lightning, OverflowBullets };
 
         }
 

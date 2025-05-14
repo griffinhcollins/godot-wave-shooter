@@ -32,7 +32,13 @@ public abstract partial class Bullet : Node2D
     public override void _Ready()
     {
         dead = false;
-        SetDamage(Damage.GetDynamicVal());
+        // Check for any unlocked damage multipliers
+        float multiplier = 1;
+        if (Unlocks.OverflowBullets.unlocked)
+        {
+            multiplier += 1;
+        }
+        SetDamage(Damage.GetDynamicVal() * multiplier);
         numHit = 0;
         mobsHit = new HashSet<Node2D>();
 
@@ -81,19 +87,37 @@ public abstract partial class Bullet : Node2D
     // The bullet's damage can change after certain events
     public void SetDamage(float newDmg)
     {
+
         dmg = newDmg;
     }
 
     private void OnCollision(Node2D body)
     {
-        if (body.IsInGroup("mobs") && !mobsHit.Contains(body))
+        
+        // This always happens when we hit something, regardless of if it is the final hit
+        HandleCollision(body);
+        //  Now do checks for things that are only on final or non-final hit
+        if (
+            ((numHit < Unlocks.bouncingBulletBounces.GetDynamicVal()) || // Don't die if we have bounces left
+            (timeAlive < Unlocks.piercingBulletsPiercingTime.GetDynamicVal()) || // Don't die if we have piercing left
+            Unlocks.OverflowBullets.unlocked) && // Don't die if overflow bullets are unlocked
+            dmg > 0 // Do die if we've run out of damage, even if we have bounces/pierces left
+         )
         {
-            numHit++;
-            mobsHit.Add(body);
-            Mob mobHit = (Mob)body;
-            mobHit.TakeDamage(dmg);
+            // Not the final hit - do stuff that only triggers on intermediate hits
         }
-        if (body.IsInGroup("border"))
+        else
+        {
+            // Final hit
+            HandleDeath();
+
+        }
+    }
+
+    protected virtual void HandleCollision(Node2D hitNode)
+    {
+        
+        if (hitNode.IsInGroup("border"))
         {
             numHit++;
             // If a piercing shot hits a wall while wall bounces are unlocked, instantly convert it into bouncy
@@ -104,68 +128,65 @@ public abstract partial class Bullet : Node2D
             // Reduce damage of bullet when it hits a border
             SetDamage(dmg * Unlocks.wallBounceDamageRetention.GetDynamicVal());
         }
-        // This always happens when we hit something, regardless of if it is the final hit
-        HandleCollision(body);
-        //  Now do checks for things that are only on final or non-final hit
-        if ((numHit > Mathf.Max(Unlocks.bouncingBulletBounces.GetDynamicVal(), 2)) || (timeAlive > Unlocks.piercingBulletsPiercingTime.GetDynamicVal() && numHit > Unlocks.bouncingBulletBounces.GetDynamicVal()))
-        {
-            HandleDeath();
-        }
-        else
-        {
-            // We hit a mob but we have hits remaining
-            // What this means changes depending on what kind of bullet we are
-
-        }
-    }
-
-    protected virtual void HandleCollision(Node2D hitNode)
-    {
         // Activate any abilities that trigger on hit
-        if (Unlocks.Lightning.unlocked)
+        if (hitNode is Mob)
         {
-            // Find the nearest mob
-            Mob target = null;
-            foreach (Mob mob in GetTree().GetNodesInGroup("mobs"))
+            Mob hitMob = (Mob)hitNode;
+            if (Unlocks.Lightning.unlocked)
+
             {
-                if (mob == hitNode)
+                // Find the nearest mob
+                Mob target = null;
+                foreach (Mob mob in GetTree().GetNodesInGroup("mobs"))
                 {
-                    continue;
+                    if (mob == hitNode)
+                    {
+                        continue;
+                    }
+                    if (target is null) // just to give an initial to start testing against
+                    {
+                        target = mob;
+                    }
+                    float currentBestDistance = (target.GlobalPosition - GlobalPosition).LengthSquared();
+                    if ((mob.GlobalPosition - GlobalPosition).LengthSquared() < currentBestDistance)
+                    {
+                        target = mob;
+                    }
                 }
-                if (target is null) // just to give an initial to start testing against
+
+                // Contingency for if there are no mobs
+                if (target is null)
                 {
-                    target = mob;
+                    return;
                 }
-                float currentBestDistance = (target.GlobalPosition - GlobalPosition).LengthSquared();
-                if ((mob.GlobalPosition - GlobalPosition).LengthSquared() < currentBestDistance)
+
+
+                float arcRange = Unlocks.lightningRange.GetDynamicVal();
+                if ((target.GlobalPosition - GlobalPosition).LengthSquared() < arcRange * arcRange)
                 {
-                    target = mob;
+                    Node2D arc = lightningArc.Instantiate<Node2D>();
+                    Line2D line = arc.GetNode<Line2D>("Arc");
+                    GetTree().Root.AddChild(arc);
+                    line.AddPoint(GlobalPosition);
+                    line.AddPoint(target.GlobalPosition);
+
+                    target.TakeDamage(Damage.GetDynamicVal());
                 }
             }
-
-            // Contingency for if there are no mobs
-            if (target is null)
+            if (Unlocks.OverflowBullets.unlocked)
             {
-                return;
-            }
-
-
-            float arcRange = Unlocks.lightningRange.GetDynamicVal();
-            if ((target.GlobalPosition - GlobalPosition).LengthSquared() < arcRange * arcRange)
-            {
-                Node2D arc = lightningArc.Instantiate<Node2D>();
-                Line2D line = arc.GetNode<Line2D>("Arc");
-                GetTree().Root.AddChild(arc);
-                line.AddPoint(GlobalPosition);
-                line.AddPoint(target.GlobalPosition);
-
-                target.TakeDamage(Damage.GetDynamicVal());
-            }
-            else
-            {
-
+                SetDamage(dmg - Unlocks.overflowLoss.GetDynamicVal() * hitMob.GetHP());
             }
         }
+        // Finally, actually deal damage
+        if (hitNode.IsInGroup("mobs") && !mobsHit.Contains(hitNode))
+        {
+            numHit++;
+            mobsHit.Add(hitNode);
+            Mob mobHit = (Mob)hitNode;
+            mobHit.TakeDamage(dmg);
+        }
+
     }
     protected virtual void HandleDeath()
     {

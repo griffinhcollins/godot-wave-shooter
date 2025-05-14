@@ -164,6 +164,6 @@ public class PlayerStat : Prerequisite
 
     public string GetIconName()
     {
-        return string.Format("{0}_up.png", name.ToLower());
+        return string.Format("{0}_{1}.png", name.ToLower(), invert ? "down" : "up");
     }
 }

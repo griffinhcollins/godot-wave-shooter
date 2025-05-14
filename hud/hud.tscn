@@ -98,7 +98,6 @@ offset_bottom = -10.0
 grow_vertical = 0
 
 [node name="ShopElements" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="ShopTitle" type="Label" parent="ShopElements"]
 anchors_preset = 5
@@ -159,16 +158,44 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="BuySlot" type="Button" parent="ShopElements"]
-offset_left = 1036.0
-offset_top = 435.0
-offset_right = 1187.0
-offset_bottom = 560.0
+offset_left = 1041.0
+offset_top = 494.0
+offset_right = 1192.0
+offset_bottom = 619.0
 theme_override_font_sizes/font_size = 32
 text = "Buy +1
 Upgrade
  Slot"
 
 [node name="Cost" type="Label" parent="ShopElements/BuySlot"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -31.5
+offset_top = 5.0
+offset_right = 32.5
+offset_bottom = 42.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.972549, 0.796078, 0, 1)
+theme_override_fonts/font = ExtResource("2_262y3")
+theme_override_font_sizes/font_size = 30
+text = "$10"
+horizontal_alignment = 1
+
+[node name="Reroll" type="Button" parent="ShopElements"]
+offset_left = 94.0
+offset_top = 435.0
+offset_right = 245.0
+offset_bottom = 560.0
+theme_override_font_sizes/font_size = 32
+text = "Reroll"
+
+[node name="Cost" type="Label" parent="ShopElements/Reroll"]
 texture_filter = 1
 layout_mode = 1
 anchors_preset = 7
@@ -336,4 +363,5 @@ visible = false
 [connection signal="pressed" from="WaveElements/StartButton" to="." method="OnStartButtonPressed"]
 [connection signal="pressed" from="ShopElements/NextWave" to="." method="OnNextWavePressed"]
 [connection signal="pressed" from="ShopElements/BuySlot" to="." method="OnBuySlotClicked"]
+[connection signal="pressed" from="ShopElements/Reroll" to="." method="RerollShop"]
 [connection signal="pressed" from="PauseElements/Button" to="." method="OnResumeClicked"]

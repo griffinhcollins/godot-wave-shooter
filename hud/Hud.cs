@@ -83,7 +83,8 @@ public partial class Hud : CanvasLayer
 
     }
 
-    public void ClearGameOver(){
+    public void ClearGameOver()
+    {
         gameOverElements.Hide();
     }
     public void UpdateWaveTime(int wavetime)
@@ -140,6 +141,15 @@ public partial class Hud : CanvasLayer
         upgradeBar.Visible = true;
         UpdateUpgradeSlotCost();
 
+    }
+
+    private void RerollShop()
+    {
+        foreach (UpgradeNode upgrade in shopElements.GetNode("Upgrades").GetChildren())
+        {
+            upgrade.QueueFree();
+        }
+        GenerateShop();
     }
 
     private void UpdateUpgradeSlotCost()

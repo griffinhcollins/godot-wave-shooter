@@ -97,7 +97,7 @@ public abstract partial class Bullet : Node2D
         HandleCollision(body);
         //  Now do checks for things that are only on final or non-final hit
         if (
-            ((numHit < Unlocks.bouncingBulletBounces.GetDynamicVal()) || // Don't die if we have bounces left
+            ((numHit <= Unlocks.bouncingBulletBounces.GetDynamicVal()) || // Don't die if we have bounces left
             (timeAlive < Unlocks.piercingBulletsPiercingTime.GetDynamicVal()) || // Don't die if we have piercing left
             Unlocks.OverflowBullets.unlocked) && // Don't die if overflow bullets are unlocked
             dmg > 0 // Do die if we've run out of damage, even if we have bounces/pierces left

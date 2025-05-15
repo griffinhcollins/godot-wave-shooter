@@ -3,6 +3,7 @@ using static Stats.PlayerStats;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 public abstract partial class Bullet : Node2D
 {
@@ -78,7 +79,7 @@ public abstract partial class Bullet : Node2D
             beforePauseVelocity = Vector2.Zero;
 
         }
-        
+
         timeAlive += (float)delta;
     }
 
@@ -132,45 +133,40 @@ public abstract partial class Bullet : Node2D
         {
             Mob hitMob = (Mob)hitNode;
             if (Unlocks.Lightning.unlocked)
-
             {
+                float arcRange = Unlocks.lightningRange.GetDynamicVal();
+                List<Mob> targets = new List<Mob>();
                 // Find the nearest mob
-                Mob target = null;
                 foreach (Mob mob in GetTree().GetNodesInGroup("mobs"))
                 {
                     if (mob == hitNode)
                     {
                         continue;
                     }
-                    if (target is null) // just to give an initial to start testing against
+
+                    if ((mob.GlobalPosition - GlobalPosition).LengthSquared() < arcRange)
                     {
-                        target = mob;
-                    }
-                    float currentBestDistance = (target.GlobalPosition - GlobalPosition).LengthSquared();
-                    if ((mob.GlobalPosition - GlobalPosition).LengthSquared() < currentBestDistance)
-                    {
-                        target = mob;
+                        targets.Add(mob);
                     }
                 }
 
-                // Contingency for if there are no mobs
-                if (target is null)
+                if (targets.Count > 0)
                 {
-                    return;
+                    targets.OrderBy(t => (t.GlobalPosition - GlobalPosition).LengthSquared());
+
+                    for (int i = 0; i < Mathf.Min(Unlocks.lightningMaxArcs.GetDynamicVal(), targets.Count); i++)
+                    {
+                        Mob target = targets[i];
+                        Node2D arc = lightningArc.Instantiate<Node2D>();
+                        Line2D line = arc.GetNode<Line2D>("Arc");
+                        GetTree().Root.AddChild(arc);
+                        line.AddPoint(hitMob.GlobalPosition);
+                        line.AddPoint(target.GlobalPosition);
+
+                        target.TakeDamage(Damage.GetDynamicVal());
+                    }
                 }
 
-
-                float arcRange = Unlocks.lightningRange.GetDynamicVal();
-                if ((target.GlobalPosition - GlobalPosition).LengthSquared() < arcRange * arcRange)
-                {
-                    Node2D arc = lightningArc.Instantiate<Node2D>();
-                    Line2D line = arc.GetNode<Line2D>("Arc");
-                    GetTree().Root.AddChild(arc);
-                    line.AddPoint(hitMob.GlobalPosition);
-                    line.AddPoint(target.GlobalPosition);
-
-                    target.TakeDamage(Damage.GetDynamicVal());
-                }
             }
             if (Unlocks.OverflowBullets.unlocked)
             {

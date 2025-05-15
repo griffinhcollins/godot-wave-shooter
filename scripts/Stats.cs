@@ -131,7 +131,7 @@ public static class Stats
 
         public static void SetDefaults()
         {
-            Money = 0;
+            Money = 1000;
             defaultStats.SetToDefaultStartingValues();
             for (int i = 0; i < miscellaneousStats.Count; i++)
             {
@@ -179,7 +179,8 @@ public static class Stats
 
             // Lightning!
             public static PlayerStat lightningRange = new PlayerStat("Lightning Arc Range", 300, new Vector2(200, 1000), false, false, 0.5f);
-            static List<PlayerStat> lightningStatList = new List<PlayerStat> { lightningRange };
+            public static PlayerStat lightningMaxArcs = new PlayerStat("Maximum Arcs", 1, new Vector2(1, 5), true, false);
+            static List<PlayerStat> lightningStatList = new List<PlayerStat> { lightningRange, lightningMaxArcs };
             static StatSet lightningStats = new StatSet(lightningStatList);
             public static Unlockable Lightning = new Unlockable("Lightning Arc", lightningStats);
 

@@ -9,3 +9,4 @@
 
 Ideas:
 - Enemies should drop money based on their health, not droprate
+- You don't pay for upgrades, you pay for everything else (rerolls, more upgrade slots, guaranteed legendary, )

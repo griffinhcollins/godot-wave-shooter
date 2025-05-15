@@ -173,8 +173,8 @@ public static class Stats
             public static PlayerStat overflowLoss = new PlayerStat("Overflow Reduction", 1, new Vector2(0, 1), false, true);
             static List<PlayerStat> overflowStatList = new List<PlayerStat> { overflowLoss };
             static StatSet overflowStats = new StatSet(overflowStatList);
-            // Unlocking this also doubles your damage, AND gives you a +10 damage bonus to boot
-            public static Unlockable OverflowBullets = new UnlockableWithBonus("Overflow Bullets", overflowStats, Damage, 1, true, overflowCondition);
+            // Unlocking this also doubles your damage
+            public static Unlockable OverflowBullets = new UnlockableWithBonus("Overflow Bullets", overflowStats, Damage, 1, true, true, overflowCondition);
 
 
             // Lightning!
@@ -185,7 +185,7 @@ public static class Stats
 
             // Laser
             // If you reach high enough shotspeed, piercing and firerate, you get LASER BEAM as an option
-            static Condition laserUnlockCondition = new ConjunctCondition(new List<Condition> { new StatCondition(FireRate, 1.5f, true), new StatCondition(ShotSpeed, 1.5f, true), new StatCondition(piercingBulletsPiercingTime, 2, true) });
+            static Condition laserUnlockCondition = new ConjunctCondition(new List<Condition> { new StatCondition(FireRate, 3, true), new StatCondition(ShotSpeed, 1.5f, true), new StatCondition(piercingBulletsPiercingTime, 0.5f, true) });
             public static PlayerStat LaserLifetime = new PlayerStat("Laser Lifetime", 0.2f, new Vector2(0.2f, 2));
             static List<PlayerStat> laserStatList = new List<PlayerStat> { LaserLifetime };
             static StatSet laserStats = new StatSet(laserStatList);

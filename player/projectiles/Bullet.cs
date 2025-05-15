@@ -32,18 +32,16 @@ public abstract partial class Bullet : Node2D
     public override void _Ready()
     {
         dead = false;
-        // Check for any unlocked damage multipliers
-        float multiplier = 1;
-        if (Unlocks.OverflowBullets.unlocked)
-        {
-            multiplier += 1;
-        }
-        SetDamage(Damage.GetDynamicVal() * multiplier);
+        SetDamage(Damage.GetDynamicVal());
         numHit = 0;
         mobsHit = new HashSet<Node2D>();
 
-        GetParent().GetNode<CollisionShape2D>("CollisionShape2D").Scale = Vector2.One * BulletSize.GetDynamicVal();
-        GetParent().GetNode<Sprite2D>("Sprite2D").Scale = Vector2.One * BulletSize.GetDynamicVal();
+        if (this is not LaserBeam)
+        {
+            GetParent().GetNode<CollisionShape2D>("CollisionShape2D").Scale = Vector2.One * BulletSize.GetDynamicVal();
+            GetParent().GetNode<Sprite2D>("Sprite2D").Scale = Vector2.One * BulletSize.GetDynamicVal();
+        }
+
         if (originalBullet)
         {
             GetParent().GetNode<AudioStreamPlayer>("FireSound").Play();
@@ -80,6 +78,7 @@ public abstract partial class Bullet : Node2D
             beforePauseVelocity = Vector2.Zero;
 
         }
+        
         timeAlive += (float)delta;
     }
 
@@ -93,7 +92,7 @@ public abstract partial class Bullet : Node2D
 
     private void OnCollision(Node2D body)
     {
-        
+
         // This always happens when we hit something, regardless of if it is the final hit
         HandleCollision(body);
         //  Now do checks for things that are only on final or non-final hit
@@ -116,7 +115,7 @@ public abstract partial class Bullet : Node2D
 
     protected virtual void HandleCollision(Node2D hitNode)
     {
-        
+
         if (hitNode.IsInGroup("border"))
         {
             numHit++;
@@ -167,7 +166,7 @@ public abstract partial class Bullet : Node2D
                     Node2D arc = lightningArc.Instantiate<Node2D>();
                     Line2D line = arc.GetNode<Line2D>("Arc");
                     GetTree().Root.AddChild(arc);
-                    line.AddPoint(GlobalPosition);
+                    line.AddPoint(hitMob.GlobalPosition);
                     line.AddPoint(target.GlobalPosition);
 
                     target.TakeDamage(Damage.GetDynamicVal());

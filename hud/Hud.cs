@@ -72,7 +72,7 @@ public partial class Hud : CanvasLayer
         {
             AddUpgrade();
             Stats.PlayerStats.UpgradeSlots.ApplyUpgrade(1, true);
-            if (Stats.PlayerStats.UpgradeSlots.GetDynamicVal() >= Stats.PlayerStats.UpgradeSlots.range.Y)
+            if (Stats.PlayerStats.UpgradeSlots.GetDynamicVal() >= Stats.PlayerStats.UpgradeSlots.GetRange().Y)
             {
                 shopElements.GetNode<Button>("BuySlot").Hide();
                 shopElements.GetNode<Button>("BuySlot").Disabled = true;
@@ -120,7 +120,7 @@ public partial class Hud : CanvasLayer
         upgradeBar = shopElements.GetNode<HBoxContainer>("Upgrades");
         ShowShop();
         int upgradeSlotNum = (int)Stats.PlayerStats.UpgradeSlots.GetDynamicVal();
-        if (upgradeSlotNum >= Stats.PlayerStats.UpgradeSlots.range.Y)
+        if (upgradeSlotNum >= Stats.PlayerStats.UpgradeSlots.GetRange().Y)
         {
             shopElements.GetNode<Button>("BuySlot").Hide();
             shopElements.GetNode<Button>("BuySlot").Disabled = true;

@@ -19,12 +19,12 @@ public class PlayerStatUpgrade : PlayerUpgrade
 
         if (!Increasing())
         {
-            conditions.Add(new StatCondition(stat, stat.range.X, true));
+            conditions.Add(new StatCondition(stat, stat.GetRange().X, true));
         }
         else
         {
 
-            conditions.Add(new StatCondition(stat, stat.range.Y, false));
+            conditions.Add(new StatCondition(stat, stat.GetRange().Y, false));
         }
 
         if (_condition is not null)

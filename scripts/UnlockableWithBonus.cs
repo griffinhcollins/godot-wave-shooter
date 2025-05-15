@@ -5,13 +5,17 @@ public class UnlockableWithBonus : Unlockable
 {
 
     PlayerStat bonusStat;
-    float bonusMagnitude;
     bool increase;
+    bool multOrUpgrade; // If true, mult. If false, upgrade.
 
-    public UnlockableWithBonus(string _name, StatSet _stats, PlayerStat _bonusStat, float _mag, bool _inc, Condition _condition = null) : base(_name, _stats, _condition)
+    float mag;
+
+
+    public UnlockableWithBonus(string _name, StatSet _stats, PlayerStat _bonusStat, float _mag, bool _trueIfMultFalseIfUpgrade, bool _inc = true, Condition _condition = null) : base(_name, _stats, _condition)
     {
         bonusStat = _bonusStat;
-        bonusMagnitude = _mag;
+        multOrUpgrade = _trueIfMultFalseIfUpgrade;
+        mag = _mag;
         increase = _inc;
     }
 
@@ -19,7 +23,15 @@ public class UnlockableWithBonus : Unlockable
     public override void Unlock()
     {
         base.Unlock();
-        bonusStat.ApplyUpgrade(bonusMagnitude, true);
+        if (multOrUpgrade)
+        {
+            bonusStat.AddMult(mag);
+        }
+        else
+        {
+            bonusStat.ApplyUpgrade(mag, increase);
+
+        }
     }
 
 }

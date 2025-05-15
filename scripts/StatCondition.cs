@@ -26,8 +26,8 @@ public class StatCondition : Condition
 
 	public override bool CheckCondition()
 	{
-		GD.Print(threshold);
-		GD.Print(stat.name);
+		// GD.Print(threshold);
+		// GD.Print(stat.name);
 		float statVal = stat.GetDynamicVal();
 
 		return greaterThan ? statVal > threshold : statVal < threshold;

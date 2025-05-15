@@ -9,11 +9,13 @@ public class PlayerStat : Prerequisite
 {
     public string name;
     public float baseValue;
-    public Vector2 range;
+    private Vector2 startingRange;
     private float dynamicValue;
     public bool intChange;
     public bool invert; // Invert is true if increasing this stat is bad, and decreasing it is good
     public float changePolynomial;
+
+    float multiplier;
 
     public Condition condition;
 
@@ -21,7 +23,7 @@ public class PlayerStat : Prerequisite
     {
         name = _name;
         baseValue = _baseValue;
-        range = _range;
+        startingRange = _range;
         intChange = _intChange;
         invert = _invert;
         changePolynomial = _changePolynomial;
@@ -31,8 +33,24 @@ public class PlayerStat : Prerequisite
         }
     }
 
+    public Vector2 GetRange()
+    {
+        return startingRange * GetMult();
+    }
+
+    public float GetMult()
+    {
+        return multiplier;
+    }
+
+    public void AddMult(float amount)
+    {
+        multiplier += amount;
+    }
+
     public void Reset()
     {
+        multiplier = 1;
         dynamicValue = baseValue;
     }
 
@@ -40,7 +58,7 @@ public class PlayerStat : Prerequisite
     {
 
         dynamicValue = CalculateStatUpgrade(magnitude, increase);
-
+        Vector2 range = GetRange();
         if (dynamicValue > range.Y)
         {
             dynamicValue = range.Y;
@@ -54,6 +72,7 @@ public class PlayerStat : Prerequisite
     public string GetPreview(float magnitude, bool increase)
     {
         bool hitCap = false;
+        Vector2 range = GetRange();
         if (intChange)
         {
             float preview = CalculateStatUpgrade(magnitude, increase);
@@ -67,7 +86,7 @@ public class PlayerStat : Prerequisite
                 hitCap = true;
                 preview = range.X;
             }
-            return string.Format("{0} {1} by {2:D} ({3:D} -> {4:D}){5}", name, increase ? "Up" : "Down", (int)Math.Round(magnitude), (int)dynamicValue, (int)preview, hitCap ? " (cap)" : "");
+            return string.Format("{0} {1} by {2:D} ({3:D} -> {4:D}){5}", name, increase ? "Up" : "Down", (int)Math.Round(magnitude), (int)GetDynamicVal(), (int)preview, hitCap ? " (cap)" : "");
         }
         else
         {
@@ -82,7 +101,7 @@ public class PlayerStat : Prerequisite
                 hitCap = true;
                 preview = range.X;
             }
-            return string.Format("{0} {1} by {2:D}% ({3:n2} -> {4:n2}){5}", name, increase ? "Up" : "Down", (int)Math.Round(magnitude * 100), dynamicValue, preview, hitCap ? " (cap)" : "");
+            return string.Format("{0} {1} by {2:D}% ({3:n2} -> {4:n2}){5}", name, increase ? "Up" : "Down", (int)Math.Round(magnitude * 100), GetDynamicVal(), preview, hitCap ? " (cap)" : "");
 
         }
     }
@@ -91,17 +110,17 @@ public class PlayerStat : Prerequisite
     {
         if (intChange)
         {
-            return dynamicValue + magnitude * (increase ? 1 : -1);
+            return GetDynamicVal() + magnitude * (increase ? 1 : -1);
         }
         else
         {
-            return dynamicValue + magnitude * Mathf.Max(baseValue, 1) * (increase ? 1 : -1);
+            return GetDynamicVal() + magnitude * Mathf.Max(baseValue, 1) * (increase ? 1 : -1);
         }
     }
 
     public float GetDynamicVal()
     {
-        return dynamicValue;
+        return dynamicValue * GetMult();
     }
 
     public void Nullify()
@@ -135,7 +154,8 @@ public class PlayerStat : Prerequisite
     {
         if (c is null)
         {
-            if (condition is null){
+            if (condition is null)
+            {
                 return null;
             }
             c = condition;

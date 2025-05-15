@@ -35,19 +35,18 @@ public partial class PiercingBullet : Bullet
 
         if (!dead && timeAlive > PlayerStats.Unlocks.piercingBulletsPiercingTime.GetDynamicVal())
         {
-            if (PlayerStats.Unlocks.BouncingBullets.unlocked)
+            if (!PlayerStats.Unlocks.BouncingBullets.unlocked)
             {
                 // Turn grey when piercing is done
                 GetParent().GetNode<Sprite2D>("Sprite2D").Modulate = Color.Color8(0, 0, 0);
             }
             else
             {
-                Player player = GetParent().GetParent<Player>();
                 // If bouncy bullets have been unlocked, become a bouncy bullet
                 RigidBody2D newBullet = bounceBullet.Instantiate<RigidBody2D>();
-                player.AddChild(newBullet);
+                GetParent().GetParent().AddChild(newBullet);
                 newBullet.LinearVelocity = velocity;
-                newBullet.GlobalPosition = GlobalPosition;
+                newBullet.GlobalPosition = GlobalPosition + velocity.Normalized() * 10;
                 HandleDeath();
             }
 

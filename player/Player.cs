@@ -17,7 +17,6 @@ public partial class Player : Area2D
     [Export]
     public PackedScene laserBeam;
 
-    Vector2 fireFromPos;
     float damage; // Default damage per shot
     float firingspeed; // Shots/second
     int currentHP;
@@ -91,7 +90,7 @@ public partial class Player : Area2D
         canFire = true;
     }
 
-    private void ShootBullet()
+    private void ShootBullet(Vector2 fireFromPos)
     {
         if (State.currentState != State.alive)
         {
@@ -112,7 +111,7 @@ public partial class Player : Area2D
         }
         else
         {
-
+            fireFromPos += Position; // Add the player's position because this projectile isn't a child of this node
             // A bullet is piercing first, then when piercing runs out becomes bouncy. If there is no piercing, it starts bouncy.
             Vector2 velocity = new Vector2(0, -1000 * ShotSpeed.GetDynamicVal()).Rotated(spreadRotate);
             if (!Unlocks.PiercingBullets.unlocked)
@@ -122,7 +121,7 @@ public partial class Player : Area2D
                 newBullet.GetNode<Bullet>("ScriptHolder").originalBullet = true;
                 newBullet.LinearVelocity = velocity;
                 newBullet.Position = fireFromPos;
-                AddChild(newBullet);
+                GetParent().AddChild(newBullet);
             }
             else
             {
@@ -132,8 +131,8 @@ public partial class Player : Area2D
                 newBullet.Rotate(spreadRotate);
                 PiercingBullet pierceBehaviour = newBullet.GetNode<PiercingBullet>("ScriptHolder");
                 pierceBehaviour.velocity = velocity;
-                newBullet.Position = Position + fireFromPos;
-                AddChild(newBullet);
+                newBullet.Position = fireFromPos;
+                GetParent().AddChild(newBullet);
             }
 
 
@@ -159,14 +158,14 @@ public partial class Player : Area2D
         // Regular Fire if clicking 
         if (Input.IsActionPressed("fire") && canFire)
         {
-            fireFromPos = new Vector2(0, 0);
+            Vector2 fireFromPos = new Vector2(0, 0);
             // Multishot
             float shots = Multishot.GetDynamicVal();
             while (shots > 0)
             {
                 if (GD.RandRange(0f, 1) <= shots)
                 {
-                    ShootBullet();
+                    ShootBullet(fireFromPos);
                 }
                 fireFromPos += new Vector2(10 + (GD.Randi() % 5), 0).Rotated(reticule.Rotation) * (GD.Randi() % 2 == 0 ? 1 : -1);
                 shots--;

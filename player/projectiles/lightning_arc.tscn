@@ -1,13 +1,27 @@
-[gd_scene load_steps=2 format=3 uid="uid://4br0n54vxpbq"]
+[gd_scene load_steps=6 format=3 uid="uid://4br0n54vxpbq"]
 
 [ext_resource type="Script" path="res://player/projectiles/LightningArc.cs" id="1_0ulq0"]
+[ext_resource type="Texture2D" uid="uid://csm2jxko8rebu" path="res://custom assets/projectiles/lightning arc 1.png" id="2_fwr7i"]
+[ext_resource type="Texture2D" uid="uid://md6m2l1gqj0a" path="res://custom assets/projectiles/lightning arc 2.png" id="3_tp0jq"]
+[ext_resource type="Texture2D" uid="uid://cmtocsihuegw8" path="res://custom assets/projectiles/lightning arc 3.png" id="4_r1211"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cn1st"]
 
 [node name="Lightning Arc" type="Node2D"]
 z_index = 2
+material = SubResource("ShaderMaterial_cn1st")
 script = ExtResource("1_0ulq0")
+lightningOne = ExtResource("2_fwr7i")
+lightningTwo = ExtResource("3_tp0jq")
+lightningThree = ExtResource("4_r1211")
 
 [node name="Arc" type="Line2D" parent="."]
 z_index = 2
+texture_filter = 1
+texture_repeat = 2
+width = 53.39
+texture = ExtResource("2_fwr7i")
+texture_mode = 1
 
 [node name="DeathTimer" type="Timer" parent="."]
 wait_time = 0.1

@@ -111,11 +111,6 @@ public static class Stats
         // Gets every possible upgrade that could be purchased from the store in the entire game
         public static List<PlayerUpgrade> GetAllUpgrades()
         {
-            // Only want to generate this once
-            if (allUpgrades is not null)
-            {
-                return allUpgrades;
-            }
             // Start with the defaults
             List<PlayerUpgrade> allAvailableUpgrades = defaultStats.GenerateUpgrades().ToList<PlayerUpgrade>();
             // Add every unlockable and all stat upgrades associated with that unlockable

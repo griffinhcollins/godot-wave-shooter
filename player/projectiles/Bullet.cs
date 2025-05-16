@@ -134,39 +134,8 @@ public abstract partial class Bullet : Node2D
             Mob hitMob = (Mob)hitNode;
             if (Unlocks.Lightning.unlocked)
             {
-                float arcRange = Unlocks.lightningRange.GetDynamicVal();
-                List<Mob> targets = new List<Mob>();
-                // Find the nearest mob
-                foreach (Mob mob in GetTree().GetNodesInGroup("mobs"))
-                {
-                    if (mob == hitNode)
-                    {
-                        continue;
-                    }
 
-                    if ((mob.GlobalPosition - GlobalPosition).LengthSquared() < arcRange)
-                    {
-                        targets.Add(mob);
-                    }
-                }
-
-                if (targets.Count > 0)
-                {
-                    targets.OrderBy(t => (t.GlobalPosition - GlobalPosition).LengthSquared());
-
-                    for (int i = 0; i < Mathf.Min(Unlocks.lightningMaxArcs.GetDynamicVal(), targets.Count); i++)
-                    {
-                        Mob target = targets[i];
-                        Node2D arc = lightningArc.Instantiate<Node2D>();
-                        Line2D line = arc.GetNode<Line2D>("Arc");
-                        GetTree().Root.AddChild(arc);
-                        line.AddPoint(hitMob.GlobalPosition);
-                        line.AddPoint(target.GlobalPosition);
-
-                        target.TakeDamage(Damage.GetDynamicVal());
-                    }
-                }
-
+                SpawnLightning(hitMob);
             }
             if (Unlocks.OverflowBullets.unlocked)
             {
@@ -183,6 +152,46 @@ public abstract partial class Bullet : Node2D
         }
 
     }
+
+
+    void SpawnLightning(Mob seedMob)
+    {
+        float arcRange = Unlocks.lightningRange.GetDynamicVal();
+        List<Mob> targets = new List<Mob>();
+        // Find the nearest mob
+        foreach (Mob mob in GetTree().GetNodesInGroup("mobs"))
+        {
+            if (mob == seedMob)
+            {
+                continue;
+            }
+
+            if ((mob.GlobalPosition - GlobalPosition).LengthSquared() < arcRange * arcRange)
+            {
+                GD.Print("in range");
+                targets.Add(mob);
+            }
+        }
+
+        if (targets.Count > 0)
+        {
+            GD.Print("ha");
+            targets.OrderBy(t => (t.GlobalPosition - GlobalPosition).LengthSquared());
+
+            for (int i = 0; i < Mathf.Min(Unlocks.lightningMaxArcs.GetDynamicVal(), targets.Count); i++)
+            {
+                Mob target = targets[i];
+                Node2D arc = lightningArc.Instantiate<Node2D>();
+                Line2D line = arc.GetNode<Line2D>("Arc");
+                GetTree().Root.AddChild(arc);
+                line.AddPoint(seedMob.GlobalPosition);
+                line.AddPoint(target.GlobalPosition);
+
+                target.TakeDamage(dmg);
+            }
+        }
+    }
+
     protected virtual void HandleDeath()
     {
         dead = true;

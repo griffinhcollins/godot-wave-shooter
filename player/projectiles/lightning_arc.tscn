@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://4br0n54vxpbq"]
+[gd_scene load_steps=8 format=3 uid="uid://4br0n54vxpbq"]
 
 [ext_resource type="Script" path="res://player/projectiles/LightningArc.cs" id="1_0ulq0"]
 [ext_resource type="Texture2D" uid="uid://csm2jxko8rebu" path="res://custom assets/projectiles/lightning arc 1.png" id="2_fwr7i"]
@@ -6,6 +6,13 @@
 [ext_resource type="Texture2D" uid="uid://cmtocsihuegw8" path="res://custom assets/projectiles/lightning arc 3.png" id="4_r1211"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cn1st"]
+
+[sub_resource type="Curve" id="Curve_wch25"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.604839), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_2vg5c"]
+colors = PackedColorArray(1, 1, 1, 1, 0.784314, 0.784314, 0.784314, 0.862745)
 
 [node name="Lightning Arc" type="Node2D"]
 z_index = 2
@@ -19,7 +26,9 @@ lightningThree = ExtResource("4_r1211")
 z_index = 2
 texture_filter = 1
 texture_repeat = 2
-width = 53.39
+width = 75.0
+width_curve = SubResource("Curve_wch25")
+gradient = SubResource("Gradient_2vg5c")
 texture = ExtResource("2_fwr7i")
 texture_mode = 1
 

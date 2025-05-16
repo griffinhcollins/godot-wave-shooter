@@ -4,12 +4,18 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.ComponentModel;
 
 public abstract partial class Bullet : Node2D
 {
 
+    // [Export]
+    // PackedScene splinterShard;
+
     [Export]
     PackedScene lightningArc;
+
+    public bool isShard = false;
 
     protected bool dead;
     float dmg;
@@ -24,6 +30,8 @@ public abstract partial class Bullet : Node2D
     // A bullet can only hit the same mob once
     HashSet<Node2D> mobsHit;
 
+    public Mob shardParent;
+
     int numHit;
 
     // true only if this was sent by the player (not by another bullet)
@@ -33,9 +41,17 @@ public abstract partial class Bullet : Node2D
     public override void _Ready()
     {
         dead = false;
-        SetDamage(Damage.GetDynamicVal());
+        if (!isShard)
+        {
+            SetDamage(Damage.GetDynamicVal());
+
+        }
         numHit = 0;
-        mobsHit = new HashSet<Node2D>();
+        if (mobsHit is null)
+        {
+            mobsHit = new HashSet<Node2D>();
+
+        }
 
         if (this is not LaserBeam)
         {
@@ -58,7 +74,17 @@ public abstract partial class Bullet : Node2D
         }
     }
 
+    public void AddToHitMobs(Mob mob)
+    {
+        if (mobsHit is null)
+        {
+            mobsHit = new HashSet<Node2D>();
+        }
+        mobsHit.Add(mob);
+    }
+
     protected abstract Vector2 GetCurrentVelocity();
+    protected abstract void SetVelocity(Vector2 newVelocity);
     protected abstract void Pause();
     protected abstract void UnPause();
 
@@ -93,7 +119,7 @@ public abstract partial class Bullet : Node2D
 
     private void OnCollision(Node2D body)
     {
-
+        
         // This always happens when we hit something, regardless of if it is the final hit
         HandleCollision(body);
         //  Now do checks for things that are only on final or non-final hit
@@ -108,8 +134,11 @@ public abstract partial class Bullet : Node2D
         }
         else
         {
+            if (isShard && body == shardParent){
+                return;
+            }
             // Final hit
-            HandleDeath();
+            HandleDeath(body);
 
         }
     }
@@ -205,8 +234,16 @@ public abstract partial class Bullet : Node2D
         return alreadyHit;
     }
 
-    protected virtual void HandleDeath()
+    protected virtual void HandleDeath(Node2D lastHit = null)
     {
+
+        if (Unlocks.Splinter.unlocked)
+        {
+
+            Splinter(lastHit);
+        }
+
+
         dead = true;
         Node2D parent = GetParent<Node2D>();
         parent.Hide();
@@ -216,6 +253,40 @@ public abstract partial class Bullet : Node2D
         {
             parent.QueueFree();
 
+        }
+    }
+
+    private void Splinter(Node2D lastHit = null)
+    {
+        Mob hitMob = null;
+        if (lastHit is not null && lastHit is Mob)
+        {
+            hitMob = (Mob)lastHit;
+        }
+        if (isShard) // Maybe implement a lategame upgrade that removes this because it's funny
+        {
+            return;
+        }
+        Node2D parent = GetParent<Node2D>();
+        int shards = (int)Unlocks.splinterFragments.GetDynamicVal();
+        for (int i = 0; i < shards; i++)
+        {
+            GD.Print(i);
+            // Copy myself
+            Node2D shardBody = (GD.Load(GetParent().SceneFilePath) as PackedScene).Instantiate<Node2D>();
+            shardBody.Position = parent.Position;
+            Vector2 shardVelocity = GetCurrentVelocity().Rotated((GD.Randf() + 1 / 6) * 1.5f * Mathf.Pi);
+            Bullet shard = shardBody.GetNode<Bullet>("ScriptHolder");
+            shard.SetVelocity(shardVelocity);
+            shard.SetDamage(dmg * Unlocks.splinterDamageMultiplier.GetDynamicVal());
+            GD.Print(shard.dmg);
+            shard.isShard = true;
+            if (hitMob is not null)
+            {
+                shard.AddToHitMobs(hitMob);
+                shard.shardParent = hitMob;
+            }
+            GetParent().GetParent().CallDeferred(MethodName.AddChild, shardBody);
         }
     }
 

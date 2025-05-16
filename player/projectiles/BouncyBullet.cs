@@ -27,7 +27,7 @@ public partial class BouncyBullet : Bullet
 	{
         base.HandleCollision(hitNode);
         
-		parent.LinearVelocity = parent.LinearVelocity.Normalized() * 1000 * PlayerStats.ShotSpeed.GetDynamicVal();
+		parent.SetDeferred(RigidBody2D.PropertyName.LinearVelocity, parent.LinearVelocity.Normalized() * 1000 * PlayerStats.ShotSpeed.GetDynamicVal());
 	}
 
     protected override void Pause()
@@ -35,7 +35,15 @@ public partial class BouncyBullet : Bullet
         parent.LinearVelocity = Vector2.Zero;
     }
 
-	protected override void UnPause()
+    protected override void SetVelocity(Vector2 newVelocity)
+    {
+        if (parent is null){
+            parent = GetParent<RigidBody2D>();
+        }
+        parent.SetDeferred(RigidBody2D.PropertyName.LinearVelocity, newVelocity.Normalized() * 1000 * PlayerStats.ShotSpeed.GetDynamicVal());
+    }
+
+    protected override void UnPause()
     {
         parent.LinearVelocity = beforePauseVelocity;
     }

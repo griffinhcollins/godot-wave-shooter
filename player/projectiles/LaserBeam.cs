@@ -64,4 +64,8 @@ public partial class LaserBeam : Bullet
 		return;
 	}
 
+    protected override void SetVelocity(Vector2 newVelocity)
+    {
+        Rotation = Vector2.Up.AngleTo(newVelocity);
+    }
 }

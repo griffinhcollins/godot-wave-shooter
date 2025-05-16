@@ -189,7 +189,16 @@ public static class Stats
             public static Unlockable Laser = new Unlockable("Laser Beam", laserStats, laserUnlockCondition);
 
 
-            public static Unlockable[] allUnlockables = { Laser, BouncingBullets, PiercingBullets, WallBounce, Lightning, OverflowBullets };
+            // Splinter
+            // When the bullet dies, it splits into mini-bullets
+            public static PlayerStat splinterFragments = new PlayerStat("Splinter Fragments", 2, new Vector2(2, 5), true);
+            public static PlayerStat splinterDamageMultiplier = new PlayerStat("Splinter Damage Fraction", 0.5f, new Vector2(0.5f, 1), true);
+            static List<PlayerStat> splinterStatList = new List<PlayerStat> { splinterFragments, splinterDamageMultiplier };
+            static StatSet splinterStats = new StatSet(splinterStatList);
+            public static Unlockable Splinter = new Unlockable("Splinter", splinterStats);
+
+
+            public static Unlockable[] allUnlockables = { Laser, BouncingBullets, PiercingBullets, WallBounce, Lightning, OverflowBullets, Splinter };
 
         }
 

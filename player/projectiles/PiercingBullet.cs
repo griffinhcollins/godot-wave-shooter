@@ -74,4 +74,10 @@ public partial class PiercingBullet : Bullet
     {
         return;
     }
+
+    protected override void SetVelocity(Vector2 newVelocity)
+    {
+        velocity = newVelocity;
+    }
+
 }

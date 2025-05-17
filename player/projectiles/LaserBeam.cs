@@ -8,6 +8,8 @@ public partial class LaserBeam : Bullet
 	GpuParticles2D particles;
 	CollisionShape2D hitbox;
 
+	Node2D lastHit;
+
 
 
 	// Called when the node enters the scene tree for the first time.
@@ -19,7 +21,7 @@ public partial class LaserBeam : Bullet
 		hitbox = parent.GetNode<CollisionShape2D>("CollisionShape2D");
 
 		RectangleShape2D collisionShape = new RectangleShape2D();
-		collisionShape.Size = new Vector2(20 * BulletSize.GetDynamicVal(), 400 * ShotSpeed.GetDynamicVal());
+		collisionShape.Size = Unlocks.LaserSizeVector();
 
 		hitbox.Shape = collisionShape;
 
@@ -32,7 +34,8 @@ public partial class LaserBeam : Bullet
 		if (body.IsInGroup("mobs"))
 		{
 			Mob mobHit = (Mob)body;
-			mobHit.TakeDamage(Damage.GetDynamicVal());
+			lastHit = mobHit;
+			OnHit(mobHit);
 		}
 	}
 
@@ -45,7 +48,7 @@ public partial class LaserBeam : Bullet
 		if (timeAlive >= Unlocks.LaserLifetime.GetDynamicVal() && GD.Randi() % 3 == 0)
 		{
 			particles.Hide();
-			HandleDeath();
+			HandleDeath(lastHit);
 		}
 	}
 

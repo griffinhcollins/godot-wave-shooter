@@ -37,12 +37,14 @@ public abstract partial class Bullet : Node2D
     // true only if this was sent by the player (not by another bullet)
     public bool originalBullet;
 
+    float shardMult = 1;
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         dead = false;
 
-        float shardMult = isShard ? Unlocks.splinterDamageMultiplier.GetDynamicVal() : 1;
+        shardMult = isShard ? Unlocks.splinterDamageMultiplier.GetDynamicVal() : 1;
         SetDamage(Damage.GetDynamicVal() * shardMult);
 
         numHit = 0;
@@ -172,6 +174,10 @@ public abstract partial class Bullet : Node2D
             {
                 SetDamage(dmg - Unlocks.overflowLoss.GetDynamicVal() * hitMob.GetHP());
             }
+            if (Unlocks.Splinter.unlocked && Unlocks.Laser.unlocked)
+            {
+                Splinter(hitNode);
+            }
         }
         // Finally, actually deal damage
         if (hitNode.IsInGroup("mobs") && !mobsHit.Contains(hitNode))
@@ -238,8 +244,12 @@ public abstract partial class Bullet : Node2D
 
     protected virtual void HandleDeath(Node2D lastHit = null, bool splinterOveride = true)
     {
+        if (dead)
+        {
+            return;
+        }
 
-        if (Unlocks.Splinter.unlocked && splinterOveride)
+        if (Unlocks.Splinter.unlocked && splinterOveride && !isShard && !Unlocks.Laser.unlocked)
         {
 
             Splinter(lastHit);
@@ -265,29 +275,39 @@ public abstract partial class Bullet : Node2D
         {
             hitMob = (Mob)lastHit;
         }
-        if (isShard) // Maybe implement a lategame upgrade that removes this because it's funny
-        {
-            return;
-        }
+
         Node2D parent = GetParent<Node2D>();
         int shards = (int)Unlocks.splinterFragments.GetDynamicVal();
         for (int i = 0; i < shards; i++)
         {
-            GD.Print(i);
             // Copy myself
             Node2D shardBody = (GD.Load(GetParent().SceneFilePath) as PackedScene).Instantiate<Node2D>();
-            shardBody.Position = parent.Position;
-            Vector2 shardVelocity = GetCurrentVelocity().Rotated((GD.Randf() + 1 / 6) * 1.5f * Mathf.Pi);
             Bullet shard = shardBody.GetNode<Bullet>("ScriptHolder");
-            shard.SetVelocity(shardVelocity);
-            GD.Print(shard.dmg);
+            if (this is LaserBeam)
+            {
+                // If splinter is with laser beam, spawns a laser beam off a hit enemy
+                shardBody.GlobalPosition = lastHit.GlobalPosition;
+                // Make it perpendicular in either direction
+                shardBody.Rotation = GD.Randf() * 2 * Mathf.Pi;
+            }
+            else
+            {
+                shardBody.Position = parent.Position;
+                Vector2 shardVelocity = GetCurrentVelocity().Rotated((GD.Randf() + 1 / 6) * 1.5f * Mathf.Pi);
+                shard.SetVelocity(shardVelocity);
+
+            }
             shard.isShard = true;
             if (hitMob is not null)
             {
                 shard.AddToHitMobs(hitMob);
                 shard.shardParent = hitMob;
             }
-            GetParent().GetParent().CallDeferred(MethodName.AddChild, shardBody);
+            if (this is LaserBeam){
+                parent = parent.GetParent<Node2D>();
+            }
+            parent.GetParent().CallDeferred(MethodName.AddChild, shardBody);
+
         }
     }
 

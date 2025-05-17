@@ -188,6 +188,10 @@ public static class Stats
             static StatSet laserStats = new StatSet(laserStatList);
             public static Unlockable Laser = new Unlockable("Laser Beam", laserStats, laserUnlockCondition);
 
+            public static Vector2 LaserSizeVector()
+            {
+                return new Vector2(20 * BulletSize.GetDynamicVal(), 400 * ShotSpeed.GetDynamicVal());
+            }
 
             // Splinter
             // When the bullet dies, it splits into mini-bullets

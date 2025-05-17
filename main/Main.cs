@@ -3,7 +3,7 @@ using static Stats;
 using System;
 using System.Diagnostics.Metrics;
 
-public partial class Main : Node
+public partial class Main : Node2D
 {
 
     [Export]

@@ -41,11 +41,10 @@ public abstract partial class Bullet : Node2D
     public override void _Ready()
     {
         dead = false;
-        if (!isShard)
-        {
-            SetDamage(Damage.GetDynamicVal());
 
-        }
+        float shardMult = isShard ? Unlocks.splinterDamageMultiplier.GetDynamicVal() : 1;
+        SetDamage(Damage.GetDynamicVal() * shardMult);
+
         numHit = 0;
         if (mobsHit is null)
         {
@@ -55,8 +54,9 @@ public abstract partial class Bullet : Node2D
 
         if (this is not LaserBeam)
         {
-            GetParent().GetNode<CollisionShape2D>("CollisionShape2D").Scale = Vector2.One * BulletSize.GetDynamicVal();
-            GetParent().GetNode<Sprite2D>("Sprite2D").Scale = Vector2.One * BulletSize.GetDynamicVal();
+
+            GetParent().GetNode<CollisionShape2D>("CollisionShape2D").Scale = Vector2.One * BulletSize.GetDynamicVal() * shardMult;
+            GetParent().GetNode<Sprite2D>("Sprite2D").Scale = Vector2.One * BulletSize.GetDynamicVal() * shardMult;
         }
 
         if (originalBullet)
@@ -73,6 +73,7 @@ public abstract partial class Bullet : Node2D
 
         }
     }
+
 
     public void AddToHitMobs(Mob mob)
     {
@@ -119,7 +120,7 @@ public abstract partial class Bullet : Node2D
 
     private void OnCollision(Node2D body)
     {
-        
+
         // This always happens when we hit something, regardless of if it is the final hit
         HandleCollision(body);
         //  Now do checks for things that are only on final or non-final hit
@@ -134,7 +135,8 @@ public abstract partial class Bullet : Node2D
         }
         else
         {
-            if (isShard && body == shardParent){
+            if (isShard && body == shardParent)
+            {
                 return;
             }
             // Final hit
@@ -234,10 +236,10 @@ public abstract partial class Bullet : Node2D
         return alreadyHit;
     }
 
-    protected virtual void HandleDeath(Node2D lastHit = null)
+    protected virtual void HandleDeath(Node2D lastHit = null, bool splinterOveride = true)
     {
 
-        if (Unlocks.Splinter.unlocked)
+        if (Unlocks.Splinter.unlocked && splinterOveride)
         {
 
             Splinter(lastHit);
@@ -278,7 +280,6 @@ public abstract partial class Bullet : Node2D
             Vector2 shardVelocity = GetCurrentVelocity().Rotated((GD.Randf() + 1 / 6) * 1.5f * Mathf.Pi);
             Bullet shard = shardBody.GetNode<Bullet>("ScriptHolder");
             shard.SetVelocity(shardVelocity);
-            shard.SetDamage(dmg * Unlocks.splinterDamageMultiplier.GetDynamicVal());
             GD.Print(shard.dmg);
             shard.isShard = true;
             if (hitMob is not null)

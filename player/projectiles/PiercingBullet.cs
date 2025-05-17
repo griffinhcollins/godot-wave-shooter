@@ -47,7 +47,7 @@ public partial class PiercingBullet : Bullet
                 GetParent().GetParent().AddChild(newBullet);
                 newBullet.LinearVelocity = velocity;
                 newBullet.GlobalPosition = GlobalPosition + velocity.Normalized() * 10;
-                HandleDeath();
+                HandleDeath(null, false);
             }
 
         }

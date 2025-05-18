@@ -126,7 +126,7 @@ public static class Stats
 
         public static void SetDefaults()
         {
-            Money = 1000;
+            Money = 0;
             defaultStats.SetToDefaultStartingValues();
             for (int i = 0; i < miscellaneousStats.Count; i++)
             {
@@ -206,6 +206,10 @@ public static class Stats
 
         }
 
+        public static class Mutations
+        {
+            
+        }
     }
 
 

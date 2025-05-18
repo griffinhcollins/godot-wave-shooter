@@ -181,6 +181,8 @@ bounceBullet = ExtResource("2_qxbfg")
 pierceBullet = ExtResource("3_sfohy")
 laserBeam = ExtResource("3_lvtdk")
 
+[node name="BodyHolder" type="Node2D" parent="."]
+
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.019, 0.019)
 sprite_frames = SubResource("SpriteFrames_v23md")

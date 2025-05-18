@@ -32,6 +32,8 @@ public partial class Player : Area2D
 
     Hud hud;
 
+    Vector2 prevVelocity;
+
 
 
 
@@ -151,8 +153,9 @@ public partial class Player : Area2D
 
         // Point reticule at mouse
         Vector2 pointVec = GetGlobalMousePosition() - Position;
-
         reticule.Rotation = -1 * pointVec.AngleTo(Vector2.Up);
+
+        ProcessMovement((float)delta);
 
 
         // Regular Fire if clicking 
@@ -174,9 +177,10 @@ public partial class Player : Area2D
         }
 
 
+    }
 
-
-
+    void ProcessMovement(float delta)
+    {
         // Be still by default
         Vector2 velocity = Vector2.Zero;
 
@@ -212,7 +216,7 @@ public partial class Player : Area2D
         }
 
         // Move
-        Position += velocity * (float)delta;
+        Position += velocity * delta;
         Position = new Vector2(Mathf.Clamp(Position.X, 0, screenSize.X), Mathf.Clamp(Position.Y, 0, screenSize.Y));
 
 
@@ -227,8 +231,56 @@ public partial class Player : Area2D
         {
             sprite.Animation = "jupes_sub";
             // sprite.FlipV = velocity.Y > 0;
+        }
+
+        // Point where we're going
+        float targetRotation;
+        if (velocity.Y == 0 || velocity.X == 0)
+        {
+            targetRotation = 0;
+        }
+        else
+        {
+            if (velocity.X > 0)
+            {
+                if (velocity.Y > 0)
+                {
+                    targetRotation = 1;
+                }
+                else
+                {
+                    targetRotation = -1;
+                }
+            }
+            else
+            {
+                if (velocity.Y > 0)
+                {
+                    targetRotation = -1;
+                }
+                else
+                {
+                    targetRotation = 1;
+                }
+            }
+        }
+        Rotation = Mathf.Lerp(Rotation, targetRotation / 3f, delta * 5);
+
+        // If we were facing left and are now facing right, or vice versa, flip rotation immediately
+        if (prevVelocity.X >= 0 != velocity.X >= 0 && velocity.X != 0)
+        {
+            Rotation = -Rotation;
+        }
+
+        if (velocity.X != 0)
+        {
+            prevVelocity = velocity;
 
         }
+    }
+
+    private void ProcessRotation(Vector2 velocity)
+    {
 
     }
 
@@ -261,7 +313,7 @@ public partial class Player : Area2D
             Die();
             return;
         }
-        
+
         // Activate I-frames
         // Need to use deferred because this is called on a physics callback, and can't edit physics properties in a physics callback
         ToggleCollision(false);

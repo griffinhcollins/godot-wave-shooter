@@ -15,6 +15,8 @@ public abstract partial class Bullet : Node2D
     [Export]
     PackedScene lightningArc;
 
+    List<Mutation> currentMutations;
+
     public bool isShard = false;
 
     protected bool dead;
@@ -74,6 +76,7 @@ public abstract partial class Bullet : Node2D
             parent.SetCollisionMaskValue(5, true);
 
         }
+        
     }
 
 
@@ -86,8 +89,8 @@ public abstract partial class Bullet : Node2D
         mobsHit.Add(mob);
     }
 
-    protected abstract Vector2 GetCurrentVelocity();
-    protected abstract void SetVelocity(Vector2 newVelocity);
+    public abstract Vector2 GetCurrentVelocity();
+    public abstract void SetVelocity(Vector2 newVelocity, bool normalize = true);
     protected abstract void Pause();
     protected abstract void UnPause();
 
@@ -110,6 +113,28 @@ public abstract partial class Bullet : Node2D
         }
 
         timeAlive += (float)delta;
+
+        if (currentMutations is not null)
+        {
+            foreach (Mutation m in currentMutations)
+            {
+                m.OngoingEffect(delta, this);
+            }
+        }
+    }
+
+    public void AddMutation(Mutation mut)
+    {
+        GD.Print("ASGH");
+        if (currentMutations is null)
+        {
+            currentMutations = new List<Mutation> { mut };
+        }
+        else
+        {
+            currentMutations.Add(mut);
+        }
+        mut.ImmediateEffect(this);
     }
 
 

@@ -3,6 +3,8 @@ using static Stats.PlayerStats;
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
+using System.Collections.Generic;
+using System.Linq;
 
 public partial class Player : Area2D
 {
@@ -38,6 +40,8 @@ public partial class Player : Area2D
 
     Vector2 prevVelocity;
 
+    List<Mutation> activeMutations;
+
 
 
 
@@ -69,6 +73,9 @@ public partial class Player : Area2D
         bulletTimer.WaitTime = 1 / firingspeed;
         currentHP = (int)MaxHP.GetDynamicVal();
         hud.UpdateHealth(currentHP);
+
+        activeMutations = Mutations.allMutations.Where(m => m.applied).ToList();
+        GD.Print(activeMutations.Count);
     }
 
 
@@ -108,12 +115,14 @@ public partial class Player : Area2D
 
         float spreadRotate = reticule.Rotation + Mathf.DegToRad(Spread.GetDynamicVal()) * (float)GD.RandRange(-1, 1f);
 
+        Bullet projectile;
+
         if (Unlocks.Laser.unlocked)
         {
             Area2D newBeam = laserBeam.Instantiate<Area2D>();
             newBeam.Position = fireFromPos;
             newBeam.Rotate(spreadRotate);
-
+            projectile = newBeam.GetNode<LaserBeam>("ScriptHolder");
             AddChild(newBeam);
         }
         else
@@ -125,7 +134,8 @@ public partial class Player : Area2D
             {
                 // Bouncing, it's a rigidbody
                 RigidBody2D newBullet = bounceBullet.Instantiate<RigidBody2D>();
-                newBullet.GetNode<Bullet>("ScriptHolder").originalBullet = true;
+                projectile = newBullet.GetNode<BouncyBullet>("ScriptHolder");
+                projectile.originalBullet = true;
                 newBullet.LinearVelocity = velocity;
                 newBullet.Position = fireFromPos;
                 GetParent().AddChild(newBullet);
@@ -134,14 +144,24 @@ public partial class Player : Area2D
             {
                 // Piercing, it's an Area2D
                 Area2D newBullet = pierceBullet.Instantiate<Area2D>();
+                projectile = newBullet.GetNode<PiercingBullet>("ScriptHolder");
                 newBullet.GetNode<Bullet>("ScriptHolder").originalBullet = true;
                 newBullet.Rotate(spreadRotate);
-                PiercingBullet pierceBehaviour = newBullet.GetNode<PiercingBullet>("ScriptHolder");
-                pierceBehaviour.velocity = velocity;
+                ((PiercingBullet)projectile).velocity = velocity;
                 newBullet.Position = fireFromPos;
                 GetParent().AddChild(newBullet);
             }
 
+
+        }
+
+        if (activeMutations is not null)
+        {
+            foreach (Mutation m in activeMutations)
+            {
+                GD.Print("player adding mut");
+                projectile.AddMutation(m);
+            }
 
         }
 
@@ -224,7 +244,7 @@ public partial class Player : Area2D
         Position += velocity * delta;
         Position = new Vector2(Mathf.Clamp(Position.X, 0, screenSize.X), Mathf.Clamp(Position.Y, 0, screenSize.Y));
 
-        
+
 
         // Update animations
         bubbleEmitter.Emitting = velocity.LengthSquared() > 0;
@@ -236,7 +256,7 @@ public partial class Player : Area2D
             bubbleEmitter.Position = new Vector2(emitterX * (velocity.X > 0 ? -1 : 1), bubbleEmitter.Position.Y);
             bubbleEmitter.InitialVelocityMin = 100 * (velocity.X > 0 ? -1 : 1);
             bubbleEmitter.InitialVelocityMax = 100 * (velocity.X > 0 ? -1 : 1);
-            
+
         }
         else if (velocity.Y != 0)
         {
@@ -290,7 +310,7 @@ public partial class Player : Area2D
         }
     }
 
-  
+
 
     private void Die()
     {

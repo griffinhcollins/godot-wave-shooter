@@ -60,7 +60,7 @@ public partial class PiercingBullet : Bullet
         return;
     }
 
-    protected override Vector2 GetCurrentVelocity()
+    public override Vector2 GetCurrentVelocity()
     {
         return velocity;
     }
@@ -75,7 +75,7 @@ public partial class PiercingBullet : Bullet
         return;
     }
 
-    protected override void SetVelocity(Vector2 newVelocity)
+    public override void SetVelocity(Vector2 newVelocity, bool normalize = true)
     {
         velocity = newVelocity;
     }

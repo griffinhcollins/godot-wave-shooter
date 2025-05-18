@@ -81,7 +81,7 @@ public partial class LaserBeam : Bullet
 		}
 	}
 
-	protected override Vector2 GetCurrentVelocity()
+	public override Vector2 GetCurrentVelocity()
 	{
 		return Vector2.Up.Rotated(GetParent<Node2D>().Rotation);
 	}
@@ -96,7 +96,7 @@ public partial class LaserBeam : Bullet
 		return;
 	}
 
-	protected override void SetVelocity(Vector2 newVelocity)
+	public override void SetVelocity(Vector2 newVelocity, bool normalize = true)
 	{
 		Rotation = Vector2.Up.AngleTo(newVelocity);
 	}

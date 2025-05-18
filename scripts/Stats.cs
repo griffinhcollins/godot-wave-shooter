@@ -136,6 +136,10 @@ public static class Stats
             {
                 u.Reset();
             }
+            foreach (Mutation m in Mutations.allMutations)
+            {
+                m.applied = false;
+            }
         }
 
         public static class Unlocks
@@ -208,7 +212,10 @@ public static class Stats
 
         public static class Mutations
         {
-            
+            public static AcceleratingBullet AcceleratingBullet = new();
+
+
+            public static Mutation[] allMutations = { AcceleratingBullet };
         }
     }
 

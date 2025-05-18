@@ -17,6 +17,10 @@ public partial class Player : Area2D
     [Export]
     public PackedScene laserBeam;
 
+
+    CpuParticles2D bubbleEmitter;
+    float emitterX;
+
     float damage; // Default damage per shot
     float firingspeed; // Shots/second
     int currentHP;
@@ -46,7 +50,8 @@ public partial class Player : Area2D
         Hide();
         screenSize = GetViewportRect().Size;
         sprite = GetNode<AnimatedSprite2D>("PlayerSprite");
-
+        bubbleEmitter = GetNode<CpuParticles2D>("BubbleEmitter");
+        emitterX = bubbleEmitter.Position.X;
         reticule = GetNode<Node2D>("ReticuleHolder");
         bulletTimer = GetNode<Timer>("BulletTimer");
 
@@ -219,13 +224,18 @@ public partial class Player : Area2D
         Position += velocity * delta;
         Position = new Vector2(Mathf.Clamp(Position.X, 0, screenSize.X), Mathf.Clamp(Position.Y, 0, screenSize.Y));
 
+        
 
         // Update animations
+        bubbleEmitter.Emitting = velocity.LengthSquared() > 0;
         if (velocity.X != 0)
         {
             sprite.Animation = "jupes_sub";
             sprite.FlipV = false;
             sprite.FlipH = velocity.X > 0;
+            bubbleEmitter.Position = new Vector2(emitterX * (velocity.X > 0 ? -1 : 1), bubbleEmitter.Position.Y);
+            bubbleEmitter.InitialVelocityMin = 100 * (velocity.X > 0 ? -1 : 1);
+            bubbleEmitter.InitialVelocityMax = 100 * (velocity.X > 0 ? -1 : 1);
         }
         else if (velocity.Y != 0)
         {

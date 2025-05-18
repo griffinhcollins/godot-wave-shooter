@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://dphno2aha4dnk"]
+[gd_scene load_steps=34 format=3 uid="uid://dphno2aha4dnk"]
 
 [ext_resource type="Texture2D" uid="uid://cxxc2leij01vs" path="res://art/playerGrey_up1.png" id="1_333lq"]
 [ext_resource type="Script" path="res://player/Player.cs" id="1_empth"]
@@ -28,6 +28,7 @@
 [ext_resource type="Texture2D" uid="uid://bgrv30ii7argt" path="res://custom assets/player stuff/slides/12.png" id="16_yy53w"]
 [ext_resource type="Texture2D" uid="uid://orpx632buhi8" path="res://custom assets/player stuff/slides/13.png" id="17_dggnx"]
 [ext_resource type="Texture2D" uid="uid://dvolwn1sg2ijp" path="res://custom assets/player stuff/slides/14.png" id="18_4xg6r"]
+[ext_resource type="Texture2D" uid="uid://c4fjy2xwtulkl" path="res://custom assets/player stuff/bubble.png" id="29_82gkq"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_v23md"]
 animations = [{
@@ -173,6 +174,9 @@ height = 46.0
 radius = 4.29822
 height = 13.1603
 
+[sub_resource type="Gradient" id="Gradient_larbq"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
 [node name="Player" type="Area2D" groups=["player"]]
 position = Vector2(571.219, 338.715)
 collision_mask = 10
@@ -180,8 +184,6 @@ script = ExtResource("1_empth")
 bounceBullet = ExtResource("2_qxbfg")
 pierceBullet = ExtResource("3_sfohy")
 laserBeam = ExtResource("3_lvtdk")
-
-[node name="BodyHolder" type="Node2D" parent="."]
 
 [node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.019, 0.019)
@@ -217,6 +219,20 @@ texture = ExtResource("6_arkfn")
 [node name="BulletTimer" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
+
+[node name="BubbleEmitter" type="CPUParticles2D" parent="."]
+z_index = -2
+position = Vector2(42.0662, 7.54016)
+amount = 20
+texture = ExtResource("29_82gkq")
+emission_shape = 1
+emission_sphere_radius = 15.0
+gravity = Vector2(0, -200)
+initial_velocity_min = 100.0
+initial_velocity_max = 100.0
+scale_amount_min = 0.1
+scale_amount_max = 0.2
+color_ramp = SubResource("Gradient_larbq")
 
 [connection signal="body_entered" from="." to="." method="OnBodyEntered"]
 [connection signal="timeout" from="BulletTimer" to="." method="OnBulletTimerFinished"]

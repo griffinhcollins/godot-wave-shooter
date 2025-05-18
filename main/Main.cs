@@ -152,6 +152,7 @@ public partial class Main : Node2D
 
 	private void OnWaveTimeout()
 	{
+        Stats.PlayerStats.Mutations.DeceleratingBullet.applied = true;
 		timeRemaining--;
 		hud.UpdateWaveTime(timeRemaining);
 		if (timeRemaining == 0)

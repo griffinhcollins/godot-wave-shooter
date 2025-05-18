@@ -75,7 +75,6 @@ public partial class Player : Area2D
         hud.UpdateHealth(currentHP);
 
         activeMutations = Mutations.allMutations.Where(m => m.applied).ToList();
-        GD.Print(activeMutations.Count);
     }
 
 
@@ -159,7 +158,6 @@ public partial class Player : Area2D
         {
             foreach (Mutation m in activeMutations)
             {
-                GD.Print("player adding mut");
                 projectile.AddMutation(m);
             }
 

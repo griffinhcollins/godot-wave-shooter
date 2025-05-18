@@ -125,7 +125,6 @@ public abstract partial class Bullet : Node2D
 
     public void AddMutation(Mutation mut)
     {
-        GD.Print("ASGH");
         if (currentMutations is null)
         {
             currentMutations = new List<Mutation> { mut };

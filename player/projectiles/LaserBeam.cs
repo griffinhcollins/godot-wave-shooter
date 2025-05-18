@@ -41,10 +41,6 @@ public partial class LaserBeam : Bullet
 
 		// Set amount of particles to scale with area of laser
 		particles.AmountRatio = (1 / 16000f) * (size.X * size.Y);
-		GD.Print(size.X);
-		GD.Print(size.Y);
-		GD.Print(1 / 16000f * (size.X * size.Y));
-		GD.Print(particles.AmountRatio);
 
 	}
 

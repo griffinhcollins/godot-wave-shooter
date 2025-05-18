@@ -190,7 +190,7 @@ public static class Stats
 
             public static Vector2 LaserSizeVector()
             {
-                return new Vector2(20 * BulletSize.GetDynamicVal(), 400 * ShotSpeed.GetDynamicVal());
+                return new Vector2(5 * BulletSize.GetDynamicVal(), 200 * ShotSpeed.GetDynamicVal());
             }
 
             // Splinter

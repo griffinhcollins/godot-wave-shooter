@@ -303,10 +303,8 @@ public abstract partial class Bullet : Node2D
                 shard.AddToHitMobs(hitMob);
                 shard.shardParent = hitMob;
             }
-            if (this is LaserBeam){
-                parent = parent.GetParent<Node2D>();
-            }
-            parent.GetParent().CallDeferred(MethodName.AddChild, shardBody);
+            GetTree().Root.CallDeferred(MethodName.AddChild, shardBody);
+
 
         }
     }

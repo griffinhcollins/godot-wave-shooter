@@ -28,7 +28,7 @@ normal = Vector2(1, 0)
 normal = Vector2(-1, 0)
 distance = -1280.0
 
-[node name="Main" type="Node"]
+[node name="Main" type="Node2D"]
 script = ExtResource("1_7h5d5")
 MobScene = ExtResource("2_rc8qt")
 
@@ -39,24 +39,6 @@ z_index = -2
 position = Vector2(0, -240)
 texture = ExtResource("3_4rbai")
 centered = false
-
-[node name="Title" type="Label" parent="."]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -57.5
-offset_top = -10.0
-offset_right = 57.5
-offset_bottom = 10.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 120
-text = "Into the Depths"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="Player" parent="." instance=ExtResource("3_vww5f")]
 position = Vector2(405, 328)
@@ -94,6 +76,17 @@ shape = SubResource("WorldBoundaryShape2D_liw8u")
 
 [node name="Right" type="CollisionShape2D" parent="Border"]
 shape = SubResource("WorldBoundaryShape2D_7axoi")
+
+[node name="Title" type="Label" parent="."]
+offset_left = 150.0
+offset_top = 200.0
+offset_right = 1129.0
+offset_bottom = 345.0
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 120
+text = "Into the Depths"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="NextWave" from="HUD" to="." method="StartWave"]
 [connection signal="StartGame" from="HUD" to="." method="NewGame"]

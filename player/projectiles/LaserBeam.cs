@@ -20,11 +20,31 @@ public partial class LaserBeam : Bullet
 		particles = parent.GetNode<GpuParticles2D>("BeamParticles");
 		hitbox = parent.GetNode<CollisionShape2D>("CollisionShape2D");
 
-		RectangleShape2D collisionShape = new RectangleShape2D();
-		collisionShape.Size = Unlocks.LaserSizeVector();
+		SetSize();
 
+
+	}
+
+	void SetSize()
+	{
+
+		Vector2 size = Unlocks.LaserSizeVector() * (isShard ? Unlocks.splinterDamageMultiplier.GetDynamicVal() : 1);
+
+		// Set size of collider
+		RectangleShape2D collisionShape = new RectangleShape2D();
+		collisionShape.Size = size;
 		hitbox.Shape = collisionShape;
 
+		// Set size of particles
+		particles.ProcessMaterial.Set(ParticleProcessMaterial.PropertyName.EmissionShapeOffset, new Vector3(0, -1 * size.Y, 0));
+		particles.ProcessMaterial.Set(ParticleProcessMaterial.PropertyName.EmissionBoxExtents, new Vector3(size.X, size.Y, 1));
+
+		// Set amount of particles to scale with area of laser
+		particles.AmountRatio = (1 / 16000f) * (size.X * size.Y);
+		GD.Print(size.X);
+		GD.Print(size.Y);
+		GD.Print(1 / 16000f * (size.X * size.Y));
+		GD.Print(particles.AmountRatio);
 
 	}
 
@@ -44,6 +64,11 @@ public partial class LaserBeam : Bullet
 	public override void _Process(double delta)
 	{
 		base._Process(delta);
+
+		// Follow the mouse
+		GetParent<Node2D>().GlobalRotation = Vector2.Up.AngleTo(GetGlobalMousePosition() - GetParent<Node2D>().GlobalPosition);
+
+
 		// Introduce a bit of randomness with how long lasers last makes them look a bit less jank with multishot
 		if (timeAlive >= Unlocks.LaserLifetime.GetDynamicVal() && GD.Randi() % 3 == 0)
 		{
@@ -67,8 +92,8 @@ public partial class LaserBeam : Bullet
 		return;
 	}
 
-    protected override void SetVelocity(Vector2 newVelocity)
-    {
-        Rotation = Vector2.Up.AngleTo(newVelocity);
-    }
+	protected override void SetVelocity(Vector2 newVelocity)
+	{
+		Rotation = Vector2.Up.AngleTo(newVelocity);
+	}
 }

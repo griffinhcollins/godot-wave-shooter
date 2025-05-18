@@ -66,7 +66,11 @@ public partial class LaserBeam : Bullet
 		base._Process(delta);
 
 		// Follow the mouse
-		GetParent<Node2D>().GlobalRotation = Vector2.Up.AngleTo(GetGlobalMousePosition() - GetParent<Node2D>().GlobalPosition);
+		if (!isShard)
+		{
+			GetParent<Node2D>().GlobalRotation = Vector2.Up.AngleTo(GetGlobalMousePosition() - GetParent<Node2D>().GlobalPosition);
+
+		}
 
 
 		// Introduce a bit of randomness with how long lasers last makes them look a bit less jank with multishot

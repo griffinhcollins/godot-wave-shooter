@@ -223,6 +223,7 @@ one_shot = true
 [node name="BubbleEmitter" type="CPUParticles2D" parent="."]
 z_index = -2
 position = Vector2(42.0662, 7.54016)
+emitting = false
 amount = 20
 texture = ExtResource("29_82gkq")
 emission_shape = 1

@@ -236,6 +236,7 @@ public partial class Player : Area2D
             bubbleEmitter.Position = new Vector2(emitterX * (velocity.X > 0 ? -1 : 1), bubbleEmitter.Position.Y);
             bubbleEmitter.InitialVelocityMin = 100 * (velocity.X > 0 ? -1 : 1);
             bubbleEmitter.InitialVelocityMax = 100 * (velocity.X > 0 ? -1 : 1);
+            
         }
         else if (velocity.Y != 0)
         {
@@ -289,10 +290,7 @@ public partial class Player : Area2D
         }
     }
 
-    private void ProcessRotation(Vector2 velocity)
-    {
-
-    }
+  
 
     private void Die()
     {
@@ -343,6 +341,7 @@ public partial class Player : Area2D
         Position = position;
         Show();
         ToggleCollision(true);
+        bubbleEmitter.Amount = bubbleEmitter.Amount; // Doing this clears existing particles
     }
 
     void ToggleCollision(bool toggle)

@@ -43,16 +43,6 @@ public class Unlockable : Prerequisite
 
 
 
-    public PlayerStat GetStat()
-    {
-        return null;
-    }
-
-    public Unlockable GetUnlockable()
-    {
-        return this;
-    }
-
     public List<Prerequisite> GetPrerequisites(Condition c = null)
     {
         if (c is null)

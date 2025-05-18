@@ -5,9 +5,6 @@ using Godot;
 
 public interface Prerequisite
 {
-    PlayerStat GetStat();
-
-    Unlockable GetUnlockable();
 
     List<Prerequisite> GetPrerequisites(Condition condition = null);
 

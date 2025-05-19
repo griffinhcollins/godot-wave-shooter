@@ -6,6 +6,8 @@ public abstract class Mutation // Comes with unlockables, not optional. Some are
 {
     public bool applied = false;
 
+    public abstract string GetName();
+
     public abstract void ImmediateEffect(Bullet projectile);
 
     public abstract void OngoingEffect(double delta, Bullet projectile);

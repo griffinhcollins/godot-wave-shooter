@@ -2,6 +2,11 @@
 
 public class DeceleratingBullet : Mutation
 {
+
+    public override string GetName()
+    {
+        return "Decelerating Bullet";
+    }
     public override void ImmediateEffect(Bullet projectile)
     {
         projectile.SetVelocity(projectile.GetCurrentVelocity() * 2, false);

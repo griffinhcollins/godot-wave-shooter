@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Wave Shooter"
+config/name="Into The Depths"
 run/main_scene="res://main/main.tscn"
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 config/icon="res://icon.svg"
@@ -23,7 +23,7 @@ window/stretch/mode="canvas_items"
 
 [dotnet]
 
-project/assembly_name="Godot Tutorial Dodge the Creeps"
+project/assembly_name="Into The Depths"
 
 [global_group]
 

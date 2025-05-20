@@ -49,10 +49,10 @@ public partial class PiercingBullet : Bullet
                 GetParent().GetParent().AddChild(newBullet);
                 BouncyBullet script = newBullet.GetNode<BouncyBullet>("ScriptHolder");
                 script.SetVelocity(velocity);
+                script.SetSeed(seed);
                 foreach (Mutation m in currentMutations)
                 {
                     script.AddMutation(m);
-                    script.SetSeed(seed);
                 }
                 newBullet.GlobalPosition = GlobalPosition + velocity.Normalized() * 10;
                 HandleDeath(null, false);
@@ -86,6 +86,10 @@ public partial class PiercingBullet : Bullet
     public override void SetVelocity(Vector2 newVelocity, bool normalize = true)
     {
         base.SetVelocity(newVelocity);
+        if (normalize)
+        {
+            newVelocity = newVelocity.Normalized() * PlayerStats.ShotSpeed.GetDynamicVal() * 1000;
+        }
         velocity = newVelocity;
     }
 

@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://4br0n54vxpbq" path="res://player/projectiles/lightning_arc.tscn" id="3_b5ltj"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_8702t"]
-bounce = 1.0
+bounce = 0.5
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gr8yg"]
 radius = 15.0

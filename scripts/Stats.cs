@@ -216,9 +216,12 @@ public static class Stats
             public static AcceleratingBullet AcceleratingBullet = new();
             public static DeceleratingBullet DeceleratingBullet = new();
             public static OrbitBullet OrbitBullet = new();
+            public static ChaoticBullet ChaoticBullet = new();
+            public static SmartBullet SmartBullet = new();
+            public static BoomarangBullet BoomarangBullet = new();
 
 
-            public static Mutation[] allMutations = { AcceleratingBullet, DeceleratingBullet, OrbitBullet };
+            public static Mutation[] allMutations = { AcceleratingBullet, DeceleratingBullet, OrbitBullet, ChaoticBullet, SmartBullet, BoomarangBullet };
         }
     }
 

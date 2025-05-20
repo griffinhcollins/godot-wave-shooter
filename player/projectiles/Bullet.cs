@@ -42,6 +42,8 @@ public abstract partial class Bullet : Node2D
 
     Vector2 initialVelocity;
 
+    Sprite2D sprite;
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -60,9 +62,9 @@ public abstract partial class Bullet : Node2D
 
         if (this is not LaserBeam)
         {
-
+            sprite = GetParent().GetNode<Sprite2D>("Sprite2D");
             GetParent().GetNode<CollisionShape2D>("CollisionShape2D").Scale = Vector2.One * BulletSize.GetDynamicVal() * shardMult;
-            GetParent().GetNode<Sprite2D>("Sprite2D").Scale = Vector2.One * BulletSize.GetDynamicVal() * shardMult;
+            sprite.Scale = Vector2.One * BulletSize.GetDynamicVal() * shardMult;
         }
 
         if (originalBullet)
@@ -77,6 +79,12 @@ public abstract partial class Bullet : Node2D
         {
             parent.SetCollisionMaskValue(5, true);
 
+        }
+
+        foreach (Mutation m in GetMutations())
+        {
+
+            m.ImmediateEffect(this);
         }
 
     }
@@ -154,6 +162,12 @@ public abstract partial class Bullet : Node2D
             m.OngoingEffect(delta, this);
         }
 
+        // if (sprite is not null && timeAlive > 0.5f * Lifetime.GetDynamicVal())
+        // {
+        //     Color currentColour = sprite.Modulate;
+        //     sprite.Modulate = new Color(currentColour.R, currentColour.G, currentColour.B, Mathf.Lerp(1, 0.5f, 2*(Lifetime.GetDynamicVal() -)));
+        // }
+
     }
 
     List<Mutation> GetMutations()
@@ -178,7 +192,6 @@ public abstract partial class Bullet : Node2D
         {
             currentMutations.Add(mut);
         }
-        mut.ImmediateEffect(this);
     }
 
 
@@ -378,6 +391,10 @@ public abstract partial class Bullet : Node2D
 
             }
             shard.isShard = true;
+            foreach (Mutation m in GetMutations())
+            {
+                shard.AddMutation(m);
+            }
             if (hitMob is not null)
             {
                 shard.AddToHitMobs(hitMob);

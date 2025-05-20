@@ -50,12 +50,14 @@ public partial class Mob : RigidBody2D
         animSprite.Play(mobTypes[GD.Randi() % mobTypes.Length]);
         damageSound = GetNode<AudioStreamPlayer2D>("DamageSound");
 
-
         // Set Size
         size = GD.Randf() * 0.5f * DynamicStats[ID.SizeMult] + 1;
         hp = DynamicStats[ID.HPMult] * baseHealth * size * 0.75f;
         animSprite.Scale *= size;
         GetNode<CollisionShape2D>("CollisionShape2D").Scale *= size;
+
+        
+        animSprite.SpeedScale = 1/(size);
         CreateIndicator();
     }
 

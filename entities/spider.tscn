@@ -1,0 +1,71 @@
+[gd_scene load_steps=11 format=3 uid="uid://cvjrmcq0ldpm0"]
+
+[ext_resource type="Script" path="res://entities/Mob.cs" id="1_kgy83"]
+[ext_resource type="PackedScene" uid="uid://cpsf1tpjvco18" path="res://entities/offscreen_indicator.tscn" id="2_jf12g"]
+[ext_resource type="PackedScene" uid="uid://cx23hqh3pjy5l" path="res://entities/coin.tscn" id="3_4jj2e"]
+[ext_resource type="Texture2D" uid="uid://ias7h2vmyir7" path="res://custom assets/enemies/spider body 1.png" id="4_pogpy"]
+[ext_resource type="Texture2D" uid="uid://dyr8q8k8oi2rs" path="res://custom assets/enemies/spider body 2.png" id="5_4yv35"]
+[ext_resource type="Texture2D" uid="uid://d2t4enn0yb31" path="res://custom assets/enemies/iris.png" id="6_b17u7"]
+[ext_resource type="Texture2D" uid="uid://d0vjjeowqdkxi" path="res://custom assets/enemies/pupil.png" id="7_ttr2r"]
+[ext_resource type="AudioStream" uid="uid://cl6887ed40bm7" path="res://sounds/enemy hurt.wav" id="10_olmub"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jq8ss"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_pogpy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_4yv35")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_118ht"]
+radius = 40.9091
+height = 84.8485
+
+[node name="Spider" type="RigidBody2D" groups=["cleanup", "mobs"]]
+position = Vector2(-6, 0)
+collision_layer = 2
+collision_mask = 7
+gravity_scale = 0.0
+script = ExtResource("1_kgy83")
+offscreenIndicator = ExtResource("2_jf12g")
+coin = ExtResource("3_4jj2e")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.06, 0.06)
+sprite_frames = SubResource("SpriteFrames_jq8ss")
+animation = &"walk"
+frame = 1
+frame_progress = 0.701245
+
+[node name="Eye" type="Node2D" parent="."]
+
+[node name="Iris" type="Sprite2D" parent="Eye"]
+scale = Vector2(0.06, 0.06)
+texture = ExtResource("6_b17u7")
+
+[node name="Sprite2D" type="Sprite2D" parent="Eye"]
+scale = Vector2(0.06, 0.06)
+texture = ExtResource("7_ttr2r")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(-1.43051e-06, -1.14739e-06)
+scale = Vector2(2.8, 2.7)
+
+[node name="DamageSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_olmub")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+scale = Vector2(0.66, 0.66)
+shape = SubResource("CapsuleShape2D_118ht")
+
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="OnScreenEnter"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="OnScreenExit"]
+[connection signal="finished" from="DamageSound" to="." method="OnDamageSoundFinished"]

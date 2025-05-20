@@ -25,7 +25,7 @@ public partial class BouncyBullet : Bullet
 
     protected override void HandleCollision(Node2D hitNode)
     {
-        // parent.SetDeferred(RigidBody2D.PropertyName.LinearVelocity, parent.LinearVelocity.Normalized() * 1000 * PlayerStats.ShotSpeed.GetDynamicVal());
+        parent.SetDeferred(RigidBody2D.PropertyName.LinearVelocity, parent.LinearVelocity.Normalized() * 1000 * PlayerStats.ShotSpeed.GetDynamicVal());
         base.HandleCollision(hitNode);
 
     }

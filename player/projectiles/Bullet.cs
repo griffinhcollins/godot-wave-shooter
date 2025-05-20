@@ -149,12 +149,22 @@ public abstract partial class Bullet : Node2D
 
         timeAlive += (float)delta;
 
-        if (currentMutations is not null)
+        foreach (Mutation m in GetMutations())
         {
-            foreach (Mutation m in currentMutations)
-            {
-                m.OngoingEffect(delta, this);
-            }
+            m.OngoingEffect(delta, this);
+        }
+
+    }
+
+    List<Mutation> GetMutations()
+    {
+        if (currentMutations is null)
+        {
+            return new List<Mutation> { };
+        }
+        else
+        {
+            return currentMutations;
         }
     }
 
@@ -238,6 +248,12 @@ public abstract partial class Bullet : Node2D
                 Splinter(hitNode);
             }
         }
+
+        foreach (Mutation m in GetMutations())
+        {
+            m.OnCollision(this);
+        }
+
         // Finally, actually deal damage
         if (hitNode.IsInGroup("mobs") && !mobsHit.Contains(hitNode))
         {
@@ -246,6 +262,8 @@ public abstract partial class Bullet : Node2D
             Mob mobHit = (Mob)hitNode;
             mobHit.TakeDamage(dmg);
         }
+
+
     }
 
 
@@ -326,7 +344,7 @@ public abstract partial class Bullet : Node2D
         }
     }
 
-    private void Splinter(Node2D lastHit = null)
+    protected void Splinter(Node2D lastHit = null, int shardCountOveride = -1)
     {
         Mob hitMob = null;
         if (lastHit is not null && lastHit is Mob)
@@ -336,6 +354,10 @@ public abstract partial class Bullet : Node2D
 
         Node2D parent = GetParent<Node2D>();
         int shards = (int)Unlocks.splinterFragments.GetDynamicVal();
+        if (shardCountOveride != -1)
+        {
+            shards = shardCountOveride;
+        }
         for (int i = 0; i < shards; i++)
         {
             // Copy myself

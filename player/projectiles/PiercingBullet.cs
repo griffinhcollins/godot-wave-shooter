@@ -85,6 +85,7 @@ public partial class PiercingBullet : Bullet
 
     public override void SetVelocity(Vector2 newVelocity, bool normalize = true)
     {
+        base.SetVelocity(newVelocity);
         velocity = newVelocity;
     }
 

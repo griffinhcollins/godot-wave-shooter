@@ -127,7 +127,7 @@ public static class Stats
 
         public static void SetDefaults()
         {
-            Money = 0;
+            Money = 1000;
             defaultStats.SetToDefaultStartingValues();
             for (int i = 0; i < miscellaneousStats.Count; i++)
             {

@@ -11,9 +11,9 @@ public abstract class Mutation // Comes with unlockables, not optional. Some are
     public abstract void ImmediateEffect(Bullet projectile);
 
     public abstract void OngoingEffect(double delta, Bullet projectile);
-    
+
     // Optional
-    public virtual void OnCollision(double delta, Bullet projectile)
+    public virtual void OnCollision(Bullet projectile)
     {
         return;
     }

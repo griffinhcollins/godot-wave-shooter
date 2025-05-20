@@ -1,9 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://i3lhgidaa505"]
+[gd_scene load_steps=7 format=3 uid="uid://i3lhgidaa505"]
 
 [ext_resource type="Texture2D" uid="uid://cjilwsmy35you" path="res://custom assets/projectiles/bullet.png" id="1_shdhe"]
 [ext_resource type="Script" path="res://player/projectiles/BouncyBullet.cs" id="2_kxnli"]
 [ext_resource type="AudioStream" uid="uid://b2kro6y6sewt7" path="res://sounds/laser pip.wav" id="3_0w13g"]
 [ext_resource type="PackedScene" uid="uid://4br0n54vxpbq" path="res://player/projectiles/lightning_arc.tscn" id="3_b5ltj"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_8702t"]
+bounce = 1.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gr8yg"]
 radius = 15.0
@@ -12,6 +15,7 @@ radius = 15.0
 collision_layer = 4
 collision_mask = 2
 mass = 0.1
+physics_material_override = SubResource("PhysicsMaterial_8702t")
 gravity_scale = 0.0
 contact_monitor = true
 max_contacts_reported = 3

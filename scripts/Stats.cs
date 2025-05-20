@@ -220,7 +220,7 @@ public static class Stats
             public static SmartBullet SmartBullet = new();
             public static BoomarangBullet BoomarangBullet = new();
 
-
+            // The order kind of matters (in the case of having multiple applied). Things that just change speed should go at the back
             public static Mutation[] allMutations = { AcceleratingBullet, DeceleratingBullet, OrbitBullet, ChaoticBullet, SmartBullet, BoomarangBullet };
         }
     }

@@ -134,7 +134,7 @@ public partial class Main : Node2D
 
 	public void StartWave()
 	{
-        Stats.PlayerStats.Mutations.OrbitBullet.applied = true;
+        // Stats.PlayerStats.Mutations.DeceleratingBullet.applied = true;
 		State.currentState = State.alive;
 		UpdateEnemyStats();
 		ClearScreen();

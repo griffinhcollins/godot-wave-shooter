@@ -25,7 +25,6 @@ public class OrbitBullet : Mutation
 
     public override void OnCollision(Bullet projectile)
     {
-        GD.Print("buh");
         base.OnCollision(projectile);
         projectile.SetVelocity(projectile.GetCurrentVelocity() * -1f);
         // if (Stats.PlayerStats.Unlocks.BouncingBullets.unlocked)

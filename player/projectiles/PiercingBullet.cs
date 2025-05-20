@@ -1,5 +1,6 @@
 using Godot;
 using static Stats;
+using System.Linq;
 using System;
 using System.Collections.Generic;
 
@@ -45,7 +46,13 @@ public partial class PiercingBullet : Bullet
                 // If bouncy bullets have been unlocked, become a bouncy bullet
                 RigidBody2D newBullet = bounceBullet.Instantiate<RigidBody2D>();
                 GetParent().GetParent().AddChild(newBullet);
-                newBullet.LinearVelocity = velocity;
+                BouncyBullet script = newBullet.GetNode<BouncyBullet>("ScriptHolder");
+                script.SetVelocity(velocity);
+                foreach (Mutation m in currentMutations)
+                {
+                    script.AddMutation(m);
+                    script.SetSeed(seed);
+                }
                 newBullet.GlobalPosition = GlobalPosition + velocity.Normalized() * 10;
                 HandleDeath(null, false);
             }

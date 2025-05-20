@@ -115,6 +115,7 @@ public partial class Player : Area2D
         float spreadRotate = reticule.Rotation + Mathf.DegToRad(Spread.GetDynamicVal()) * (float)GD.RandRange(-1, 1f);
 
         Bullet projectile;
+        Node2D projectileHolder;
 
         if (Unlocks.Laser.unlocked)
         {
@@ -129,27 +130,24 @@ public partial class Player : Area2D
             fireFromPos += Position; // Add the player's position because this projectile isn't a child of this node
             // A bullet is piercing first, then when piercing runs out becomes bouncy. If there is no piercing, it starts bouncy.
             Vector2 velocity = new Vector2(0, -1000 * ShotSpeed.GetDynamicVal()).Rotated(spreadRotate);
+
             if (!Unlocks.PiercingBullets.unlocked)
             {
                 // Bouncing, it's a rigidbody
-                RigidBody2D newBullet = bounceBullet.Instantiate<RigidBody2D>();
-                projectile = newBullet.GetNode<BouncyBullet>("ScriptHolder");
-                projectile.originalBullet = true;
-                newBullet.LinearVelocity = velocity;
-                newBullet.Position = fireFromPos;
-                GetParent().AddChild(newBullet);
+                projectileHolder = bounceBullet.Instantiate<RigidBody2D>();
             }
             else
             {
                 // Piercing, it's an Area2D
-                Area2D newBullet = pierceBullet.Instantiate<Area2D>();
-                projectile = newBullet.GetNode<PiercingBullet>("ScriptHolder");
-                newBullet.GetNode<Bullet>("ScriptHolder").originalBullet = true;
-                newBullet.Rotate(spreadRotate);
-                ((PiercingBullet)projectile).velocity = velocity;
-                newBullet.Position = fireFromPos;
-                GetParent().AddChild(newBullet);
+                projectileHolder = pierceBullet.Instantiate<Area2D>();
             }
+
+            projectileHolder.Rotate(spreadRotate);
+            projectile = projectileHolder.GetNode<Bullet>("ScriptHolder");
+            projectile.originalBullet = true;
+            projectile.SetVelocity(velocity);
+            projectileHolder.Position = fireFromPos;
+            GetParent().AddChild(projectileHolder);
 
 
         }

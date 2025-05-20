@@ -132,6 +132,7 @@ public partial class Main : Node2D
 
 	public void StartWave()
 	{
+        Stats.PlayerStats.Mutations.OrbitBullet.applied = true;
 		State.currentState = State.alive;
 		UpdateEnemyStats();
 		ClearScreen();
@@ -152,7 +153,6 @@ public partial class Main : Node2D
 
 	private void OnWaveTimeout()
 	{
-        Stats.PlayerStats.Mutations.DeceleratingBullet.applied = true;
 		timeRemaining--;
 		hud.UpdateWaveTime(timeRemaining);
 		if (timeRemaining == 0)

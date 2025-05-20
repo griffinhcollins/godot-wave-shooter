@@ -37,6 +37,7 @@ public partial class BouncyBullet : Bullet
 
     public override void SetVelocity(Vector2 newVelocity, bool normalize = true)
     {
+        base.SetVelocity(newVelocity);
         if (parent is null)
         {
             parent = GetParent<RigidBody2D>();

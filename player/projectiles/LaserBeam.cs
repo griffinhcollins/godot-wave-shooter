@@ -94,6 +94,7 @@ public partial class LaserBeam : Bullet
 
 	public override void SetVelocity(Vector2 newVelocity, bool normalize = true)
 	{
+        base.SetVelocity(newVelocity);
 		Rotation = Vector2.Up.AngleTo(newVelocity);
 	}
 }

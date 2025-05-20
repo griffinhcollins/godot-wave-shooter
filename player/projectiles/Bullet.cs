@@ -15,12 +15,14 @@ public abstract partial class Bullet : Node2D
     [Export]
     PackedScene lightningArc;
 
-    List<Mutation> currentMutations;
+    protected List<Mutation> currentMutations;
 
     public bool isShard = false;
 
     protected bool dead;
     float dmg;
+
+    public float seed { get; private set; }
 
     protected float timeAlive;
 
@@ -34,12 +36,14 @@ public abstract partial class Bullet : Node2D
 
     public Mob shardParent;
 
-    int numHit;
+    public int numHit { get; private set; }
 
     // true only if this was sent by the player (not by another bullet)
     public bool originalBullet;
 
     float shardMult = 1;
+
+    Vector2 initialVelocity;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -48,6 +52,7 @@ public abstract partial class Bullet : Node2D
 
         shardMult = isShard ? Unlocks.splinterDamageMultiplier.GetDynamicVal() : 1;
         SetDamage(Damage.GetDynamicVal() * shardMult);
+        SetSeed(GD.Randf());
 
         numHit = 0;
         if (mobsHit is null)
@@ -76,7 +81,26 @@ public abstract partial class Bullet : Node2D
             parent.SetCollisionMaskValue(5, true);
 
         }
-        
+
+    }
+
+
+    public void SetSeed(float s)
+    {
+        if (seed == 0)
+        {
+            seed = s;
+
+        }
+    }
+    public float GetTimeAlive()
+    {
+        return timeAlive;
+    }
+
+    public void AddToPosition(Vector2 offset)
+    {
+        GetParent<Node2D>().Position += offset;
     }
 
 
@@ -90,7 +114,21 @@ public abstract partial class Bullet : Node2D
     }
 
     public abstract Vector2 GetCurrentVelocity();
-    public abstract void SetVelocity(Vector2 newVelocity, bool normalize = true);
+    public virtual void SetVelocity(Vector2 newVelocity, bool normalize = true)
+    {
+        if (initialVelocity == Vector2.Zero)
+        {
+            initialVelocity = newVelocity;
+        }
+    }
+    public Vector2 GetInitialVelocity()
+    {
+        if (initialVelocity == Vector2.Zero)
+        {
+            initialVelocity = GetCurrentVelocity();
+        }
+        return initialVelocity;
+    }
     protected abstract void Pause();
     protected abstract void UnPause();
 
@@ -211,7 +249,6 @@ public abstract partial class Bullet : Node2D
             Mob mobHit = (Mob)hitNode;
             mobHit.TakeDamage(dmg);
         }
-
     }
 
 

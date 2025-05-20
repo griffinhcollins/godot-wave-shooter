@@ -214,9 +214,10 @@ public static class Stats
         {
             public static AcceleratingBullet AcceleratingBullet = new();
             public static DeceleratingBullet DeceleratingBullet = new();
+            public static OrbitBullet OrbitBullet = new();
 
 
-            public static Mutation[] allMutations = { AcceleratingBullet, DeceleratingBullet };
+            public static Mutation[] allMutations = { AcceleratingBullet, DeceleratingBullet, OrbitBullet };
         }
     }
 

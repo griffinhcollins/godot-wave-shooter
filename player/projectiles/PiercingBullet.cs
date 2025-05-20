@@ -33,6 +33,7 @@ public partial class PiercingBullet : Bullet
             return;
         }
         parent.Position += velocity * (float)delta;
+        parent.Rotation = Vector2.Up.AngleTo(velocity);
 
         if (!dead && timeAlive > PlayerStats.Unlocks.piercingBulletsPiercingTime.GetDynamicVal())
         {

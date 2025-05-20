@@ -21,6 +21,8 @@ public partial class Mob : RigidBody2D
 
     bool dead = false;
 
+    Node2D eye;
+
     [Export]
     PackedScene offscreenIndicator;
 
@@ -34,6 +36,8 @@ public partial class Mob : RigidBody2D
 
     float size;
 
+    AnimatedSprite2D animSprite;
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -45,7 +49,7 @@ public partial class Mob : RigidBody2D
         acceleration = baseAcceleration * DynamicStats[ID.AccelerationMult];
         player = (Player)GetTree().GetNodesInGroup("player")[0];
         speedLimit = baseSpeedLimit;
-        AnimatedSprite2D animSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+        animSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         string[] mobTypes = animSprite.SpriteFrames.GetAnimationNames();
         animSprite.Play(mobTypes[GD.Randi() % mobTypes.Length]);
         damageSound = GetNode<AudioStreamPlayer2D>("DamageSound");
@@ -55,10 +59,11 @@ public partial class Mob : RigidBody2D
         hp = DynamicStats[ID.HPMult] * baseHealth * size * 0.75f;
         animSprite.Scale *= size;
         GetNode<CollisionShape2D>("CollisionShape2D").Scale *= size;
-        GetNode<Node2D>("Eye").Scale *= size;
+        eye = GetNode<Node2D>("Eye");
+        eye.Scale *= size;
 
-        
-        animSprite.SpeedScale = 1/(size);
+
+        animSprite.SpeedScale = 1 / (size);
         CreateIndicator();
     }
 
@@ -154,8 +159,27 @@ public partial class Mob : RigidBody2D
             // ApplyForce(LinearVelocity * (speedLimit - Mathf.Pow(currentSpeedSq, 0.5f)));
         }
 
+        GazeAt(player.GlobalPosition, (float)delta);
 
     }
+
+    void GazeAt(Vector2 targetPos, float delta)
+    {
+
+        eye.GlobalPosition = eye.GlobalPosition.Lerp((targetPos - GlobalPosition).Normalized()*20 + GlobalPosition, delta * 3);
+
+
+        Node2D pupil = eye.GetNode<Node2D>("Pupil");
+
+        
+        pupil.GlobalPosition = pupil.GlobalPosition.Lerp((targetPos - eye.GlobalPosition).Normalized()*8 + eye.GlobalPosition, delta * 5);
+
+        // float oldRot = eye.Rotation;
+        // eye.LookAt(targetPos);
+        // float targetRot = eye.Rotation;
+        // eye.Rotation = Mathf.Lerp(oldRot, targetRot, delta * 10);
+    }
+
 
     private void UnPause()
     {

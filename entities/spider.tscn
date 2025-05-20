@@ -49,7 +49,8 @@ frame_progress = 0.701245
 scale = Vector2(0.06, 0.06)
 texture = ExtResource("6_b17u7")
 
-[node name="Sprite2D" type="Sprite2D" parent="Eye"]
+[node name="Pupil" type="Sprite2D" parent="Eye"]
+position = Vector2(5, 0)
 scale = Vector2(0.06, 0.06)
 texture = ExtResource("7_ttr2r")
 

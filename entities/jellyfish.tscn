@@ -1,0 +1,84 @@
+[gd_scene load_steps=13 format=3 uid="uid://c4ci72liucwrv"]
+
+[ext_resource type="Script" path="res://entities/Jellyfish.cs" id="1_gs1vn"]
+[ext_resource type="PackedScene" uid="uid://cpsf1tpjvco18" path="res://entities/offscreen_indicator.tscn" id="2_vu1s5"]
+[ext_resource type="PackedScene" uid="uid://cx23hqh3pjy5l" path="res://entities/coin.tscn" id="3_tj2t7"]
+[ext_resource type="Texture2D" uid="uid://biw0pankd8h37" path="res://custom assets/enemies/Jellyfish A No1.png" id="4_7a8sw"]
+[ext_resource type="Texture2D" uid="uid://ct27dywddkidk" path="res://custom assets/enemies/Jellyfish A No2.png" id="5_uxgu0"]
+[ext_resource type="Texture2D" uid="uid://d0amdsuh143aq" path="res://custom assets/enemies/Jellyfish B No1.png" id="6_jfdk8"]
+[ext_resource type="Texture2D" uid="uid://ddeai67by51c3" path="res://custom assets/enemies/Jellyfish B No2.png" id="7_wuhq3"]
+[ext_resource type="Texture2D" uid="uid://d2t4enn0yb31" path="res://custom assets/enemies/iris.png" id="8_w4suo"]
+[ext_resource type="Texture2D" uid="uid://d0vjjeowqdkxi" path="res://custom assets/enemies/pupil.png" id="9_1ovii"]
+[ext_resource type="AudioStream" uid="uid://cl6887ed40bm7" path="res://sounds/enemy hurt.wav" id="10_osoup"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jq8ss"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_7a8sw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_uxgu0")
+}],
+"loop": true,
+"name": &"A",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_jfdk8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_wuhq3")
+}],
+"loop": true,
+"name": &"B",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_118ht"]
+radius = 45.4545
+height = 100.818
+
+[node name="Jellyfish" type="RigidBody2D" groups=["cleanup", "mobs"]]
+collision_layer = 2
+collision_mask = 7
+gravity_scale = 0.0
+script = ExtResource("1_gs1vn")
+offscreenIndicator = ExtResource("2_vu1s5")
+coin = ExtResource("3_tj2t7")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, 16.435)
+scale = Vector2(0.05, 0.05)
+sprite_frames = SubResource("SpriteFrames_jq8ss")
+animation = &"B"
+
+[node name="Eye" type="Node2D" parent="."]
+scale = Vector2(1.6, 1.6)
+
+[node name="Iris" type="Sprite2D" parent="Eye"]
+scale = Vector2(0.06, 0.06)
+texture = ExtResource("8_w4suo")
+
+[node name="Pupil" type="Sprite2D" parent="Eye"]
+position = Vector2(5, 0)
+scale = Vector2(0.06, 0.06)
+texture = ExtResource("9_1ovii")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(1.43051e-06, -0.499997)
+scale = Vector2(3.1, 2.95)
+
+[node name="DamageSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_osoup")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 3.73)
+scale = Vector2(0.66, 0.66)
+shape = SubResource("CapsuleShape2D_118ht")
+
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="OnScreenEnter"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="OnScreenExit"]
+[connection signal="finished" from="DamageSound" to="." method="OnDamageSoundFinished"]

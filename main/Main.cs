@@ -2,12 +2,14 @@ using Godot;
 using static Stats;
 using System;
 using System.Diagnostics.Metrics;
+using System.Collections.Generic;
+using System.Linq;
 
 public partial class Main : Node2D
 {
 
 	[Export]
-	public PackedScene MobScene { get; set; }
+	public PackedScene[] MobScenes { get; set; }
 
 	private int timeRemaining;
 	Player player;
@@ -192,7 +194,7 @@ public partial class Main : Node2D
 	private void OnMobTimerTimeout()
 	{
 
-		Mob mob = MobScene.Instantiate<Mob>();
+		Mob mob = MobScenes[GD.RandRange(0, MobScenes.Count() - 1)].Instantiate<Mob>();
 
 		PathFollow2D mobSpawnLocation = GetNode<PathFollow2D>("MobPath/MobSpawnLocation");
 

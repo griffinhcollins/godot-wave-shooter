@@ -2,7 +2,7 @@ using System;
 using static Stats.EnemyStats;
 using Godot;
 
-public partial class Mob : RigidBody2D
+public abstract partial class Mob : RigidBody2D
 {
 
     Player player;
@@ -163,16 +163,22 @@ public partial class Mob : RigidBody2D
 
     }
 
+    protected abstract float GetIrisMoveRadius();
+    protected abstract float GetPupilMoveRadius();
+
     void GazeAt(Vector2 targetPos, float delta)
     {
 
-        eye.GlobalPosition = eye.GlobalPosition.Lerp((targetPos - GlobalPosition).Normalized() * 10 + GlobalPosition, delta * 3);
+        float irisMoveRadius = GetIrisMoveRadius();
+        float pupilMoveRadius = GetPupilMoveRadius();
+
+        eye.GlobalPosition = eye.GlobalPosition.Lerp((targetPos - GlobalPosition).Normalized() * irisMoveRadius + GlobalPosition, delta * 3);
 
 
         Node2D pupil = eye.GetNode<Node2D>("Pupil");
 
 
-        pupil.GlobalPosition = pupil.GlobalPosition.Lerp((targetPos - eye.GlobalPosition).Normalized() * 5 + eye.GlobalPosition, delta * 5);
+        pupil.GlobalPosition = pupil.GlobalPosition.Lerp((targetPos - eye.GlobalPosition).Normalized() * pupilMoveRadius + eye.GlobalPosition, delta * 5);
 
         // float oldRot = eye.Rotation;
         // eye.LookAt(targetPos);

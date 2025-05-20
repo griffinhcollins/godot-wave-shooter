@@ -166,13 +166,13 @@ public partial class Mob : RigidBody2D
     void GazeAt(Vector2 targetPos, float delta)
     {
 
-        eye.GlobalPosition = eye.GlobalPosition.Lerp((targetPos - GlobalPosition).Normalized() * 20 + GlobalPosition, delta * 3);
+        eye.GlobalPosition = eye.GlobalPosition.Lerp((targetPos - GlobalPosition).Normalized() * 10 + GlobalPosition, delta * 3);
 
 
         Node2D pupil = eye.GetNode<Node2D>("Pupil");
 
 
-        pupil.GlobalPosition = pupil.GlobalPosition.Lerp((targetPos - eye.GlobalPosition).Normalized() * 8 + eye.GlobalPosition, delta * 5);
+        pupil.GlobalPosition = pupil.GlobalPosition.Lerp((targetPos - eye.GlobalPosition).Normalized() * 5 + eye.GlobalPosition, delta * 5);
 
         // float oldRot = eye.Rotation;
         // eye.LookAt(targetPos);

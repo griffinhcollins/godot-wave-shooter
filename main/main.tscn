@@ -88,10 +88,6 @@ text = "Into the Depths"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Spider" parent="." instance=ExtResource("2_bsacy")]
-position = Vector2(347, 165)
-rotation = 0.612611
-
 [connection signal="NextWave" from="HUD" to="." method="StartWave"]
 [connection signal="StartGame" from="HUD" to="." method="NewGame"]
 [connection signal="Killed" from="Player" to="." method="GameOver"]

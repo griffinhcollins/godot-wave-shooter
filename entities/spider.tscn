@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://entities/Mob.cs" id="1_kgy83"]
 [ext_resource type="PackedScene" uid="uid://cpsf1tpjvco18" path="res://entities/offscreen_indicator.tscn" id="2_jf12g"]
 [ext_resource type="PackedScene" uid="uid://cx23hqh3pjy5l" path="res://entities/coin.tscn" id="3_4jj2e"]
-[ext_resource type="Texture2D" uid="uid://ias7h2vmyir7" path="res://custom assets/enemies/spider body 1.png" id="4_pogpy"]
-[ext_resource type="Texture2D" uid="uid://dyr8q8k8oi2rs" path="res://custom assets/enemies/spider body 2.png" id="5_4yv35"]
+[ext_resource type="Texture2D" uid="uid://bvs07hppc8ssa" path="res://custom assets/enemies/New Spider A No1.png" id="4_3kfod"]
+[ext_resource type="Texture2D" uid="uid://pqwbgcl2vy0g" path="res://custom assets/enemies/New Spider A No2.png" id="5_vc10x"]
 [ext_resource type="Texture2D" uid="uid://d2t4enn0yb31" path="res://custom assets/enemies/iris.png" id="6_b17u7"]
 [ext_resource type="Texture2D" uid="uid://d0vjjeowqdkxi" path="res://custom assets/enemies/pupil.png" id="7_ttr2r"]
 [ext_resource type="AudioStream" uid="uid://cl6887ed40bm7" path="res://sounds/enemy hurt.wav" id="10_olmub"]
@@ -13,10 +13,10 @@
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("4_pogpy")
+"texture": ExtResource("4_3kfod")
 }, {
 "duration": 1.0,
-"texture": ExtResource("5_4yv35")
+"texture": ExtResource("5_vc10x")
 }],
 "loop": true,
 "name": &"walk",
@@ -38,10 +38,9 @@ coin = ExtResource("3_4jj2e")
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.06, 0.06)
+scale = Vector2(0.05, 0.05)
 sprite_frames = SubResource("SpriteFrames_jq8ss")
 animation = &"walk"
-frame = 1
 frame_progress = 0.701245
 
 [node name="Eye" type="Node2D" parent="."]

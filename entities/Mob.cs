@@ -55,6 +55,7 @@ public partial class Mob : RigidBody2D
         hp = DynamicStats[ID.HPMult] * baseHealth * size * 0.75f;
         animSprite.Scale *= size;
         GetNode<CollisionShape2D>("CollisionShape2D").Scale *= size;
+        GetNode<Node2D>("Eye").Scale *= size;
 
         
         animSprite.SpeedScale = 1/(size);

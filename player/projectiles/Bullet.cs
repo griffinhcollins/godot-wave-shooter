@@ -250,7 +250,7 @@ public abstract partial class Bullet : Node2D
             if (Unlocks.Lightning.unlocked)
             {
 
-                SpawnLightning(hitMob);
+                SpawnLightning(hitMob, 0);
             }
             if (Unlocks.OverflowBullets.unlocked)
             {
@@ -281,7 +281,7 @@ public abstract partial class Bullet : Node2D
 
 
     // returns all the mobs that got hit so other branches don't hit the same mobs
-    HashSet<Mob> SpawnLightning(Mob seedMob, HashSet<Mob> alreadyHit = null)
+    HashSet<Mob> SpawnLightning(Mob seedMob, int depth, HashSet<Mob> alreadyHit = null)
     {
         if (alreadyHit is null)
         {
@@ -320,10 +320,10 @@ public abstract partial class Bullet : Node2D
                 line.AddPoint(seedMob.GlobalPosition);
                 line.AddPoint(target.GlobalPosition);
 
-                target.TakeDamage(dmg);
+                target.TakeDamage(dmg * Mathf.Pow(Unlocks.lightningChainDamageRetention.GetDynamicVal(), depth));
                 if (Unlocks.lightningChainChance.GetDynamicVal() > GD.Randf())
                 {
-                    HashSet<Mob> hits = SpawnLightning(target, alreadyHit);
+                    HashSet<Mob> hits = SpawnLightning(target, depth + 1, alreadyHit);
                     alreadyHit.UnionWith(hits);
                 }
             }

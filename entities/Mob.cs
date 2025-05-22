@@ -1,11 +1,16 @@
 using System;
 using static Stats.EnemyStats;
 using Godot;
+using System.Threading.Tasks;
 
 public abstract partial class Mob : RigidBody2D
 {
 
     Player player;
+
+
+    bool poisoned = false;
+    float poisonTick;
 
     float baseHealth = 20;
     float baseSpeedLimit = 400;
@@ -81,8 +86,15 @@ public abstract partial class Mob : RigidBody2D
         }
     }
 
-    public void TakeDamage(float dmg)
+    public async Task TakeDamage(float dmg)
     {
+        if (Stats.PlayerStats.Unlocks.Venom.unlocked && !poisoned)
+        {
+            poisoned = true;
+
+        }
+        animSprite.Modulate = Color.Color8(255, 0, 0);
+
         Hud hud = GetParent().GetNode<Hud>("HUD");
         hud.CreateDamageNumber(Position, dmg);
         damageSound.Play();
@@ -91,6 +103,12 @@ public abstract partial class Mob : RigidBody2D
         {
             Die();
         }
+        else
+        {
+            await ToSignal(GetTree().CreateTimer(0.1f), SceneTreeTimer.SignalName.Timeout);
+            animSprite.Modulate = Color.Color8(255, 255, 255);
+        }
+
     }
 
     public float GetHP()

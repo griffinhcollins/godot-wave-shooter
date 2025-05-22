@@ -86,12 +86,17 @@ public abstract partial class Mob : RigidBody2D
         }
     }
 
+    protected float GetPoisonInterval()
+    {
+        return 1 / Mathf.Pow(Stats.PlayerStats.Unlocks.venomFrequency.GetDynamicVal(), 0.5f);
+    }
+
     public async Task TakeDamage(float dmg)
     {
         if (Stats.PlayerStats.Unlocks.Venom.unlocked && !poisoned)
         {
             poisoned = true;
-
+            poisonTick = GetPoisonInterval();
         }
         animSprite.Modulate = Color.Color8(255, 0, 0);
 
@@ -150,6 +155,16 @@ public abstract partial class Mob : RigidBody2D
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
+        if (poisoned)
+        {
+            poisonTick -= (float)delta;
+            if (poisonTick < 0)
+            {
+                poisonTick = GetPoisonInterval();
+                TakeDamage(Stats.PlayerStats.Unlocks.venomDamage.GetDynamicVal());
+
+            }
+        }
         if (State.currentState == State.paused)
         {
             if (beforePauseVelocity == Vector2.Zero)

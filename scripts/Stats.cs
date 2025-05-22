@@ -181,7 +181,8 @@ public static class Stats
             public static PlayerStat lightningRange = new PlayerStat("Lightning Arc Range", 300, new Vector2(200, 1000), false, false, 0.25f);
             public static PlayerStat lightningMaxArcs = new PlayerStat("Maximum Arcs", 1, new Vector2(1, 5), true, false);
             public static PlayerStat lightningChainChance = new PlayerStat("Chain Chance", 0.1f, new Vector2(0.1f, 0.8f), false, false);
-            static List<PlayerStat> lightningStatList = new List<PlayerStat> { lightningRange, lightningMaxArcs, lightningChainChance };
+            public static PlayerStat lightningChainDamageRetention = new PlayerStat("Chain Damage Retention", 0.5f, new Vector2(0.5f, 1), false, false, 0.5f, new StatCondition(lightningChainChance, 0.2f, true));
+            static List<PlayerStat> lightningStatList = new List<PlayerStat> { lightningRange, lightningMaxArcs, lightningChainChance, lightningChainDamageRetention };
             static StatSet lightningStats = new StatSet(lightningStatList);
             public static Unlockable Lightning = new Unlockable("Lightning Arc", lightningStats);
 

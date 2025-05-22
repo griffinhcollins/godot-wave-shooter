@@ -1,10 +1,10 @@
 [gd_scene load_steps=13 format=3 uid="uid://b8xdrbjqw4dbh"]
 
 [ext_resource type="Script" path="res://main/Main.cs" id="1_7h5d5"]
-[ext_resource type="PackedScene" uid="uid://c4ci72liucwrv" path="res://entities/jellyfish.tscn" id="2_iwtfb"]
+[ext_resource type="PackedScene" path="res://entities/jellyfish.tscn" id="2_iwtfb"]
 [ext_resource type="Texture2D" uid="uid://byft7sp3ska74" path="res://custom assets/background/background_smaller.jpg" id="3_4rbai"]
 [ext_resource type="PackedScene" uid="uid://dphno2aha4dnk" path="res://player/player.tscn" id="3_vww5f"]
-[ext_resource type="PackedScene" uid="uid://cvjrmcq0ldpm0" path="res://entities/spider.tscn" id="3_xaomy"]
+[ext_resource type="PackedScene" path="res://entities/spider.tscn" id="3_xaomy"]
 [ext_resource type="PackedScene" uid="uid://bv6wktb7wsx2x" path="res://hud/hud.tscn" id="6_xp7op"]
 
 [sub_resource type="Curve2D" id="Curve2D_oc665"]

@@ -50,7 +50,12 @@ public partial class PiercingBullet : Bullet
                 BouncyBullet script = newBullet.GetNode<BouncyBullet>("ScriptHolder");
                 script.SetVelocity(velocity);
                 script.SetSeed(seed);
-                foreach (Mutation m in currentMutations)
+                foreach (Mob mob in mobsHit)
+                {
+                    script.AddToHitMobs(mob);
+
+                }
+                foreach (Mutation m in GetMutations())
                 {
                     script.AddMutation(m);
                 }

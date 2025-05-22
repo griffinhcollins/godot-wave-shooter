@@ -29,7 +29,7 @@ public abstract partial class Bullet : Node2D
     protected Vector2 beforePauseVelocity;
 
     // A bullet can only hit the same mob once
-    HashSet<Node2D> mobsHit;
+    protected HashSet<Node2D> mobsHit;
 
     public Mob shardParent;
 
@@ -170,7 +170,7 @@ public abstract partial class Bullet : Node2D
 
     }
 
-    List<Mutation> GetMutations()
+    protected List<Mutation> GetMutations()
     {
         if (currentMutations is null)
         {

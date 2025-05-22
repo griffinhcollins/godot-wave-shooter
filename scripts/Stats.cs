@@ -216,8 +216,14 @@ public static class Stats
             static StatSet venomStats = new StatSet(venomStatList);
             public static Unlockable Venom = new Unlockable("Venom", venomStats);
 
+            // Plague
+            // Requires venom, makes mobs spread poison to each other if they take a venom tick while touching
+            static List<PlayerStat> plagueStatList = new List<PlayerStat> { };
+            static StatSet plagueStats = new StatSet(plagueStatList);
+            public static Unlockable Plague = new Unlockable("Plague", plagueStats, new StatCondition(venomFrequency, 3, true));
 
-            public static Unlockable[] allUnlockables = { Laser, BouncingBullets, PiercingBullets, WallBounce, Lightning, OverflowBullets, Splinter, Venom };
+
+            public static Unlockable[] allUnlockables = { Laser, BouncingBullets, PiercingBullets, WallBounce, Lightning, OverflowBullets, Splinter, Venom, Plague };
 
         }
 

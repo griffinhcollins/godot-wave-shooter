@@ -43,6 +43,8 @@ public abstract partial class Mob : RigidBody2D
 
     AnimatedSprite2D animSprite;
 
+    CollisionShape2D collider;
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -63,7 +65,8 @@ public abstract partial class Mob : RigidBody2D
         size = GD.Randf() * 0.5f * DynamicStats[ID.SizeMult] + 1;
         hp = DynamicStats[ID.HPMult] * baseHealth * size * 0.75f;
         animSprite.Scale *= size;
-        GetNode<CollisionShape2D>("CollisionShape2D").Scale *= size;
+        collider = GetNode<CollisionShape2D>("CollisionShape2D");
+        collider.Scale *= size;
         eye = GetNode<Node2D>("Eye");
         eye.Scale *= size;
 
@@ -93,10 +96,9 @@ public abstract partial class Mob : RigidBody2D
 
     public async Task TakeDamage(float dmg)
     {
-        if (Stats.PlayerStats.Unlocks.Venom.unlocked && !poisoned)
+        if (Stats.PlayerStats.Unlocks.Venom.unlocked)
         {
-            poisoned = true;
-            poisonTick = GetPoisonInterval();
+            Poison();
         }
         animSprite.Modulate = Color.Color8(255, 0, 0);
 
@@ -152,6 +154,19 @@ public abstract partial class Mob : RigidBody2D
 
     }
 
+    public void Poison()
+    {
+        if (poisoned)
+        {
+            return;
+        }
+        else
+        {
+            poisoned = true;
+            poisonTick = GetPoisonInterval() * (GD.Randf() + 0.5f); // Adding a little delay makes disease less grating when it infects a bunch at once
+        }
+    }
+
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
@@ -162,6 +177,17 @@ public abstract partial class Mob : RigidBody2D
             {
                 poisonTick = GetPoisonInterval();
                 TakeDamage(Stats.PlayerStats.Unlocks.venomDamage.GetDynamicVal());
+                if (Stats.PlayerStats.Unlocks.Plague.unlocked)
+                {
+                    // Check for any mobs I'm touching and poison them
+                    foreach (Node2D touching in GetCollidingBodies())
+                    {
+                        if (touching is Mob)
+                        {
+                            ((Mob)touching).Poison();
+                        }
+                    }
+                }
 
             }
         }

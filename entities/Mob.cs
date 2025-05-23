@@ -8,9 +8,12 @@ public abstract partial class Mob : RigidBody2D
 
     Player player;
 
-
+    // Venom
     bool poisoned = false;
     float poisonTick;
+
+    // Plague Explosion
+    bool explodeOnDeath = false;
 
     float baseHealth = 20;
     float baseSpeedLimit = 400;
@@ -30,6 +33,9 @@ public abstract partial class Mob : RigidBody2D
 
     [Export]
     PackedScene offscreenIndicator;
+
+    [Export]
+    PackedScene plagueCloud;
 
 
     OffscreenIndicator pairedIndicator;
@@ -96,7 +102,7 @@ public abstract partial class Mob : RigidBody2D
 
     public async Task TakeDamage(float dmg)
     {
-        if (Stats.PlayerStats.Unlocks.Venom.unlocked)
+        if (Stats.PlayerStats.Unlocks.Venom.unlocked && !poisoned)
         {
             Poison();
         }
@@ -138,6 +144,13 @@ public abstract partial class Mob : RigidBody2D
             }
             tempDropRate--;
         }
+        if (explodeOnDeath)
+        {
+            PlagueCloud cloud = plagueCloud.Instantiate<PlagueCloud>();
+            cloud.GlobalPosition = GlobalPosition;
+            cloud.Appear();
+            GetTree().Root.CallDeferred(Node2D.MethodName.AddChild, cloud);
+        }
         // Don't queuefree yet, that happens once the damage sound is complete
         Hide();
         CollisionLayer = 0;
@@ -164,6 +177,10 @@ public abstract partial class Mob : RigidBody2D
         {
             poisoned = true;
             poisonTick = GetPoisonInterval() * (GD.Randf() + 0.5f); // Adding a little delay makes disease less grating when it infects a bunch at once
+            if (Stats.PlayerStats.Unlocks.PlagueExplosion.unlocked && GD.Randf() < Stats.PlayerStats.Unlocks.plagueExplosionChance.GetDynamicVal())
+            {
+                explodeOnDeath = true;
+            }
         }
     }
 
@@ -173,23 +190,7 @@ public abstract partial class Mob : RigidBody2D
         if (poisoned)
         {
             poisonTick -= (float)delta;
-            if (poisonTick < 0)
-            {
-                poisonTick = GetPoisonInterval();
-                TakeDamage(Stats.PlayerStats.Unlocks.venomDamage.GetDynamicVal());
-                if (Stats.PlayerStats.Unlocks.Plague.unlocked)
-                {
-                    // Check for any mobs I'm touching and poison them
-                    foreach (Node2D touching in GetCollidingBodies())
-                    {
-                        if (touching is Mob)
-                        {
-                            ((Mob)touching).Poison();
-                        }
-                    }
-                }
-
-            }
+            ProcessPoison();
         }
         if (State.currentState == State.paused)
         {
@@ -220,6 +221,27 @@ public abstract partial class Mob : RigidBody2D
 
         GazeAt(player.GlobalPosition, (float)delta);
 
+    }
+
+    void ProcessPoison()
+    {
+        if (poisonTick < 0)
+        {
+            poisonTick = GetPoisonInterval();
+            TakeDamage(Stats.PlayerStats.Unlocks.venomDamage.GetDynamicVal());
+            if (Stats.PlayerStats.Unlocks.Plague.unlocked)
+            {
+                // Check for any mobs I'm touching and poison them
+                foreach (Node2D touching in GetCollidingBodies())
+                {
+                    if (touching is Mob)
+                    {
+                        ((Mob)touching).Poison();
+                    }
+                }
+            }
+
+        }
     }
 
     protected abstract float GetIrisMoveRadius();

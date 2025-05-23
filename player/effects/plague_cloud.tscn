@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://den36dbitx31u"]
+
+[ext_resource type="Texture2D" uid="uid://cuixkmla442k6" path="res://custom assets/effects/poison cloud.png" id="1_5q402"]
+[ext_resource type="Script" path="res://player/effects/PlagueCloud.cs" id="1_temj3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_41wvh"]
+radius = 40.0
+
+[node name="Plague Cloud" type="Area2D"]
+z_index = -1
+script = ExtResource("1_temj3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_41wvh")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 3
+position = Vector2(0, 4)
+texture = ExtResource("1_5q402")
+
+[connection signal="body_entered" from="." to="." method="OnHit"]

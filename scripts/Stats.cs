@@ -222,8 +222,15 @@ public static class Stats
             static StatSet plagueStats = new StatSet(plagueStatList);
             public static Unlockable Plague = new Unlockable("Plague", plagueStats, new StatCondition(venomFrequency, 3, true));
 
+            // Plague upgrade: exploding corpses
+            public static PlayerStat plagueExplosionRadius = new PlayerStat("Plague Explosion Radius", 40, new Vector2(40, 200));
+            public static PlayerStat plagueExplosionChance = new PlayerStat("Plague Explosion Chance", 0.1f, new Vector2(0.1f, 0.5f), false, false, 0.5f);
+            public static PlayerStat plagueCloudLifetime = new PlayerStat("Plague Cloud Lifetime", 0.5f, new Vector2(0.5f, 2), false, false, 0.5f);
+            static List<PlayerStat> plageExplosionStats = new List<PlayerStat> { plagueExplosionRadius, plagueExplosionChance, plagueCloudLifetime };
+            static StatSet plagueExplosionStats = new StatSet(plageExplosionStats);
+            public static Unlockable PlagueExplosion = new Unlockable("Plague Explosion", plagueExplosionStats, new UnlockCondition(Plague, true));
 
-            public static Unlockable[] allUnlockables = { Laser, BouncingBullets, PiercingBullets, WallBounce, Lightning, OverflowBullets, Splinter, Venom, Plague };
+            public static Unlockable[] allUnlockables = { Laser, BouncingBullets, PiercingBullets, WallBounce, Lightning, OverflowBullets, Splinter, Venom, Plague, PlagueExplosion };
 
         }
 

@@ -36,6 +36,7 @@ public partial class PlagueCloud : Area2D
         if (hit is Mob)
         {
             ((Mob)hit).Poison();
+            ((Mob)hit).SetExplodeOnDeath(true);
         }
     }
 }

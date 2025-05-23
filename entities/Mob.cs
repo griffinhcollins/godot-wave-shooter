@@ -100,6 +100,11 @@ public abstract partial class Mob : RigidBody2D
         return 1 / Mathf.Pow(Stats.PlayerStats.Unlocks.venomFrequency.GetDynamicVal(), 0.5f);
     }
 
+    public void SetExplodeOnDeath(bool b)
+    {
+        explodeOnDeath = b;
+    }
+
     public async Task TakeDamage(float dmg)
     {
         if (Stats.PlayerStats.Unlocks.Venom.unlocked && !poisoned)

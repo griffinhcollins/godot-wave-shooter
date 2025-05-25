@@ -5,6 +5,7 @@ using System.Data.SqlTypes;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using static RarityControl;
 
 public static class Stats
 {
@@ -83,17 +84,18 @@ public static class Stats
 
         // Default starting stats
 
-        public static PlayerStat Damage = new PlayerStat("Damage", 10, new Vector2(5, Mathf.Inf));
-        public static PlayerStat FireRate = new PlayerStat("Firerate", 2, new Vector2(0.5f, 10));
-        public static PlayerStat MaxHP = new PlayerStat("HP", 3, new Vector2(0, 6), true);
-        public static PlayerStat HPReward = new PlayerStat("HP Interest", 1, new Vector2(0, 4), true);
-        public static PlayerStat Multishot = new PlayerStat("Multishot", 1, new Vector2(1, 10));
-        public static PlayerStat Spread = new PlayerStat("Spread", 5, new Vector2(0, 180), false, true);
-        public static PlayerStat ShotSpeed = new PlayerStat("Shot Speed", 1, new Vector2(0.25f, 10));
-        public static PlayerStat Speed = new PlayerStat("Speed", 400, new Vector2(100, 1000), false, false, 0.5f);
-        public static PlayerStat BulletSize = new PlayerStat("Bullet Size", 1, new Vector2(0.25f, 3), false, false, 0.5f);
-        public static PlayerStat Lifetime = new PlayerStat("Bullet Lifetime", 3, new Vector2(3, 20));
-        static List<PlayerStat> defaultStatList = new List<PlayerStat> { Damage, FireRate, MaxHP, HPReward, Multishot, Spread, ShotSpeed, Speed, BulletSize, Lifetime };
+        public static PlayerStat Damage = new PlayerStat("Damage", 10, new Vector2(5, Mathf.Inf), Common);
+        public static PlayerStat FireRate = new PlayerStat("Firerate", 2, new Vector2(0.5f, 10), Common);
+        public static PlayerStat MaxHP = new PlayerStat("HP", 3, new Vector2(0, 6), Rare, true);
+        public static PlayerStat HPReward = new PlayerStat("HP Interest", 1, new Vector2(0, 4), Uncommon, true);
+        public static PlayerStat Multishot = new PlayerStat("Multishot", 1, new Vector2(1, 10), Uncommon);
+        public static PlayerStat Spread = new PlayerStat("Spread", 15, new Vector2(0, 180), Uncommon, false, true);
+        public static PlayerStat ShotSpeed = new PlayerStat("Shot Speed", 1, new Vector2(0.25f, 10), Common);
+        public static PlayerStat Speed = new PlayerStat("Speed", 400, new Vector2(100, 1000), Uncommon, false, false, 0.5f);
+        public static PlayerStat BulletSize = new PlayerStat("Bullet Size", 0.5f, new Vector2(0.25f, 3), Common, false, false, 0.5f);
+        public static PlayerStat Lifetime = new PlayerStat("Bullet Lifetime", 3, new Vector2(3, 20), Uncommon);
+        public static PlayerStat DropRate = new PlayerStat("Drop Rate", 1.5f, new Vector2(0.25f, 4), Rare);
+        static List<PlayerStat> defaultStatList = new List<PlayerStat> { Damage, FireRate, MaxHP, HPReward, Multishot, Spread, ShotSpeed, Speed, BulletSize, Lifetime, DropRate };
 
         static StatSet defaultStats = new StatSet(defaultStatList);
 
@@ -104,8 +106,7 @@ public static class Stats
 
         // Misc. Stats (not put into statsets because they don't have a combined condition or upgrades in the shop)
         public static int Money;
-        public static PlayerStat UpgradeSlots = new PlayerStat("Upgrade Slots", 3, new Vector2(3, 7), true);
-        public static PlayerStat DropRate = new PlayerStat("Drop Rate", 1.5f, new Vector2(0.25f, 4));
+        public static PlayerStat UpgradeSlots = new PlayerStat("Upgrade Slots", 3, new Vector2(3, 7), NotFoundInShops, true);
         public static List<PlayerStat> miscellaneousStats = new List<PlayerStat> { UpgradeSlots };
 
 
@@ -147,7 +148,7 @@ public static class Stats
         {
 
             // Bouncing bullets
-            public static PlayerStat bouncingBulletBounces = new PlayerStat("Bounces", 1, new Vector2(0, 10), true);
+            public static PlayerStat bouncingBulletBounces = new PlayerStat("Bounces", 1, new Vector2(0, 10), Common, true);
             static List<PlayerStat> bouncingBulletsStatList = new List<PlayerStat> { bouncingBulletBounces };
             static StatSet bouncingBulletsStats = new StatSet(bouncingBulletsStatList);
             public static Unlockable BouncingBullets = new Unlockable("Bouncing Bullets", bouncingBulletsStats);
@@ -155,13 +156,13 @@ public static class Stats
 
             // Wallbounce, it's a direct upgrade to bouncing bullets
             static Condition wallBounceUnlockCondition = new ConjunctCondition(new List<Condition> { new StatCondition(bouncingBulletBounces, 2, true), new UnlockCondition(BouncingBullets, true) });
-            public static PlayerStat wallBounceDamageRetention = new PlayerStat("Wall Bounce Damage Retention", 0.5f, new Vector2(0.5f, 1), false, false, 0.5f);
+            public static PlayerStat wallBounceDamageRetention = new PlayerStat("Wall Bounce Damage Retention", 0.5f, new Vector2(0.5f, 1), Uncommon, false, false, 0.5f);
             static List<PlayerStat> wallBounceStatList = new List<PlayerStat> { wallBounceDamageRetention };
             static StatSet wallBounceStats = new StatSet(wallBounceStatList, wallBounceUnlockCondition);
             public static Unlockable WallBounce = new Unlockable("Wall Bounce", wallBounceStats, wallBounceUnlockCondition);
 
             // Piercing
-            public static PlayerStat piercingBulletsPiercingTime = new PlayerStat("Piercing Time", 0.25f, new Vector2(0, 2), false, false, 0.5f);
+            public static PlayerStat piercingBulletsPiercingTime = new PlayerStat("Piercing Time", 0.25f, new Vector2(0, 2), Common, false, false, 0.5f);
             static List<PlayerStat> piercingBulletsStatList = new List<PlayerStat> { piercingBulletsPiercingTime };
             static StatSet piercingBulletsStats = new StatSet(piercingBulletsStatList);
             public static Unlockable PiercingBullets = new Unlockable("Piercing Bullets", piercingBulletsStats);
@@ -170,7 +171,7 @@ public static class Stats
             static Condition overflowCondition = new ConjunctCondition(new List<Condition> { new StatCondition(piercingBulletsPiercingTime, 0.5f, true), new StatCondition(Damage, 20, true) });
 
             // What fraction of the damage is reduced when hitting an enemy, e.g. if the enemy has 10 health and this stat is 0.5f, the overflow loses 5 damage
-            public static PlayerStat overflowLoss = new PlayerStat("Overflow Reduction", 1, new Vector2(0, 1), false, true);
+            public static PlayerStat overflowLoss = new PlayerStat("Overflow Reduction", 1, new Vector2(0, 1), Uncommon, false, true);
             static List<PlayerStat> overflowStatList = new List<PlayerStat> { overflowLoss };
             static StatSet overflowStats = new StatSet(overflowStatList);
             // Unlocking this also doubles your damage
@@ -178,10 +179,10 @@ public static class Stats
 
 
             // Lightning!
-            public static PlayerStat lightningRange = new PlayerStat("Lightning Arc Range", 300, new Vector2(200, 1000), false, false, 0.25f);
-            public static PlayerStat lightningMaxArcs = new PlayerStat("Maximum Arcs", 1, new Vector2(1, 5), true, false);
-            public static PlayerStat lightningChainChance = new PlayerStat("Chain Chance", 0.1f, new Vector2(0.1f, 0.8f), false, false);
-            public static PlayerStat lightningChainDamageRetention = new PlayerStat("Chain Damage Retention", 0.5f, new Vector2(0.5f, 1), false, false, 0.5f, new StatCondition(lightningChainChance, 0.2f, true));
+            public static PlayerStat lightningRange = new PlayerStat("Lightning Arc Range", 300, new Vector2(200, 1000), Rare, false, false, 0.5f);
+            public static PlayerStat lightningMaxArcs = new PlayerStat("Maximum Arcs", 1, new Vector2(1, 5), Uncommon, true, false);
+            public static PlayerStat lightningChainChance = new PlayerStat("Chain Chance", 0.1f, new Vector2(0.1f, 0.8f), Common, false, false);
+            public static PlayerStat lightningChainDamageRetention = new PlayerStat("Chain Damage Retention", 0.5f, new Vector2(0.5f, 1), Common, false, false, 0.5f, new StatCondition(lightningChainChance, 0.2f, true));
             static List<PlayerStat> lightningStatList = new List<PlayerStat> { lightningRange, lightningMaxArcs, lightningChainChance, lightningChainDamageRetention };
             static StatSet lightningStats = new StatSet(lightningStatList);
             public static Unlockable Lightning = new Unlockable("Lightning Arc", lightningStats);
@@ -189,7 +190,7 @@ public static class Stats
             // Laser
             // If you reach high enough shotspeed, piercing and firerate, you get LASER BEAM as an option
             static Condition laserUnlockCondition = new ConjunctCondition(new List<Condition> { new StatCondition(FireRate, 3, true), new StatCondition(ShotSpeed, 1.5f, true), new StatCondition(piercingBulletsPiercingTime, 0.5f, true) });
-            public static PlayerStat LaserLifetime = new PlayerStat("Laser Lifetime", 0.2f, new Vector2(0.2f, 2));
+            public static PlayerStat LaserLifetime = new PlayerStat("Laser Lifetime", 0.2f, new Vector2(0.2f, 2), Uncommon);
             static List<PlayerStat> laserStatList = new List<PlayerStat> { LaserLifetime };
             static StatSet laserStats = new StatSet(laserStatList);
             public static Unlockable Laser = new Unlockable("Laser Beam", laserStats, laserUnlockCondition);
@@ -201,8 +202,8 @@ public static class Stats
 
             // Splinter
             // When the bullet dies, it splits into mini-bullets
-            public static PlayerStat splinterFragments = new PlayerStat("Splinter Fragments", 2, new Vector2(2, 5), true);
-            public static PlayerStat splinterDamageMultiplier = new PlayerStat("Splinter Damage Fraction", 0.5f, new Vector2(0.5f, 1), false, false, 0.5f);
+            public static PlayerStat splinterFragments = new PlayerStat("Splinter Fragments", 2, new Vector2(2, 5), Common, true);
+            public static PlayerStat splinterDamageMultiplier = new PlayerStat("Splinter Damage Fraction", 0.5f, new Vector2(0.5f, 1), Uncommon, false, false, 0.5f);
             static List<PlayerStat> splinterStatList = new List<PlayerStat> { splinterFragments, splinterDamageMultiplier };
             static StatSet splinterStats = new StatSet(splinterStatList);
             public static Unlockable Splinter = new Unlockable("Splinter", splinterStats);
@@ -210,8 +211,8 @@ public static class Stats
 
             // Venom
             // Deals DoT, independent of damage
-            public static PlayerStat venomFrequency = new PlayerStat("Venom Frequency", 1, new Vector2(1, 8), true);
-            public static PlayerStat venomDamage = new PlayerStat("Venom Damage", 2, new Vector2(2, 20));
+            public static PlayerStat venomFrequency = new PlayerStat("Venom Frequency", 1, new Vector2(1, 8), Common, true);
+            public static PlayerStat venomDamage = new PlayerStat("Venom Damage", 2, new Vector2(2, 20), Common);
             static List<PlayerStat> venomStatList = new List<PlayerStat> { venomFrequency, venomDamage };
             static StatSet venomStats = new StatSet(venomStatList);
             public static Unlockable Venom = new Unlockable("Venom", venomStats);
@@ -223,9 +224,9 @@ public static class Stats
             public static Unlockable Plague = new Unlockable("Plague", plagueStats, new StatCondition(venomFrequency, 3, true));
 
             // Plague upgrade: exploding corpses
-            public static PlayerStat plagueExplosionRadius = new PlayerStat("Plague Explosion Radius", 40, new Vector2(40, 200));
-            public static PlayerStat plagueExplosionChance = new PlayerStat("Plague Explosion Chance", 0.1f, new Vector2(0.1f, 0.5f), false, false, 0.5f);
-            public static PlayerStat plagueCloudLifetime = new PlayerStat("Plague Cloud Lifetime", 0.5f, new Vector2(0.5f, 2), false, false, 0.5f);
+            public static PlayerStat plagueExplosionRadius = new PlayerStat("Plague Explosion Radius", 40, new Vector2(40, 200), Common);
+            public static PlayerStat plagueExplosionChance = new PlayerStat("Plague Explosion Chance", 0.1f, new Vector2(0.1f, 0.5f), Common, false, false, 0.5f);
+            public static PlayerStat plagueCloudLifetime = new PlayerStat("Plague Cloud Lifetime", 0.5f, new Vector2(0.5f, 2), Uncommon, false, false, 0.5f);
             static List<PlayerStat> plageExplosionStats = new List<PlayerStat> { plagueExplosionRadius, plagueExplosionChance, plagueCloudLifetime };
             static StatSet plagueExplosionStats = new StatSet(plageExplosionStats);
             public static Unlockable PlagueExplosion = new Unlockable("Plague Explosion", plagueExplosionStats, new UnlockCondition(Plague, true));

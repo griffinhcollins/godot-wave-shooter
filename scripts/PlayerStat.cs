@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using Godot;
+using static RarityControl;
 
 public class PlayerStat : Prerequisite
 {
@@ -13,19 +14,21 @@ public class PlayerStat : Prerequisite
     private float dynamicValue;
     public bool intChange;
     public bool invert; // Invert is true if increasing this stat is bad, and decreasing it is good
+    public Rarity rarity;
     public float changePolynomial;
 
     float multiplier;
 
     public Condition condition;
 
-    public PlayerStat(string _name, float _baseValue, Vector2 _range, bool _intChange = false, bool _invert = false, float _changePolynomial = 1, Condition _condition = null)
+    public PlayerStat(string _name, float _baseValue, Vector2 _range, Rarity _rarity, bool _intChange = false, bool _invert = false, float _changePolynomial = 1, Condition _condition = null)
     {
         name = _name;
         baseValue = _baseValue;
         startingRange = _range;
         intChange = _intChange;
         invert = _invert;
+        rarity = _rarity;
         changePolynomial = _changePolynomial;
         if (_condition is not null)
         {
@@ -101,7 +104,7 @@ public class PlayerStat : Prerequisite
                 hitCap = true;
                 preview = range.X;
             }
-            return string.Format("{0} {1} by {2:D}% ({3:n2} -> {4:n2}){5}", name, increase ? "Up" : "Down", (int)Math.Round(100 * Mathf.Abs(preview - GetDynamicVal())/(GetDynamicVal() != 0 ? GetDynamicVal() : 1)), GetDynamicVal(), preview, hitCap ? " (cap)" : "");
+            return string.Format("{0} {1} by {2:D}% ({3:n2} -> {4:n2}){5}", name, increase ? "Up" : "Down", (int)Math.Round(100 * Mathf.Abs(preview - GetDynamicVal()) / (GetDynamicVal() != 0 ? GetDynamicVal() : 1)), GetDynamicVal(), preview, hitCap ? " (cap)" : "");
 
         }
     }

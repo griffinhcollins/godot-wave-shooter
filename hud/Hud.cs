@@ -54,6 +54,13 @@ public partial class Hud : CanvasLayer
 
     }
 
+    private void OnUpgradeChosen()
+    {
+        // An upgrade has been selected
+        GD.Print("good work");
+        upgradeBar.Hide();
+    }
+
     private void OnNextWavePressed()
     {
         ShowWave();
@@ -120,6 +127,7 @@ public partial class Hud : CanvasLayer
         upgradeBar = shopElements.GetNode<HBoxContainer>("Upgrades");
         ShowShop();
         int upgradeSlotNum = (int)Stats.PlayerStats.UpgradeSlots.GetDynamicVal();
+        // Hide the upgrade slot purchase if the player is at max
         if (upgradeSlotNum >= Stats.PlayerStats.UpgradeSlots.GetRange().Y)
         {
             shopElements.GetNode<Button>("BuySlot").Hide();
@@ -134,7 +142,8 @@ public partial class Hud : CanvasLayer
         upgradePool = Upgrades.GetAvailableUpgrades();
         for (int i = 0; i < upgradeSlotNum; i++)
         {
-            AddUpgrade();
+            UpgradeNode newUpgrade = AddUpgrade();
+            newUpgrade.UpgradeSelected += OnUpgradeChosen;
         }
         // This is hacky but it will stop the upgrade bar sometimes appearing offset 
         upgradeBar.Visible = false;
@@ -157,11 +166,12 @@ public partial class Hud : CanvasLayer
         shopElements.GetNode<Button>("BuySlot").GetNode<Label>("Cost").Text = string.Format("${0}", ((int)Stats.PlayerStats.UpgradeSlots.GetDynamicVal() - 1) * 5);
     }
 
-    private void AddUpgrade()
+    private UpgradeNode AddUpgrade()
     {
         UpgradeNode newUpgrade = upgrade.Instantiate<UpgradeNode>();
         upgradeBar.AddChild(newUpgrade);
         upgradePool = newUpgrade.Generate(upgradePool);
+        return newUpgrade;
     }
 
     public void UpdateHealth(int HP)

@@ -17,6 +17,10 @@ public partial class UpgradeNode : Button
     float magnitude;
     Rarity rarity;
 
+    List<Prerequisite> prereqs;
+
+    bool locked = false; // Sometimes we show locked upgrades if there aren't any unlocked ones to show
+
     [Signal]
     public delegate void UpgradeSelectedEventHandler();
 
@@ -42,14 +46,46 @@ public partial class UpgradeNode : Button
     // The pool is already checked for conditions, and any upgrades that have previously appeared in this shop are removed
     List<PlayerUpgrade> Randomize(List<PlayerUpgrade> pool)
     {
-        if (Stats.Counters.WaveCounter % 3 == 0)
+        if (Stats.Counters.WaveCounter % 5 == 0)
         {
             // it's fuckin unlock time baby
             List<PlayerUnlockUpgrade> allUnlockUpgrades = pool.OfType<PlayerUnlockUpgrade>().ToList();
-            upgrade = allUnlockUpgrades[GD.RandRange(0, allUnlockUpgrades.Count - 1)];
-            magnitude = 1;
-            AddIcon(upgrade);
-            SelfModulate = Legendary.colour;
+            if (allUnlockUpgrades.Count >= 1) // Do we have unlockables to give?
+            {
+                upgrade = allUnlockUpgrades[GD.RandRange(0, allUnlockUpgrades.Count - 1)];
+                magnitude = 1;
+                AddIcon(upgrade);
+                SelfModulate = Legendary.colour;
+            }
+            else
+            {
+                // show an unlockable that's locked behind a prerequisite we haven't met, but tell the player the prereq
+                foreach (Unlockable u in Stats.PlayerStats.Unlocks.allUnlockables.OrderBy(x => GD.Randf()))
+                {
+                    // It's not unlocked and it's not available to unlock
+                    if (u.unlocked == false && !u.CheckCondition())
+                    {
+                        prereqs = new List<Prerequisite>();
+                        foreach (Prerequisite p in u.GetPrerequisites())
+                        {
+                            prereqs.Add(p);
+                        }
+                        upgrade = new PlayerUnlockUpgrade(u);
+                        locked = true;
+                        AddIcon(upgrade);
+                        SelfModulate = new Color(0.1f, 0.1f, 0.1f);
+                        return pool;
+                    }
+                }
+                if (!locked)
+                {
+                    // we're completely out
+                    Hide();
+                    return pool;
+                }
+
+            }
+
         }
         else
         {
@@ -96,6 +132,16 @@ public partial class UpgradeNode : Button
         string infoMessage = "";
 
         infoMessage += upgrade.GetDescription(magnitude);
+        if (locked)
+        {
+            infoMessage += "\nLocked, requires more ";
+            foreach (Prerequisite p in prereqs)
+            {
+                infoMessage += p.GetName();
+                infoMessage += ", ";
+            }
+            infoMessage = infoMessage.Remove(infoMessage.Length - 2);
+        }
         // infoMessage += string.Format(", ({0})", rarity.name);
         hud.ShowMessage(infoMessage, false);
     }
@@ -111,7 +157,10 @@ public partial class UpgradeNode : Button
         // {
         //     return;
         // }
-
+        if (locked)
+        {
+            return;
+        }
         upgrade.Execute(magnitude);
         EmitSignal(SignalName.UpgradeSelected);
         QueueFree();
@@ -145,9 +194,17 @@ public partial class UpgradeNode : Button
     {
         TextureRect textureRect = new TextureRect();
         textureRect.ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize;
-        textureRect.CustomMinimumSize = new Vector2(45, 45);
+        textureRect.CustomMinimumSize = new Vector2(60, 60);
         textureRect.Texture = upgrade.GetUpgradeIcon();
         iconHolder.AddChild(textureRect);
+        if (locked)
+        {
+            TextureRect lockRect = new TextureRect();
+            lockRect.ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize;
+            lockRect.CustomMinimumSize = new Vector2(45, 45);
+            lockRect.Texture = (Texture2D)GD.Load("res://custom assets/upgrade icons/lock.png");
+            textureRect.AddChild(lockRect);
+        }
     }
 
 }

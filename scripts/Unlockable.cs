@@ -41,13 +41,26 @@ public class Unlockable : Prerequisite
         associatedStats.SetToDefaultStartingValues();
     }
 
+    public bool CheckCondition()
+    {
+        if (condition is null)
+        {
+            return true;
+        }
+        else
+        {
+            return condition.CheckCondition();
+        }
+    }
+
 
 
     public List<Prerequisite> GetPrerequisites(Condition c = null)
     {
         if (c is null)
         {
-            if (condition is null){
+            if (condition is null)
+            {
                 return null;
             }
             c = condition;
@@ -62,7 +75,7 @@ public class Unlockable : Prerequisite
         }
         if (c is ConjunctCondition)
         {
-            return ((ConjunctCondition)c).conditions.SelectMany(u => GetPrerequisites(u)).ToList();
+            return ((ConjunctCondition)c).conditions.SelectMany(c => GetPrerequisites(c)).ToList();
         }
         throw new System.NotImplementedException();
     }

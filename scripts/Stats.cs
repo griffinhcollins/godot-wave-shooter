@@ -92,7 +92,7 @@ public static class Stats
         public static PlayerStat Spread = new PlayerStat("Spread", 15, new Vector2(0, 180), Uncommon, false, true);
         public static PlayerStat ShotSpeed = new PlayerStat("Shot Speed", 1, new Vector2(0.25f, 10), Common);
         public static PlayerStat Speed = new PlayerStat("Speed", 400, new Vector2(100, 1000), Uncommon, false, false, 0.5f);
-        public static PlayerStat BulletSize = new PlayerStat("Bullet Size", 0.5f, new Vector2(0.25f, 3), Common, false, false, 0.5f);
+        public static PlayerStat BulletSize = new PlayerStat("Bullet Size", 0.7f, new Vector2(0.25f, 3), Common, false, false, 0.75f);
         public static PlayerStat Lifetime = new PlayerStat("Bullet Lifetime", 3, new Vector2(3, 20), Uncommon);
         public static PlayerStat DropRate = new PlayerStat("Drop Rate", 1.5f, new Vector2(0.25f, 4), Rare);
         static List<PlayerStat> defaultStatList = new List<PlayerStat> { Damage, FireRate, MaxHP, HPReward, Multishot, Spread, ShotSpeed, Speed, BulletSize, Lifetime, DropRate };
@@ -232,6 +232,7 @@ public static class Stats
             public static Unlockable PlagueExplosion = new Unlockable("Plague Explosion", plagueExplosionStats, new UnlockCondition(Plague, true));
 
             public static Unlockable[] allUnlockables = { Laser, BouncingBullets, PiercingBullets, WallBounce, Lightning, OverflowBullets, Splinter, Venom, Plague, PlagueExplosion };
+
 
         }
 

@@ -90,11 +90,10 @@ public static class Stats
         public static PlayerStat Multishot = new PlayerStat("Multishot", 1, new Vector2(1, 10));
         public static PlayerStat Spread = new PlayerStat("Spread", 5, new Vector2(0, 180), false, true);
         public static PlayerStat ShotSpeed = new PlayerStat("Shot Speed", 1, new Vector2(0.25f, 10));
-        public static PlayerStat DropRate = new PlayerStat("Drop Rate", 1.5f, new Vector2(0.25f, 4));
         public static PlayerStat Speed = new PlayerStat("Speed", 400, new Vector2(100, 1000), false, false, 0.5f);
         public static PlayerStat BulletSize = new PlayerStat("Bullet Size", 1, new Vector2(0.25f, 3), false, false, 0.5f);
         public static PlayerStat Lifetime = new PlayerStat("Bullet Lifetime", 3, new Vector2(3, 20));
-        static List<PlayerStat> defaultStatList = new List<PlayerStat> { Damage, FireRate, MaxHP, HPReward, Multishot, Spread, ShotSpeed, DropRate, Speed, BulletSize, Lifetime };
+        static List<PlayerStat> defaultStatList = new List<PlayerStat> { Damage, FireRate, MaxHP, HPReward, Multishot, Spread, ShotSpeed, Speed, BulletSize, Lifetime };
 
         static StatSet defaultStats = new StatSet(defaultStatList);
 
@@ -106,6 +105,7 @@ public static class Stats
         // Misc. Stats (not put into statsets because they don't have a combined condition or upgrades in the shop)
         public static int Money;
         public static PlayerStat UpgradeSlots = new PlayerStat("Upgrade Slots", 3, new Vector2(3, 7), true);
+        public static PlayerStat DropRate = new PlayerStat("Drop Rate", 1.5f, new Vector2(0.25f, 4));
         public static List<PlayerStat> miscellaneousStats = new List<PlayerStat> { UpgradeSlots };
 
 

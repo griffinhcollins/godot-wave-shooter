@@ -192,11 +192,7 @@ public abstract partial class Mob : RigidBody2D
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
-        if (poisoned)
-        {
-            poisonTick -= (float)delta;
-            ProcessPoison();
-        }
+        // Pause logic. NOTHING GOES BEFORE THIS UNLESS IT SHOULD BE HAPPENING EVEN WHILE PAUSED
         if (State.currentState == State.paused)
         {
             if (beforePauseVelocity == Vector2.Zero)
@@ -207,6 +203,11 @@ public abstract partial class Mob : RigidBody2D
             }
             Pause();
             return;
+        }
+        if (poisoned)
+        {
+            poisonTick -= (float)delta;
+            ProcessPoison();
         }
         if (beforePauseVelocity != Vector2.Zero)
         {

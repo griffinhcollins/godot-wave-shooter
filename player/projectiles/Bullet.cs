@@ -266,7 +266,10 @@ public abstract partial class Bullet : Node2D
         {
             m.OnCollision(this);
         }
-
+        if (dmg <= 0)
+        {
+            return;
+        }
         // Finally, actually deal damage
         if (hitNode.IsInGroup("mobs") && !mobsHit.Contains(hitNode))
         {

@@ -25,6 +25,10 @@ public partial class Hud : CanvasLayer
     HBoxContainer upgradeBar;
 
     List<PlayerUpgrade> upgradePool;
+    List<Prerequisite> excludePool;
+
+    int rerollCost = 10;
+    bool upgradeSelected;
 
     Player player;
     public override void _Ready()
@@ -57,12 +61,13 @@ public partial class Hud : CanvasLayer
     private void OnUpgradeChosen()
     {
         // An upgrade has been selected
-        GD.Print("good work");
+        upgradeSelected = true;
         upgradeBar.Hide();
     }
 
     private void OnNextWavePressed()
     {
+        rerollCost = 10;
         ShowWave();
         EmitSignal(SignalName.NextWave);
         foreach (UpgradeNode upgrade in shopElements.GetNode("Upgrades").GetChildren())
@@ -85,7 +90,7 @@ public partial class Hud : CanvasLayer
                 shopElements.GetNode<Button>("BuySlot").Disabled = true;
             }
 
-            UpdateUpgradeSlotCost();
+            UpdateCosts();
         }
 
     }
@@ -124,6 +129,7 @@ public partial class Hud : CanvasLayer
 
     public void GenerateShop()
     {
+        upgradeSelected = false;
         upgradeBar = shopElements.GetNode<HBoxContainer>("Upgrades");
         ShowShop();
         int upgradeSlotNum = (int)Stats.PlayerStats.UpgradeSlots.GetDynamicVal();
@@ -140,20 +146,25 @@ public partial class Hud : CanvasLayer
             shopElements.GetNode<Button>("BuySlot").Disabled = false;
         }
         upgradePool = Upgrades.GetAvailableUpgrades();
+        excludePool = new();
         for (int i = 0; i < upgradeSlotNum; i++)
         {
             UpgradeNode newUpgrade = AddUpgrade();
-            newUpgrade.UpgradeSelected += OnUpgradeChosen;
         }
         // This is hacky but it will stop the upgrade bar sometimes appearing offset 
         upgradeBar.Visible = false;
         upgradeBar.Visible = true;
-        UpdateUpgradeSlotCost();
+        UpdateCosts();
 
     }
 
     private void RerollShop()
     {
+        if (upgradeSelected || !player.ChargeMoney(rerollCost))
+        {
+            return;
+        }
+        rerollCost += 5;
         foreach (UpgradeNode upgrade in shopElements.GetNode("Upgrades").GetChildren())
         {
             upgrade.QueueFree();
@@ -161,16 +172,19 @@ public partial class Hud : CanvasLayer
         GenerateShop();
     }
 
-    private void UpdateUpgradeSlotCost()
+
+    private void UpdateCosts()
     {
         shopElements.GetNode<Button>("BuySlot").GetNode<Label>("Cost").Text = string.Format("${0}", ((int)Stats.PlayerStats.UpgradeSlots.GetDynamicVal() - 1) * 5);
+        shopElements.GetNode("Reroll").GetNode<Label>("Cost").Text = string.Format("${0}", rerollCost);
     }
 
     private UpgradeNode AddUpgrade()
     {
         UpgradeNode newUpgrade = upgrade.Instantiate<UpgradeNode>();
         upgradeBar.AddChild(newUpgrade);
-        upgradePool = newUpgrade.Generate(upgradePool);
+        (upgradePool, excludePool) = newUpgrade.Generate(upgradePool, excludePool);
+        newUpgrade.UpgradeSelected += OnUpgradeChosen;
         return newUpgrade;
     }
 

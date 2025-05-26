@@ -87,9 +87,9 @@ public static class Stats
         public static PlayerStat Damage = new PlayerStat("Damage", 10, new Vector2(5, Mathf.Inf), Common);
         public static PlayerStat FireRate = new PlayerStat("Firerate", 2, new Vector2(0.5f, 10), Common);
         public static PlayerStat MaxHP = new PlayerStat("HP", 3, new Vector2(0, 6), Rare, true);
-        public static PlayerStat HPReward = new PlayerStat("HP Interest", 1, new Vector2(0, 4), Uncommon, true);
+        public static PlayerStat HPReward = new PlayerStat("HP Interest", 1, new Vector2(0, 4), Rare, true);
         public static PlayerStat Multishot = new PlayerStat("Multishot", 1, new Vector2(1, 10), Uncommon);
-        public static PlayerStat Spread = new PlayerStat("Spread", 15, new Vector2(0, 180), Uncommon, false, true);
+        public static PlayerStat Spread = new PlayerStat("Spread", 15, new Vector2(0, 180), Common, false, true);
         public static PlayerStat ShotSpeed = new PlayerStat("Shot Speed", 1, new Vector2(0.25f, 10), Common);
         public static PlayerStat Speed = new PlayerStat("Speed", 400, new Vector2(100, 1000), Uncommon, false, false, 0.5f);
         public static PlayerStat BulletSize = new PlayerStat("Bullet Size", 0.7f, new Vector2(0.25f, 3), Common, false, false, 0.75f);
@@ -277,7 +277,7 @@ public static class Stats
         // Starting/Default Stats
         public static readonly float[] BaseStats = {
             // Enemy Starting Stats
-            15,     // 0: Wave Length
+            3,     // 0: Wave Length
             1,      // 1: Spawn Rate (Spawns/second)
             1,      // 2: HP Mult
             1,      // 3: Acceleration Mult 
@@ -301,7 +301,7 @@ public static class Stats
         public static string mostRecentMutation;
         public static void IncreaseDifficulty()
         {
-            GD.Print("raising difficulty");
+            // GD.Print("raising difficulty");
             int mutationIndex = GD.RandRange(0, DynamicStats.Length - 1); // only have as many as you have mutation upgrades
             DynamicStats[ID.SpawnRate] += 0.2f;
             if (previousMut != -1)

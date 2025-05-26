@@ -162,6 +162,11 @@ public abstract partial class Bullet : Node2D
             m.OngoingEffect(delta, this);
         }
 
+        if (timeAlive >= Lifetime.GetDynamicVal())
+        {
+            HandleDeath();
+        }
+
         // if (sprite is not null && timeAlive > 0.5f * Lifetime.GetDynamicVal())
         // {
         //     Color currentColour = sprite.Modulate;

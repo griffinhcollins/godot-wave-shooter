@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://eqfjbdp5aj6m"]
+[gd_scene load_steps=8 format=3 uid="uid://4br0n54vxpbq"]
 
 [ext_resource type="Script" path="res://player/projectiles/LightningArc.cs" id="1_0ulq0"]
 [ext_resource type="Texture2D" uid="uid://csm2jxko8rebu" path="res://custom assets/projectiles/lightning arc 1.png" id="2_fwr7i"]

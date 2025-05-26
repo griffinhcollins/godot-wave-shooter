@@ -247,6 +247,28 @@ public static class Stats
 
             // The order kind of matters (in the case of having multiple applied). Things that just change speed should go at the back
             public static Mutation[] allMutations = { AcceleratingBullet, DeceleratingBullet, OrbitBullet, ChaoticBullet, SmartBullet, BoomarangBullet };
+
+            static Mutation currentMutation;
+
+            public static List<Mutation> GetAvailableMutations() // returns all mutations that aren't active
+            {
+                if (currentMutation is null)
+                {
+                    return allMutations.ToList();
+                }
+                return allMutations.Where(m => m != currentMutation).ToList();
+            }
+
+            public static void SetMutation(Mutation mut)
+            {
+                if (currentMutation is not null)
+                {
+                    currentMutation.applied = false;
+
+                }
+                mut.applied = true;
+                currentMutation = mut;
+            }
         }
     }
 
@@ -331,6 +353,11 @@ public static class Stats
             WaveCounter = 0;
             KillCounter = 0;
             CoinCounter = 0;
+        }
+
+        public static bool IsUnlockWave()
+        {
+            return WaveCounter % 5 == 0;
         }
     }
 

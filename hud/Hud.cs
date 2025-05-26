@@ -55,6 +55,7 @@ public partial class Hud : CanvasLayer
         player.Hide();
         waveElements.Hide();
         shopElements.Show();
+        shopElements.GetNode<Button>("Delve Deeper").Hide();
 
     }
 
@@ -63,6 +64,10 @@ public partial class Hud : CanvasLayer
         // An upgrade has been selected
         upgradeSelected = true;
         upgradeBar.Hide();
+        if (Stats.Counters.IsUnlockWave())
+        {
+            shopElements.GetNode<Button>("Delve Deeper").Show();
+        }
     }
 
     private void OnNextWavePressed()
@@ -93,6 +98,19 @@ public partial class Hud : CanvasLayer
             UpdateCosts();
         }
 
+    }
+
+    private void OnDelveDeeperPressed()
+    {
+        if (player.ChargeMoney(20))
+        {
+            foreach (var item in upgradeBar.GetChildren())
+            {
+                item.QueueFree();
+            }
+            GenerateShop(true);
+
+        }
     }
 
     public void ClearGameOver()
@@ -127,7 +145,7 @@ public partial class Hud : CanvasLayer
         AddChild(dmgNum);
     }
 
-    public void GenerateShop()
+    public void GenerateShop(bool delving = false)
     {
         upgradeSelected = false;
         upgradeBar = shopElements.GetNode<HBoxContainer>("Upgrades");
@@ -147,9 +165,20 @@ public partial class Hud : CanvasLayer
         }
         upgradePool = Upgrades.GetAvailableUpgrades();
         excludePool = new();
-        for (int i = 0; i < upgradeSlotNum; i++)
+        if (!delving)
         {
-            UpgradeNode newUpgrade = AddUpgrade();
+            for (int i = 0; i < upgradeSlotNum; i++)
+            {
+                UpgradeNode newUpgrade = AddUpgrade();
+            }
+        }
+        else
+        {
+            // they paid $20 to get an extra upgrade, but it'll come with a mutation
+            for (int i = 0; i < 3; i++)
+            {
+                UpgradeNode newUpgrade = AddUpgrade(true);
+            }
         }
         // This is hacky but it will stop the upgrade bar sometimes appearing offset 
         upgradeBar.Visible = false;
@@ -179,11 +208,11 @@ public partial class Hud : CanvasLayer
         shopElements.GetNode("Reroll").GetNode<Label>("Cost").Text = string.Format("${0}", rerollCost);
     }
 
-    private UpgradeNode AddUpgrade()
+    private UpgradeNode AddUpgrade(bool delving = false)
     {
         UpgradeNode newUpgrade = upgrade.Instantiate<UpgradeNode>();
         upgradeBar.AddChild(newUpgrade);
-        (upgradePool, excludePool) = newUpgrade.Generate(upgradePool, excludePool);
+        (upgradePool, excludePool) = newUpgrade.Generate(upgradePool, excludePool, delving);
         newUpgrade.UpgradeSelected += OnUpgradeChosen;
         return newUpgrade;
     }

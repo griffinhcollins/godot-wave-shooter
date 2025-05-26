@@ -19,6 +19,7 @@ public partial class UpgradeNode : Button
     Rarity rarity;
 
     List<Prerequisite> prereqs;
+    bool delving = false;
 
     bool locked = false; // Sometimes we show locked upgrades if there aren't any unlocked ones to show
 
@@ -35,15 +36,17 @@ public partial class UpgradeNode : Button
 
     }
 
-    public (List<PlayerUpgrade>, List<Prerequisite>) Generate(List<PlayerUpgrade> upgradePool, List<Prerequisite> exclude)
+    public (List<PlayerUpgrade>, List<Prerequisite>) Generate(List<PlayerUpgrade> upgradePool, List<Prerequisite> exclude, bool _delving)
     {
         if (exclude is null)
         {
             exclude = new List<Prerequisite>();
         }
+        delving = _delving;
         hud = (Hud)GetTree().GetNodesInGroup("HUD")[0];
         iconHolder = GetNode<HFlowContainer>("IconHolder");
         (upgradePool, exclude) = Randomize(upgradePool, exclude);
+
         UpdateCost();
         return (upgradePool, exclude);
     }
@@ -51,7 +54,7 @@ public partial class UpgradeNode : Button
     // The pool is already checked for conditions, and any upgrades that have previously appeared in this shop are added to exclude
     (List<PlayerUpgrade>, List<Prerequisite>) Randomize(List<PlayerUpgrade> pool, List<Prerequisite> exclude)
     {
-        if (Stats.Counters.WaveCounter % 5 == 0)
+        if (Stats.Counters.IsUnlockWave())
         {
             // it's fuckin unlock time baby
 
@@ -169,6 +172,11 @@ public partial class UpgradeNode : Button
             return;
         }
         upgrade.Execute(magnitude);
+        if (delving)
+        {
+            List<Mutation> availableMuts = Stats.PlayerStats.Mutations.GetAvailableMutations();
+            Stats.PlayerStats.Mutations.SetMutation(availableMuts[GD.RandRange(0, availableMuts.Count - 1)]);
+        }
         EmitSignal(SignalName.UpgradeSelected);
         QueueFree();
 
@@ -202,17 +210,26 @@ public partial class UpgradeNode : Button
     {
         TextureRect textureRect = new TextureRect();
         textureRect.ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize;
-        textureRect.CustomMinimumSize = new Vector2(60, 60);
+        textureRect.CustomMinimumSize = new Vector2(120, 120);
         textureRect.Texture = upgrade.GetUpgradeIcon();
         iconHolder.AddChild(textureRect);
+        if (delving)
+        {
+            TextureRect mutationRect = new TextureRect();
+            mutationRect.ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize;
+            mutationRect.CustomMinimumSize = new Vector2(120, 120);
+            mutationRect.Texture = (Texture2D)GD.Load("res://custom assets/hud/mutated upgrade.png");
+            textureRect.AddChild(mutationRect);
+        }
         if (locked)
         {
             TextureRect lockRect = new TextureRect();
             lockRect.ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize;
-            lockRect.CustomMinimumSize = new Vector2(45, 45);
+            lockRect.CustomMinimumSize = new Vector2(120, 120);
             lockRect.Texture = (Texture2D)GD.Load("res://custom assets/upgrade icons/lock.png");
             textureRect.AddChild(lockRect);
         }
+
     }
 
 }

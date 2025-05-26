@@ -102,7 +102,7 @@ public partial class Hud : CanvasLayer
 
     private void OnDelveDeeperPressed()
     {
-        if (player.ChargeMoney(20))
+        if (player.ChargeMoney(30))
         {
             foreach (var item in upgradeBar.GetChildren())
             {

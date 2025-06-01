@@ -84,7 +84,7 @@ public partial class Hud : CanvasLayer
     private void OnBuySlotClicked()
     {
         int currentUpgradeSlots = (int)Stats.PlayerStats.UpgradeSlots.GetDynamicVal();
-        int cost = (currentUpgradeSlots - 1) * 5;
+        int cost = GetCurrentUpgradeSlotCost();
         if (player.ChargeMoney(cost))
         {
             AddUpgrade();
@@ -102,9 +102,9 @@ public partial class Hud : CanvasLayer
 
     private void OnDelveDeeperPressed()
     {
-        if (player.ChargeMoney(30))
+        if (player.ChargeMoney(50))
         {
-            foreach (var item in upgradeBar.GetChildren())
+            foreach (Node2D item in upgradeBar.GetChildren())
             {
                 item.QueueFree();
             }
@@ -182,6 +182,7 @@ public partial class Hud : CanvasLayer
             {
                 UpgradeNode newUpgrade = AddUpgrade(true);
             }
+            // No rerolling or getting extra slots if you're delving
             buySlot.Hide();
             shopElements.GetNode<Node2D>("Reroll").Hide();
         }
@@ -209,8 +210,13 @@ public partial class Hud : CanvasLayer
 
     private void UpdateCosts()
     {
-        shopElements.GetNode<Button>("BuySlot").GetNode<Label>("Cost").Text = string.Format("${0}", ((int)Stats.PlayerStats.UpgradeSlots.GetDynamicVal() - 1) * 5);
+        shopElements.GetNode<Button>("BuySlot").GetNode<Label>("Cost").Text = string.Format("${0}", GetCurrentUpgradeSlotCost());
         shopElements.GetNode("Reroll").GetNode<Label>("Cost").Text = string.Format("${0}", rerollCost);
+    }
+
+    int GetCurrentUpgradeSlotCost()
+    {
+        return ((int)Stats.PlayerStats.UpgradeSlots.GetDynamicVal() - 1) * 10;
     }
 
     private UpgradeNode AddUpgrade(bool delving = false)

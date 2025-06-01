@@ -93,7 +93,7 @@ public static class Stats
         public static PlayerStat ShotSpeed = new PlayerStat("Shot Speed", 1, new Vector2(0.25f, 10), Common);
         public static PlayerStat Speed = new PlayerStat("Speed", 400, new Vector2(100, 1000), Uncommon, false, false, 0.5f);
         public static PlayerStat BulletSize = new PlayerStat("Bullet Size", 0.7f, new Vector2(0.25f, 3), Common, false, false, 0.75f);
-        public static PlayerStat Lifetime = new PlayerStat("Bullet Lifetime", 1, new Vector2(1, 20), Uncommon);
+        public static PlayerStat Lifetime = new PlayerStat("Bullet Lifetime", 1, new Vector2(1, 20), Uncommon, false, false, 1.5f);
         public static PlayerStat DropRate = new PlayerStat("Drop Rate", 1.5f, new Vector2(0.25f, 4), Rare);
         static List<PlayerStat> defaultStatList = new List<PlayerStat> { Damage, FireRate, MaxHP, HPReward, Multishot, Spread, ShotSpeed, Speed, BulletSize, Lifetime, DropRate };
 

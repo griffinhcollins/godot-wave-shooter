@@ -151,17 +151,20 @@ public partial class Hud : CanvasLayer
         upgradeBar = shopElements.GetNode<HBoxContainer>("Upgrades");
         ShowShop();
         int upgradeSlotNum = (int)Stats.PlayerStats.UpgradeSlots.GetDynamicVal();
+
+        Button buySlot = shopElements.GetNode<Button>("BuySlot");
+
         // Hide the upgrade slot purchase if the player is at max
         if (upgradeSlotNum >= Stats.PlayerStats.UpgradeSlots.GetRange().Y)
         {
-            shopElements.GetNode<Button>("BuySlot").Hide();
-            shopElements.GetNode<Button>("BuySlot").Disabled = true;
+            buySlot.Hide();
+            buySlot.Disabled = true;
         }
         else
         {
 
-            shopElements.GetNode<Button>("BuySlot").Show();
-            shopElements.GetNode<Button>("BuySlot").Disabled = false;
+            buySlot.Show();
+            buySlot.Disabled = false;
         }
         upgradePool = Upgrades.GetAvailableUpgrades();
         excludePool = new();
@@ -174,11 +177,13 @@ public partial class Hud : CanvasLayer
         }
         else
         {
-            // they paid $20 to get an extra upgrade, but it'll come with a mutation
+            // they paid to get an extra upgrade, but it'll come with a mutation
             for (int i = 0; i < 3; i++)
             {
                 UpgradeNode newUpgrade = AddUpgrade(true);
             }
+            buySlot.Hide();
+            shopElements.GetNode<Node2D>("Reroll").Hide();
         }
         // This is hacky but it will stop the upgrade bar sometimes appearing offset 
         upgradeBar.Visible = false;

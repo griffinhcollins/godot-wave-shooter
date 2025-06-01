@@ -187,6 +187,57 @@ public static class Stats
             static StatSet lightningStats = new StatSet(lightningStatList);
             public static Unlockable Lightning = new Unlockable("Lightning Arc", lightningStats);
 
+            // returns all the mobs that got hit so other branches don't hit the same mobs
+            public static HashSet<Mob> SpawnLightning(float dmg, Mob seedMob, int depth, PackedScene arcScene, HashSet<Mob> alreadyHit = null)
+            {
+                if (alreadyHit is null)
+                {
+                    alreadyHit = new HashSet<Mob> { seedMob };
+                }
+                else
+                {
+                    alreadyHit.Add(seedMob);
+                }
+                float arcRange = Unlocks.lightningRange.GetDynamicVal();
+                List<Mob> targets = new List<Mob>();
+                // Find the nearest mob
+                foreach (Mob mob in seedMob.GetTree().GetNodesInGroup("mobs"))
+                {
+                    if (alreadyHit.Contains(mob))
+                    {
+                        continue;
+                    }
+
+                    if ((mob.GlobalPosition - seedMob.GlobalPosition).LengthSquared() < arcRange * arcRange)
+                    {
+                        targets.Add(mob);
+                    }
+                }
+
+                if (targets.Count > 0)
+                {
+                    targets.OrderBy(t => (t.GlobalPosition - seedMob.GlobalPosition).LengthSquared());
+
+                    for (int i = 0; i < Mathf.Min(Unlocks.lightningMaxArcs.GetDynamicVal(), targets.Count); i++)
+                    {
+                        Mob target = targets[i];
+                        Node2D arc = arcScene.Instantiate<Node2D>();
+                        Line2D line = arc.GetNode<Line2D>("Arc");
+                        target.GetTree().Root.AddChild(arc);
+                        line.AddPoint(seedMob.GlobalPosition);
+                        line.AddPoint(target.GlobalPosition);
+
+                        target.TakeDamage(dmg * Mathf.Pow(Unlocks.lightningChainDamageRetention.GetDynamicVal(), depth));
+                        if (Unlocks.lightningChainChance.GetDynamicVal() > GD.Randf())
+                        {
+                            HashSet<Mob> hits = SpawnLightning(dmg, target, depth + 1, arcScene, alreadyHit);
+                            alreadyHit.UnionWith(hits);
+                        }
+                    }
+                }
+                return alreadyHit;
+            }
+
             // Laser
             // If you reach high enough shotspeed, piercing and firerate, you get LASER BEAM as an option
             static Condition laserUnlockCondition = new ConjunctCondition(new List<Condition> { new StatCondition(FireRate, 3, true), new StatCondition(ShotSpeed, 1.5f, true), new StatCondition(piercingBulletsPiercingTime, 0.5f, true) });
@@ -219,6 +270,7 @@ public static class Stats
 
             // Plague
             // Requires venom, makes mobs spread poison to each other if they take a venom tick while touching
+
             static List<PlayerStat> plagueStatList = new List<PlayerStat> { };
             static StatSet plagueStats = new StatSet(plagueStatList);
             public static Unlockable Plague = new Unlockable("Plague", plagueStats, new StatCondition(venomFrequency, 3, true));
@@ -227,11 +279,18 @@ public static class Stats
             public static PlayerStat plagueExplosionRadius = new PlayerStat("Plague Explosion Radius", 40, new Vector2(40, 200), Common);
             public static PlayerStat plagueExplosionChance = new PlayerStat("Plague Explosion Chance", 0.1f, new Vector2(0.1f, 0.5f), Common, false, false, 0.5f);
             public static PlayerStat plagueCloudLifetime = new PlayerStat("Plague Cloud Lifetime", 0.5f, new Vector2(0.5f, 2), Uncommon, false, false, 0.5f);
-            static List<PlayerStat> plageExplosionStats = new List<PlayerStat> { plagueExplosionRadius, plagueExplosionChance, plagueCloudLifetime };
-            static StatSet plagueExplosionStats = new StatSet(plageExplosionStats);
+            static List<PlayerStat> plagueExplosionStatList = new List<PlayerStat> { plagueExplosionRadius, plagueExplosionChance, plagueCloudLifetime };
+            static StatSet plagueExplosionStats = new StatSet(plagueExplosionStatList);
             public static Unlockable PlagueExplosion = new Unlockable("Plague Explosion", plagueExplosionStats, new UnlockCondition(Plague, true));
 
-            public static Unlockable[] allUnlockables = { Laser, BouncingBullets, PiercingBullets, WallBounce, Lightning, OverflowBullets, Splinter, Venom, Plague, PlagueExplosion };
+            // If you have both lightning and plague, venom ticks can sometimes trigger a lightning bolt
+            public static PlayerStat lightningPlagueChance = new PlayerStat("Lightning Plague Chance", 0.2f, new Vector2(0.2f, 0.5f), Rare);
+            static List<PlayerStat> lightningPlagueStatList = new List<PlayerStat> { lightningPlagueChance };
+            static StatSet lightningPlagueStats = new StatSet(lightningPlagueStatList);
+            public static Unlockable LightningPlague = new Unlockable("Lightning Plague", lightningPlagueStats,
+                new ConjunctCondition(new List<Condition> { new UnlockCondition(Lightning, true), new UnlockCondition(Plague, true) }));
+
+            public static Unlockable[] allUnlockables = { Laser, BouncingBullets, PiercingBullets, WallBounce, Lightning, OverflowBullets, Splinter, Venom, Plague, PlagueExplosion, LightningPlague };
 
 
         }

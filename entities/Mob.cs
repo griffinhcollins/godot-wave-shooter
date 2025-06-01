@@ -34,16 +34,14 @@ public abstract partial class Mob : RigidBody2D
     [Export]
     PackedScene offscreenIndicator;
 
-    [Export]
-    PackedScene plagueCloud;
+
 
 
     OffscreenIndicator pairedIndicator;
 
     AudioStreamPlayer2D damageSound;
 
-    [Export]
-    public PackedScene coin;
+
 
     float size;
 
@@ -151,7 +149,7 @@ public abstract partial class Mob : RigidBody2D
         }
         if (explodeOnDeath)
         {
-            PlagueCloud cloud = plagueCloud.Instantiate<PlagueCloud>();
+            PlagueCloud cloud = State.sceneHolder.plagueCloud.Instantiate<PlagueCloud>();
             cloud.GlobalPosition = GlobalPosition;
             cloud.Appear();
             GetTree().Root.CallDeferred(Node2D.MethodName.AddChild, cloud);
@@ -166,7 +164,7 @@ public abstract partial class Mob : RigidBody2D
 
     private void SpawnCoin()
     {
-        Coin newCoin = coin.Instantiate<Coin>();
+        Coin newCoin = State.sceneHolder.coin.Instantiate<Coin>();
         newCoin.Position = Position + new Vector2(GD.Randf() * 2 - 1, GD.Randf() * 2 - 1) * 20;
         GetParent().CallDeferred("add_child", newCoin);
 
@@ -244,6 +242,10 @@ public abstract partial class Mob : RigidBody2D
                     {
                         ((Mob)touching).Poison();
                     }
+                }
+                if (Stats.PlayerStats.Unlocks.LightningPlague.unlocked)
+                {
+                    Stats.PlayerStats.Unlocks.SpawnLightning(Stats.PlayerStats.Unlocks.venomDamage.GetDynamicVal(), this, 0, State.sceneHolder.lightningArc);
                 }
             }
 

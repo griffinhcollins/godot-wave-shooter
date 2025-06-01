@@ -255,7 +255,7 @@ public abstract partial class Bullet : Node2D
             if (Unlocks.Lightning.unlocked)
             {
 
-                SpawnLightning(hitMob, 0);
+                Unlocks.SpawnLightning(dmg, hitMob, 0, lightningArc);
             }
             if (Unlocks.OverflowBullets.unlocked)
             {
@@ -288,56 +288,7 @@ public abstract partial class Bullet : Node2D
     }
 
 
-    // returns all the mobs that got hit so other branches don't hit the same mobs
-    HashSet<Mob> SpawnLightning(Mob seedMob, int depth, HashSet<Mob> alreadyHit = null)
-    {
-        if (alreadyHit is null)
-        {
-            alreadyHit = new HashSet<Mob> { seedMob };
-        }
-        else
-        {
-            alreadyHit.Add(seedMob);
-        }
-        float arcRange = Unlocks.lightningRange.GetDynamicVal();
-        List<Mob> targets = new List<Mob>();
-        // Find the nearest mob
-        foreach (Mob mob in GetTree().GetNodesInGroup("mobs"))
-        {
-            if (alreadyHit.Contains(mob))
-            {
-                continue;
-            }
-
-            if ((mob.GlobalPosition - seedMob.GlobalPosition).LengthSquared() < arcRange * arcRange)
-            {
-                targets.Add(mob);
-            }
-        }
-
-        if (targets.Count > 0)
-        {
-            targets.OrderBy(t => (t.GlobalPosition - seedMob.GlobalPosition).LengthSquared());
-
-            for (int i = 0; i < Mathf.Min(Unlocks.lightningMaxArcs.GetDynamicVal(), targets.Count); i++)
-            {
-                Mob target = targets[i];
-                Node2D arc = lightningArc.Instantiate<Node2D>();
-                Line2D line = arc.GetNode<Line2D>("Arc");
-                GetTree().Root.AddChild(arc);
-                line.AddPoint(seedMob.GlobalPosition);
-                line.AddPoint(target.GlobalPosition);
-
-                target.TakeDamage(dmg * Mathf.Pow(Unlocks.lightningChainDamageRetention.GetDynamicVal(), depth));
-                if (Unlocks.lightningChainChance.GetDynamicVal() > GD.Randf())
-                {
-                    HashSet<Mob> hits = SpawnLightning(target, depth + 1, alreadyHit);
-                    alreadyHit.UnionWith(hits);
-                }
-            }
-        }
-        return alreadyHit;
-    }
+    
 
     protected virtual void HandleDeath(Node2D lastHit = null, bool splinterOveride = true)
     {

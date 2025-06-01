@@ -289,7 +289,7 @@ public static class Stats
 
 
             // Explosions on death
-            public static PlayerStat explosionRadius = new PlayerStat("Explosion Radius", 50, new Vector2(50, 200), Uncommon);
+            public static PlayerStat explosionRadius = new PlayerStat("Explosion Radius", 50, new Vector2(50, 200), Rare);
             public static PlayerStat explosionChance = new PlayerStat("Chance of Explosion on Death", 0.3f, new Vector2(0.3f, 0.8f), Rare, false, false, 0.5f);
             public static PlayerStat explosionDamage = new PlayerStat("Explosion Damage", 20, new Vector2(20, Mathf.Inf), Common);
 

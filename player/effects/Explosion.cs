@@ -21,7 +21,7 @@ public partial class Explosion : Area2D
     protected virtual void Initialize()
     {
         lifeTime = 0.3f;
-        Scale = Vector2.One * explosionRadius.GetDynamicVal() / 40f;
+        Scale = Vector2.One * 1.5f * explosionRadius.GetDynamicVal() / 40f;
     }
 
     public override void _Process(double delta)
@@ -43,8 +43,10 @@ public partial class Explosion : Area2D
     {
         if (hit is Mob && !hits.Contains((Mob)hit))
         {
-            hits.Add((Mob)hit);
-            ((Mob)hit).TakeDamage(explosionDamage.GetDynamicVal());
+            Mob mob = (Mob)hit;
+            hits.Add(mob);
+            mob.TakeDamage(explosionDamage.GetDynamicVal());
+            mob.Recoil(GlobalPosition);
         }
     }
 }

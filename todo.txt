@@ -15,3 +15,4 @@ Ideas:
 - Make delving more expensive, so it's very difficult to hit the first one, but also have some way to gain money
 - Achievements! e.g. "Win a round with Plague after only firing once"
 - An unlock for piercing that rewards hitting multiple enemies with one shot, e.g. on three hits in the first second of firing
+- Skipping unlockable increases money cap or something

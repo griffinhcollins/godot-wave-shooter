@@ -54,10 +54,6 @@ public abstract partial class Mob : RigidBody2D
     public override void _Ready()
     {
 
-
-
-
-
         acceleration = baseAcceleration * DynamicStats[ID.AccelerationMult];
         player = (Player)GetTree().GetNodesInGroup("player")[0];
         speedLimit = baseSpeedLimit;
@@ -90,14 +86,14 @@ public abstract partial class Mob : RigidBody2D
 
 
     // Used when the player is hit to give them some breathing room
-    public void Recoil(Vector2 playerPosition)
+    public void Recoil(Vector2 recoilFrom)
     {
         float recoilRange = 800;
-        if ((GlobalPosition - playerPosition).LengthSquared() < recoilRange * recoilRange)
+        if ((GlobalPosition - recoilFrom).LengthSquared() < recoilRange * recoilRange)
         {
-            float distance = (GlobalPosition - playerPosition).Length();
+            float distance = (GlobalPosition - recoilFrom).Length();
             LinearVelocity = Vector2.Zero;
-            ApplyImpulse((GlobalPosition - playerPosition).Normalized() * (recoilRange - distance));
+            ApplyImpulse((GlobalPosition - recoilFrom).Normalized() * (recoilRange - distance));
 
         }
     }

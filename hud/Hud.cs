@@ -96,6 +96,8 @@ public partial class Hud : CanvasLayer
             }
 
             UpdateCosts();
+            shopElements.GetNode<Button>("Reroll").Hide();
+            shopElements.GetNode<Button>("BuySlot").Hide();
         }
 
     }
@@ -174,6 +176,8 @@ public partial class Hud : CanvasLayer
             {
                 UpgradeNode newUpgrade = AddUpgrade();
             }
+            buySlot.Show();
+            shopElements.GetNode<Button>("Reroll").Show();
         }
         else
         {
@@ -184,7 +188,7 @@ public partial class Hud : CanvasLayer
             }
             // No rerolling or getting extra slots if you're delving
             buySlot.Hide();
-            shopElements.GetNode<Node2D>("Reroll").Hide();
+            shopElements.GetNode<Button>("Reroll").Hide();
         }
         // This is hacky but it will stop the upgrade bar sometimes appearing offset 
         upgradeBar.Visible = false;

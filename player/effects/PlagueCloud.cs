@@ -3,35 +3,21 @@ using static Stats.PlayerStats.Unlocks;
 using System;
 using System.Runtime.Serialization;
 
-public partial class PlagueCloud : Area2D
+public partial class PlagueCloud : Explosion
 {
     float timeAlive;
     float lifeTime;
     Sprite2D sprite;
-    public void Appear()
+
+    protected override void Initialize()
     {
         lifeTime = plagueCloudLifetime.GetDynamicVal();
         Scale = Vector2.One * plagueExplosionRadius.GetDynamicVal() / 40f;
-        sprite = GetNode<Sprite2D>("Sprite2D");
-        timeAlive = 0;
     }
 
-    public override void _Process(double delta)
-    {
-        timeAlive += (float)delta;
-        if (timeAlive > lifeTime)
-        {
-            QueueFree();
-        }
-        else
-        {
-            Color currentModulate = sprite.Modulate;
-            sprite.Modulate = new Color(currentModulate.R, currentModulate.G, currentModulate.B, (lifeTime - timeAlive) / lifeTime);
-        }
 
-    }
 
-    void OnHit(Node2D hit)
+    protected override void OnHit(Node2D hit)
     {
         if (hit is Mob)
         {

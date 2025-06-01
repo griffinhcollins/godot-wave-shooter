@@ -9,6 +9,8 @@ public partial class PackedSceneHolder : Node
 	[Export]
 	public PackedScene plagueCloud;
 	[Export]
+	public PackedScene explosion;
+	[Export]
 	public PackedScene coin;
 
 

@@ -19,7 +19,6 @@ public class CounterCondition : Condition
     public override bool CheckCondition()
     {
         int val = counter.Value;
-        GD.Print(val);
         return greaterThan ? val >= threshold : val <= threshold;
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using static Stats.EnemyStats;
+using static Stats.PlayerStats.Unlocks;
 using Godot;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ public abstract partial class Mob : RigidBody2D
     bool poisoned = false;
     float poisonTick;
 
-    // Plague Explosion
+    // Explosions!
     bool explodeOnDeath = false;
 
     float baseHealth = 20;
@@ -77,6 +78,14 @@ public abstract partial class Mob : RigidBody2D
 
         animSprite.SpeedScale = 1 / (size);
         CreateIndicator();
+
+        if (DeathExplosion.unlocked)
+        {
+            if (GD.Randf() < explosionChance.GetDynamicVal())
+            {
+                explodeOnDeath = true;
+            }
+        }
     }
 
 
@@ -95,7 +104,7 @@ public abstract partial class Mob : RigidBody2D
 
     protected float GetPoisonInterval()
     {
-        return 1 / Mathf.Pow(Stats.PlayerStats.Unlocks.venomFrequency.GetDynamicVal(), 0.5f);
+        return 1 / Mathf.Pow(venomFrequency.GetDynamicVal(), 0.5f);
     }
 
     public void SetExplodeOnDeath(bool b)
@@ -105,7 +114,7 @@ public abstract partial class Mob : RigidBody2D
 
     public async Task TakeDamage(float dmg)
     {
-        if (Stats.PlayerStats.Unlocks.Venom.unlocked && !poisoned)
+        if (Venom.unlocked && !poisoned)
         {
             Poison();
         }
@@ -149,10 +158,9 @@ public abstract partial class Mob : RigidBody2D
         }
         if (explodeOnDeath)
         {
-            PlagueCloud cloud = State.sceneHolder.plagueCloud.Instantiate<PlagueCloud>();
-            cloud.GlobalPosition = GlobalPosition;
-            cloud.Appear();
-            GetTree().Root.CallDeferred(Node2D.MethodName.AddChild, cloud);
+
+            Explode();
+
         }
         // Don't queuefree yet, that happens once the damage sound is complete
         Hide();
@@ -160,6 +168,24 @@ public abstract partial class Mob : RigidBody2D
         CollisionMask = 0;
 
 
+    }
+
+    void Explode()
+    {
+        if (DeathExplosion.unlocked)
+        {
+            Explosion explosion = State.sceneHolder.explosion.Instantiate<Explosion>();
+            explosion.GlobalPosition = GlobalPosition;
+            explosion.Appear();
+            GetTree().Root.CallDeferred(Node2D.MethodName.AddChild, explosion);
+        }
+        if (PlagueExplosion.unlocked)
+        {
+            PlagueCloud cloud = State.sceneHolder.plagueCloud.Instantiate<PlagueCloud>();
+            cloud.GlobalPosition = GlobalPosition;
+            cloud.Appear();
+            GetTree().Root.CallDeferred(Node2D.MethodName.AddChild, cloud);
+        }
     }
 
     private void SpawnCoin()
@@ -180,7 +206,7 @@ public abstract partial class Mob : RigidBody2D
         {
             poisoned = true;
             poisonTick = GetPoisonInterval() * (GD.Randf() + 0.5f); // Adding a little delay makes disease less grating when it infects a bunch at once
-            if (Stats.PlayerStats.Unlocks.PlagueExplosion.unlocked && GD.Randf() < Stats.PlayerStats.Unlocks.plagueExplosionChance.GetDynamicVal())
+            if (PlagueExplosion.unlocked && GD.Randf() < plagueExplosionChance.GetDynamicVal())
             {
                 explodeOnDeath = true;
             }
@@ -232,8 +258,8 @@ public abstract partial class Mob : RigidBody2D
         if (poisonTick < 0)
         {
             poisonTick = GetPoisonInterval();
-            TakeDamage(Stats.PlayerStats.Unlocks.venomDamage.GetDynamicVal());
-            if (Stats.PlayerStats.Unlocks.Plague.unlocked)
+            TakeDamage(venomDamage.GetDynamicVal());
+            if (Plague.unlocked)
             {
                 // Check for any mobs I'm touching and poison them
                 foreach (Node2D touching in GetCollidingBodies())
@@ -243,9 +269,9 @@ public abstract partial class Mob : RigidBody2D
                         ((Mob)touching).Poison();
                     }
                 }
-                if (Stats.PlayerStats.Unlocks.LightningPlague.unlocked)
+                if (LightningPlague.unlocked)
                 {
-                    Stats.PlayerStats.Unlocks.SpawnLightning(Stats.PlayerStats.Unlocks.venomDamage.GetDynamicVal(), this, 0, State.sceneHolder.lightningArc);
+                    SpawnLightning(venomDamage.GetDynamicVal(), this, 0, State.sceneHolder.lightningArc);
                 }
             }
 

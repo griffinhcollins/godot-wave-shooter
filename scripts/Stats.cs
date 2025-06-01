@@ -1,10 +1,6 @@
 using Godot;
-using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using static RarityControl;
 
 public static class Stats
@@ -285,13 +281,24 @@ public static class Stats
             public static Unlockable PlagueExplosion = new Unlockable("Plague Explosion", plagueExplosionStats, new UnlockCondition(Plague, true));
 
             // If you have both lightning and plague, venom ticks can sometimes trigger a lightning bolt
-            public static PlayerStat lightningPlagueChance = new PlayerStat("Lightning Plague Chance", 0.2f, new Vector2(0.2f, 0.5f), Rare);
+            public static PlayerStat lightningPlagueChance = new PlayerStat("Lightning Plague Chance", 0.2f, new Vector2(0.2f, 0.5f), Rare, false, false, 0.5f);
             static List<PlayerStat> lightningPlagueStatList = new List<PlayerStat> { lightningPlagueChance };
             static StatSet lightningPlagueStats = new StatSet(lightningPlagueStatList);
             public static Unlockable LightningPlague = new Unlockable("Lightning Plague", lightningPlagueStats,
                 new ConjunctCondition(new List<Condition> { new UnlockCondition(Lightning, true), new UnlockCondition(Plague, true) }));
 
-            public static Unlockable[] allUnlockables = { Laser, BouncingBullets, PiercingBullets, WallBounce, Lightning, OverflowBullets, Splinter, Venom, Plague, PlagueExplosion, LightningPlague };
+
+            // Explosions on death
+            public static PlayerStat explosionRadius = new PlayerStat("Explosion Radius", 50, new Vector2(50, 200), Uncommon);
+            public static PlayerStat explosionChance = new PlayerStat("Chance of Explosion on Death", 0.3f, new Vector2(0.3f, 0.8f), Rare, false, false, 0.5f);
+            public static PlayerStat explosionDamage = new PlayerStat("Explosion Damage", 20, new Vector2(20, Mathf.Inf), Common);
+
+            static List<PlayerStat> explosionStatList = new List<PlayerStat> { explosionChance, explosionDamage, explosionRadius };
+            static StatSet explosionStats = new StatSet(explosionStatList);
+            public static Unlockable DeathExplosion = new Unlockable("Death Explosion", explosionStats);
+
+
+            public static Unlockable[] allUnlockables = { Laser, BouncingBullets, PiercingBullets, WallBounce, Lightning, OverflowBullets, Splinter, Venom, Plague, PlagueExplosion, LightningPlague, DeathExplosion };
 
 
         }

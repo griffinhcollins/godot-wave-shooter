@@ -95,8 +95,8 @@ public static class Stats
         public static PlayerStat BulletSize = new PlayerStat("Bullet Size", 0.7f, new Vector2(0.25f, 3), Common, false, false, 0.75f);
         public static PlayerStat Lifetime = new PlayerStat("Bullet Lifetime", 1, new Vector2(1, 20), Uncommon, false, false, 1.5f);
         public static PlayerStat DropRate = new PlayerStat("Drop Rate", 1.5f, new Vector2(0.25f, 4), Rare);
-        public static PlayerStat MoneyCap = new PlayerStat("Money Cap", 50, new Vector2(50, Mathf.Inf), Rare, true);
-        static List<PlayerStat> defaultStatList = new List<PlayerStat> { Damage, FireRate, MaxHP, HPReward, Multishot, Spread, ShotSpeed, Speed, BulletSize, Lifetime, DropRate };
+        public static PlayerStat MoneyCap = new PlayerStat("Money Cap", 50, new Vector2(50, Mathf.Inf), Rare, true, false, 50, new CounterCondition(Counters.WaveCounter, 10)); // Only unlock after 10 waves have been beaten
+        static List<PlayerStat> defaultStatList = new List<PlayerStat> { Damage, FireRate, MaxHP, HPReward, Multishot, Spread, ShotSpeed, Speed, BulletSize, Lifetime, DropRate, MoneyCap };
 
         static StatSet defaultStats = new StatSet(defaultStatList);
 
@@ -404,20 +404,41 @@ public static class Stats
 
     public static class Counters
     {
-        public static int WaveCounter = 0;
-        public static int KillCounter = 0;
-        public static int CoinCounter = 0;
+        public class Counter
+        {
+            public string Name;
+            public int Value;
+            public int Default;
+
+            public Counter(string _name, int _default)
+            {
+                Name = _name;
+                Default = _default;
+                Value = _default;
+            }
+
+            public void Reset()
+            {
+                Value = Default;
+            }
+        }
+        public static Counter WaveCounter = new Counter("Wave", 1);
+        public static Counter KillCounter = new Counter("Kills", 0);
+        public static Counter CoinCounter = new Counter("Coins", 0);
+
+        static List<Counter> allCounters = new List<Counter> { WaveCounter, KillCounter, CoinCounter };
 
         public static void Reset()
         {
-            WaveCounter = 0;
-            KillCounter = 0;
-            CoinCounter = 0;
+            foreach (Counter c in allCounters)
+            {
+                c.Reset();
+            }
         }
 
         public static bool IsUnlockWave()
         {
-            return WaveCounter % 5 == 0;
+            return WaveCounter.Value % 5 == 0;
         }
     }
 

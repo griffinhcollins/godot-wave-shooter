@@ -166,6 +166,10 @@ public class PlayerStat : Prerequisite
         {
             return ((ConjunctCondition)c).conditions.SelectMany(u => GetPrerequisites(u)).ToList();
         }
+        if (c is CounterCondition)
+        {
+            return null;
+        }
         throw new System.NotImplementedException();
     }
 

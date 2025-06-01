@@ -118,7 +118,6 @@ public partial class Main : Node2D
 		ClearScreen();
 		UnPause();
 		player.UpdateStats();
-		Counters.WaveCounter = 1;
 		hud.UpdateMoneyCounter(PlayerStats.Money);
 		hud.ClearGameOver();
 		StartWave();
@@ -140,8 +139,8 @@ public partial class Main : Node2D
 		ClearScreen();
 		timeRemaining = (int)EnemyStats.DynamicStats[EnemyStats.ID.WaveLength];
 		hud.UpdateWaveTime(timeRemaining);
-		string waveUpdate = string.Format("Starting Wave {0}", Counters.WaveCounter);
-		if (EnemyStats.mostRecentMutation is not null && Counters.WaveCounter % 3 == 0)
+		string waveUpdate = string.Format("Starting Wave {0}", Counters.WaveCounter.Value);
+		if (EnemyStats.mostRecentMutation is not null && Counters.WaveCounter.Value % 3 == 0)
 		{
 			waveUpdate += string.Format("\n{0}", EnemyStats.mostRecentMutation);
 		}
@@ -169,9 +168,9 @@ public partial class Main : Node2D
 		waveTimer.Stop();
 		mobTimer.Stop();
 		ClearScreen();
-		hud.ShowMessage(string.Format("Wave {0} Complete!", Counters.WaveCounter));
-		Counters.WaveCounter++;
-		if (Counters.WaveCounter % 3 == 0)
+		hud.ShowMessage(string.Format("Wave {0} Complete!", Counters.WaveCounter.Value));
+		Counters.WaveCounter.Value++;
+		if (Counters.WaveCounter.Value % 3 == 0)
 		{
 			EnemyStats.IncreaseDifficulty();
 

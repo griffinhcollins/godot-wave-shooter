@@ -295,9 +295,9 @@ public partial class Hud : CanvasLayer
 
         gameOverElements.Show();
         VBoxContainer statsHolder = gameOverElements.GetNode<Label>("Stats").GetNode<VBoxContainer>("VBoxContainer");
-        statsHolder.GetNode<Label>("WaveCount").Text = string.Format("Highest Wave Reached: {0}", Stats.Counters.WaveCounter);
-        statsHolder.GetNode<Label>("KillCount").Text = string.Format("Enemies Killed: {0}", Stats.Counters.KillCounter);
-        statsHolder.GetNode<Label>("CoinCount").Text = string.Format("Total Coins Collected: {0}", Stats.Counters.CoinCounter);
+        statsHolder.GetNode<Label>("WaveCount").Text = string.Format("Highest Wave Reached: {0}", Stats.Counters.WaveCounter.Value);
+        statsHolder.GetNode<Label>("KillCount").Text = string.Format("Enemies Killed: {0}", Stats.Counters.KillCounter.Value);
+        statsHolder.GetNode<Label>("CoinCount").Text = string.Format("Total Coins Collected: {0}", Stats.Counters.CoinCounter.Value);
 
     }
 }

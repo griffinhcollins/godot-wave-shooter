@@ -187,7 +187,7 @@ public partial class UpgradeNode : Button
     {
         if (intChange)
         {
-            return Math.Max(strength, 1);
+            return Math.Max(strength, (int)changePolynomial);
 
         }
         else

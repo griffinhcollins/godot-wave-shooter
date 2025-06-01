@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dlpobftx7nak4"
-path="res://.godot/imported/Plague.png-f317db05acd1328223d6b4814f35c27d.ctex"
+uid="uid://vheb8jh0rc3o"
+path="res://.godot/imported/plague.png-ac3859af96d6fdaba2c856632e5f8f25.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/upgrade icons/Plague.png"
-dest_files=["res://.godot/imported/Plague.png-f317db05acd1328223d6b4814f35c27d.ctex"]
+source_file="res://custom assets/upgrade icons/plague.png"
+dest_files=["res://.godot/imported/plague.png-ac3859af96d6fdaba2c856632e5f8f25.ctex"]
 
 [params]
 

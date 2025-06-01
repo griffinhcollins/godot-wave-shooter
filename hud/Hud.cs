@@ -104,7 +104,7 @@ public partial class Hud : CanvasLayer
     {
         if (player.ChargeMoney(50))
         {
-            foreach (Node2D item in upgradeBar.GetChildren())
+            foreach (var item in upgradeBar.GetChildren())
             {
                 item.QueueFree();
             }

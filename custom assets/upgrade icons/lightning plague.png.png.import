@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b006x14tdcvnd"
-path="res://.godot/imported/Lightning Plague.png-daf9c511615dc10a9ab194c8ef271612.ctex"
+uid="uid://cai01exv78q4s"
+path="res://.godot/imported/lightning plague.png.png-eae50f02207e4a68473205f87d4835a2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://custom assets/upgrade icons/Lightning Plague.png"
-dest_files=["res://.godot/imported/Lightning Plague.png-daf9c511615dc10a9ab194c8ef271612.ctex"]
+source_file="res://custom assets/upgrade icons/lightning plague.png.png"
+dest_files=["res://.godot/imported/lightning plague.png.png-eae50f02207e4a68473205f87d4835a2.ctex"]
 
 [params]
 

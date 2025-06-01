@@ -45,7 +45,7 @@ public partial class BouncyBullet : Bullet
         }
         if (normalize)
         {
-            parent.SetDeferred(RigidBody2D.PropertyName.LinearVelocity, newVelocity.Normalized() * 1000 * PlayerStats.ShotSpeed.GetDynamicVal());
+            parent.SetDeferred(RigidBody2D.PropertyName.LinearVelocity, newVelocity.Normalized() * shotSpeedMult * PlayerStats.ShotSpeed.GetDynamicVal());
 
         }
         else

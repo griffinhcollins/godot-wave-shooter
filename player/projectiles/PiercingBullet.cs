@@ -93,7 +93,7 @@ public partial class PiercingBullet : Bullet
         base.SetVelocity(newVelocity);
         if (normalize)
         {
-            newVelocity = newVelocity.Normalized() * PlayerStats.ShotSpeed.GetDynamicVal() * 1000;
+            newVelocity = newVelocity.Normalized() * PlayerStats.ShotSpeed.GetDynamicVal() * shotSpeedMult;
         }
         velocity = newVelocity;
     }

@@ -19,6 +19,8 @@ public abstract partial class Bullet : Node2D
     protected bool dead;
     float dmg;
 
+    protected float shotSpeedMult = 800;
+
     public float seed { get; private set; }
 
     protected float timeAlive;
@@ -119,6 +121,7 @@ public abstract partial class Bullet : Node2D
     }
 
     public abstract Vector2 GetCurrentVelocity();
+    // Each projectile type implements more, this is just something they all need as well
     public virtual void SetVelocity(Vector2 newVelocity, bool normalize = true)
     {
         if (initialVelocity == Vector2.Zero)
@@ -288,7 +291,7 @@ public abstract partial class Bullet : Node2D
     }
 
 
-    
+
 
     protected virtual void HandleDeath(Node2D lastHit = null, bool splinterOveride = true)
     {

@@ -13,3 +13,4 @@ Ideas:
 - Upgrade that rewards the player whenever a mob dies from anything other than a direct hit (venom, lightning, etc)
 - Plague explosion should have a more generic "mob explode on death" unlockable as a prerequisite
 - Make delving more expensive, so it's very difficult to hit the first one, but also have some way to gain money
+- Achievements! e.g. "Win a round with Plague after only firing once"

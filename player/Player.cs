@@ -81,6 +81,7 @@ public partial class Player : Area2D
     public void AddMoney(int amount)
     {
         Money += amount;
+        Money = Mathf.Min(Money, (int)MoneyCap.GetDynamicVal());
         hud.UpdateMoneyCounter(Money);
     }
 

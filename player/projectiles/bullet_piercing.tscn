@@ -14,7 +14,7 @@ top_level = true
 collision_layer = 4
 collision_mask = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="MainSprite" type="Sprite2D" parent="."]
 texture_filter = 1
 scale = Vector2(1.2, 1.2)
 texture = ExtResource("1_xmiob")

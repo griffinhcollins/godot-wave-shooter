@@ -50,7 +50,7 @@ script = ExtResource("1_4b5u5")
 offscreenIndicator = ExtResource("2_jf12g")
 metadata/_edit_group_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="MainSprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.05, 0.05)
 sprite_frames = SubResource("SpriteFrames_jq8ss")
 animation = &"B"

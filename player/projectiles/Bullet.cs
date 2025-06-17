@@ -3,7 +3,7 @@ using static Stats.PlayerStats;
 using System.Collections.Generic;
 using System.Linq;
 
-public abstract partial class Bullet : Node2D
+public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
 {
 
     // [Export]
@@ -36,8 +36,10 @@ public abstract partial class Bullet : Node2D
     public Mob shardParent;
 
     public int numHit { get; private set; }
+    public List<VisualEffect> visualEffects { get; set; }
 
     // true only if this was sent by the player (not by another bullet)
+
     public bool originalBullet;
 
     float shardMult = 1;
@@ -64,7 +66,7 @@ public abstract partial class Bullet : Node2D
 
         if (this is not LaserBeam)
         {
-            sprite = GetParent().GetNode<Sprite2D>("Sprite2D");
+            sprite = GetParent().GetNode<Sprite2D>("MainSprite");
             GetParent().GetNode<CollisionShape2D>("CollisionShape2D").Scale = Vector2.One * BulletSize.GetDynamicVal() * shardMult;
             sprite.Scale = Vector2.One * BulletSize.GetDynamicVal() * shardMult;
         }
@@ -84,6 +86,7 @@ public abstract partial class Bullet : Node2D
         }
 
         ActivateInitialMutationEffects();
+        ((IAffectedByVisualEffects)this).ImmediateVisualEffects();
 
     }
 
@@ -165,6 +168,9 @@ public abstract partial class Bullet : Node2D
         {
             HandleDeath();
         }
+
+        
+        ((IAffectedByVisualEffects)this).ProcessVisualEffects((float)delta);
 
         // if (sprite is not null && timeAlive > 0.5f * Lifetime.GetDynamicVal())
         // {

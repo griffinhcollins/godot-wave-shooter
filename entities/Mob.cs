@@ -3,8 +3,9 @@ using static Stats.EnemyStats;
 using static Stats.PlayerStats.Unlocks;
 using Godot;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
-public abstract partial class Mob : RigidBody2D
+public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 {
 
     Player player;
@@ -50,14 +51,17 @@ public abstract partial class Mob : RigidBody2D
 
     CollisionShape2D collider;
 
+    public List<VisualEffect> visualEffects { get; set; }
+
     // Called when the node enters the scene tree for the first time.
+
     public override void _Ready()
     {
 
         acceleration = baseAcceleration * DynamicStats[ID.AccelerationMult];
         player = (Player)GetTree().GetNodesInGroup("player")[0];
         speedLimit = baseSpeedLimit;
-        animSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+        animSprite = GetNode<AnimatedSprite2D>("MainSprite");
         string[] mobTypes = animSprite.SpriteFrames.GetAnimationNames();
         animSprite.Play(mobTypes[GD.Randi() % mobTypes.Length]);
         damageSound = GetNode<AudioStreamPlayer2D>("DamageSound");
@@ -82,6 +86,12 @@ public abstract partial class Mob : RigidBody2D
                 explodeOnDeath = true;
             }
         }
+
+
+
+        
+        ((IAffectedByVisualEffects)this).ImmediateVisualEffects();
+
     }
 
 
@@ -249,6 +259,8 @@ public abstract partial class Mob : RigidBody2D
         }
 
         GazeAt(player.GlobalPosition, (float)delta);
+        
+        ((IAffectedByVisualEffects)this).ProcessVisualEffects((float)delta);
 
     }
 

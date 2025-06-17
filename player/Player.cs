@@ -6,7 +6,7 @@ using System.Runtime.ExceptionServices;
 using System.Collections.Generic;
 using System.Linq;
 
-public partial class Player : Area2D
+public partial class Player : Area2D, IAffectedByVisualEffects
 {
 
     [Signal]
@@ -47,13 +47,17 @@ public partial class Player : Area2D
 
 
     bool canFire = true;
+
+    public List<VisualEffect> visualEffects { get; set; }
+
     // Called when the node enters the scene tree for the first time.
+
     public override void _Ready()
     {
 
         Hide();
         screenSize = GetViewportRect().Size;
-        sprite = GetNode<AnimatedSprite2D>("PlayerSprite");
+        sprite = GetNode<AnimatedSprite2D>("MainSprite");
         bubbleEmitter = GetNode<CpuParticles2D>("BubbleEmitter");
         emitterX = bubbleEmitter.Position.X;
         reticule = GetNode<Node2D>("ReticuleHolder");
@@ -64,6 +68,7 @@ public partial class Player : Area2D
 
         // Hide();
     }
+
 
     public void UpdateStats()
     {
@@ -198,8 +203,13 @@ public partial class Player : Area2D
 
         }
 
+        ((IAffectedByVisualEffects)this).ProcessVisualEffects((float)delta);
+
+
 
     }
+
+    
 
     void ProcessMovement(float delta)
     {
@@ -359,6 +369,8 @@ public partial class Player : Area2D
         Show();
         ToggleCollision(true);
         bubbleEmitter.Amount = bubbleEmitter.Amount; // Doing this clears existing particles
+        
+        ((IAffectedByVisualEffects)this).ImmediateVisualEffects();
     }
 
     void ToggleCollision(bool toggle)
@@ -367,7 +379,6 @@ public partial class Player : Area2D
         GetNode<CollisionShape2D>("PropellerCollision").SetDeferred(CollisionShape2D.PropertyName.Disabled, !toggle);
         GetNode<CollisionPolygon2D>("FinCollision").SetDeferred(CollisionShape2D.PropertyName.Disabled, !toggle);
     }
-
 
 
 }

@@ -20,7 +20,7 @@ gravity_scale = 0.0
 contact_monitor = true
 max_contacts_reported = 3
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="MainSprite" type="Sprite2D" parent="."]
 texture_filter = 1
 scale = Vector2(1.2, 1.2)
 texture = ExtResource("1_shdhe")

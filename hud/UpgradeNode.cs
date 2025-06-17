@@ -219,6 +219,7 @@ public partial class UpgradeNode : Button
             mutationRect.ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize;
             mutationRect.CustomMinimumSize = new Vector2(120, 120);
             mutationRect.Texture = (Texture2D)GD.Load("res://custom assets/hud/mutated upgrade.png");
+            mutationRect.Rotation = (float)(GD.Randi() % 4) * Mathf.Pi / 2f;
             textureRect.AddChild(mutationRect);
         }
         if (locked)

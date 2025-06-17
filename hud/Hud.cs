@@ -68,6 +68,8 @@ public partial class Hud : CanvasLayer
         {
             shopElements.GetNode<Button>("Delve Deeper").Show();
         }
+        shopElements.GetNode<Button>("Reroll").Hide();
+        shopElements.GetNode<Button>("BuySlot").Hide();
     }
 
     private void OnNextWavePressed()
@@ -96,8 +98,6 @@ public partial class Hud : CanvasLayer
             }
 
             UpdateCosts();
-            shopElements.GetNode<Button>("Reroll").Hide();
-            shopElements.GetNode<Button>("BuySlot").Hide();
         }
 
     }
@@ -172,7 +172,7 @@ public partial class Hud : CanvasLayer
         excludePool = new();
         if (!delving)
         {
-            for (int i = 0; i < upgradeSlotNum; i++)
+            for (int i = 0; i < (Stats.Counters.IsUnlockWave() ? 3 : upgradeSlotNum); i++)
             {
                 UpgradeNode newUpgrade = AddUpgrade();
             }

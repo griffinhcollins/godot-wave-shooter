@@ -93,8 +93,11 @@ public abstract partial class Mob : RigidBody2D
         {
             float distance = (GlobalPosition - recoilFrom).Length();
             LinearVelocity = Vector2.Zero;
-            ApplyImpulse((GlobalPosition - recoilFrom).Normalized() * (recoilRange - distance));
-
+            ApplyImpulse(Stats.PlayerStats.DamageRecoil.GetDynamicVal() * (GlobalPosition - recoilFrom).Normalized() * (recoilRange - distance));
+            if (Stats.PlayerStats.RevengeDamage.GetDynamicVal() > 0)
+            {
+                TakeDamage(Stats.PlayerStats.RevengeDamage.GetDynamicVal() * Stats.PlayerStats.Damage.GetDynamicVal());
+            }
         }
     }
 

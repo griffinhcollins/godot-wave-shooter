@@ -88,11 +88,13 @@ public static class Stats
         public static PlayerStat Spread = new PlayerStat("Spread", 15, new Vector2(0, 180), Common, false, true);
         public static PlayerStat ShotSpeed = new PlayerStat("Shot Speed", 1, new Vector2(0.25f, 10), Common);
         public static PlayerStat Speed = new PlayerStat("Speed", 400, new Vector2(100, 1000), Uncommon, false, false, 0.5f);
+        public static PlayerStat DamageRecoil = new PlayerStat("Damage Recoil Strength", 1, new Vector2(1, 5), Rare);
+        public static PlayerStat RevengeDamage = new PlayerStat("Revenge Damage", 0, new Vector2(0, 3), Rare);
         public static PlayerStat BulletSize = new PlayerStat("Bullet Size", 0.7f, new Vector2(0.25f, 3), Common, false, false, 0.75f);
         public static PlayerStat Lifetime = new PlayerStat("Bullet Lifetime", 1, new Vector2(1, 20), Uncommon, false, false, 1.5f);
         public static PlayerStat DropRate = new PlayerStat("Drop Rate", 1.5f, new Vector2(0.25f, 4), Rare);
         public static PlayerStat MoneyCap = new PlayerStat("Money Cap", 50, new Vector2(50, Mathf.Inf), Rare, true, false, 50, new CounterCondition(Counters.WaveCounter, 10)); // Only unlock after 10 waves have been beaten
-        static List<PlayerStat> defaultStatList = new List<PlayerStat> { Damage, FireRate, MaxHP, HPReward, Multishot, Spread, ShotSpeed, Speed, BulletSize, Lifetime, DropRate, MoneyCap };
+        static List<PlayerStat> defaultStatList = new List<PlayerStat> { Damage, FireRate, MaxHP, HPReward, Multishot, Spread, ShotSpeed, Speed, DamageRecoil, RevengeDamage, BulletSize, Lifetime, DropRate, MoneyCap };
 
         static StatSet defaultStats = new StatSet(defaultStatList);
 

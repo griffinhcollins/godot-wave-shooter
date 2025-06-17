@@ -37,8 +37,10 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
 
     public int numHit { get; private set; }
     public List<VisualEffect> visualEffects { get; set; }
+    public List<Color> staticColours { get; set; }
 
     // true only if this was sent by the player (not by another bullet)
+
 
     public bool originalBullet;
 
@@ -66,7 +68,7 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
 
         if (this is not LaserBeam)
         {
-            sprite = GetParent().GetNode<Sprite2D>("MainSprite");
+            sprite = GetNode<Sprite2D>("MainSprite");
             GetParent().GetNode<CollisionShape2D>("CollisionShape2D").Scale = Vector2.One * BulletSize.GetDynamicVal() * shardMult;
             sprite.Scale = Vector2.One * BulletSize.GetDynamicVal() * shardMult;
         }
@@ -86,10 +88,22 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
         }
 
         ActivateInitialMutationEffects();
+        GenerateVisualEffects();
         ((IAffectedByVisualEffects)this).ImmediateVisualEffects();
 
     }
 
+    private void GenerateVisualEffects()
+    {
+        foreach (Unlockable u in Unlocks.allUnlockables.Where(u => u.unlocked))
+        {
+            foreach (VisualEffect visEffect in u.GetVisualEffects())
+            {
+                ((IAffectedByVisualEffects)this).AddVisualEffect(visEffect);
+
+            }
+        }
+    }
 
     public void SetSeed(float s)
     {
@@ -169,7 +183,7 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
             HandleDeath();
         }
 
-        
+
         ((IAffectedByVisualEffects)this).ProcessVisualEffects((float)delta);
 
         // if (sprite is not null && timeAlive > 0.5f * Lifetime.GetDynamicVal())

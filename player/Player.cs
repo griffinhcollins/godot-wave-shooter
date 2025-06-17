@@ -49,6 +49,7 @@ public partial class Player : Area2D, IAffectedByVisualEffects
     bool canFire = true;
 
     public List<VisualEffect> visualEffects { get; set; }
+    public List<Color> staticColours { get; set; }
 
     // Called when the node enters the scene tree for the first time.
 

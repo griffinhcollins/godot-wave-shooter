@@ -158,7 +158,7 @@ public static class Stats
             public static PlayerStat wallBounceDamageRetention = new PlayerStat("Wall Bounce Damage Retention", 0.5f, new Vector2(0.5f, 1), Uncommon, false, false, 0.5f);
             static List<PlayerStat> wallBounceStatList = new List<PlayerStat> { wallBounceDamageRetention };
             static StatSet wallBounceStats = new StatSet(wallBounceStatList, wallBounceUnlockCondition);
-            public static Unlockable WallBounce = new Unlockable("Wall Bounce", wallBounceStats, wallBounceUnlockCondition);
+            public static Unlockable WallBounce = new Unlockable("Wall Bounce", wallBounceStats, false, null, wallBounceUnlockCondition);
 
             // Piercing
             public static PlayerStat piercingBulletsPiercingTime = new PlayerStat("Piercing Time", 0.25f, new Vector2(0, 2), Common, false, false, 0.5f);
@@ -174,7 +174,7 @@ public static class Stats
             static List<PlayerStat> overflowStatList = new List<PlayerStat> { overflowLoss };
             static StatSet overflowStats = new StatSet(overflowStatList);
             // Unlocking this also doubles your damage
-            public static Unlockable OverflowBullets = new UnlockableWithBonus("Overflow Bullets", overflowStats, Damage, 1, true, true, overflowCondition);
+            public static Unlockable OverflowBullets = new UnlockableWithBonus("Overflow Bullets", overflowStats, false, null, Damage, 1, true, true, overflowCondition);
 
 
             // Lightning!
@@ -184,7 +184,7 @@ public static class Stats
             public static PlayerStat lightningChainDamageRetention = new PlayerStat("Chain Damage Retention", 0.5f, new Vector2(0.5f, 1), Common, false, false, 0.5f, new StatCondition(lightningChainChance, 0.2f, true));
             static List<PlayerStat> lightningStatList = new List<PlayerStat> { lightningRange, lightningMaxArcs, lightningChainChance, lightningChainDamageRetention };
             static StatSet lightningStats = new StatSet(lightningStatList);
-            public static Unlockable Lightning = new Unlockable("Lightning Arc", lightningStats);
+            public static Unlockable Lightning = new Unlockable("Lightning Arc", lightningStats, true);
 
             // returns all the mobs that got hit so other branches don't hit the same mobs
             public static HashSet<Mob> SpawnLightning(float dmg, Mob seedMob, int depth, PackedScene arcScene, HashSet<Mob> alreadyHit = null)
@@ -243,7 +243,7 @@ public static class Stats
             public static PlayerStat LaserLifetime = new PlayerStat("Laser Lifetime", 0.2f, new Vector2(0.2f, 2), Uncommon);
             static List<PlayerStat> laserStatList = new List<PlayerStat> { LaserLifetime };
             static StatSet laserStats = new StatSet(laserStatList);
-            public static Unlockable Laser = new Unlockable("Laser Beam", laserStats, laserUnlockCondition);
+            public static Unlockable Laser = new Unlockable("Laser Beam", laserStats, false, null, laserUnlockCondition);
 
             public static Vector2 LaserSizeVector()
             {
@@ -265,14 +265,15 @@ public static class Stats
             public static PlayerStat venomDamage = new PlayerStat("Venom Damage", 2, new Vector2(2, 20), Common);
             static List<PlayerStat> venomStatList = new List<PlayerStat> { venomFrequency, venomDamage };
             static StatSet venomStats = new StatSet(venomStatList);
-            public static Unlockable Venom = new Unlockable("Venom", venomStats);
+            public static Unlockable Venom = new Unlockable("Venom", venomStats, true, new List<VisualEffect> { new StaticColourChange(Colors.Green) });
+
 
             // Plague
             // Requires venom, makes mobs spread poison to each other if they take a venom tick while touching
 
             static List<PlayerStat> plagueStatList = new List<PlayerStat> { };
             static StatSet plagueStats = new StatSet(plagueStatList);
-            public static Unlockable Plague = new Unlockable("Plague", plagueStats, new StatCondition(venomFrequency, 3, true));
+            public static Unlockable Plague = new Unlockable("Plague", plagueStats, false, null, new StatCondition(venomFrequency, 3, true));
 
             // Plague upgrade: exploding corpses
             public static PlayerStat plagueExplosionRadius = new PlayerStat("Plague Explosion Radius", 40, new Vector2(40, 200), Common);
@@ -280,13 +281,13 @@ public static class Stats
             public static PlayerStat plagueCloudLifetime = new PlayerStat("Plague Cloud Lifetime", 0.5f, new Vector2(0.5f, 2), Uncommon, false, false, 0.5f);
             static List<PlayerStat> plagueExplosionStatList = new List<PlayerStat> { plagueExplosionRadius, plagueExplosionChance, plagueCloudLifetime };
             static StatSet plagueExplosionStats = new StatSet(plagueExplosionStatList);
-            public static Unlockable PlagueExplosion = new Unlockable("Plague Explosion", plagueExplosionStats, new UnlockCondition(Plague, true));
+            public static Unlockable PlagueExplosion = new Unlockable("Plague Explosion", plagueExplosionStats, false, null, new UnlockCondition(Plague, true));
 
             // If you have both lightning and plague, venom ticks can sometimes trigger a lightning bolt
             public static PlayerStat lightningPlagueChance = new PlayerStat("Lightning Plague Chance", 0.2f, new Vector2(0.2f, 0.5f), Rare, false, false, 0.5f);
             static List<PlayerStat> lightningPlagueStatList = new List<PlayerStat> { lightningPlagueChance };
             static StatSet lightningPlagueStats = new StatSet(lightningPlagueStatList);
-            public static Unlockable LightningPlague = new Unlockable("Lightning Plague", lightningPlagueStats,
+            public static Unlockable LightningPlague = new Unlockable("Lightning Plague", lightningPlagueStats, false, null,
                 new ConjunctCondition(new List<Condition> { new UnlockCondition(Lightning, true), new UnlockCondition(Plague, true) }));
 
 

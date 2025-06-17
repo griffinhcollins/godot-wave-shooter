@@ -121,6 +121,9 @@ public partial class Main : Node2D
 		hud.UpdateMoneyCounter(PlayerStats.Money);
 		hud.ClearGameOver();
 		StartWave();
+		Stats.PlayerStats.Unlocks.Venom.Unlock();
+		Stats.PlayerStats.Unlocks.Lightning.Unlock();
+
 	}
 
 

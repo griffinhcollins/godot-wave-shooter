@@ -22,43 +22,22 @@ public class StaticColourChange : VisualEffect
         return modulate.ToString();
     }
 
-    public override void ImmediateEffect(Node2D parent)
+    public override void ImmediateEffect(IAffectedByVisualEffects parent)
     {
         applied = true;
-        SetColour(parent, modulate);
+        parent.AddStaticColour(modulate);
     }
 
-    public override void OngoingEffect(double delta, Node2D parent)
+    public override void OngoingEffect(double delta, IAffectedByVisualEffects parent)
     {
         lifeTime -= (float)delta;
-        if (applied && lifeTime <= 0 && prevColour != Color.Color8(0, 0, 0, 1))
+        if (applied && lifeTime <= 0)
         {
             applied = false;
-            SetColour(parent, prevColour);
+            parent.RemoveStaticColour(modulate);
         }
         return;
     }
 
-    private void SetColour(Node2D parent, Color colour)
-    {
-        Node2D sprite = parent.GetNode<Node2D>("MainSprite");
-        if (prevColour == Colors.HotPink)
-        {
-            prevColour = sprite.Modulate;
-
-        }
-        if (sprite is Sprite2D)
-        {
-            sprite.Modulate = colour;
-        }
-        else if (sprite is AnimatedSprite2D)
-        {
-            sprite.Modulate = colour;
-        }
-        else
-        {
-            throw new System.NotImplementedException("Weird sprite type");
-
-        }
-    }
+    
 }

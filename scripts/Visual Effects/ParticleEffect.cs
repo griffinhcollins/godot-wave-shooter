@@ -5,12 +5,12 @@ public class ParticleEffect : VisualEffect
 {
 
     string name;
-    PackedScene particles; // Used for temporary effects
+    PackedScene particles;
 
-    public ParticleEffect(string path)
+    public ParticleEffect(string name)
     {
-        name = path;
-        particles = ResourceLoader.Load<PackedScene>("res://player/effects/upgrade particles/" + path);
+        this.name = name;
+        particles = ResourceLoader.Load<PackedScene>("res://player/effects/upgrade particles/" + name.ToLower() + "_particles.tscn");
 
     }
 
@@ -20,12 +20,12 @@ public class ParticleEffect : VisualEffect
         return name;
     }
 
-    public override void ImmediateEffect(Node2D parent)
+    public override void ImmediateEffect(IAffectedByVisualEffects parent)
     {
-        parent.AddChild(particles.Instantiate<GpuParticles2D>());
+        ((Node2D)parent).AddChild(particles.Instantiate<GpuParticles2D>());
     }
 
-    public override void OngoingEffect(double delta, Node2D parent)
+    public override void OngoingEffect(double delta, IAffectedByVisualEffects parent)
     {
        
         return;

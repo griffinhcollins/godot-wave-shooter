@@ -5,7 +5,7 @@ using static Stats;
 public class Unlockable : Prerequisite
 {
     public bool unlocked { get; private set; }
-    public string name;
+    string name;
 
     // The condition after which this unlockable can show up in the shop
     public Condition condition;
@@ -14,19 +14,53 @@ public class Unlockable : Prerequisite
 
     public List<PlayerStat> prerequisites;
 
-    public Unlockable(string _name, StatSet _stats, Condition _condition = null)
+    List<VisualEffect> visEffects;
+
+
+    public Unlockable(string _name, StatSet _stats, bool _hasParticleEffect = false, List<VisualEffect> _effects = null, Condition _condition = null)
     {
         name = _name;
         associatedStats = _stats;
+
+        if (_hasParticleEffect)
+        {
+            AddVisualEffect(new ParticleEffect(name));
+        }
+
+        if (_effects is not null)
+        {
+            foreach (VisualEffect e in _effects)
+            {
+                AddVisualEffect(e);
+            }
+        }
+
         if (_condition is not null)
         {
             condition = _condition;
-
         }
         associatedStats.AddCondition(new UnlockCondition(this, true).And(condition));
 
     }
 
+    public List<VisualEffect> GetVisualEffects()
+    {
+        if (visEffects is null)
+        {
+            return new();
+        }
+        return visEffects;
+    }
+
+    public void AddVisualEffect(VisualEffect newEffect)
+    {
+        if (visEffects is null)
+        {
+            visEffects = new();
+        }
+        visEffects.Add(newEffect);
+
+    }
 
     public void Reset()
     {

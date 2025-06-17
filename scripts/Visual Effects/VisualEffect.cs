@@ -8,12 +8,12 @@ public abstract class VisualEffect
 
     public abstract string GetName();
 
-    public abstract void ImmediateEffect(Node2D parent);
+    public abstract void ImmediateEffect(IAffectedByVisualEffects parent);
 
-    public abstract void OngoingEffect(double delta, Node2D parent);
+    public abstract void OngoingEffect(double delta, IAffectedByVisualEffects parent);
 
     // Optional
-    public virtual void OnCollision(Node2D parent)
+    public virtual void OnCollision(IAffectedByVisualEffects parent)
     {
         return;
     }

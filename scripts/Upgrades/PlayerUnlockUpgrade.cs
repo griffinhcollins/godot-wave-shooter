@@ -10,7 +10,7 @@ public class PlayerUnlockUpgrade : PlayerUpgrade
     public PlayerUnlockUpgrade(Unlockable _unlockable)
     {
         unlock = _unlockable;
-        iconName = string.Format("{0}.png", unlock.name.ToLower());
+        iconName = string.Format("{0}.png", unlock.GetName().ToLower());
         if (unlock.condition is not null)
         {
             appearCondition = unlock.condition;
@@ -31,7 +31,7 @@ public class PlayerUnlockUpgrade : PlayerUpgrade
 
     public override string GetDescription(float magnitude)
     {
-        return string.Format("Unlocks {0}", unlock.name);
+        return string.Format("Unlocks {0}", unlock.GetName());
     }
 
     public override bool IsPositive()

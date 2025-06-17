@@ -1,9 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 
 public interface IAffectedByVisualEffects
 {
     List<VisualEffect> visualEffects { get; set; }
+
+    List<Color> staticColours { get; set; }
 
     public void AddVisualEffect(VisualEffect effect)
     {
@@ -12,7 +15,7 @@ public interface IAffectedByVisualEffects
             visualEffects = new List<VisualEffect>();
         }
         visualEffects.Add(effect);
-        effect.ImmediateEffect((Node2D)this);
+        effect.ImmediateEffect(this);
     }
 
     public void ImmediateVisualEffects()
@@ -23,7 +26,7 @@ public interface IAffectedByVisualEffects
         }
         foreach (VisualEffect e in visualEffects)
         {
-            e.ImmediateEffect((Node2D)this);
+            e.ImmediateEffect(this);
         }
     }
 
@@ -35,7 +38,55 @@ public interface IAffectedByVisualEffects
         }
         foreach (VisualEffect e in visualEffects)
         {
-            e.OngoingEffect(delta, (Node2D)this);
+            e.OngoingEffect(delta, this);
+
+        }
+    }
+
+    public void AddStaticColour(Color colour)
+    {
+        if (staticColours is null)
+        {
+            staticColours = new();
+        }
+        staticColours.Add(colour);
+        SetColour((Node2D)this, GetStaticColour(Colors.White));
+    }
+
+    public void RemoveStaticColour(Color colour)
+    {
+        if (staticColours is null)
+        {
+            return;
+        }
+        staticColours.Remove(colour);
+        SetColour((Node2D)this, GetStaticColour(Colors.White));
+    }
+
+    public Color GetStaticColour(Color baseColour)
+    {
+        if (staticColours is null)
+        {
+            return baseColour;
+        }
+        return staticColours.Aggregate(baseColour, (c1, c2) => c1.Blend(c2));
+    }
+
+    private void SetColour(Node2D parent, Color colour)
+    {
+        Node2D sprite = parent.GetNode<Node2D>("MainSprite");
+        
+        if (sprite is Sprite2D)
+        {
+            sprite.Modulate = colour;
+        }
+        else if (sprite is AnimatedSprite2D)
+        {
+            sprite.Modulate = colour;
+        }
+        else
+        {
+            throw new System.NotImplementedException("Weird sprite type");
 
         }
     }

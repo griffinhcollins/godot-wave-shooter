@@ -121,13 +121,13 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         explodeOnDeath = b;
     }
 
-    public async Task TakeDamage(float dmg)
+    public void TakeDamage(float dmg)
     {
         if (Venom.unlocked && !poisoned)
         {
             Poison();
         }
-        animSprite.Modulate = Color.Color8(255, 0, 0);
+        ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(Colors.Red, 0.1f));
 
         Hud hud = GetParent().GetNode<Hud>("HUD");
         hud.CreateDamageNumber(Position, dmg);
@@ -135,12 +135,8 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         hp -= dmg;
         if (hp <= 0)
         {
+
             Die();
-        }
-        else
-        {
-            await ToSignal(GetTree().CreateTimer(0.1f), SceneTreeTimer.SignalName.Timeout);
-            animSprite.Modulate = Color.Color8(255, 255, 255);
         }
 
     }
@@ -219,6 +215,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
             {
                 explodeOnDeath = true;
             }
+            ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(Colors.Green));
         }
     }
 

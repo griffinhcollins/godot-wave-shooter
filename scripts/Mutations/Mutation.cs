@@ -2,7 +2,7 @@
 
 using Godot;
 
-public abstract class Mutation // Comes with unlockables, not optional. Some are more useful than others.
+public abstract class Mutation // Comes with delved unlockables, not optional. Some are more useful than others.
 {
     public bool applied = false;
 

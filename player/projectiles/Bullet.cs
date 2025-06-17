@@ -319,8 +319,18 @@ public abstract partial class Bullet : Node2D
         }
     }
 
+    bool IsOnScreen()
+    {
+        Vector2 screenSize = GetViewportRect().Size;
+        return GlobalPosition.X >= -10 && GlobalPosition.X <= screenSize.X + 10 && GlobalPosition.Y >= -10 && GlobalPosition.Y <= screenSize.Y + 10;
+    }
+
     protected void Splinter(Node2D lastHit = null, int shardCountOveride = -1)
     {
+        if (!IsOnScreen())
+        {
+            return;
+        }
         Mob hitMob = null;
         if (lastHit is not null && lastHit is Mob)
         {
@@ -363,8 +373,6 @@ public abstract partial class Bullet : Node2D
                 shard.shardParent = hitMob;
             }
             GetTree().Root.CallDeferred(MethodName.AddChild, shardBody);
-
-
         }
     }
 

@@ -11,6 +11,7 @@ public partial class PlagueCloud : Explosion
 
     protected override void Initialize()
     {
+        GD.Print("init");
         lifeTime = plagueCloudLifetime.GetDynamicVal();
         Scale = Vector2.One * plagueExplosionRadius.GetDynamicVal() / 40f;
     }
@@ -19,6 +20,7 @@ public partial class PlagueCloud : Explosion
 
     protected override void OnHit(Node2D hit)
     {
+        GD.Print("hit");
         if (hit is Mob)
         {
             ((Mob)hit).Poison();

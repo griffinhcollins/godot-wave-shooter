@@ -83,11 +83,7 @@ public abstract partial class Bullet : Node2D
 
         }
 
-        foreach (Mutation m in GetMutations())
-        {
-
-            m.ImmediateEffect(this);
-        }
+        ActivateInitialMutationEffects();
 
     }
 
@@ -176,6 +172,15 @@ public abstract partial class Bullet : Node2D
         //     sprite.Modulate = new Color(currentColour.R, currentColour.G, currentColour.B, Mathf.Lerp(1, 0.5f, 2*(Lifetime.GetDynamicVal() -)));
         // }
 
+    }
+
+    protected void ActivateInitialMutationEffects()
+    {
+        foreach (Mutation m in GetMutations())
+        {
+
+            m.ImmediateEffect(this);
+        }
     }
 
     protected List<Mutation> GetMutations()

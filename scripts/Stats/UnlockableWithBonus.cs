@@ -12,7 +12,7 @@ public class UnlockableWithBonus : Unlockable
     float mag;
 
 
-    public UnlockableWithBonus(string _name, StatSet _stats, bool _hasParticleEffect, List<VisualEffect> effects, PlayerStat _bonusStat, float _mag, bool _trueIfMultFalseIfUpgrade, bool _inc = true, Condition _condition = null) : base(_name, _stats, _hasParticleEffect, effects, _condition)
+    public UnlockableWithBonus(string _name, StatSet _stats, bool _hasParticleEffect, List<VisualEffect> effects, PlayerStat _bonusStat, float _mag, bool _trueIfMultFalseIfUpgrade, bool _inc = true, Condition _condition = null) : base(_name, _stats, effects, _condition)
     {
         bonusStat = _bonusStat;
         multOrUpgrade = _trueIfMultFalseIfUpgrade;

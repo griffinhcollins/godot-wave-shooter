@@ -144,7 +144,7 @@ public class PlayerStat : Improvement
 
 
 
-    public List<Improvement> GetPrerequisites(Condition c = null)
+    public override List<Improvement> GetPrerequisites(Condition c = null)
     {
         if (c is null)
         {
@@ -173,14 +173,14 @@ public class PlayerStat : Improvement
         throw new System.NotImplementedException();
     }
 
-    public string GetName()
+    public override string GetName()
     {
         return name;
     }
 
 
 
-    public string GetIconName()
+    public override string GetIconName()
     {
         return string.Format("{0}_{1}.png", name.ToLower(), invert ? "down" : "up");
     }

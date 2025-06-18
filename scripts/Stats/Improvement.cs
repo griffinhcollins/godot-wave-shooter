@@ -3,12 +3,37 @@
 using System.Collections.Generic;
 using Godot;
 
-public interface Improvement
+public abstract class Improvement
 {
 
-    List<Improvement> GetPrerequisites(Condition condition = null);
 
-    string GetName();
+    protected List<VisualEffect> visEffects;
 
-    string GetIconName();
+    public abstract List<Improvement> GetPrerequisites(Condition condition = null);
+
+    public abstract string GetName();
+
+    public abstract string GetIconName();
+
+
+    public List<VisualEffect> GetVisualEffects()
+    {
+        if (visEffects is null)
+        {
+            return new();
+        }
+        return visEffects;
+    }
+
+    public void AddVisualEffect(VisualEffect newEffect)
+    {
+        if (visEffects is null)
+        {
+            visEffects = new();
+        }
+        visEffects.Add(newEffect);
+
+    }
+
+
 }

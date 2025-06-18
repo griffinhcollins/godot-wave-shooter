@@ -38,6 +38,7 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
     public int numHit { get; private set; }
     public List<VisualEffect> visualEffects { get; set; }
     public List<Color> staticColours { get; set; }
+    public HashSet<Improvement> overwrittenSources { get; set; }
 
     // true only if this was sent by the player (not by another bullet)
 

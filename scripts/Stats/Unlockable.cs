@@ -14,7 +14,6 @@ public class Unlockable : Improvement
 
     public List<PlayerStat> prerequisites;
 
-    List<VisualEffect> visEffects;
 
 
     public Unlockable(string _name, StatSet _stats, List<VisualEffect> _effects = null, Condition _condition = null)
@@ -40,24 +39,7 @@ public class Unlockable : Improvement
 
     }
 
-    public List<VisualEffect> GetVisualEffects()
-    {
-        if (visEffects is null)
-        {
-            return new();
-        }
-        return visEffects;
-    }
 
-    public void AddVisualEffect(VisualEffect newEffect)
-    {
-        if (visEffects is null)
-        {
-            visEffects = new();
-        }
-        visEffects.Add(newEffect);
-
-    }
 
     public void Reset()
     {
@@ -86,7 +68,7 @@ public class Unlockable : Improvement
 
 
 
-    public List<Improvement> GetPrerequisites(Condition c = null)
+    public override List<Improvement> GetPrerequisites(Condition c = null)
     {
         if (c is null)
         {
@@ -111,12 +93,12 @@ public class Unlockable : Improvement
         throw new System.NotImplementedException();
     }
 
-    public string GetName()
+    public override string GetName()
     {
         return name;
     }
 
-    public string GetIconName()
+    public override string GetIconName()
     {
         return string.Format("{0}.png", name.ToLower());
     }

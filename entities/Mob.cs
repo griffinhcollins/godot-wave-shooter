@@ -54,6 +54,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     public List<VisualEffect> visualEffects { get; set; }
 
     public List<Color> staticColours { get; set; }
+    public HashSet<Improvement> overwrittenSources { get; set; }
     // Called when the node enters the scene tree for the first time.
 
     public override void _Ready()
@@ -90,7 +91,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
 
 
-        
+
         ((IAffectedByVisualEffects)this).ImmediateVisualEffects();
 
     }
@@ -128,7 +129,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         {
             Poison();
         }
-        ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(Colors.Red, 0.1f));
+        ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(State.MobDamage, Colors.Red, 0.1f));
 
         Hud hud = GetParent().GetNode<Hud>("HUD");
         hud.CreateDamageNumber(Position, dmg);
@@ -216,7 +217,16 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
             {
                 explodeOnDeath = true;
             }
-            ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(Colors.Green));
+            if (Plague.unlocked)
+            {
+                ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(Plague, Colors.Purple));
+
+            }
+            else
+            {
+                ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(Venom, Colors.Green));
+
+            }
         }
     }
 
@@ -257,7 +267,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         }
 
         GazeAt(player.GlobalPosition, (float)delta);
-        
+
         ((IAffectedByVisualEffects)this).ProcessVisualEffects((float)delta);
 
     }

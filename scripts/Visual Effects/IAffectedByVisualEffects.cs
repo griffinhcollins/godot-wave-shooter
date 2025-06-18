@@ -4,18 +4,31 @@ using Godot;
 
 public interface IAffectedByVisualEffects
 {
-    List<VisualEffect> visualEffects { get; set; }
+    public List<VisualEffect> visualEffects { get; set; }
 
     List<Color> staticColours { get; set; }
 
+    public HashSet<Improvement> overwrittenSources { get; set; }
+
     public void AddVisualEffect(VisualEffect effect)
     {
+
         if (visualEffects is null)
         {
-            visualEffects = new List<VisualEffect>();
+            visualEffects = new();
+        }
+        if (overwrittenSources is null)
+        {
+            overwrittenSources = new();
         }
         visualEffects.Add(effect);
+        foreach (Improvement i in effect.overwrites)
+        {
+            overwrittenSources.Add(i);
+        }
+
         effect.ImmediateEffect(this);
+
     }
 
     public void ImmediateVisualEffects()
@@ -26,9 +39,18 @@ public interface IAffectedByVisualEffects
         }
         foreach (VisualEffect e in visualEffects)
         {
-            e.ImmediateEffect(this);
+            if (!e.applied) { return; }
+            if (overwrittenSources.Contains(e.source))
+            {
+                e.applied = false;
+            }
+            else
+            {
+                e.ImmediateEffect(this);
+            }
         }
     }
+
 
     public void ProcessVisualEffects(float delta)
     {
@@ -38,6 +60,7 @@ public interface IAffectedByVisualEffects
         }
         foreach (VisualEffect e in visualEffects)
         {
+            if (!e.applied) { continue; }
             e.OngoingEffect(delta, this);
 
         }
@@ -74,20 +97,11 @@ public interface IAffectedByVisualEffects
 
     private void SetColour(Node2D parent, Color colour)
     {
+        GD.Print(parent.Name);
+        GD.Print(colour);
         Node2D sprite = parent.GetNode<Node2D>("MainSprite");
-        
-        if (sprite is Sprite2D)
-        {
-            sprite.Modulate = colour;
-        }
-        else if (sprite is AnimatedSprite2D)
-        {
-            sprite.Modulate = colour;
-        }
-        else
-        {
-            throw new System.NotImplementedException("Weird sprite type");
 
-        }
+
+        sprite.Modulate = colour;
     }
 }

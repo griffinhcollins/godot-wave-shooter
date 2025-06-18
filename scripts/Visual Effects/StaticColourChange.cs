@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using Godot;
 
 public class StaticColourChange : VisualEffect
@@ -7,13 +8,11 @@ public class StaticColourChange : VisualEffect
     Color modulate;
     float lifeTime;
 
-    Color prevColour; // Used for temporary effects
 
-    public StaticColourChange(Color baseColour, float duration = Mathf.Inf)
+    public StaticColourChange(Improvement source, Color baseColour, float duration = Mathf.Inf, List<Improvement> overwrites = null) : base(source, overwrites)
     {
         modulate = baseColour;
         lifeTime = duration;
-        prevColour = Colors.HotPink; // debug colour because colour doesn't null
     }
 
 
@@ -39,5 +38,5 @@ public class StaticColourChange : VisualEffect
         return;
     }
 
-    
+
 }

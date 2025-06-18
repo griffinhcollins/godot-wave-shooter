@@ -184,7 +184,7 @@ public static class Stats
             public static PlayerStat lightningChainDamageRetention = new PlayerStat("Chain Damage Retention", 0.5f, new Vector2(0.5f, 1), Common, false, false, 0.5f, new StatCondition(lightningChainChance, 0.2f, true));
             static List<PlayerStat> lightningStatList = new List<PlayerStat> { lightningRange, lightningMaxArcs, lightningChainChance, lightningChainDamageRetention };
             static StatSet lightningStats = new StatSet(lightningStatList);
-            public static Unlockable Lightning = new Unlockable("Lightning Arc", lightningStats, new List<VisualEffect> { new ParticleEffect("Lightning Arc") });
+            public static Unlockable Lightning = new Unlockable("Lightning Arc", lightningStats, new List<VisualEffect> { new ParticleEffect(Lightning, "Lightning Arc") });
 
             // returns all the mobs that got hit so other branches don't hit the same mobs
             public static HashSet<Mob> SpawnLightning(float dmg, Mob seedMob, int depth, PackedScene arcScene, HashSet<Mob> alreadyHit = null)
@@ -265,7 +265,7 @@ public static class Stats
             public static PlayerStat venomDamage = new PlayerStat("Venom Damage", 2, new Vector2(2, 20), Common);
             static List<PlayerStat> venomStatList = new List<PlayerStat> { venomFrequency, venomDamage };
             static StatSet venomStats = new StatSet(venomStatList);
-            public static Unlockable Venom = new Unlockable("Venom", venomStats, new List<VisualEffect> { new StaticColourChange(Colors.Green), new ParticleEffect("Venom") });
+            public static Unlockable Venom = new Unlockable("Venom", venomStats, new List<VisualEffect> { new StaticColourChange(Venom, Colors.Green), new ParticleEffect(Venom, "Venom") });
 
 
             // Plague
@@ -273,7 +273,7 @@ public static class Stats
 
             static List<PlayerStat> plagueStatList = new List<PlayerStat> { };
             static StatSet plagueStats = new StatSet(plagueStatList);
-            public static Unlockable Plague = new Unlockable("Plague", plagueStats, new List<VisualEffect> { new StaticColourChange(Colors.Purple) }, new StatCondition(venomFrequency, 3, true));
+            public static Unlockable Plague = new Unlockable("Plague", plagueStats, new List<VisualEffect> { new StaticColourChange(Plague, Colors.Purple) }, new StatCondition(venomFrequency, 3, true));
 
             // Plague upgrade: exploding corpses
             public static PlayerStat plagueExplosionRadius = new PlayerStat("Plague Explosion Radius", 40, new Vector2(40, 200), Common);

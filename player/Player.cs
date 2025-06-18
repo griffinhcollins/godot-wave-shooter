@@ -50,6 +50,7 @@ public partial class Player : Area2D, IAffectedByVisualEffects
 
     public List<VisualEffect> visualEffects { get; set; }
     public List<Color> staticColours { get; set; }
+    public HashSet<Improvement> overwrittenSources { get; set; }
 
     // Called when the node enters the scene tree for the first time.
 
@@ -210,7 +211,7 @@ public partial class Player : Area2D, IAffectedByVisualEffects
 
     }
 
-    
+
 
     void ProcessMovement(float delta)
     {
@@ -370,7 +371,7 @@ public partial class Player : Area2D, IAffectedByVisualEffects
         Show();
         ToggleCollision(true);
         bubbleEmitter.Amount = bubbleEmitter.Amount; // Doing this clears existing particles
-        
+
         ((IAffectedByVisualEffects)this).ImmediateVisualEffects();
     }
 

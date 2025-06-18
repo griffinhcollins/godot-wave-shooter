@@ -265,7 +265,7 @@ public static class Stats
             public static PlayerStat venomDamage = new PlayerStat("Venom Damage", 2, new Vector2(2, 20), Common);
             static List<PlayerStat> venomStatList = new List<PlayerStat> { venomFrequency, venomDamage };
             static StatSet venomStats = new StatSet(venomStatList);
-            public static Unlockable Venom = new Unlockable("Venom", venomStats, new List<VisualEffect> { new StaticColourChange(Venom, Colors.Green), new ParticleEffect(Venom, "Venom") });
+            public static Unlockable Venom = new Unlockable("Venom", venomStats, new List<VisualEffect> { new StaticColourChange(Venom, Colors.Green, 1), new ParticleEffect(Venom, "Venom") });
 
 
             // Plague
@@ -273,7 +273,7 @@ public static class Stats
 
             static List<PlayerStat> plagueStatList = new List<PlayerStat> { };
             static StatSet plagueStats = new StatSet(plagueStatList);
-            public static Unlockable Plague = new Unlockable("Plague", plagueStats, new List<VisualEffect> { new StaticColourChange(Plague, Colors.Purple) }, new StatCondition(venomFrequency, 3, true));
+            public static Unlockable Plague = new Unlockable("Plague", plagueStats, new List<VisualEffect> { new StaticColourChange(Plague, Colors.Purple, 1, Mathf.Inf, new List<Improvement> { Venom }) }, new StatCondition(venomFrequency, 3, true));
 
             // Plague upgrade: exploding corpses
             public static PlayerStat plagueExplosionRadius = new PlayerStat("Plague Explosion Radius", 40, new Vector2(40, 200), Common);

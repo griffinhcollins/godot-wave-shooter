@@ -6,7 +6,7 @@ public interface IAffectedByVisualEffects
 {
     public List<VisualEffect> visualEffects { get; set; }
 
-    List<Color> staticColours { get; set; }
+    Dictionary<Color, float> staticColours { get; set; }
 
     public HashSet<Improvement> overwrittenSources { get; set; }
 
@@ -66,14 +66,15 @@ public interface IAffectedByVisualEffects
         }
     }
 
-    public void AddStaticColour(Color colour)
+    public void AddStaticColour(Color colour, float strength)
     {
         if (staticColours is null)
         {
             staticColours = new();
         }
-        staticColours.Add(colour);
-        SetColour((Node2D)this, GetStaticColour(Colors.White));
+        staticColours[colour] = strength;
+        (Color c, float s) = GetStaticColour(Colors.Gray);
+        SetColour((Node2D)this, c, s);
     }
 
     public void RemoveStaticColour(Color colour)
@@ -83,25 +84,43 @@ public interface IAffectedByVisualEffects
             return;
         }
         staticColours.Remove(colour);
-        SetColour((Node2D)this, GetStaticColour(Colors.White));
+        (Color c, float s) = GetStaticColour(Colors.Gray);
+        SetColour((Node2D)this, c, s);
     }
 
-    public Color GetStaticColour(Color baseColour)
+    public (Color, float) GetStaticColour(Color baseColour)
     {
         if (staticColours is null)
         {
-            return baseColour;
+            return (baseColour, 0);
         }
-        return staticColours.Aggregate(baseColour, (c1, c2) => c1.Blend(c2));
+        Color aggregateColour = staticColours.Aggregate(staticColours.First().Key, (c1, c2) => c1.Lerp(c2.Key, c2.Value));
+        float aggregateStrength = staticColours.Aggregate(0f, (c1, c2) => c1 + c2.Value);
+        return (aggregateColour, aggregateStrength);
     }
 
-    private void SetColour(Node2D parent, Color colour)
+    private void SetColour(Node2D parent, Color colour, float strength)
     {
-        GD.Print(parent.Name);
-        GD.Print(colour);
         Node2D sprite = parent.GetNode<Node2D>("MainSprite");
 
+        if (sprite is Sprite2D)
+        {
+            Sprite2D castedSprite = (Sprite2D)sprite;
+            ShaderMaterial shadermat = (ShaderMaterial)castedSprite.Material;
+            shadermat.SetShaderParameter("input_colour", colour);
+            shadermat.SetShaderParameter("strength", strength);
+        }
+        else if (sprite is AnimatedSprite2D)
+        {
+            AnimatedSprite2D castedSprite = (AnimatedSprite2D)sprite;
+            ShaderMaterial shadermat = (ShaderMaterial)castedSprite.Material;
+            shadermat.SetShaderParameter("input_colour", colour);
+            shadermat.SetShaderParameter("strength", strength);
+        }
+        else
+        {
+            throw new System.NotImplementedException("Weird sprite type");
 
-        sprite.Modulate = colour;
+        }
     }
 }

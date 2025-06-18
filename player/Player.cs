@@ -49,7 +49,7 @@ public partial class Player : Area2D, IAffectedByVisualEffects
     bool canFire = true;
 
     public List<VisualEffect> visualEffects { get; set; }
-    public List<Color> staticColours { get; set; }
+    public Dictionary<Color, float> staticColours { get; set; }
     public HashSet<Improvement> overwrittenSources { get; set; }
 
     // Called when the node enters the scene tree for the first time.
@@ -354,10 +354,10 @@ public partial class Player : Area2D, IAffectedByVisualEffects
         // Activate I-frames
         // Need to use deferred because this is called on a physics callback, and can't edit physics properties in a physics callback
         ToggleCollision(false);
-        sprite.Modulate = Color.Color8(255, 0, 0);
-        await ToSignal(GetTree().CreateTimer(0.5f), SceneTreeTimer.SignalName.Timeout);
+        float iframes = 0.5f;
+        ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(State.MobDamage, Colors.Red, iframes));
+        await ToSignal(GetTree().CreateTimer(iframes), SceneTreeTimer.SignalName.Timeout);
         ToggleCollision(true);
-        sprite.Modulate = Color.Color8(255, 255, 255);
 
 
     }

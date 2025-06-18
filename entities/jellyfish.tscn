@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://cp4tep5yomtr4"]
+[gd_scene load_steps=14 format=3 uid="uid://cp4tep5yomtr4"]
 
 [ext_resource type="Script" path="res://entities/Jellyfish.cs" id="1_gs1vn"]
 [ext_resource type="PackedScene" uid="uid://bp21m4kr2kvxa" path="res://entities/offscreen_indicator.tscn" id="2_vu1s5"]
+[ext_resource type="Shader" path="res://shaders/colourable.gdshader" id="3_0uud4"]
 [ext_resource type="Texture2D" uid="uid://biw0pankd8h37" path="res://custom assets/enemies/Jellyfish A No1.png" id="4_7a8sw"]
 [ext_resource type="Texture2D" uid="uid://ct27dywddkidk" path="res://custom assets/enemies/Jellyfish A No2.png" id="5_uxgu0"]
 [ext_resource type="Texture2D" uid="uid://d0amdsuh143aq" path="res://custom assets/enemies/Jellyfish B No1.png" id="6_jfdk8"]
@@ -9,6 +10,12 @@
 [ext_resource type="Texture2D" uid="uid://d2t4enn0yb31" path="res://custom assets/enemies/iris.png" id="8_w4suo"]
 [ext_resource type="Texture2D" uid="uid://d0vjjeowqdkxi" path="res://custom assets/enemies/pupil.png" id="9_1ovii"]
 [ext_resource type="AudioStream" uid="uid://cl6887ed40bm7" path="res://sounds/enemy hurt.wav" id="10_osoup"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h6wu4"]
+resource_local_to_scene = true
+shader = ExtResource("3_0uud4")
+shader_parameter/input_colour = Color(1, 1, 1, 1)
+shader_parameter/strength = null
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_jq8ss"]
 animations = [{
@@ -50,6 +57,7 @@ offscreenIndicator = ExtResource("2_vu1s5")
 metadata/_edit_group_ = true
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_h6wu4")
 position = Vector2(0, 16.435)
 scale = Vector2(0.05, 0.05)
 sprite_frames = SubResource("SpriteFrames_jq8ss")

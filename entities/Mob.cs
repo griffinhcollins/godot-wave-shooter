@@ -53,7 +53,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
     public List<VisualEffect> visualEffects { get; set; }
 
-    public List<Color> staticColours { get; set; }
+    public Dictionary<Color, float> staticColours { get; set; }
     public HashSet<Improvement> overwrittenSources { get; set; }
     // Called when the node enters the scene tree for the first time.
 
@@ -219,12 +219,12 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
             }
             if (Plague.unlocked)
             {
-                ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(Plague, Colors.Purple));
+                ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(Plague, Colors.Pink, 0.7f));
 
             }
             else
             {
-                ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(Venom, Colors.Green));
+                ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(Venom, Colors.Green, 0.1f));
 
             }
         }

@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://beu6uv5rnk1i3"]
+[gd_scene load_steps=14 format=3 uid="uid://beu6uv5rnk1i3"]
 
 [ext_resource type="Script" path="res://entities/Spider.cs" id="1_4b5u5"]
 [ext_resource type="PackedScene" uid="uid://bp21m4kr2kvxa" path="res://entities/offscreen_indicator.tscn" id="2_jf12g"]
+[ext_resource type="Shader" path="res://shaders/colourable.gdshader" id="3_yafp7"]
 [ext_resource type="Texture2D" uid="uid://bvs07hppc8ssa" path="res://custom assets/enemies/New Spider A No1.png" id="4_3kfod"]
 [ext_resource type="Texture2D" uid="uid://pqwbgcl2vy0g" path="res://custom assets/enemies/New Spider A No2.png" id="5_vc10x"]
 [ext_resource type="Texture2D" uid="uid://dippc4bblkl0v" path="res://custom assets/enemies/New Spider B No1.png" id="6_7awp1"]
@@ -9,6 +10,12 @@
 [ext_resource type="Texture2D" uid="uid://c1wgnicyrxn3v" path="res://custom assets/enemies/New Spider B No2.png" id="7_ad3gt"]
 [ext_resource type="Texture2D" uid="uid://d0vjjeowqdkxi" path="res://custom assets/enemies/pupil.png" id="7_ttr2r"]
 [ext_resource type="AudioStream" uid="uid://cl6887ed40bm7" path="res://sounds/enemy hurt.wav" id="10_olmub"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ximj0"]
+resource_local_to_scene = true
+shader = ExtResource("3_yafp7")
+shader_parameter/input_colour = Color(1, 1, 1, 1)
+shader_parameter/strength = null
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_jq8ss"]
 animations = [{
@@ -51,6 +58,7 @@ offscreenIndicator = ExtResource("2_jf12g")
 metadata/_edit_group_ = true
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_ximj0")
 scale = Vector2(0.05, 0.05)
 sprite_frames = SubResource("SpriteFrames_jq8ss")
 animation = &"B"

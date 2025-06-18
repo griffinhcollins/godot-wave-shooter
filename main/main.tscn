@@ -1,16 +1,16 @@
 [gd_scene load_steps=18 format=3 uid="uid://b8xdrbjqw4dbh"]
 
 [ext_resource type="Script" path="res://main/Main.cs" id="1_7h5d5"]
-[ext_resource type="PackedScene" uid="uid://c4ci72liucwrv" path="res://entities/jellyfish.tscn" id="2_iwtfb"]
+[ext_resource type="PackedScene" uid="uid://cp4tep5yomtr4" path="res://entities/jellyfish.tscn" id="2_iwtfb"]
 [ext_resource type="Texture2D" uid="uid://byft7sp3ska74" path="res://custom assets/background/background_smaller.jpg" id="3_4rbai"]
 [ext_resource type="PackedScene" uid="uid://dphno2aha4dnk" path="res://player/player.tscn" id="3_vww5f"]
-[ext_resource type="PackedScene" uid="uid://cvjrmcq0ldpm0" path="res://entities/spider.tscn" id="3_xaomy"]
+[ext_resource type="PackedScene" uid="uid://beu6uv5rnk1i3" path="res://entities/spider.tscn" id="3_xaomy"]
 [ext_resource type="PackedScene" uid="uid://bv6wktb7wsx2x" path="res://hud/hud.tscn" id="6_xp7op"]
 [ext_resource type="Script" path="res://main/PackedSceneHolder.cs" id="7_yec0i"]
-[ext_resource type="PackedScene" uid="uid://4br0n54vxpbq" path="res://player/effects/lightning_arc.tscn" id="8_7562c"]
+[ext_resource type="PackedScene" path="res://player/effects/lightning_arc.tscn" id="8_7562c"]
 [ext_resource type="PackedScene" uid="uid://den36dbitx31u" path="res://player/effects/plague_cloud.tscn" id="9_ffucl"]
 [ext_resource type="PackedScene" uid="uid://cx23hqh3pjy5l" path="res://entities/coin.tscn" id="10_o0jux"]
-[ext_resource type="PackedScene" uid="uid://s60drrm06pby" path="res://player/effects/explosion.tscn" id="10_q14kl"]
+[ext_resource type="PackedScene" path="res://player/effects/explosion.tscn" id="10_q14kl"]
 
 [sub_resource type="Curve2D" id="Curve2D_oc665"]
 _data = {

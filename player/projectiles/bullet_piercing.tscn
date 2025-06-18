@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dvio14uuu5dx0" path="res://custom assets/projectiles/bullet_piercing.png" id="1_xmiob"]
 [ext_resource type="AudioStream" uid="uid://b2kro6y6sewt7" path="res://sounds/laser pip.wav" id="3_b1yh7"]
 [ext_resource type="PackedScene" uid="uid://i3lhgidaa505" path="res://player/projectiles/bullet_bouncing.tscn" id="3_d1mif"]
-[ext_resource type="PackedScene" uid="uid://4br0n54vxpbq" path="res://player/effects/lightning_arc.tscn" id="4_ki2e2"]
+[ext_resource type="PackedScene" path="res://player/effects/lightning_arc.tscn" id="4_ki2e2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gr8yg"]
 radius = 15.0

@@ -273,7 +273,7 @@ public static class Stats
 
             static List<PlayerStat> plagueStatList = new List<PlayerStat> { };
             static StatSet plagueStats = new StatSet(plagueStatList);
-            public static Unlockable Plague = new Unlockable("Plague", plagueStats, null, new StatCondition(venomFrequency, 3, true));
+            public static Unlockable Plague = new Unlockable("Plague", plagueStats, new List<VisualEffect> { new StaticColourChange(Colors.Purple) }, new StatCondition(venomFrequency, 3, true));
 
             // Plague upgrade: exploding corpses
             public static PlayerStat plagueExplosionRadius = new PlayerStat("Plague Explosion Radius", 40, new Vector2(40, 200), Common);

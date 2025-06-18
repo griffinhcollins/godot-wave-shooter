@@ -6,7 +6,7 @@ using System.Linq;
 using Godot;
 using static RarityControl;
 
-public class PlayerStat : Prerequisite
+public class PlayerStat : Improvement
 {
     public string name;
     public float baseValue;
@@ -144,7 +144,7 @@ public class PlayerStat : Prerequisite
 
 
 
-    public List<Prerequisite> GetPrerequisites(Condition c = null)
+    public List<Improvement> GetPrerequisites(Condition c = null)
     {
         if (c is null)
         {
@@ -156,11 +156,11 @@ public class PlayerStat : Prerequisite
         }
         if (c is StatCondition)
         {
-            return new List<Prerequisite> { ((StatCondition)c).stat };
+            return new List<Improvement> { ((StatCondition)c).stat };
         }
         if (c is UnlockCondition)
         {
-            return new List<Prerequisite> { ((UnlockCondition)c).unlock };
+            return new List<Improvement> { ((UnlockCondition)c).unlock };
         }
         if (c is ConjunctCondition)
         {

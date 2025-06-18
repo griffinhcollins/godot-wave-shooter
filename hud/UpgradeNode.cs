@@ -18,7 +18,7 @@ public partial class UpgradeNode : Button
     float magnitude;
     Rarity rarity;
 
-    List<Prerequisite> prereqs;
+    List<Improvement> prereqs;
     bool delving = false;
 
     bool locked = false; // Sometimes we show locked upgrades if there aren't any unlocked ones to show
@@ -36,11 +36,11 @@ public partial class UpgradeNode : Button
 
     }
 
-    public (List<PlayerUpgrade>, List<Prerequisite>) Generate(List<PlayerUpgrade> upgradePool, List<Prerequisite> exclude, bool _delving)
+    public (List<PlayerUpgrade>, List<Improvement>) Generate(List<PlayerUpgrade> upgradePool, List<Improvement> exclude, bool _delving)
     {
         if (exclude is null)
         {
-            exclude = new List<Prerequisite>();
+            exclude = new List<Improvement>();
         }
         delving = _delving;
         hud = (Hud)GetTree().GetNodesInGroup("HUD")[0];
@@ -52,7 +52,7 @@ public partial class UpgradeNode : Button
     }
 
     // The pool is already checked for conditions, and any upgrades that have previously appeared in this shop are added to exclude
-    (List<PlayerUpgrade>, List<Prerequisite>) Randomize(List<PlayerUpgrade> pool, List<Prerequisite> exclude)
+    (List<PlayerUpgrade>, List<Improvement>) Randomize(List<PlayerUpgrade> pool, List<Improvement> exclude)
     {
         if (Stats.Counters.IsUnlockWave())
         {
@@ -75,8 +75,8 @@ public partial class UpgradeNode : Button
                     // It's not unlocked and it's not available to unlock
                     if (u.unlocked == false && !u.CheckCondition())
                     {
-                        prereqs = new List<Prerequisite>();
-                        foreach (Prerequisite p in u.GetPrerequisites())
+                        prereqs = new List<Improvement>();
+                        foreach (Improvement p in u.GetPrerequisites())
                         {
                             prereqs.Add(p);
                         }
@@ -145,7 +145,7 @@ public partial class UpgradeNode : Button
         if (locked)
         {
             infoMessage += "\nLocked, requires more ";
-            foreach (Prerequisite p in prereqs)
+            foreach (Improvement p in prereqs)
             {
                 infoMessage += p.GetName();
                 infoMessage += ", ";

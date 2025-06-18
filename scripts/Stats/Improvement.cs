@@ -3,10 +3,10 @@
 using System.Collections.Generic;
 using Godot;
 
-public interface Prerequisite
+public interface Improvement
 {
 
-    List<Prerequisite> GetPrerequisites(Condition condition = null);
+    List<Improvement> GetPrerequisites(Condition condition = null);
 
     string GetName();
 

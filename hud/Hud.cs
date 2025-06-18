@@ -25,7 +25,7 @@ public partial class Hud : CanvasLayer
     HBoxContainer upgradeBar;
 
     List<PlayerUpgrade> upgradePool;
-    List<Prerequisite> excludePool;
+    List<Improvement> excludePool;
 
     int rerollCost = 10;
     bool upgradeSelected;

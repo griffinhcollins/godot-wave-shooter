@@ -17,15 +17,12 @@ public class Unlockable : Prerequisite
     List<VisualEffect> visEffects;
 
 
-    public Unlockable(string _name, StatSet _stats, bool _hasParticleEffect = false, List<VisualEffect> _effects = null, Condition _condition = null)
+    public Unlockable(string _name, StatSet _stats, List<VisualEffect> _effects = null, Condition _condition = null)
     {
         name = _name;
         associatedStats = _stats;
 
-        if (_hasParticleEffect)
-        {
-            AddVisualEffect(new ParticleEffect(name));
-        }
+
 
         if (_effects is not null)
         {

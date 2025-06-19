@@ -34,8 +34,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m1ka2"]
 resource_local_to_scene = true
 shader = ExtResource("5_26nvu")
-shader_parameter/input_colour = Color(1, 1, 1, 1)
-shader_parameter/strength = null
+shader_parameter/input_colour = null
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_v23md"]
 animations = [{

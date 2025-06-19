@@ -5,17 +5,18 @@ using Godot;
 public class StaticColourChange : VisualEffect
 {
 
-    Color modulate;
+    public Color modulate;
     float lifeTime;
-    float strength;
+    public float strength;
+    public float priority;
 
 
-    public StaticColourChange(Improvement source, Color baseColour, float _strength, float duration = Mathf.Inf, List<Improvement> overwrites = null) : base(source, overwrites)
+    public StaticColourChange(Improvement source, Color baseColour, float _strength, float _priority, float duration = Mathf.Inf, List<Improvement> overwrites = null) : base(source, overwrites)
     {
         modulate = baseColour;
         strength = _strength;
         lifeTime = duration;
-
+        priority = _priority;
     }
 
 
@@ -27,16 +28,18 @@ public class StaticColourChange : VisualEffect
     public override void ImmediateEffect(IAffectedByVisualEffects parent)
     {
         applied = true;
-        parent.AddStaticColour(modulate, strength);
+        parent.AddStaticColour((Node2D)parent, this);
     }
 
     public override void OngoingEffect(double delta, IAffectedByVisualEffects parent)
     {
+        GD.Print(lifeTime);
+        GD.Print(applied);
         lifeTime -= (float)delta;
         if (applied && lifeTime <= 0)
         {
             applied = false;
-            parent.RemoveStaticColour(modulate);
+            parent.RemoveStaticColour((Node2D)parent, this);
         }
         return;
     }

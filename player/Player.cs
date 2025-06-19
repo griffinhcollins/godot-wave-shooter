@@ -49,7 +49,7 @@ public partial class Player : Area2D, IAffectedByVisualEffects
     bool canFire = true;
 
     public List<VisualEffect> visualEffects { get; set; }
-    public Dictionary<Color, float> staticColours { get; set; }
+    public Dictionary<StaticColourChange, float> staticColours { get; set; }
     public HashSet<Improvement> overwrittenSources { get; set; }
 
     // Called when the node enters the scene tree for the first time.
@@ -355,7 +355,7 @@ public partial class Player : Area2D, IAffectedByVisualEffects
         // Need to use deferred because this is called on a physics callback, and can't edit physics properties in a physics callback
         ToggleCollision(false);
         float iframes = 0.5f;
-        ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(State.MobDamage, Colors.Red, iframes));
+        ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(State.MobDamage, Colors.Red, 0.8f, 100, iframes));
         await ToSignal(GetTree().CreateTimer(iframes), SceneTreeTimer.SignalName.Timeout);
         ToggleCollision(true);
 

@@ -1,22 +1,32 @@
 shader_type canvas_item;
 
-uniform vec4 input_colour : source_color = vec4(1.0, 1.0, 1.0, 1.0);
-uniform float strength;
+uniform vec4 input_colour;
 
 void vertex() {
 	// Called for every vertex the material is visible on.
 }
 
 void fragment() {
-	// Called for every pixel the material is visible on.
-	if (input_colour == vec4(1.0, 1.0, 1.0, 1.0)){
-	}else{
+	if (input_colour == vec4(1.0, 1.0, 1.0, 1.0)){}
+	else{
 		vec4 original_colour = texture(TEXTURE, UV);
-	vec4 blend_colour = vec4(input_colour.r, input_colour.g, input_colour.b, original_colour.a);
-	COLOR = mix(COLOR, blend_colour, .5);
+		float strength = input_colour.a;
+		float avg = (original_colour.r + original_colour.g + original_colour.b)/float(3);
+		vec4 greyscale = vec4(avg, avg, avg, original_colour.a);
+
+		vec4 tinted = input_colour*greyscale;
+		vec4 blend_colour = mix(original_colour, tinted, strength);
+
+		vec4 modulate_colour = input_colour*original_colour;
+		if (dot(modulate_colour, modulate_colour) > dot(blend_colour, blend_colour)){
+			COLOR = modulate_colour;
+		}else{
+			COLOR = blend_colour;
+
+		}
+
 	}
-	
-	
+	//COLOR = mix(original_colour,blend_colour, strength);
 }
 
 //void light() {

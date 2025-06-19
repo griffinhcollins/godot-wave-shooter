@@ -53,7 +53,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
     public List<VisualEffect> visualEffects { get; set; }
 
-    public Dictionary<Color, float> staticColours { get; set; }
+    public Dictionary<StaticColourChange, float> staticColours { get; set; }
     public HashSet<Improvement> overwrittenSources { get; set; }
     // Called when the node enters the scene tree for the first time.
 
@@ -129,7 +129,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         {
             Poison();
         }
-        ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(State.MobDamage, Colors.Red, 0.1f));
+        ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(State.MobDamage, Colors.Red, 1f, 100, 0.1f));
 
         Hud hud = GetParent().GetNode<Hud>("HUD");
         hud.CreateDamageNumber(Position, dmg);
@@ -219,12 +219,12 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
             }
             if (Plague.unlocked)
             {
-                ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(Plague, Colors.Pink, 0.7f));
+                ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(Plague, Colors.Pink, 0.7f, 5));
 
             }
             else
             {
-                ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(Venom, Colors.Green, 0.1f));
+                ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(Venom, Colors.Green, 0.8f, 4));
 
             }
         }

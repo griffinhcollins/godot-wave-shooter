@@ -6,7 +6,7 @@ public interface IAffectedByVisualEffects
 {
     public List<VisualEffect> visualEffects { get; set; }
 
-    Dictionary<Color, float> staticColours { get; set; }
+    Dictionary<StaticColourChange, float> staticColours { get; set; } // Colour changes and their priorities
 
     public HashSet<Improvement> overwrittenSources { get; set; }
 
@@ -66,61 +66,66 @@ public interface IAffectedByVisualEffects
         }
     }
 
-    public void AddStaticColour(Color colour, float strength)
+    public void AddStaticColour(Node2D parent, StaticColourChange colourChange)
     {
         if (staticColours is null)
         {
             staticColours = new();
         }
-        staticColours[colour] = strength;
-        (Color c, float s) = GetStaticColour(Colors.Gray);
-        SetColour((Node2D)this, c, s);
+        staticColours[colourChange] = colourChange.priority;
+        SetColour(parent, GetStaticColour());
     }
 
-    public void RemoveStaticColour(Color colour)
+    public void RemoveStaticColour(Node2D parent, StaticColourChange colourChange)
     {
         if (staticColours is null)
         {
             return;
         }
-        staticColours.Remove(colour);
-        (Color c, float s) = GetStaticColour(Colors.Gray);
-        SetColour((Node2D)this, c, s);
+        staticColours.Remove(colourChange);
+        SetColour(parent, GetStaticColour());
     }
 
-    public (Color, float) GetStaticColour(Color baseColour)
+    public StaticColourChange GetStaticColour()
     {
-        if (staticColours is null)
+        if (staticColours is null || staticColours.Count == 0)
         {
-            return (baseColour, 0);
+            return null;
         }
-        Color aggregateColour = staticColours.Aggregate(staticColours.First().Key, (c1, c2) => c1.Lerp(c2.Key, c2.Value));
-        float aggregateStrength = staticColours.Aggregate(0f, (c1, c2) => c1 + c2.Value);
-        return (aggregateColour, aggregateStrength);
+        StaticColourChange maxPriority = staticColours.Aggregate(staticColours.First().Key, (c1, c2) => staticColours[c1] > c2.Value ? c1 : c2.Key);
+        return maxPriority;
     }
 
-    private void SetColour(Node2D parent, Color colour, float strength)
+    private void SetColour(Node2D parent, StaticColourChange colourChange)
     {
         Node2D sprite = parent.GetNode<Node2D>("MainSprite");
-
+        ShaderMaterial shadermat;
         if (sprite is Sprite2D)
         {
             Sprite2D castedSprite = (Sprite2D)sprite;
-            ShaderMaterial shadermat = (ShaderMaterial)castedSprite.Material;
-            shadermat.SetShaderParameter("input_colour", colour);
-            shadermat.SetShaderParameter("strength", strength);
+            shadermat = (ShaderMaterial)castedSprite.Material;
         }
         else if (sprite is AnimatedSprite2D)
         {
             AnimatedSprite2D castedSprite = (AnimatedSprite2D)sprite;
-            ShaderMaterial shadermat = (ShaderMaterial)castedSprite.Material;
-            shadermat.SetShaderParameter("input_colour", colour);
-            shadermat.SetShaderParameter("strength", strength);
+            shadermat = (ShaderMaterial)castedSprite.Material;
         }
         else
         {
             throw new System.NotImplementedException("Weird sprite type");
 
         }
+
+        if (colourChange is null)
+        {
+            shadermat.SetShaderParameter("input_colour", Colors.White);
+        }
+        else
+        {
+            Vector4 input_colour = new Vector4(colourChange.modulate.R, colourChange.modulate.G, colourChange.modulate.B, colourChange.strength);
+            shadermat.SetShaderParameter("input_colour", input_colour);
+
+        }
+
     }
 }

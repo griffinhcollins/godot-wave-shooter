@@ -197,7 +197,7 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
 
         if (timeAlive >= Lifetime.GetDynamicVal())
         {
-            HandleDeath();
+            HandleDeath(null, false);
         }
 
 

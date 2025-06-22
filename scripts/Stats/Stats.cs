@@ -298,7 +298,7 @@ public static class Stats
 
             static List<PlayerStat> explosionStatList = new List<PlayerStat> { explosionChance, explosionDamage, explosionRadius };
             static StatSet explosionStats = new StatSet(explosionStatList);
-            public static Unlockable DeathExplosion = new Unlockable("Death Explosion", explosionStats);
+            public static Unlockable DeathExplosion = new Unlockable("Death Explosion", explosionStats, new List<VisualEffect>{new ParticleEffect(DeathExplosion, "death explosion"), new StaticColourChange(Plague, Colors.Red, 5, 3)});
 
 
             public static Unlockable[] allUnlockables = { Laser, BouncingBullets, PiercingBullets, WallBounce, Lightning, OverflowBullets, Splinter, Venom, Plague, PlagueExplosion, LightningPlague, DeathExplosion };

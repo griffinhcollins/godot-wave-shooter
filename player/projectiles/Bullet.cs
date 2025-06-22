@@ -354,6 +354,15 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
         parent.Hide();
         ((CollisionObject2D)parent).CollisionLayer = 0; // Disable collision
         ((CollisionObject2D)parent).CollisionMask = 0; // Disable collision
+        if (instantiatedParticles is not null)
+        {
+            foreach (GpuParticles2D p in instantiatedParticles.Values)
+            {
+                p.Reparent(GetTree().Root);
+                p.Emitting = false;
+            }
+        }
+
         if (soundFinished)
         {
             parent.QueueFree();

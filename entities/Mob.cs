@@ -220,7 +220,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
             }
             if (Plague.unlocked)
             {
-                ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(Plague, Colors.Pink, 0.7f, 5));
+                ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(Plague, Colors.Purple, 1, 5));
 
             }
             else

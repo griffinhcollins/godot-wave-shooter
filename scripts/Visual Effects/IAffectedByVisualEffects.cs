@@ -25,7 +25,6 @@ public interface IAffectedByVisualEffects
         visualEffects.Add(effect);
         foreach (Improvement i in effect.overwrites)
         {
-            GD.Print(i.GetName());
             overwrittenSources.Add(i);
         }
 
@@ -41,8 +40,7 @@ public interface IAffectedByVisualEffects
         }
         foreach (VisualEffect e in visualEffects)
         {
-            GD.Print(e.source != State.MobDamage ? e.source.GetName() : "Mob damage");
-            GD.Print(overwrittenSources.Count);
+
             if (!e.applied) { continue; }
             if (overwrittenSources.Contains(e.source))
             {

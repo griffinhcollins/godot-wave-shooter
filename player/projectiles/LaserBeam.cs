@@ -1,6 +1,7 @@
 using Godot;
 using static Stats.PlayerStats;
 using System;
+using System.Linq;
 
 public partial class LaserBeam : Bullet
 {
@@ -19,10 +20,17 @@ public partial class LaserBeam : Bullet
 		Node2D parent = GetParent<Node2D>();
 		particles = parent.GetNode<GpuParticles2D>("BeamParticles");
 		hitbox = parent.GetNode<CollisionShape2D>("CollisionShape2D");
-
+		SetVisuals();
 		SetSize();
 
 
+	}
+
+	void SetVisuals()
+	{
+
+		particles.Texture = GetNode<Sprite2D>("MainSprite").Texture;
+		((ParticleProcessMaterial)particles.ProcessMaterial).Color = ((IAffectedByVisualEffects)this).GetStaticColour().modulate;
 	}
 
 	void SetSize()

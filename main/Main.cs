@@ -122,7 +122,8 @@ public partial class Main : Node2D
         hud.ClearGameOver();
         StartWave();
         Stats.PlayerStats.Unlocks.DeathExplosion.Unlock();
-        // Stats.PlayerStats.Unlocks.Lightning.Unlock();
+        Stats.PlayerStats.Unlocks.Lightning.Unlock();
+        PlayerStats.Unlocks.Laser.Unlock();
         // Stats.PlayerStats.Unlocks.Splinter.Unlock();
         // Stats.PlayerStats.Unlocks.Plague.Unlock();
 

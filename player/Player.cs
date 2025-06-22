@@ -18,6 +18,10 @@ public partial class Player : Area2D, IAffectedByVisualEffects
     public PackedScene pierceBullet;
     [Export]
     public PackedScene laserBeam;
+    [Export]
+    public PackedScene shieldPacked;
+    Node2D shieldNode;
+    bool shieldActive;
 
 
     CpuParticles2D bubbleEmitter;
@@ -105,6 +109,21 @@ public partial class Player : Area2D, IAffectedByVisualEffects
             hud.UpdateMoneyCounter(Money);
             return true;
         }
+    }
+
+    void RaiseShield()
+    {
+        shieldActive = true;
+        if (shieldNode is null)
+        {
+            shieldNode = shieldPacked.Instantiate<Node2D>();
+            AddChild(shieldNode);
+        }
+
+
+        shieldNode.Show();
+
+
     }
 
     private void OnBulletTimerFinished()
@@ -338,27 +357,52 @@ public partial class Player : Area2D, IAffectedByVisualEffects
     private async void OnBodyEntered(Node2D body)
     {
         // GD.Print("ouch!");
-        currentHP--;
-        hud.UpdateHealth(currentHP);
+
         // tell mobs to back off
         foreach (Mob mob in GetTree().GetNodesInGroup("mobs"))
         {
             mob.Recoil(GlobalPosition);
         }
-        if (currentHP <= 0)
-        {
 
-            Die();
-            return;
+        bool shielded = false;
+        float iframes = 0.5f;
+
+        if (!shieldActive)
+        {
+            currentHP--;
+
+            ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(State.MobDamage, Colors.Red, 0.8f, 100, iframes));
+            hud.UpdateHealth(currentHP);
+            if (currentHP <= 0)
+            {
+
+                Die();
+                return;
+            }
+
+        }
+        else
+        {
+            // Shield took the hit
+            shieldActive = false;
+            shieldNode.Hide();
+            shielded = true;
+
         }
 
         // Activate I-frames
         // Need to use deferred because this is called on a physics callback, and can't edit physics properties in a physics callback
         ToggleCollision(false);
-        float iframes = 0.5f;
-        ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(State.MobDamage, Colors.Red, 0.8f, 100, iframes));
         await ToSignal(GetTree().CreateTimer(iframes), SceneTreeTimer.SignalName.Timeout);
         ToggleCollision(true);
+
+        // Wait for iframes to be over before beginning countdown for shield to prevent shenanigans
+        if (shielded)
+        {
+            await ToSignal(GetTree().CreateTimer(Unlocks.shieldRecharge.GetDynamicVal()), SceneTreeTimer.SignalName.Timeout);
+            RaiseShield();
+        }
+
 
 
     }
@@ -372,6 +416,11 @@ public partial class Player : Area2D, IAffectedByVisualEffects
         Show();
         ToggleCollision(true);
         bubbleEmitter.Amount = bubbleEmitter.Amount; // Doing this clears existing particles
+
+        if (Unlocks.Shield.unlocked)
+        {
+            RaiseShield();
+        }
 
         ((IAffectedByVisualEffects)this).ImmediateVisualEffects();
     }

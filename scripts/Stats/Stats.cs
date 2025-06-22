@@ -301,7 +301,13 @@ public static class Stats
             public static Unlockable DeathExplosion = new Unlockable("Death Explosion", explosionStats, new List<VisualEffect>{new ParticleEffect(DeathExplosion, "death explosion"), new StaticColourChange(Plague, Colors.Red, 5, 3)});
 
 
-            public static Unlockable[] allUnlockables = { Laser, BouncingBullets, PiercingBullets, WallBounce, Lightning, OverflowBullets, Splinter, Venom, Plague, PlagueExplosion, LightningPlague, DeathExplosion };
+            // Shield that regenerates after a period of time
+            public static PlayerStat shieldRecharge = new PlayerStat("Shield Cooldown", 10, new Vector2(2, 10), Rare, false, true, 0.5f);
+            static List<PlayerStat> shieldStatList = new List<PlayerStat> { shieldRecharge };
+            static StatSet shieldStats = new StatSet(shieldStatList);
+            public static Unlockable Shield = new Unlockable("Shield", shieldStats);
+
+            public static Unlockable[] allUnlockables = { Laser, BouncingBullets, PiercingBullets, WallBounce, Lightning, OverflowBullets, Splinter, Venom, Plague, PlagueExplosion, LightningPlague, DeathExplosion, Shield };
 
 
         }

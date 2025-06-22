@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://dphno2aha4dnk"]
+[gd_scene load_steps=37 format=3 uid="uid://dphno2aha4dnk"]
 
 [ext_resource type="Texture2D" uid="uid://cxxc2leij01vs" path="res://art/playerGrey_up1.png" id="1_333lq"]
 [ext_resource type="Script" path="res://player/Player.cs" id="1_empth"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://0flj77ulxejl" path="res://custom assets/player stuff/Jupes Sub 1.png" id="4_jmb8p"]
 [ext_resource type="Shader" path="res://shaders/colourable.gdshader" id="5_26nvu"]
 [ext_resource type="Texture2D" uid="uid://dnf6w5ihpeicv" path="res://custom assets/player stuff/Submarine_2.png" id="5_c687v"]
+[ext_resource type="PackedScene" uid="uid://ca2fccnfxho7w" path="res://player/projectiles/shield.tscn" id="5_mk332"]
 [ext_resource type="Texture2D" uid="uid://ctt8k5k3xxvre" path="res://custom assets/player stuff/slides/1.png" id="5_sbfnh"]
 [ext_resource type="Texture2D" uid="uid://e4f0lfg30k3i" path="res://custom assets/player stuff/firing reticule.png" id="6_arkfn"]
 [ext_resource type="Texture2D" uid="uid://yxhhnpiqghxa" path="res://custom assets/player stuff/slides/2.png" id="6_jo5d7"]
@@ -190,6 +191,7 @@ script = ExtResource("1_empth")
 bounceBullet = ExtResource("2_qxbfg")
 pierceBullet = ExtResource("3_sfohy")
 laserBeam = ExtResource("3_lvtdk")
+shieldPacked = ExtResource("5_mk332")
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_m1ka2")

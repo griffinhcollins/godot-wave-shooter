@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://ca2fccnfxho7w"]
+
+[ext_resource type="Texture2D" uid="uid://c4fjy2xwtulkl" path="res://custom assets/player stuff/bubble.png" id="1_sco1w"]
+
+[node name="Shield" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.8)
+scale = Vector2(1.7, 1.7)
+texture = ExtResource("1_sco1w")

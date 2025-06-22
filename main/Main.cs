@@ -121,7 +121,6 @@ public partial class Main : Node2D
         hud.UpdateMoneyCounter(PlayerStats.Money);
         hud.ClearGameOver();
         StartWave();
-        // Stats.PlayerStats.Unlocks.DeathExplosion.Unlock();
     }
 
 
@@ -134,6 +133,7 @@ public partial class Main : Node2D
 
     public void StartWave()
     {
+        // Stats.PlayerStats.Unlocks.Shield.Unlock();
         // Stats.PlayerStats.Mutations.DeceleratingBullet.applied = true;
         State.currentState = State.alive;
         UpdateEnemyStats();

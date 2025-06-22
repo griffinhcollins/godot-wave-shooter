@@ -8,7 +8,7 @@ using System.Collections.Generic;
 public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 {
 
-    Player player;
+    protected Player player;
 
     // Venom
     bool poisoned = false;
@@ -18,11 +18,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     bool explodeOnDeath = false;
 
     float baseHealth = 20;
-    float baseSpeedLimit = 400;
-    float baseAcceleration = 1;
     float hp;
-    float speedLimit;
-    float acceleration;
 
 
     protected Vector2 beforePauseVelocity;
@@ -31,7 +27,6 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
     bool dead = false;
 
-    Node2D eye;
 
     [Export]
     PackedScene offscreenIndicator;
@@ -45,7 +40,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
 
 
-    float size;
+    protected float size;
 
     AnimatedSprite2D animSprite;
 
@@ -61,9 +56,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     public override void _Ready()
     {
 
-        acceleration = baseAcceleration * DynamicStats[ID.AccelerationMult];
         player = (Player)GetTree().GetNodesInGroup("player")[0];
-        speedLimit = baseSpeedLimit;
         animSprite = GetNode<AnimatedSprite2D>("MainSprite");
         string[] mobTypes = animSprite.SpriteFrames.GetAnimationNames();
         animSprite.Play(mobTypes[GD.Randi() % mobTypes.Length]);
@@ -75,8 +68,6 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         animSprite.Scale *= size;
         collider = GetNode<CollisionShape2D>("CollisionShape2D");
         collider.Scale *= size;
-        eye = GetNode<Node2D>("Eye");
-        eye.Scale *= size;
 
 
         animSprite.SpeedScale = 1 / (size);
@@ -252,21 +243,16 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
             beforePauseVelocity = Vector2.Zero;
 
         }
-        // Point towards the player
-        ApplyForce((player.Position - Position) * ((player.Position - Position).Length() * 1 / 1000 + speedLimit / 500) * acceleration);
-        ApplyTorque(LinearVelocity.AngleTo(ToGlobal(Vector2.Up)) * 1000);
-        float currentSpeedSq = LinearVelocity.LengthSquared();
-        if (currentSpeedSq > speedLimit * speedLimit)
-        {
-            LinearVelocity = LinearVelocity.Normalized() * speedLimit;
-            // ApplyForce(LinearVelocity * (speedLimit - Mathf.Pow(currentSpeedSq, 0.5f)));
-        }
 
-        GazeAt(player.GlobalPosition, (float)delta);
+        ProcessMovement(delta);
+
+        
 
         ((IAffectedByVisualEffects)this).ProcessVisualEffects((float)delta);
 
     }
+
+    protected abstract void ProcessMovement(double delta);
 
     void ProcessPoison()
     {
@@ -293,28 +279,8 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         }
     }
 
-    protected abstract float GetIrisMoveRadius();
-    protected abstract float GetPupilMoveRadius();
 
-    void GazeAt(Vector2 targetPos, float delta)
-    {
-
-        float irisMoveRadius = GetIrisMoveRadius();
-        float pupilMoveRadius = GetPupilMoveRadius();
-
-        eye.GlobalPosition = eye.GlobalPosition.Lerp((targetPos - GlobalPosition).Normalized() * irisMoveRadius + GlobalPosition, delta * 3);
-
-
-        Node2D pupil = eye.GetNode<Node2D>("Pupil");
-
-
-        pupil.GlobalPosition = pupil.GlobalPosition.Lerp((targetPos - eye.GlobalPosition).Normalized() * pupilMoveRadius + eye.GlobalPosition, delta * 5);
-
-        // float oldRot = eye.Rotation;
-        // eye.LookAt(targetPos);
-        // float targetRot = eye.Rotation;
-        // eye.Rotation = Mathf.Lerp(oldRot, targetRot, delta * 10);
-    }
+   
 
 
     private void UnPause()

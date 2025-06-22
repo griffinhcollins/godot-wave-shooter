@@ -121,12 +121,7 @@ public partial class Main : Node2D
         hud.UpdateMoneyCounter(PlayerStats.Money);
         hud.ClearGameOver();
         StartWave();
-        Stats.PlayerStats.Unlocks.DeathExplosion.Unlock();
-        Stats.PlayerStats.Unlocks.Lightning.Unlock();
-        PlayerStats.Unlocks.Laser.Unlock();
-        // Stats.PlayerStats.Unlocks.Splinter.Unlock();
-        // Stats.PlayerStats.Unlocks.Plague.Unlock();
-
+        // Stats.PlayerStats.Unlocks.DeathExplosion.Unlock();
     }
 
 

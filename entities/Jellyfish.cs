@@ -1,4 +1,4 @@
-public partial class Jellyfish : Mob
+public partial class Jellyfish : Fish
 {
 
     protected override float GetIrisMoveRadius()

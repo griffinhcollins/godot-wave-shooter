@@ -1,4 +1,4 @@
-public partial class Spider : Mob
+public partial class Spider : Fish
 {
     protected override float GetIrisMoveRadius()
     {

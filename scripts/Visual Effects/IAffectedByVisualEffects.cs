@@ -7,6 +7,7 @@ public interface IAffectedByVisualEffects
     public List<VisualEffect> visualEffects { get; set; }
 
     Dictionary<StaticColourChange, float> staticColours { get; set; } // Colour changes and their priorities
+    public Dictionary<ParticleEffect, GpuParticles2D> instantiatedParticles { get; set; } // Particle effects should only instantiate once
 
     public HashSet<Improvement> overwrittenSources { get; set; }
 

@@ -54,6 +54,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     public List<VisualEffect> visualEffects { get; set; }
 
     public Dictionary<StaticColourChange, float> staticColours { get; set; }
+    public Dictionary<ParticleEffect, GpuParticles2D> instantiatedParticles { get; set; } // Particle effects should only instantiate once
     public HashSet<Improvement> overwrittenSources { get; set; }
     // Called when the node enters the scene tree for the first time.
 
@@ -236,12 +237,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         // Pause logic. NOTHING GOES BEFORE THIS UNLESS IT SHOULD BE HAPPENING EVEN WHILE PAUSED
         if (State.currentState == State.paused)
         {
-            if (beforePauseVelocity == Vector2.Zero)
-            {
-                beforePausePosition = Position;
-                beforePauseVelocity = LinearVelocity;
-                beforePauseAngularVelocity = AngularVelocity;
-            }
+            
             Pause();
             return;
         }
@@ -331,6 +327,12 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
     private void Pause()
     {
+        if (beforePauseVelocity == Vector2.Zero)
+            {
+                beforePausePosition = Position;
+                beforePauseVelocity = LinearVelocity;
+                beforePauseAngularVelocity = AngularVelocity;
+            }
         Sleeping = true;
         LinearVelocity = Vector2.Zero;
 

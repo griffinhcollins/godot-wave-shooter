@@ -50,6 +50,7 @@ public partial class Player : Area2D, IAffectedByVisualEffects
 
     public List<VisualEffect> visualEffects { get; set; }
     public Dictionary<StaticColourChange, float> staticColours { get; set; }
+    public Dictionary<ParticleEffect, GpuParticles2D> instantiatedParticles { get; set; } // Particle effects should only instantiate once
     public HashSet<Improvement> overwrittenSources { get; set; }
 
     // Called when the node enters the scene tree for the first time.

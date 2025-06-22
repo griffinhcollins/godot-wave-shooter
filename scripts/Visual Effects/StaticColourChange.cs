@@ -33,8 +33,6 @@ public class StaticColourChange : VisualEffect
 
     public override void OngoingEffect(double delta, IAffectedByVisualEffects parent)
     {
-        GD.Print(lifeTime);
-        GD.Print(applied);
         lifeTime -= (float)delta;
         if (applied && lifeTime <= 0)
         {

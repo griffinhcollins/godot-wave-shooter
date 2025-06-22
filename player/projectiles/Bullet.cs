@@ -38,6 +38,7 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
     public int numHit { get; private set; }
     public List<VisualEffect> visualEffects { get; set; }
     public Dictionary<StaticColourChange, float> staticColours { get; set; }
+    public Dictionary<ParticleEffect, GpuParticles2D> instantiatedParticles { get; set; } // Particle effects should only instantiate once
     public HashSet<Improvement> overwrittenSources { get; set; }
 
     // true only if this was sent by the player (not by another bullet)
@@ -49,7 +50,6 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
 
     Vector2 initialVelocity;
 
-    Sprite2D sprite;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -67,12 +67,7 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
 
         }
 
-        if (this is not LaserBeam)
-        {
-            sprite = GetNode<Sprite2D>("MainSprite");
-            GetParent().GetNode<CollisionShape2D>("CollisionShape2D").Scale = Vector2.One * BulletSize.GetDynamicVal() * shardMult;
-            sprite.Scale = Vector2.One * BulletSize.GetDynamicVal() * shardMult;
-        }
+
 
         if (originalBullet)
         {
@@ -92,6 +87,27 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
         GenerateVisualEffects();
         ((IAffectedByVisualEffects)this).ImmediateVisualEffects();
 
+        if (this is not LaserBeam)
+        {
+            SetScale();
+        }
+
+    }
+
+    private void SetScale()
+    {
+
+        Sprite2D sprite = GetNode<Sprite2D>("MainSprite");
+        Vector2 scale = Vector2.One * BulletSize.GetDynamicVal() * shardMult;
+        GetParent().GetNode<CollisionShape2D>("CollisionShape2D").Scale = scale;
+        sprite.Scale = scale;
+        if (visualEffects is not null && visualEffects.Count != 0)
+        {
+            foreach (GpuParticles2D p in instantiatedParticles.Values)
+            {
+                p.Scale = scale;
+            }
+        }
     }
 
     private void GenerateVisualEffects()

@@ -28,6 +28,7 @@ project/assembly_name="Into The Depths"
 [global_group]
 
 cleanup=""
+mobs=""
 
 [gui]
 

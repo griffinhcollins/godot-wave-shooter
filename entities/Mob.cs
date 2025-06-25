@@ -29,12 +29,12 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
 
     [Export]
-    PackedScene offscreenIndicator;
+    protected PackedScene offscreenIndicator;
 
 
 
 
-    OffscreenIndicator pairedIndicator;
+    protected OffscreenIndicator pairedIndicator;
 
     AudioStreamPlayer2D damageSound;
 
@@ -44,7 +44,6 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
     AnimatedSprite2D animSprite;
 
-    CollisionShape2D collider;
 
     public List<VisualEffect> visualEffects { get; set; }
 
@@ -55,7 +54,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
     public override void _Ready()
     {
-
+        
         player = (Player)GetTree().GetNodesInGroup("player")[0];
         animSprite = GetNode<AnimatedSprite2D>("MainSprite");
         string[] mobTypes = animSprite.SpriteFrames.GetAnimationNames();
@@ -66,9 +65,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         size = GD.Randf() * 0.5f * DynamicStats[ID.SizeMult] + 1;
         hp = DynamicStats[ID.HPMult] * baseHealth * size * 0.75f;
         animSprite.Scale *= size;
-        collider = GetNode<CollisionShape2D>("CollisionShape2D");
-        collider.Scale *= size;
-
+        SetScale();
 
         animSprite.SpeedScale = 1 / (size);
         CreateIndicator();
@@ -86,6 +83,11 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
         ((IAffectedByVisualEffects)this).ImmediateVisualEffects();
 
+    }
+
+    protected virtual void SetScale()
+    {
+        GetNode<CollisionShape2D>("Collider").Scale *= size;
     }
 
 

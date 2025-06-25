@@ -27,7 +27,6 @@ public abstract partial class Fish : Mob
         eye = GetNode<Node2D>("Eye");
         eye.Scale *= size;
 
-
     }
 
 

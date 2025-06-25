@@ -1,10 +1,11 @@
-[gd_scene load_steps=18 format=3 uid="uid://b8xdrbjqw4dbh"]
+[gd_scene load_steps=19 format=3 uid="uid://b8xdrbjqw4dbh"]
 
 [ext_resource type="Script" path="res://main/Main.cs" id="1_7h5d5"]
 [ext_resource type="PackedScene" uid="uid://c4ci72liucwrv" path="res://entities/jellyfish.tscn" id="2_iwtfb"]
 [ext_resource type="Texture2D" uid="uid://byft7sp3ska74" path="res://custom assets/background/background_smaller.jpg" id="3_4rbai"]
 [ext_resource type="PackedScene" uid="uid://dphno2aha4dnk" path="res://player/player.tscn" id="3_vww5f"]
 [ext_resource type="PackedScene" uid="uid://cvjrmcq0ldpm0" path="res://entities/spider.tscn" id="3_xaomy"]
+[ext_resource type="PackedScene" uid="uid://py455m4cb6np" path="res://entities/eye_rock.tscn" id="4_lvchw"]
 [ext_resource type="PackedScene" uid="uid://bv6wktb7wsx2x" path="res://hud/hud.tscn" id="6_xp7op"]
 [ext_resource type="Script" path="res://main/PackedSceneHolder.cs" id="7_yec0i"]
 [ext_resource type="PackedScene" uid="uid://4br0n54vxpbq" path="res://player/effects/lightning_arc.tscn" id="8_7562c"]
@@ -36,7 +37,7 @@ distance = -1280.0
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_7h5d5")
-MobScenes = Array[PackedScene]([ExtResource("2_iwtfb"), ExtResource("3_xaomy")])
+MobScenes = Array[PackedScene]([ExtResource("2_iwtfb"), ExtResource("3_xaomy"), ExtResource("4_lvchw")])
 
 [node name="HUD" parent="." instance=ExtResource("6_xp7op")]
 

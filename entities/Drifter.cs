@@ -1,0 +1,40 @@
+using Godot;
+
+using static Stats.EnemyStats;
+using static Stats.PlayerStats.Unlocks;
+public partial class Drifter : Mob
+{
+
+    VisibleOnScreenNotifier2D onScreenNotifier;
+
+    public override void _Ready()
+    {
+        base._Ready();
+        onScreenNotifier = GetNode<VisibleOnScreenNotifier2D>("VisibleOnScreenNotifier2D");
+        ApplyImpulse(0.05f * GetViewportRect().GetCenter() - Position);
+    }
+    // No acceleration towards player while on screen, moves only through momentum
+    protected override void ProcessMovement(double delta)
+    {
+        if (onScreenNotifier.IsOnScreen())
+        {
+            return;
+
+        }
+        else
+        {
+            // return to the screen
+            Vector2 centreOfScreen = GetViewportRect().GetCenter();
+            // we want it to be like gravity, so divide by distance squared. since the vector is already multiplied by distance, divide by distance cubed
+            float distSq = centreOfScreen.LengthSquared();
+            ApplyForce((float)delta * centreOfScreen / distSq);
+        }
+    }
+
+
+
+    protected override void SetScale()
+    {
+        GetNode<CollisionPolygon2D>("Collider").Scale *= size;
+    }
+}

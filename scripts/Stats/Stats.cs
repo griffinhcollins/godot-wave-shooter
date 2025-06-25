@@ -454,7 +454,7 @@ public static class Stats
 
         public static bool IsUnlockWave()
         {
-            return WaveCounter.Value % 5 == 0;
+            return WaveCounter.Value % 5 == 1;
         }
     }
 

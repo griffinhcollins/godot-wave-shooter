@@ -6,7 +6,7 @@ using System.Runtime.ExceptionServices;
 using System.Collections.Generic;
 using System.Linq;
 
-public partial class Player : Area2D, IAffectedByVisualEffects
+public partial class Player : Node2D, IAffectedByVisualEffects
 {
 
     [Signal]

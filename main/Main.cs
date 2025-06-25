@@ -9,7 +9,9 @@ public partial class Main : Node2D
 {
 
     [Export]
-    public PackedScene[] MobScenes { get; set; }
+    public PackedScene[] DefaultMobs { get; set; }
+    [Export]
+    public PackedScene[] Minibosses { get; set; }
 
     private int timeRemaining;
     Player player;
@@ -20,7 +22,7 @@ public partial class Main : Node2D
     Timer mobTimer;
     Hud hud;
 
-
+    int mobsSpawned;
 
 
     public override void _Ready()
@@ -151,10 +153,17 @@ public partial class Main : Node2D
         startTimer.Start();
         mobTimer.Start();
         waveTimer.Start();
+
+        mobsSpawned = 0;
     }
 
     private void OnWaveTimeout()
     {
+        if (Counters.IsUnlockWave())
+        {
+            // The round ends once the enemy is defeated
+            return;
+        }
         timeRemaining--;
         hud.UpdateWaveTime(timeRemaining);
         if (timeRemaining == 0)
@@ -193,8 +202,23 @@ public partial class Main : Node2D
 
     private void OnMobTimerTimeout()
     {
+        Mob mob;
+        if (Counters.IsUnlockWave())
+        {
+            if (mobsSpawned < Mathf.Ceil((Counters.WaveCounter.Value + 1) / 5f))
+            {
+                mob = Minibosses[GD.RandRange(0, Minibosses.Count() - 1)].Instantiate<Mob>();
 
-        Mob mob = MobScenes[GD.RandRange(0, MobScenes.Count() - 1)].Instantiate<Mob>();
+            }
+            else
+            {
+                return;
+            }
+        }
+        else
+        {
+            mob = DefaultMobs[GD.RandRange(0, DefaultMobs.Count() - 1)].Instantiate<Mob>();
+        }
 
         PathFollow2D mobSpawnLocation = GetNode<PathFollow2D>("MobPath/MobSpawnLocation");
 
@@ -214,6 +238,7 @@ public partial class Main : Node2D
 
         // The mob doesn't actually exist yet? wack
         AddChild(mob);
+        mobsSpawned++;
     }
 
 

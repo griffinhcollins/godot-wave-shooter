@@ -27,7 +27,7 @@ public partial class Coin : Area2D
     }
 
 
-    private void OnTouchPlayer(Area2D touchedArea)
+    private void OnTouchPlayer(Node2D touchedArea)
     {
         Stats.Counters.CoinCounter.Value++;
         Player player;

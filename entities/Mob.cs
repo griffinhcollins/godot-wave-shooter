@@ -92,14 +92,14 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
 
     // Used when the player is hit to give them some breathing room
-    public void Recoil(Vector2 recoilFrom)
+    public virtual void Recoil(Vector2 recoilFrom, float mult = 1)
     {
         float recoilRange = 800;
         if ((GlobalPosition - recoilFrom).LengthSquared() < recoilRange * recoilRange)
         {
             float distance = (GlobalPosition - recoilFrom).Length();
             LinearVelocity = Vector2.Zero;
-            ApplyImpulse(Stats.PlayerStats.DamageRecoil.GetDynamicVal() * (GlobalPosition - recoilFrom).Normalized() * (recoilRange - distance));
+            ApplyImpulse(mult * Stats.PlayerStats.DamageRecoil.GetDynamicVal() * (GlobalPosition - recoilFrom).Normalized() * (recoilRange - distance));
             if (Stats.PlayerStats.RevengeDamage.GetDynamicVal() > 0)
             {
                 TakeDamage(Stats.PlayerStats.RevengeDamage.GetDynamicVal() * Stats.PlayerStats.Damage.GetDynamicVal());

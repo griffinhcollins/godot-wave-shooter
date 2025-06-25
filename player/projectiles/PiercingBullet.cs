@@ -10,21 +10,21 @@ public partial class PiercingBullet : Bullet
     [Export]
     PackedScene bounceBullet;
 
-    public Area2D parent;
+    public Node2D parent;
     public Vector2 velocity;
 
 
     public override void _Ready()
     {
         base._Ready();
-        parent = GetParent<Area2D>();
+        parent = GetParent<Node2D>();
     }
 
     public override void _Process(double delta)
     {
         if (parent is null)
         {
-            parent = GetParent<Area2D>();
+            parent = GetParent<Node2D>();
 
         }
         base._Process(delta);

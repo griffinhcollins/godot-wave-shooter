@@ -37,7 +37,8 @@ distance = -1280.0
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_7h5d5")
-MobScenes = Array[PackedScene]([ExtResource("2_iwtfb"), ExtResource("3_xaomy"), ExtResource("4_lvchw")])
+DefaultMobs = Array[PackedScene]([ExtResource("2_iwtfb"), ExtResource("3_xaomy")])
+Minibosses = Array[PackedScene]([ExtResource("4_lvchw")])
 
 [node name="HUD" parent="." instance=ExtResource("6_xp7op")]
 

@@ -317,7 +317,6 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
     private void CreateIndicator()
     {
-        GD.Print("creating indicator");
         pairedIndicator = offscreenIndicator.Instantiate<OffscreenIndicator>();
         pairedIndicator.SetMobParent(this);
         GetTree().Root.AddChild(pairedIndicator);

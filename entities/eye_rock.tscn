@@ -49,7 +49,7 @@ sprite_frames = SubResource("SpriteFrames_u20yl")
 
 [node name="DamageSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("2_q2d0d")
-pitch_scale = 0.52
+pitch_scale = 0.3
 
 [connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="OnScreenEnter"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="OnScreenExit"]

@@ -17,8 +17,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     // Explosions!
     bool explodeOnDeath = false;
 
-    float baseHealth = 20;
-    float hp;
+    protected float hp;
 
 
     protected Vector2 beforePauseVelocity;
@@ -32,7 +31,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     protected PackedScene offscreenIndicator;
 
 
-
+    protected float size;
 
     protected OffscreenIndicator pairedIndicator;
 
@@ -40,9 +39,8 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
 
 
-    protected float size;
 
-    AnimatedSprite2D animSprite;
+    protected AnimatedSprite2D animSprite;
 
 
     public List<VisualEffect> visualEffects { get; set; }
@@ -54,7 +52,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
     public override void _Ready()
     {
-        
+
         player = (Player)GetTree().GetNodesInGroup("player")[0];
         animSprite = GetNode<AnimatedSprite2D>("MainSprite");
         string[] mobTypes = animSprite.SpriteFrames.GetAnimationNames();
@@ -62,12 +60,8 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         damageSound = GetNode<AudioStreamPlayer2D>("DamageSound");
 
         // Set Size
-        size = GD.Randf() * 0.5f * DynamicStats[ID.SizeMult] + 1;
-        hp = DynamicStats[ID.HPMult] * baseHealth * size * 0.75f;
-        animSprite.Scale *= size;
+        SetSize();
         SetScale();
-
-        animSprite.SpeedScale = 1 / (size);
         CreateIndicator();
 
         if (DeathExplosion.unlocked)
@@ -85,9 +79,22 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
     }
 
+    protected virtual void SetSize()
+    {
+        size = GD.Randf() * 0.5f * DynamicStats[ID.SizeMult] + 1;
+    }
+
     protected virtual void SetScale()
     {
+        animSprite.SpeedScale = 1 / (size);
+        hp = DynamicStats[ID.HPMult] * GetBaseHealth() * size * 0.75f;
+        animSprite.Scale *= size;
         GetNode<CollisionShape2D>("Collider").Scale *= size;
+    }
+
+    protected virtual float GetBaseHealth()
+    {
+        return 20;
     }
 
 
@@ -230,7 +237,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         // Pause logic. NOTHING GOES BEFORE THIS UNLESS IT SHOULD BE HAPPENING EVEN WHILE PAUSED
         if (State.currentState == State.paused)
         {
-            
+
             Pause();
             return;
         }
@@ -248,7 +255,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
         ProcessMovement(delta);
 
-        
+
 
         ((IAffectedByVisualEffects)this).ProcessVisualEffects((float)delta);
 
@@ -282,7 +289,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     }
 
 
-   
+
 
 
     private void UnPause()
@@ -296,11 +303,11 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     private void Pause()
     {
         if (beforePauseVelocity == Vector2.Zero)
-            {
-                beforePausePosition = Position;
-                beforePauseVelocity = LinearVelocity;
-                beforePauseAngularVelocity = AngularVelocity;
-            }
+        {
+            beforePausePosition = Position;
+            beforePauseVelocity = LinearVelocity;
+            beforePauseAngularVelocity = AngularVelocity;
+        }
         Sleeping = true;
         LinearVelocity = Vector2.Zero;
 
@@ -310,11 +317,17 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
     private void CreateIndicator()
     {
+        GD.Print("creating indicator");
         pairedIndicator = offscreenIndicator.Instantiate<OffscreenIndicator>();
         pairedIndicator.SetMobParent(this);
         GetTree().Root.AddChild(pairedIndicator);
         pairedIndicator.Position = Position;
-        pairedIndicator.GetNode<Sprite2D>("Sprite2D").Scale *= size;
+        pairedIndicator.GetNode<Sprite2D>("Sprite2D").Scale = GetIndicatorSize();
+    }
+
+    protected virtual Vector2 GetIndicatorSize()
+    {
+        return Vector2.One * size;
     }
 
     private void OnScreenExit()

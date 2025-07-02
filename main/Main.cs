@@ -159,11 +159,11 @@ public partial class Main : Node2D
 
     private void OnWaveTimeout()
     {
-        if (Counters.IsUnlockWave())
-        {
-            // The round ends once the enemy is defeated
-            return;
-        }
+        // if (Counters.IsUnlockWave())
+        // {
+        //     // The round ends once the enemy is defeated
+        //     return;
+        // }
         timeRemaining--;
         hud.UpdateWaveTime(timeRemaining);
         if (timeRemaining == 0)
@@ -202,31 +202,39 @@ public partial class Main : Node2D
 
     private void OnMobTimerTimeout()
     {
-        Mob mob;
-        if (Counters.IsUnlockWave())
-        {
-            if (mobsSpawned < Mathf.Ceil((Counters.WaveCounter.Value + 1) / 5f))
-            {
-                mob = Minibosses[GD.RandRange(0, Minibosses.Count() - 1)].Instantiate<Mob>();
 
-            }
-            else
-            {
-                return;
-            }
-        }
-        else
-        {
-            mob = DefaultMobs[GD.RandRange(0, DefaultMobs.Count() - 1)].Instantiate<Mob>();
-        }
 
         PathFollow2D mobSpawnLocation = GetNode<PathFollow2D>("MobPath/MobSpawnLocation");
 
         mobSpawnLocation.ProgressRatio = GD.Randf();
 
         float direction = mobSpawnLocation.Rotation + Mathf.Pi / 2;
+        Vector2 spawnPos = mobSpawnLocation.Position;
 
-        mob.Position = mobSpawnLocation.Position;
+        Mob mob;
+        if (BossWave())
+        {
+            // if (mobsSpawned < Mathf.Ceil((Counters.WaveCounter.Value + 1) / 5f))
+            // {
+            mob = Minibosses[GD.RandRange(0, Minibosses.Count() - 1)].Instantiate<Mob>();
+
+            // }
+            // else
+            // {
+            //     return;
+            // }
+        }
+        else
+        {
+            mob = DefaultMobs[GD.RandRange(0, DefaultMobs.Count() - 1)].Instantiate<Mob>();
+        }
+
+
+        if (mob is Drifter) // drifters have a high starting velocity, so give the player a bit more time
+        {
+            spawnPos -= Vector2.FromAngle(direction) * 400f;
+        }
+        mob.Position = spawnPos;
         direction += (float)GD.RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);
         mob.Rotation = direction;
         mob.Position -= Vector2.FromAngle(direction) * 200f * EnemyStats.DynamicStats[EnemyStats.ID.SizeMult];
@@ -239,6 +247,11 @@ public partial class Main : Node2D
         // The mob doesn't actually exist yet? wack
         AddChild(mob);
         mobsSpawned++;
+    }
+
+    bool BossWave()
+    {
+        return false;
     }
 
 

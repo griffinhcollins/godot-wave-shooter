@@ -40,6 +40,16 @@ public partial class Hud : CanvasLayer
         upgradeCost = shopElements.GetNode("BuySlot").GetNode<Label>("Cost");
     }
 
+    public override void _Process(double delta)
+    {
+        if (Input.IsActionJustPressed("pause")) // hit esc
+        {
+            CanvasLayer optionsMenu = GetNode<CanvasLayer>("OptionsMenu");
+            optionsMenu.Hide();
+        }
+    }
+
+
 
     public void ShowWave()
     {
@@ -277,9 +287,27 @@ public partial class Hud : CanvasLayer
     {
 
         ShowWave();
-        GetNode<Button>("WaveElements/StartButton").Hide();
+        GetNode<CanvasLayer>("MainMenuElements").Hide();
         EmitSignal(SignalName.StartGame);
         gameOverElements.Hide();
+    }
+
+    private void OnOptionsButtonPressed()
+    {
+
+        GetNode<CanvasLayer>("OptionsMenu").Show();
+    }
+
+    private void OnOptionsBackPressed()
+    {
+
+        GetNode<CanvasLayer>("OptionsMenu").Hide();
+    }
+
+    private void OnQuitPressed()
+    {
+        GetTree().Quit();
+        
     }
 
 

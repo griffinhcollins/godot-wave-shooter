@@ -377,7 +377,7 @@ public static class Stats
             // Enemy Starting Stats
             15,     // 0: Wave Length
             0.5f,      // 1: Spawn Rate (Spawns/second)
-            1,      // 2: HP Mult
+            1,      // 2: HP Mult 
             1,      // 3: Acceleration Mult 
             1       // 4: Size Mult
         };

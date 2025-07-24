@@ -27,6 +27,7 @@ public partial class Main : Node2D
 
     public override void _Ready()
     {
+        State.currentState = State.mainmenu;
         player = GetNode<Player>("Player");
         startPos = GetNode<Marker2D>("StartPosition");
         startTimer = GetNode<Timer>("StartTimer");
@@ -65,7 +66,7 @@ public partial class Main : Node2D
             NewGame();
         }
 
-        if (Input.IsActionJustPressed("pause"))
+        if (Input.IsActionJustPressed("pause")) // hit esc
         {
             TogglePause();
         }
@@ -92,7 +93,7 @@ public partial class Main : Node2D
 
     public void Pause()
     {
-        if (State.currentState == State.paused)
+        if (State.currentState == State.paused || State.currentState == State.mainmenu)
         {
             return;
         }
@@ -114,7 +115,6 @@ public partial class Main : Node2D
 
     private void NewGame()
     {
-        GetNode<Label>("Title").Hide();
         ResetStats();
         UpdateEnemyStats();
         ClearScreen();

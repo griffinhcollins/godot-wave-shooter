@@ -70,22 +70,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="StartButton" type="Button" parent="WaveElements"]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -100.0
-offset_top = -140.0
-offset_right = 100.0
-offset_bottom = -40.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_fonts/font = ExtResource("2_262y3")
-theme_override_font_sizes/font_size = 64
-text = "Start"
-
 [node name="HealthBar" type="HBoxContainer" parent="WaveElements"]
 layout_direction = 2
 anchors_preset = 2
@@ -97,7 +81,53 @@ offset_right = 410.0
 offset_bottom = -10.0
 grow_vertical = 0
 
+[node name="MainMenuElements" type="CanvasLayer" parent="."]
+
+[node name="Title" type="Label" parent="MainMenuElements"]
+offset_left = 150.0
+offset_top = 200.0
+offset_right = 1129.0
+offset_bottom = 345.0
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 120
+text = "Into the Depths"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StartButton" type="Button" parent="MainMenuElements"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 43.0
+offset_right = 100.0
+offset_bottom = 143.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_262y3")
+theme_override_font_sizes/font_size = 64
+text = "Start"
+
+[node name="OptionsButton" type="Button" parent="MainMenuElements"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -162.0
+offset_right = 100.0
+offset_bottom = -62.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_262y3")
+theme_override_font_sizes/font_size = 64
+text = "Options"
+
 [node name="ShopElements" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="ShopTitle" type="Label" parent="ShopElements"]
 anchors_preset = 5
@@ -271,15 +301,16 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 color = Color(0.344076, 0.344076, 0.344076, 1)
 
-[node name="PausedTitle" type="Label" parent="PauseElements"]
+[node name="PausedTitle" type="Label" parent="PauseElements/ColorRect"]
 z_index = 2
+layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -640.0
-offset_top = 200.0
+offset_top = 90.0
 offset_right = 640.0
-offset_bottom = 320.0
+offset_bottom = 210.0
 grow_horizontal = 2
 theme_override_fonts/font = ExtResource("2_262y3")
 theme_override_font_sizes/font_size = 100
@@ -288,23 +319,200 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="Button" type="Button" parent="PauseElements"]
+[node name="ResumeButton" type="Button" parent="PauseElements/ColorRect"]
 z_index = 2
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -131.0
-offset_top = 40.5
-offset_right = 131.0
-offset_bottom = 121.5
+offset_top = 2.0
+offset_right = 139.0
+offset_bottom = 92.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_font_sizes/font_size = 60
 text = "Resume"
+
+[node name="OptionsButton" type="Button" parent="PauseElements/ColorRect"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -134.0
+offset_top = -136.0
+offset_right = 136.0
+offset_bottom = -46.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_262y3")
+theme_override_font_sizes/font_size = 60
+text = "Options"
+
+[node name="OptionsMenu" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="OptionsMenu"]
+z_index = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -500.0
+offset_top = -300.0
+offset_right = 500.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0.344076, 0.344076, 0.344076, 1)
+
+[node name="OptionsTitle" type="Label" parent="OptionsMenu/ColorRect"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -640.0
+offset_top = 18.0
+offset_right = 640.0
+offset_bottom = 138.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_262y3")
+theme_override_font_sizes/font_size = 100
+text = "Options"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ResumeButton" type="Button" parent="OptionsMenu/ColorRect"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -470.0
+offset_top = 190.0
+offset_right = -200.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 60
+text = "Back"
+
+[node name="QuitButton" type="Button" parent="OptionsMenu/ColorRect"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 200.0
+offset_top = -110.0
+offset_right = 470.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_262y3")
+theme_override_font_sizes/font_size = 60
+text = "Quit"
+
+[node name="SoundSliders" type="ColorRect" parent="OptionsMenu/ColorRect"]
+layout_mode = 0
+offset_left = 548.0
+offset_top = 179.0
+offset_right = 929.0
+offset_bottom = 432.0
+color = Color(0.537011, 0.537011, 0.537011, 1)
+
+[node name="Volume" type="Label" parent="OptionsMenu/ColorRect/SoundSliders"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.5
+offset_top = -122.5
+offset_right = 150.5
+offset_bottom = -73.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 40
+text = "Volume"
+horizontal_alignment = 1
+
+[node name="Sound Effects" type="Label" parent="OptionsMenu/ColorRect/SoundSliders"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.5
+offset_top = -50.5
+offset_right = 150.5
+offset_bottom = -1.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 30
+text = "Sound Effects"
+
+[node name="SEffects Slider" type="HSlider" parent="OptionsMenu/ColorRect/SoundSliders"]
+modulate = Color(0, 0, 1, 1)
+layout_mode = 0
+offset_left = 42.0
+offset_top = 75.0
+offset_right = 346.0
+offset_bottom = 170.0
+value = 50.0
+
+[node name="Music" type="Label" parent="OptionsMenu/ColorRect/SoundSliders"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.5
+offset_top = 23.5
+offset_right = 150.5
+offset_bottom = 72.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 30
+text = "Music"
+
+[node name="Music Slider" type="HSlider" parent="OptionsMenu/ColorRect/SoundSliders"]
+modulate = Color(0, 0, 1, 1)
+layout_mode = 0
+offset_left = 42.0
+offset_top = 149.0
+offset_right = 346.0
+offset_bottom = 244.0
+value = 50.0
+
+[node name="Label" type="Label" parent="OptionsMenu/ColorRect"]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 157.0
+offset_right = 396.0
+offset_bottom = 434.0
+theme_override_font_sizes/font_size = 30
+text = "these are all the options currently if you want to change the screen size just drag the window border it might look a bit fucked though"
+autowrap_mode = 2
 
 [node name="GameOverElements" type="CanvasLayer" parent="."]
 visible = false
@@ -396,9 +604,13 @@ horizontal_alignment = 1
 visible = false
 
 [connection signal="timeout" from="MessageTimer" to="." method="OnMessageTimerTimeout"]
-[connection signal="pressed" from="WaveElements/StartButton" to="." method="OnStartButtonPressed"]
+[connection signal="pressed" from="MainMenuElements/StartButton" to="." method="OnStartButtonPressed"]
+[connection signal="pressed" from="MainMenuElements/OptionsButton" to="." method="OnOptionsButtonPressed"]
 [connection signal="pressed" from="ShopElements/NextWave" to="." method="OnNextWavePressed"]
 [connection signal="pressed" from="ShopElements/Reroll" to="." method="RerollShop"]
 [connection signal="pressed" from="ShopElements/BuySlot" to="." method="OnBuySlotClicked"]
 [connection signal="pressed" from="ShopElements/Delve Deeper" to="." method="OnDelveDeeperPressed"]
-[connection signal="pressed" from="PauseElements/Button" to="." method="OnResumeClicked"]
+[connection signal="pressed" from="PauseElements/ColorRect/ResumeButton" to="." method="OnResumeClicked"]
+[connection signal="pressed" from="PauseElements/ColorRect/OptionsButton" to="." method="OnOptionsButtonPressed"]
+[connection signal="pressed" from="OptionsMenu/ColorRect/ResumeButton" to="." method="OnOptionsBackPressed"]
+[connection signal="pressed" from="OptionsMenu/ColorRect/QuitButton" to="." method="OnQuitPressed"]

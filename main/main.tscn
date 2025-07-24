@@ -85,17 +85,6 @@ shape = SubResource("WorldBoundaryShape2D_liw8u")
 [node name="Right" type="CollisionShape2D" parent="Border"]
 shape = SubResource("WorldBoundaryShape2D_7axoi")
 
-[node name="Title" type="Label" parent="."]
-offset_left = 150.0
-offset_top = 200.0
-offset_right = 1129.0
-offset_bottom = 345.0
-size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 120
-text = "Into the Depths"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="PackedSceneHolder" type="Node" parent="."]
 script = ExtResource("7_yec0i")
 lightningArc = ExtResource("8_7562c")

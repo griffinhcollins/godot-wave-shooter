@@ -17,7 +17,8 @@ public partial class Coin : Area2D
         GetNode<Timer>("ExpireTimer").Start();
     }
 
-    private void Expire(){
+    private void Expire()
+    {
         QueueFree();
     }
 
@@ -41,6 +42,7 @@ public partial class Coin : Area2D
         }
 
         AudioStreamPlayer soundEffect = GetNode<AudioStreamPlayer>("PickupNoise");
+
         soundEffect.Play();
         player.AddMoney(value);
         Hide();

@@ -42,12 +42,6 @@ Minibosses = Array[PackedScene]([])
 
 [node name="HUD" parent="." instance=ExtResource("6_xp7op")]
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-z_index = -2
-position = Vector2(0, -240)
-texture = ExtResource("3_4rbai")
-centered = false
-
 [node name="Player" parent="." instance=ExtResource("3_vww5f")]
 position = Vector2(405, 328)
 
@@ -91,6 +85,12 @@ lightningArc = ExtResource("8_7562c")
 plagueCloud = ExtResource("9_ffucl")
 explosion = ExtResource("10_q14kl")
 coin = ExtResource("10_o0jux")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -2
+position = Vector2(0, -240)
+texture = ExtResource("3_4rbai")
+centered = false
 
 [connection signal="NextWave" from="HUD" to="." method="StartWave"]
 [connection signal="StartGame" from="HUD" to="." method="NewGame"]

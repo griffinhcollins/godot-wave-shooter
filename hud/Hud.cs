@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -287,6 +288,27 @@ public partial class Hud : CanvasLayer
     private void OnStartButtonPressed()
     {
 
+        GetNode<ColorRect>("MainMenuElements/Difficulty Menu").Show();
+    }
+
+    private void ChooseDifficulty(int difficulty)
+    {
+        // 0 is easy, 1 is medium, 2 is hard
+        switch (difficulty)
+        {
+            case 0:
+                State.difficulty = State.EASY;
+                break;
+            case 1:
+                State.difficulty = State.MEDIUM;
+                break;
+            case 2:
+                State.difficulty = State.HARD;
+                break;
+            default:
+                GD.Print("fucked it");
+                break;
+        }
         ShowWave();
         GetNode<CanvasLayer>("MainMenuElements").Hide();
         EmitSignal(SignalName.StartGame);

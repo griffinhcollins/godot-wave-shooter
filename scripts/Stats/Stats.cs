@@ -298,7 +298,7 @@ public static class Stats
 
             static List<PlayerStat> explosionStatList = new List<PlayerStat> { explosionChance, explosionDamage, explosionRadius };
             static StatSet explosionStats = new StatSet(explosionStatList);
-            public static Unlockable DeathExplosion = new Unlockable("Death Explosion", explosionStats, new List<VisualEffect>{new ParticleEffect(DeathExplosion, "death explosion"), new StaticColourChange(Plague, Colors.Red, 5, 3)});
+            public static Unlockable DeathExplosion = new Unlockable("Death Explosion", explosionStats, new List<VisualEffect> { new ParticleEffect(DeathExplosion, "death explosion"), new StaticColourChange(Plague, Colors.Red, 5, 3) });
 
 
             // Shield that regenerates after a period of time
@@ -376,7 +376,7 @@ public static class Stats
         public static readonly float[] BaseStats = {
             // Enemy Starting Stats
             15,     // 0: Wave Length
-            0.5f,      // 1: Spawn Rate (Spawns/second)
+            1,      // 1: Spawn Rate (Spawns/second)
             1,      // 2: HP Mult 
             1,      // 3: Acceleration Mult 
             1       // 4: Size Mult
@@ -389,7 +389,28 @@ public static class Stats
         {
             for (int i = 0; i < BaseStats.Length; i++)
             {
-                DynamicStats[i] = BaseStats[i];
+                float difficultyMult = 1;
+                if (i == 1)
+                {
+                    // spawn rate
+                    switch (State.difficulty)
+                    {
+                        case 0:
+                            difficultyMult = 0.6f;
+                            break;
+                        case 1:
+                            difficultyMult = 1;
+                            break;
+                        case 2:
+                            difficultyMult = 1.25f;
+                            break;
+                        default:
+                            GD.Print("weird difficulty");
+                            break;
+                    }
+                    GD.Print(difficultyMult);
+                }
+                DynamicStats[i] = BaseStats[i] * difficultyMult;
             }
         }
 
@@ -414,6 +435,7 @@ public static class Stats
             mostRecentMutation = string.Format("{0} increased!", ID.nameLookup[mutationIndex]);
             DynamicStats[mutationIndex] *= 1.5f;
         }
+
 
     }
 

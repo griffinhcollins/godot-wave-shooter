@@ -357,6 +357,7 @@ theme_override_font_sizes/font_size = 60
 text = "Options"
 
 [node name="OptionsMenu" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="ColorRect" type="ColorRect" parent="OptionsMenu"]
 z_index = 1
@@ -506,15 +507,16 @@ value = 50.0
 
 [node name="Label" type="Label" parent="OptionsMenu/ColorRect"]
 layout_mode = 0
-offset_left = 59.0
-offset_top = 157.0
-offset_right = 396.0
-offset_bottom = 434.0
+offset_left = 70.0
+offset_top = 191.0
+offset_right = 478.0
+offset_bottom = 468.0
 theme_override_font_sizes/font_size = 30
 text = "these are all the options currently if you want to change the screen size just drag the window border it might look a bit fucked though"
 autowrap_mode = 2
 
 [node name="Button" type="Button" parent="OptionsMenu/ColorRect"]
+visible = false
 layout_mode = 0
 offset_left = 410.0
 offset_top = 421.0

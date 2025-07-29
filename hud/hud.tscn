@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bv6wktb7wsx2x"]
+[gd_scene load_steps=8 format=3 uid="uid://bv6wktb7wsx2x"]
 
 [ext_resource type="Script" path="res://hud/Hud.cs" id="1_nq4qa"]
 [ext_resource type="FontFile" uid="uid://o3v60vi8k4on" path="res://fonts/Xolonium-Regular.ttf" id="2_262y3"]
 [ext_resource type="PackedScene" uid="uid://bxit5dji56jci" path="res://hud/heart.tscn" id="2_wn6k0"]
 [ext_resource type="PackedScene" uid="uid://76di2adj135a" path="res://hud/upgrade.tscn" id="3_jnc8j"]
 [ext_resource type="PackedScene" uid="uid://cmp3ey8qdvuu1" path="res://hud/damage_num.tscn" id="4_c1pox"]
+[ext_resource type="AudioStream" uid="uid://b2kro6y6sewt7" path="res://sounds/laser pip.wav" id="6_50e0x"]
 [ext_resource type="PackedScene" uid="uid://d2h18ievpdrky" path="res://hud/upgrade tree/upgrade_tree.tscn" id="6_yoble"]
 
 [node name="HUD" type="CanvasLayer" groups=["HUD"]]
@@ -356,7 +357,6 @@ theme_override_font_sizes/font_size = 60
 text = "Options"
 
 [node name="OptionsMenu" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="ColorRect" type="ColorRect" parent="OptionsMenu"]
 z_index = 1
@@ -514,6 +514,19 @@ theme_override_font_sizes/font_size = 30
 text = "these are all the options currently if you want to change the screen size just drag the window border it might look a bit fucked though"
 autowrap_mode = 2
 
+[node name="Button" type="Button" parent="OptionsMenu/ColorRect"]
+layout_mode = 0
+offset_left = 410.0
+offset_top = 421.0
+offset_right = 522.0
+offset_bottom = 540.0
+text = "play example sfx"
+
+[node name="FireSound" type="AudioStreamPlayer" parent="OptionsMenu/ColorRect/Button"]
+stream = ExtResource("6_50e0x")
+volume_db = -20.0
+bus = &"Sound Effects"
+
 [node name="GameOverElements" type="CanvasLayer" parent="."]
 visible = false
 
@@ -614,3 +627,6 @@ visible = false
 [connection signal="pressed" from="PauseElements/ColorRect/OptionsButton" to="." method="OnOptionsButtonPressed"]
 [connection signal="pressed" from="OptionsMenu/ColorRect/ResumeButton" to="." method="OnOptionsBackPressed"]
 [connection signal="pressed" from="OptionsMenu/ColorRect/QuitButton" to="." method="OnQuitPressed"]
+[connection signal="value_changed" from="OptionsMenu/ColorRect/SoundSliders/SEffects Slider" to="." method="OnSfxSliderAdjusted"]
+[connection signal="value_changed" from="OptionsMenu/ColorRect/SoundSliders/Music Slider" to="." method="OnMscSliderAdjusted"]
+[connection signal="pressed" from="OptionsMenu/ColorRect/Button" to="." method="ExampleSound"]

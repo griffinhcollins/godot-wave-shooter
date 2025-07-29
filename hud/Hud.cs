@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public partial class Hud : CanvasLayer
 {
@@ -304,10 +305,30 @@ public partial class Hud : CanvasLayer
         GetNode<CanvasLayer>("OptionsMenu").Hide();
     }
 
+    private void OnSfxSliderAdjusted(float val)
+    {
+        int index = AudioServer.GetBusIndex("Sound Effects");
+        GD.Print(AudioServer.GetBusVolumeDb(index));
+        AudioServer.SetBusVolumeDb(index, 2 * Mathf.LinearToDb(val / 50));
+    }
+
+    private void OnMscSliderAdjusted(float val)
+    {
+        int index = AudioServer.GetBusIndex("Music");
+        AudioServer.SetBusVolumeDb(index, 2 * Mathf.LinearToDb(val / 50));
+    }
+
     private void OnQuitPressed()
     {
         GetTree().Quit();
-        
+
+    }
+
+    private void ExampleSound()
+    {
+        GD.Print("be");
+        AudioStreamPlayer p = GetNode<AudioStreamPlayer>("OptionsMenu/ColorRect/Button/FireSound");
+        p.Play();
     }
 
 

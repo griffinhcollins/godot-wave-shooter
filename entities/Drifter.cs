@@ -71,7 +71,7 @@ public partial class Drifter : Mob
 
     public override void Recoil(Vector2 recoilFrom, float mult = 100)
     {
-        base.Recoil(recoilFrom, 10);
+        base.Recoil(recoilFrom, 20);
     }
 
     protected override float GetBaseHealth()

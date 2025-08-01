@@ -49,6 +49,10 @@ public partial class Hud : CanvasLayer
             CanvasLayer optionsMenu = GetNode<CanvasLayer>("OptionsMenu");
             optionsMenu.Hide();
         }
+        if (Input.IsActionJustPressed("restart") && (State.currentState == State.dead))
+        {
+            OnStartButtonPressed();
+        }
     }
 
 
@@ -288,7 +292,7 @@ public partial class Hud : CanvasLayer
     private void OnStartButtonPressed()
     {
 
-        GetNode<ColorRect>("MainMenuElements/Difficulty Menu").Show();
+        GetNode<CanvasLayer>("Difficulty Menu").Show();
     }
 
     private void ChooseDifficulty(int difficulty)
@@ -311,6 +315,7 @@ public partial class Hud : CanvasLayer
         }
         ShowWave();
         GetNode<CanvasLayer>("MainMenuElements").Hide();
+        GetNode<CanvasLayer>("Difficulty Menu").Hide();
         EmitSignal(SignalName.StartGame);
         gameOverElements.Hide();
     }

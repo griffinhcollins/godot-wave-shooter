@@ -61,10 +61,7 @@ public partial class Main : Node2D
 
     public override void _Process(double delta)
     {
-        if (Input.IsActionJustPressed("restart") && (State.currentState == State.dead))
-        {
-            NewGame();
-        }
+        
 
         if (Input.IsActionJustPressed("pause")) // hit esc
         {

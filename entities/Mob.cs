@@ -15,7 +15,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     float poisonTick;
 
     // Explosions!
-    bool explodeOnDeath = false;
+    protected bool explodeOnDeath = false;
 
     protected float hp;
 
@@ -150,27 +150,11 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     }
 
 
-    private void Die()
+    protected virtual void Die()
     {
-        Stats.Counters.KillCounter.Value++;
-        dead = true;
-        float tempDropRate = Stats.PlayerStats.DropRate.GetDynamicVal();
-        // If drop rate is above 1, get 1 guaranteed coin plus a chance at another
-        while (tempDropRate > 0)
-        {
-            if (GD.RandRange(0f, 1) <= tempDropRate)
-            {
-                SpawnCoin();
-            }
-            tempDropRate--;
-        }
-        if (explodeOnDeath)
-        {
-
-            Explode();
-
-        }
+        
         // Don't queuefree yet, that happens once the damage sound is complete
+        dead = true;
         Hide();
         CollisionLayer = 0;
         CollisionMask = 0;
@@ -178,7 +162,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
     }
 
-    void Explode()
+    protected void Explode()
     {
         if (DeathExplosion.unlocked)
         {
@@ -196,13 +180,14 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         }
     }
 
-    private void SpawnCoin()
+    protected void SpawnCoin()
     {
         Coin newCoin = State.sceneHolder.coin.Instantiate<Coin>();
         newCoin.Position = Position + new Vector2(GD.Randf() * 2 - 1, GD.Randf() * 2 - 1) * 20;
         GetParent().CallDeferred("add_child", newCoin);
 
     }
+    
 
     public void Poison()
     {

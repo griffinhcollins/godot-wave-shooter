@@ -436,7 +436,7 @@ text = "Options"
 [node name="OptionsMenu" type="CanvasLayer" parent="."]
 visible = false
 
-[node name="ColorRect" type="ColorRect" parent="OptionsMenu"]
+[node name="Options" type="ColorRect" parent="OptionsMenu"]
 z_index = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -453,7 +453,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 color = Color(0.344076, 0.344076, 0.344076, 1)
 
-[node name="OptionsTitle" type="Label" parent="OptionsMenu/ColorRect"]
+[node name="OptionsTitle" type="Label" parent="OptionsMenu/Options"]
 z_index = 2
 layout_mode = 1
 anchors_preset = 5
@@ -471,7 +471,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="ResumeButton" type="Button" parent="OptionsMenu/ColorRect"]
+[node name="ResumeButton" type="Button" parent="OptionsMenu/Options"]
 z_index = 2
 layout_mode = 1
 anchors_preset = 8
@@ -490,7 +490,26 @@ size_flags_vertical = 4
 theme_override_font_sizes/font_size = 60
 text = "Back"
 
-[node name="QuitButton" type="Button" parent="OptionsMenu/ColorRect"]
+[node name="Credits" type="Button" parent="OptionsMenu/Options"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -135.0
+offset_top = 190.0
+offset_right = 135.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 60
+text = "Credits"
+
+[node name="QuitButton" type="Button" parent="OptionsMenu/Options"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -507,7 +526,7 @@ theme_override_fonts/font = ExtResource("2_262y3")
 theme_override_font_sizes/font_size = 60
 text = "Quit"
 
-[node name="SoundSliders" type="ColorRect" parent="OptionsMenu/ColorRect"]
+[node name="SoundSliders" type="ColorRect" parent="OptionsMenu/Options"]
 layout_mode = 0
 offset_left = 548.0
 offset_top = 179.0
@@ -515,7 +534,7 @@ offset_right = 929.0
 offset_bottom = 432.0
 color = Color(0.537011, 0.537011, 0.537011, 1)
 
-[node name="Volume" type="Label" parent="OptionsMenu/ColorRect/SoundSliders"]
+[node name="Volume" type="Label" parent="OptionsMenu/Options/SoundSliders"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -532,7 +551,7 @@ theme_override_font_sizes/font_size = 40
 text = "Volume"
 horizontal_alignment = 1
 
-[node name="Sound Effects" type="Label" parent="OptionsMenu/ColorRect/SoundSliders"]
+[node name="Sound Effects" type="Label" parent="OptionsMenu/Options/SoundSliders"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -548,7 +567,7 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 30
 text = "Sound Effects"
 
-[node name="SEffects Slider" type="HSlider" parent="OptionsMenu/ColorRect/SoundSliders"]
+[node name="SEffects Slider" type="HSlider" parent="OptionsMenu/Options/SoundSliders"]
 modulate = Color(0, 0, 1, 1)
 layout_mode = 0
 offset_left = 42.0
@@ -557,7 +576,7 @@ offset_right = 346.0
 offset_bottom = 170.0
 value = 50.0
 
-[node name="Music" type="Label" parent="OptionsMenu/ColorRect/SoundSliders"]
+[node name="Music" type="Label" parent="OptionsMenu/Options/SoundSliders"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -571,9 +590,9 @@ offset_bottom = 72.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 30
-text = "Music"
+text = "Music (WIP)"
 
-[node name="Music Slider" type="HSlider" parent="OptionsMenu/ColorRect/SoundSliders"]
+[node name="Music Slider" type="HSlider" parent="OptionsMenu/Options/SoundSliders"]
 modulate = Color(0, 0, 1, 1)
 layout_mode = 0
 offset_left = 42.0
@@ -582,7 +601,7 @@ offset_right = 346.0
 offset_bottom = 244.0
 value = 50.0
 
-[node name="Label" type="Label" parent="OptionsMenu/ColorRect"]
+[node name="Label" type="Label" parent="OptionsMenu/Options"]
 layout_mode = 0
 offset_left = 70.0
 offset_top = 191.0
@@ -592,7 +611,7 @@ theme_override_font_sizes/font_size = 30
 text = "these are all the options currently if you want to change the screen size just drag the window border it might look a bit fucked though"
 autowrap_mode = 2
 
-[node name="Button" type="Button" parent="OptionsMenu/ColorRect"]
+[node name="Button" type="Button" parent="OptionsMenu/Options"]
 visible = false
 layout_mode = 0
 offset_left = 410.0
@@ -601,10 +620,81 @@ offset_right = 522.0
 offset_bottom = 540.0
 text = "play example sfx"
 
-[node name="FireSound" type="AudioStreamPlayer" parent="OptionsMenu/ColorRect/Button"]
+[node name="FireSound" type="AudioStreamPlayer" parent="OptionsMenu/Options/Button"]
 stream = ExtResource("6_50e0x")
 volume_db = -20.0
 bus = &"Sound Effects"
+
+[node name="Credits" type="ColorRect" parent="OptionsMenu"]
+visible = false
+z_index = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -500.0
+offset_top = -300.0
+offset_right = 500.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0.344076, 0.344076, 0.344076, 1)
+
+[node name="Credits" type="Label" parent="OptionsMenu/Credits"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -640.0
+offset_top = 18.0
+offset_right = 640.0
+offset_bottom = 138.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_262y3")
+theme_override_font_sizes/font_size = 100
+text = "Credits"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="BackButton" type="Button" parent="OptionsMenu/Credits"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -470.0
+offset_top = 190.0
+offset_right = -200.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 60
+text = "Back"
+
+[node name="Label" type="Label" parent="OptionsMenu/Credits"]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 157.0
+offset_right = 969.0
+offset_bottom = 474.0
+theme_override_font_sizes/font_size = 30
+text = "Sound Effects - freesound.org
+
+Art - Jupiter Dye
+
+Coding - Griffin Collins
+
+Originally based off of offical Godot \"Dodge the Creeps\" tutorial"
+autowrap_mode = 2
 
 [node name="GameOverElements" type="CanvasLayer" parent="."]
 visible = false
@@ -707,8 +797,10 @@ visible = false
 [connection signal="pressed" from="ShopElements/Delve Deeper" to="." method="OnDelveDeeperPressed"]
 [connection signal="pressed" from="PauseElements/ColorRect/ResumeButton" to="." method="OnResumeClicked"]
 [connection signal="pressed" from="PauseElements/ColorRect/OptionsButton" to="." method="OnOptionsButtonPressed"]
-[connection signal="pressed" from="OptionsMenu/ColorRect/ResumeButton" to="." method="OnOptionsBackPressed"]
-[connection signal="pressed" from="OptionsMenu/ColorRect/QuitButton" to="." method="OnQuitPressed"]
-[connection signal="value_changed" from="OptionsMenu/ColorRect/SoundSliders/SEffects Slider" to="." method="OnSfxSliderAdjusted"]
-[connection signal="value_changed" from="OptionsMenu/ColorRect/SoundSliders/Music Slider" to="." method="OnMscSliderAdjusted"]
-[connection signal="pressed" from="OptionsMenu/ColorRect/Button" to="." method="ExampleSound"]
+[connection signal="pressed" from="OptionsMenu/Options/ResumeButton" to="." method="OnOptionsBackPressed"]
+[connection signal="pressed" from="OptionsMenu/Options/Credits" to="." method="OnCreditsButtonPressed"]
+[connection signal="pressed" from="OptionsMenu/Options/QuitButton" to="." method="OnQuitPressed"]
+[connection signal="value_changed" from="OptionsMenu/Options/SoundSliders/SEffects Slider" to="." method="OnSfxSliderAdjusted"]
+[connection signal="value_changed" from="OptionsMenu/Options/SoundSliders/Music Slider" to="." method="OnMscSliderAdjusted"]
+[connection signal="pressed" from="OptionsMenu/Options/Button" to="." method="ExampleSound"]
+[connection signal="pressed" from="OptionsMenu/Credits/BackButton" to="." method="OnCreditsBackPressed"]

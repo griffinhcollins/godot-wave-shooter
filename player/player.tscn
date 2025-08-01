@@ -14,7 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://0flj77ulxejl" path="res://custom assets/player stuff/Jupes Sub 1.png" id="4_jmb8p"]
 [ext_resource type="Shader" path="res://shaders/colourable.gdshader" id="5_26nvu"]
 [ext_resource type="Texture2D" uid="uid://dnf6w5ihpeicv" path="res://custom assets/player stuff/Submarine_2.png" id="5_c687v"]
-[ext_resource type="PackedScene" path="res://player/projectiles/shield.tscn" id="5_mk332"]
+[ext_resource type="PackedScene" uid="uid://ca2fccnfxho7w" path="res://player/projectiles/shield.tscn" id="5_mk332"]
 [ext_resource type="Texture2D" uid="uid://ctt8k5k3xxvre" path="res://custom assets/player stuff/slides/1.png" id="5_sbfnh"]
 [ext_resource type="Texture2D" uid="uid://e4f0lfg30k3i" path="res://custom assets/player stuff/firing reticule.png" id="6_arkfn"]
 [ext_resource type="Texture2D" uid="uid://yxhhnpiqghxa" path="res://custom assets/player stuff/slides/2.png" id="6_jo5d7"]

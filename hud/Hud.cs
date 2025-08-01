@@ -319,12 +319,19 @@ public partial class Hud : CanvasLayer
     {
 
         GetNode<CanvasLayer>("OptionsMenu").Show();
+        GetNode<ColorRect>("OptionsMenu/Credits").Hide();
     }
 
     private void OnOptionsBackPressed()
     {
 
         GetNode<CanvasLayer>("OptionsMenu").Hide();
+    }
+
+    private void OnCreditsBackPressed()
+    {
+
+        GetNode<ColorRect>("OptionsMenu/Credits").Hide();
     }
 
     private void OnSfxSliderAdjusted(float val)
@@ -344,6 +351,12 @@ public partial class Hud : CanvasLayer
     {
         GetTree().Quit();
 
+    }
+
+    private void OnCreditsButtonPressed()
+    {
+
+        GetNode<ColorRect>("OptionsMenu/Credits").Show();
     }
 
     private void ExampleSound()

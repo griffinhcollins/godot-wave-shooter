@@ -195,6 +195,7 @@ laserBeam = ExtResource("3_lvtdk")
 shieldPacked = ExtResource("5_mk332")
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="."]
+z_index = 1
 material = SubResource("ShaderMaterial_m1ka2")
 scale = Vector2(0.019, 0.019)
 sprite_frames = SubResource("SpriteFrames_v23md")
@@ -231,7 +232,6 @@ wait_time = 0.5
 one_shot = true
 
 [node name="BubbleEmitter" type="CPUParticles2D" parent="."]
-z_index = -2
 position = Vector2(42.0662, 7.54016)
 emitting = false
 amount = 20

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bv6wktb7wsx2x"]
+[gd_scene load_steps=10 format=3 uid="uid://bv6wktb7wsx2x"]
 
 [ext_resource type="Script" path="res://hud/Hud.cs" id="1_nq4qa"]
 [ext_resource type="FontFile" uid="uid://o3v60vi8k4on" path="res://fonts/Xolonium-Regular.ttf" id="2_262y3"]
@@ -7,6 +7,16 @@
 [ext_resource type="PackedScene" uid="uid://cmp3ey8qdvuu1" path="res://hud/damage_num.tscn" id="4_c1pox"]
 [ext_resource type="AudioStream" uid="uid://b2kro6y6sewt7" path="res://sounds/laser pip.wav" id="6_50e0x"]
 [ext_resource type="PackedScene" uid="uid://d2h18ievpdrky" path="res://hud/upgrade tree/upgrade_tree.tscn" id="6_yoble"]
+
+[sub_resource type="Gradient" id="Gradient_giak0"]
+interpolation_mode = 2
+colors = PackedColorArray(1, 0, 0, 0, 1, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_11xmv"]
+gradient = SubResource("Gradient_giak0")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(2, 2)
 
 [node name="HUD" type="CanvasLayer" groups=["HUD"]]
 script = ExtResource("1_nq4qa")
@@ -789,6 +799,17 @@ text = "Select Difficulty"
 
 [node name="UpgradeTree" parent="." instance=ExtResource("6_yoble")]
 visible = false
+
+[node name="DamageEffect" type="CanvasLayer" parent="."]
+
+[node name="RedGlow" type="TextureRect" parent="DamageEffect"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_11xmv")
 
 [connection signal="timeout" from="MessageTimer" to="." method="OnMessageTimerTimeout"]
 [connection signal="pressed" from="MainMenuElements/StartButton" to="." method="OnStartButtonPressed"]

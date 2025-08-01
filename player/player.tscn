@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://dphno2aha4dnk"]
+[gd_scene load_steps=38 format=3 uid="uid://dphno2aha4dnk"]
 
 [ext_resource type="Texture2D" uid="uid://cxxc2leij01vs" path="res://art/playerGrey_up1.png" id="1_333lq"]
 [ext_resource type="Script" path="res://player/Player.cs" id="1_empth"]
@@ -31,6 +31,7 @@
 [ext_resource type="Texture2D" uid="uid://orpx632buhi8" path="res://custom assets/player stuff/slides/13.png" id="17_dggnx"]
 [ext_resource type="Texture2D" uid="uid://dvolwn1sg2ijp" path="res://custom assets/player stuff/slides/14.png" id="18_4xg6r"]
 [ext_resource type="Texture2D" uid="uid://c4fjy2xwtulkl" path="res://custom assets/player stuff/bubble.png" id="29_82gkq"]
+[ext_resource type="AudioStream" uid="uid://cdwdk3nvmj1p0" path="res://sounds/alarm hiss.wav" id="32_cgufq"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m1ka2"]
 resource_local_to_scene = true
@@ -243,6 +244,10 @@ initial_velocity_max = 100.0
 scale_amount_min = 0.1
 scale_amount_max = 0.2
 color_ramp = SubResource("Gradient_larbq")
+
+[node name="DamageSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("32_cgufq")
+bus = &"Sound Effects"
 
 [connection signal="body_entered" from="." to="." method="OnBodyEntered"]
 [connection signal="timeout" from="BulletTimer" to="." method="OnBulletTimerFinished"]

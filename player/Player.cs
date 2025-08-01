@@ -45,6 +45,7 @@ public partial class Player : Node2D, IAffectedByVisualEffects
     Vector2 prevVelocity;
 
     List<Mutation> activeMutations;
+    AudioStreamPlayer2D damageSound;
 
 
 
@@ -69,7 +70,8 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         emitterX = bubbleEmitter.Position.X;
         reticule = GetNode<Node2D>("ReticuleHolder");
         bulletTimer = GetNode<Timer>("BulletTimer");
-
+        
+        damageSound = GetNode<AudioStreamPlayer2D>("DamageSound");
         hud = GetParent().GetNode<Hud>("HUD");
 
 
@@ -370,7 +372,8 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         if (!shieldActive)
         {
             currentHP--;
-
+            damageSound.Play();
+            hud.ShowDamageEffect();
             ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(State.MobDamage, Colors.Red, 0.8f, 100, iframes));
             hud.UpdateHealth(currentHP);
             if (currentHP <= 0)

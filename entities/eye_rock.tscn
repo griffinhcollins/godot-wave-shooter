@@ -1,8 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://qpcothlmfimw"]
+[gd_scene load_steps=9 format=3 uid="uid://py455m4cb6np"]
 
 [ext_resource type="Script" path="res://entities/Drifter.cs" id="1_gus6a"]
 [ext_resource type="Texture2D" uid="uid://ctotx57mppdpa" path="res://custom assets/enemies/rock body.png" id="1_opspj"]
-[ext_resource type="PackedScene" uid="uid://bp21m4kr2kvxa" path="res://entities/offscreen_indicator.tscn" id="2_38ytx"]
+[ext_resource type="PackedScene" uid="uid://cpsf1tpjvco18" path="res://entities/offscreen_indicator.tscn" id="2_38ytx"]
 [ext_resource type="AudioStream" uid="uid://8lrd00evdlrb" path="res://sounds/rock hit.wav" id="2_q2d0d"]
 [ext_resource type="Shader" path="res://shaders/colourable.gdshader" id="3_wryti"]
 

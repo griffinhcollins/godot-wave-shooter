@@ -29,6 +29,8 @@ public partial class Hud : CanvasLayer
     List<PlayerUpgrade> upgradePool;
     List<Improvement> excludePool;
 
+    TextureRect damageGlow;
+
     int rerollCost = 10;
     bool upgradeSelected;
 
@@ -40,6 +42,7 @@ public partial class Hud : CanvasLayer
         shopElements = GetNode<CanvasLayer>("ShopElements");
         gameOverElements = GetNode<CanvasLayer>("GameOverElements");
         upgradeCost = shopElements.GetNode("BuySlot").GetNode<Label>("Cost");
+        damageGlow = GetNode<TextureRect>("DamageEffect/RedGlow");
     }
 
     public override void _Process(double delta)
@@ -53,6 +56,22 @@ public partial class Hud : CanvasLayer
         {
             OnStartButtonPressed();
         }
+
+        if (damageGlow.Visible)
+        {
+            Color mod = damageGlow.Modulate;
+            damageGlow.Modulate = mod.Lerp(Colors.Transparent, 1 * (float)delta);
+            if (damageGlow.Modulate.A < 0.1f)
+            {
+                damageGlow.Hide();
+            }
+        }
+    }
+
+    public void ShowDamageEffect()
+    {
+        damageGlow.Show();
+        damageGlow.Modulate = Colors.White;
     }
 
 

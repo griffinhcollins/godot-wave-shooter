@@ -11,6 +11,10 @@
 [ext_resource type="Texture2D" uid="uid://d0vjjeowqdkxi" path="res://custom assets/enemies/pupil.png" id="9_1ovii"]
 [ext_resource type="AudioStream" uid="uid://cl6887ed40bm7" path="res://sounds/enemy hurt.wav" id="10_osoup"]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_118ht"]
+radius = 45.4545
+height = 100.818
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_h6wu4"]
 resource_local_to_scene = true
 shader = ExtResource("3_0uud4")
@@ -41,10 +45,6 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_118ht"]
-radius = 45.4545
-height = 100.818
-
 [node name="Jellyfish" type="RigidBody2D" groups=["cleanup", "mobs"]]
 collision_layer = 2
 collision_mask = 7
@@ -54,6 +54,19 @@ max_contacts_reported = 10
 script = ExtResource("1_gs1vn")
 offscreenIndicator = ExtResource("2_vu1s5")
 metadata/_edit_group_ = true
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(1.43051e-06, -0.499997)
+scale = Vector2(3.1, 2.95)
+
+[node name="DamageSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_osoup")
+bus = &"Sound Effects"
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+position = Vector2(0, 3.73)
+scale = Vector2(0.66, 0.66)
+shape = SubResource("CapsuleShape2D_118ht")
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_h6wu4")
@@ -73,19 +86,6 @@ texture = ExtResource("8_w4suo")
 position = Vector2(5, 0)
 scale = Vector2(0.06, 0.06)
 texture = ExtResource("9_1ovii")
-
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
-position = Vector2(1.43051e-06, -0.499997)
-scale = Vector2(3.1, 2.95)
-
-[node name="DamageSound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("10_osoup")
-bus = &"Sound Effects"
-
-[node name="Collider" type="CollisionShape2D" parent="."]
-position = Vector2(0, 3.73)
-scale = Vector2(0.66, 0.66)
-shape = SubResource("CapsuleShape2D_118ht")
 
 [connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="OnScreenEnter"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="OnScreenExit"]

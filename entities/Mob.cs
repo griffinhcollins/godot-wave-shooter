@@ -40,7 +40,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
     AudioStreamPlayer2D damageSound;
 
-
+    VisibleOnScreenNotifier2D onScreenNotifier2D;
 
 
     protected AnimatedSprite2D animSprite;
@@ -61,7 +61,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         string[] colour = animSprite.SpriteFrames.GetAnimationNames();
         animSprite.Play(colour[GD.Randi() % colour.Length]);
         damageSound = GetNode<AudioStreamPlayer2D>("DamageSound");
-
+        onScreenNotifier2D = GetNode<VisibleOnScreenNotifier2D>("VisibleOnScreenNotifier2D");
         // Set Size
         SetSize();
         SetScale();
@@ -155,7 +155,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
     protected virtual void Die()
     {
-        
+
         // Don't queuefree yet, that happens once the damage sound is complete
         dead = true;
         Hide();
@@ -190,7 +190,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         GetParent().CallDeferred("add_child", newCoin);
 
     }
-    
+
 
     public virtual void Poison()
     {
@@ -243,6 +243,12 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
         ProcessMovement(delta);
 
+        {
+            if (pairedIndicator is not null && IsInstanceValid(pairedIndicator) && onScreenNotifier2D.IsOnScreen())
+            {
+                pairedIndicator.QueueFree();
+            }
+        }
 
 
         ((IAffectedByVisualEffects)this).ProcessVisualEffects((float)delta);

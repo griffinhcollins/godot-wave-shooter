@@ -189,7 +189,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     }
     
 
-    public void Poison()
+    public virtual void Poison()
     {
         if (poisoned)
         {

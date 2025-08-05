@@ -69,6 +69,13 @@ public partial class Drifter : Mob
         return Vector2.One * size * 4;
     }
 
+    // Drifters can't be poisoned
+    public override void Poison()
+    {
+        return;
+    }
+
+
     public override void Recoil(Vector2 recoilFrom, float mult = 100)
     {
         base.Recoil(recoilFrom, 20);

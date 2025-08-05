@@ -7,6 +7,13 @@
 - need new sprites for enemies and the player, while we're on that
 
 
+
+- rocks maybe scale in health faster so that they can pierce through massive damage builds, dodging should always be preferred with rocks
+- When getting a mutation, show the name
+- poisoned enemies leave poison trail
+
+
+
 Ideas:
 - Enemies should drop money based on their health, not droprate
 - You don't pay for upgrades, you pay for everything else (rerolls, more upgrade slots, guaranteed legendary, )

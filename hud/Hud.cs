@@ -211,7 +211,6 @@ public partial class Hud : CanvasLayer
             {
                 UpgradeNode newUpgrade = AddUpgrade();
             }
-            buySlot.Show();
             shopElements.GetNode<Button>("Reroll").Show();
         }
         else

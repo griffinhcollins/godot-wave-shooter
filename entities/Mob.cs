@@ -30,6 +30,9 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     [Export]
     protected PackedScene offscreenIndicator;
 
+    [Export]
+    public int firstAppearsAtWave;
+
 
     protected float size;
 
@@ -55,8 +58,8 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
         player = (Player)GetTree().GetNodesInGroup("player")[0];
         animSprite = GetNode<AnimatedSprite2D>("MainSprite");
-        string[] mobTypes = animSprite.SpriteFrames.GetAnimationNames();
-        animSprite.Play(mobTypes[GD.Randi() % mobTypes.Length]);
+        string[] colour = animSprite.SpriteFrames.GetAnimationNames();
+        animSprite.Play(colour[GD.Randi() % colour.Length]);
         damageSound = GetNode<AudioStreamPlayer2D>("DamageSound");
 
         // Set Size

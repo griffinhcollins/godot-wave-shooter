@@ -61,7 +61,7 @@ public partial class Main : Node2D
 
     public override void _Process(double delta)
     {
-        
+
 
         if (Input.IsActionJustPressed("pause")) // hit esc
         {
@@ -223,7 +223,12 @@ public partial class Main : Node2D
         }
         else
         {
+            // this is a shit implementation, FIX IT
             mob = DefaultMobs[GD.RandRange(0, DefaultMobs.Count() - 1)].Instantiate<Mob>();
+            while (mob.firstAppearsAtWave > Counters.WaveCounter.Value)
+            {
+                mob = DefaultMobs[GD.RandRange(0, DefaultMobs.Count() - 1)].Instantiate<Mob>();
+            }
         }
 
 

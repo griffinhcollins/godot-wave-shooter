@@ -9,8 +9,8 @@
 friction = 0.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fmhxs"]
-radius = 26.0
-height = 92.0
+radius = 15.0
+height = 58.0
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_pt2w2"]
 animations = [{
@@ -47,7 +47,7 @@ bus = &"Sound Effects"
 shape = SubResource("CapsuleShape2D_fmhxs")
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.05, 0.05)
+scale = Vector2(0.03, 0.03)
 sprite_frames = SubResource("SpriteFrames_pt2w2")
 
 [node name="WarningLine" type="Line2D" parent="."]

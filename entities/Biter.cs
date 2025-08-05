@@ -1,5 +1,5 @@
 using Godot;
-
+using static Stats.EnemyStats;
 
 public partial class Biter : Organic
 {
@@ -36,6 +36,11 @@ public partial class Biter : Organic
             ApplyCentralForce(Vector2.Up.Rotated(Transform.Rotation) * 1000000 * (float)delta);
         }
 
+    }
+
+    protected override void SetSize()
+    {
+        size = Mathf.Pow(GD.Randf() * 0.5f, 2) * DynamicStats[ID.SizeMult] + 1;
     }
 
 

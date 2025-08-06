@@ -17,7 +17,7 @@ public partial class Biter : Organic
         timeAlive = 0;
 
         // Look at the player
-        LookAt(player.GlobalPosition);
+        LookAt(player.GlobalPosition + new Vector2(GD.Randf(), GD.Randf()) * 100);
         Rotate(Mathf.Pi / 2);
 
         warningLine = GetNode<Line2D>("WarningLine");
@@ -29,6 +29,7 @@ public partial class Biter : Organic
         if (timeAlive < warningTime)
         {
             warningLine.Width = Mathf.Lerp(0, 30, timeAlive / warningTime);
+            warningLine.DefaultColor = Color.Color8(255, 0, 0, (byte)Mathf.Lerp(0, 255, timeAlive / warningTime));
         }
         else
         {

@@ -408,7 +408,6 @@ public static class Stats
                             GD.Print("weird difficulty");
                             break;
                     }
-                    GD.Print(difficultyMult);
                 }
                 DynamicStats[i] = BaseStats[i] * difficultyMult;
             }

@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://wpwcjanustiv"]
+[gd_scene load_steps=9 format=3 uid="uid://wpwcjanustiv"]
 
 [ext_resource type="Texture2D" uid="uid://dl3jrayk6m2uf" path="res://custom assets/enemies/biter.png" id="1_i7w21"]
 [ext_resource type="Script" path="res://entities/Biter.cs" id="1_m60yx"]
 [ext_resource type="AudioStream" uid="uid://cl6887ed40bm7" path="res://sounds/enemy hurt.wav" id="2_vtfah"]
+[ext_resource type="Shader" path="res://shaders/colourable.gdshader" id="3_mi2y4"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_a4dv7"]
 friction = 0.0
@@ -10,6 +11,10 @@ friction = 0.0
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fmhxs"]
 radius = 15.0
 height = 58.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l57ud"]
+shader = ExtResource("3_mi2y4")
+shader_parameter/input_colour = null
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_pt2w2"]
 animations = [{
@@ -45,6 +50,7 @@ bus = &"Sound Effects"
 shape = SubResource("CapsuleShape2D_fmhxs")
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_l57ud")
 scale = Vector2(0.03, 0.03)
 sprite_frames = SubResource("SpriteFrames_pt2w2")
 

@@ -83,22 +83,24 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
 
         }
 
-        ActivateInitialMutationEffects();
-        GenerateVisualEffects();
-        ((IAffectedByVisualEffects)this).ImmediateVisualEffects();
-
         if (this is not LaserBeam)
         {
             SetScale();
         }
 
+        ActivateInitialMutationEffects();
+        GenerateVisualEffects();
+        ((IAffectedByVisualEffects)this).ImmediateVisualEffects();
+
+        
+
     }
 
-    private void SetScale()
+    public void SetScale(float multiplier = 1)
     {
 
         Sprite2D sprite = GetNode<Sprite2D>("MainSprite");
-        Vector2 scale = Vector2.One * BulletSize.GetDynamicVal() * shardMult;
+        Vector2 scale = Vector2.One * BulletSize.GetDynamicVal() * shardMult * multiplier;
         GetParent().GetNode<CollisionShape2D>("CollisionShape2D").Scale = scale;
         sprite.Scale = scale;
         if (visualEffects is not null && visualEffects.Count != 0)

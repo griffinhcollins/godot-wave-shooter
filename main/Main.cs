@@ -13,6 +13,10 @@ public partial class Main : Node2D
     [Export]
     public PackedScene[] Minibosses { get; set; }
 
+    Mob[] mobLookup;
+
+    List<PackedScene> spawnableMobs;
+
     private int timeRemaining;
     Player player;
     Marker2D startPos;
@@ -34,11 +38,22 @@ public partial class Main : Node2D
         waveTimer = GetNode<Timer>("WaveTimer");
         mobTimer = GetNode<Timer>("MobTimer");
         hud = GetNode<Hud>("HUD");
+        InitializeMobDictionary();
 
         GetViewport().GetWindow().FocusExited += OnLoseFocus;
 
         hud.ShowWave();
         // NewGame();
+    }
+
+    // Keep one instance of each mob in memory so we can access the attributes of mob types and associate them with their corresponding index in the packedscene array
+    void InitializeMobDictionary()
+    {
+        mobLookup = new Mob[DefaultMobs.Length];
+        for (int i = 0; i < DefaultMobs.Length; i++)
+        {
+            mobLookup[i] = DefaultMobs[i].Instantiate<Mob>();
+        }
     }
 
 
@@ -137,6 +152,10 @@ public partial class Main : Node2D
         State.currentState = State.alive;
         UpdateEnemyStats();
         ClearScreen();
+
+        spawnableMobs = DefaultMobs.Where((_, i) => mobLookup[i].firstAppearsAtWave <= Counters.WaveCounter.Value).ToList();
+
+
         timeRemaining = (int)EnemyStats.DynamicStats[EnemyStats.ID.WaveLength];
         hud.UpdateWaveTime(timeRemaining);
         string waveUpdate = string.Format("Starting Wave {0}", Counters.WaveCounter.Value);
@@ -223,12 +242,11 @@ public partial class Main : Node2D
         }
         else
         {
-            // this is a shit implementation, FIX IT
-            mob = DefaultMobs[GD.RandRange(0, DefaultMobs.Count() - 1)].Instantiate<Mob>();
-            while (mob.firstAppearsAtWave > Counters.WaveCounter.Value)
-            {
-                mob = DefaultMobs[GD.RandRange(0, DefaultMobs.Count() - 1)].Instantiate<Mob>();
-            }
+            
+
+
+
+            mob = spawnableMobs[GD.RandRange(0, spawnableMobs.Count - 1)].Instantiate<Mob>();
         }
 
 

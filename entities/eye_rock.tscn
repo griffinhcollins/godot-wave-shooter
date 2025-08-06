@@ -34,7 +34,6 @@ mass = 100.0
 physics_material_override = SubResource("PhysicsMaterial_qm6eu")
 gravity_scale = 0.0
 script = ExtResource("1_gus6a")
-offscreenIndicator = ExtResource("2_38ytx")
 firstAppearsAtWave = 5
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
@@ -51,6 +50,9 @@ sprite_frames = SubResource("SpriteFrames_u20yl")
 [node name="DamageSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("2_q2d0d")
 pitch_scale = 0.3
+
+[node name="OffscreenIndicator" parent="." instance=ExtResource("2_38ytx")]
+visible = false
 
 [connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="OnScreenEnter"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="OnScreenExit"]

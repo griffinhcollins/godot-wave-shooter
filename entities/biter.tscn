@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://wpwcjanustiv"]
+[gd_scene load_steps=7 format=3 uid="uid://wpwcjanustiv"]
 
 [ext_resource type="Texture2D" uid="uid://dl3jrayk6m2uf" path="res://custom assets/enemies/biter.png" id="1_i7w21"]
 [ext_resource type="Script" path="res://entities/Biter.cs" id="1_m60yx"]
-[ext_resource type="PackedScene" uid="uid://cpsf1tpjvco18" path="res://entities/offscreen_indicator.tscn" id="2_qc6in"]
 [ext_resource type="AudioStream" uid="uid://cl6887ed40bm7" path="res://sounds/enemy hurt.wav" id="2_vtfah"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_a4dv7"]
@@ -31,7 +30,6 @@ physics_material_override = SubResource("PhysicsMaterial_a4dv7")
 gravity_scale = 0.0
 lock_rotation = true
 script = ExtResource("1_m60yx")
-offscreenIndicator = ExtResource("2_qc6in")
 firstAppearsAtWave = 10
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]

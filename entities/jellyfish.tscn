@@ -52,7 +52,6 @@ gravity_scale = 0.0
 contact_monitor = true
 max_contacts_reported = 10
 script = ExtResource("1_gs1vn")
-offscreenIndicator = ExtResource("2_vu1s5")
 metadata/_edit_group_ = true
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
@@ -86,6 +85,9 @@ texture = ExtResource("8_w4suo")
 position = Vector2(5, 0)
 scale = Vector2(0.06, 0.06)
 texture = ExtResource("9_1ovii")
+
+[node name="OffscreenIndicator" parent="." instance=ExtResource("2_vu1s5")]
+visible = false
 
 [connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="OnScreenEnter"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="OnScreenExit"]

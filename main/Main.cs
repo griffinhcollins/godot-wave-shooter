@@ -153,7 +153,7 @@ public partial class Main : Node2D
         UpdateEnemyStats();
         ClearScreen();
 
-        spawnableMobs = DefaultMobs.Where((_, i) => mobLookup[i].firstAppearsAtWave <= Counters.WaveCounter.Value).ToList();
+        spawnableMobs = DefaultMobs.Where((_, i) => mobLookup[i].firstAppearsAtWave >= Counters.WaveCounter.Value).ToList();
 
 
         timeRemaining = (int)EnemyStats.DynamicStats[EnemyStats.ID.WaveLength];

@@ -27,8 +27,6 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     bool dead = false;
 
 
-    [Export]
-    protected PackedScene offscreenIndicator;
 
     [Export]
     public int firstAppearsAtWave;
@@ -65,7 +63,6 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         // Set Size
         SetSize();
         SetScale();
-        CreateIndicator();
 
         if (DeathExplosion.unlocked)
         {
@@ -80,6 +77,12 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
         ((IAffectedByVisualEffects)this).ImmediateVisualEffects();
 
+    }
+
+    
+    public virtual Vector2 GetIndicatorSize()
+    {
+        return Vector2.One * size;
     }
 
     protected virtual void SetSize()
@@ -243,12 +246,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
         ProcessMovement(delta);
 
-        {
-            if (pairedIndicator is not null && IsInstanceValid(pairedIndicator) && onScreenNotifier2D.IsOnScreen())
-            {
-                pairedIndicator.QueueFree();
-            }
-        }
+        
 
 
         ((IAffectedByVisualEffects)this).ProcessVisualEffects((float)delta);
@@ -309,36 +307,13 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     }
 
 
-    private void CreateIndicator()
-    {
-        pairedIndicator = offscreenIndicator.Instantiate<OffscreenIndicator>();
-        pairedIndicator.SetMobParent(this);
-        GetTree().Root.AddChild(pairedIndicator);
-        pairedIndicator.Position = Position;
-        pairedIndicator.GetNode<Sprite2D>("Sprite2D").Scale = GetIndicatorSize();
-    }
+    
 
-    protected virtual Vector2 GetIndicatorSize()
-    {
-        return Vector2.One * size;
-    }
+    
 
-    private void OnScreenExit()
-    {
-        if (!dead)
-        {
-            CreateIndicator();
+    
 
-        }
-    }
-
-    private void OnScreenEnter()
-    {
-        if (pairedIndicator is not null)
-        {
-            pairedIndicator.QueueFree();
-        }
-    }
+    
 
 
     private void OnDamageSoundFinished()

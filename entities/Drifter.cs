@@ -64,7 +64,7 @@ public partial class Drifter : Mob
         GetNode<CollisionPolygon2D>("Collider").Scale *= size;
     }
 
-    protected override Vector2 GetIndicatorSize()
+    public override Vector2 GetIndicatorSize()
     {
         return Vector2.One * size * 4;
     }

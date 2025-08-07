@@ -14,7 +14,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ximj0"]
 resource_local_to_scene = true
 shader = ExtResource("3_yafp7")
-shader_parameter/input_colour = null
+shader_parameter/input_colour = Vector4(1, 1, 1, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_jq8ss"]
 animations = [{

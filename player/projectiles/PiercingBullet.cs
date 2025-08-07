@@ -40,7 +40,7 @@ public partial class PiercingBullet : Bullet
             if (!PlayerStats.Unlocks.BouncingBullets.unlocked)
             {
                 // Turn grey when piercing is done
-                GetNode<Sprite2D>("MainSprite").Modulate = Color.Color8(0, 0, 0);
+                ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(State.MobDamage, Colors.Brown, 1f, 100));
             }
             else
             {

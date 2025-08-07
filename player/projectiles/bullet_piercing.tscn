@@ -5,7 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://b2kro6y6sewt7" path="res://sounds/laser pip.wav" id="3_b1yh7"]
 [ext_resource type="PackedScene" uid="uid://i3lhgidaa505" path="res://player/projectiles/bullet_bouncing.tscn" id="3_d1mif"]
 [ext_resource type="Shader" path="res://shaders/colourable.gdshader" id="4_5ogsc"]
-[ext_resource type="PackedScene" path="res://player/effects/lightning_arc.tscn" id="4_ki2e2"]
+[ext_resource type="PackedScene" uid="uid://4br0n54vxpbq" path="res://player/effects/lightning_arc.tscn" id="4_ki2e2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gr8yg"]
 radius = 15.0
@@ -13,7 +13,7 @@ radius = 15.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dww7y"]
 resource_local_to_scene = true
 shader = ExtResource("4_5ogsc")
-shader_parameter/input_colour = null
+shader_parameter/input_colour = Vector4(1, 1, 1, 1)
 
 [node name="Piercing Bullet" type="Area2D" groups=["cleanup"]]
 top_level = true

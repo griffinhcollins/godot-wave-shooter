@@ -79,7 +79,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
     }
 
-    
+
     public virtual Vector2 GetIndicatorSize()
     {
         return Vector2.One * size;
@@ -136,17 +136,22 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         {
             Poison();
         }
-        ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(State.MobDamage, Colors.Red, 1f, 100, 0.1f));
 
         Hud hud = GetParent().GetNode<Hud>("HUD");
+        dmg = dmg * DamageResistanceMult(type);
         hud.CreateDamageNumber(Position, dmg);
         damageSound.Play();
-        hp -= dmg;
-        if (hp <= 0)
+        if (dmg > 0)
         {
+            ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(State.MobDamage, Colors.Red, 1f, 100, 0.1f));
+            hp -= dmg;
+            if (hp <= 0)
+            {
 
-            Die();
+                Die();
+            }
         }
+
 
     }
 
@@ -246,7 +251,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
         ProcessMovement(delta);
 
-        
+
 
 
         ((IAffectedByVisualEffects)this).ProcessVisualEffects((float)delta);
@@ -254,6 +259,11 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     }
 
     protected abstract void ProcessMovement(double delta);
+
+    protected virtual float DamageResistanceMult(DamageType t)
+    {
+        return 1;
+    }
 
     void ProcessPoison()
     {
@@ -307,13 +317,13 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     }
 
 
-    
 
-    
 
-    
 
-    
+
+
+
+
 
 
     private void OnDamageSoundFinished()

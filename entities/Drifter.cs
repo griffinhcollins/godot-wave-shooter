@@ -49,6 +49,23 @@ public partial class Drifter : Mob
         }
     }
 
+    // Rocks are immune to poison, resistant to sharp and fire damage
+    protected override float DamageResistanceMult(DamageType t)
+    {
+        float parentVal = base.DamageResistanceMult(t);
+        if (t == DamageTypes.Sharp || t == DamageTypes.Fire)
+        {
+            return 0.5f * parentVal;
+        }
+        if (t == DamageTypes.Poison)
+        {
+            return 0;
+        }
+
+        return parentVal;
+    }
+
+
 
 
     protected override void SetSize()

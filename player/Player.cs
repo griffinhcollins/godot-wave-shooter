@@ -333,6 +333,7 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         EmitSignal(SignalName.Killed);
         ToggleCollision(false);
         Hide();
+        GetNode<CpuParticles2D>("DamageEffect").Show();
     }
 
     public int CurrentHP()
@@ -358,6 +359,7 @@ public partial class Player : Node2D, IAffectedByVisualEffects
             currentHP--;
             damageSound.Play();
             hud.ShowDamageEffect();
+            GetNode<CpuParticles2D>("DamageEffect").Emitting = true;
             ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(State.MobDamage, Colors.Red, 0.8f, 100, iframes));
             hud.UpdateHealth(currentHP);
             if (currentHP <= 0)
@@ -386,7 +388,13 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         // Wait for iframes to be over before beginning countdown for shield to prevent shenanigans
         if (shielded)
         {
+            int currentWave = Stats.Counters.WaveCounter.Value;
             await ToSignal(GetTree().CreateTimer(Unlocks.shieldRecharge.GetDynamicVal()), SceneTreeTimer.SignalName.Timeout);
+            if (currentWave != Stats.Counters.WaveCounter.Value)
+            {
+                // The shield started recharging last wave or we died since then, either way don't raise the shield
+                return;
+            }
             RaiseShieldIfUnlocked();
         }
 
@@ -396,6 +404,7 @@ public partial class Player : Node2D, IAffectedByVisualEffects
 
     void RaiseShieldIfUnlocked()
     {
+
         if (!Unlocks.Shield.unlocked)
         {
             shield.Hide();

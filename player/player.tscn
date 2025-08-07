@@ -192,7 +192,6 @@ script = ExtResource("1_empth")
 bounceBullet = ExtResource("2_qxbfg")
 pierceBullet = ExtResource("3_sfohy")
 laserBeam = ExtResource("3_lvtdk")
-shieldPacked = ExtResource("5_mk332")
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="."]
 z_index = 1

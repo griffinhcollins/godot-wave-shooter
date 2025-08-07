@@ -14,6 +14,11 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     bool poisoned = false;
     float poisonTick;
 
+    // Ignition
+    bool ignited = false;
+    float igniteTick;
+
+
     // Explosions!
     protected bool explodeOnDeath = false;
 
@@ -130,17 +135,26 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         explodeOnDeath = b;
     }
 
-    public void TakeDamage(float dmg, DamageType type)
+    public void TakeDamage(float dmg, DamageType type, bool playSound = true)
     {
         if (Venom.unlocked && !poisoned)
         {
             Poison();
         }
 
+        if (!ignited && type == DamageTypes.Fire && GD.Randf() <= Stats.PlayerStats.IgnitionChance.GetDynamicVal())
+        {
+            Ignite();
+        }
+
         Hud hud = GetParent().GetNode<Hud>("HUD");
         dmg = dmg * DamageResistanceMult(type);
         hud.CreateDamageNumber(Position, dmg);
-        damageSound.Play();
+        if (playSound)
+        {
+            damageSound.Play();
+
+        }
         if (dmg > 0)
         {
             ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(State.MobDamage, Colors.Red, 1f, 100, 0.1f));
@@ -155,6 +169,19 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
     }
 
+    protected void Ignite()
+    {
+        if (ignited)
+        {
+            return;
+        }
+        
+        Node2D fireParticles = State.sceneHolder.ignitedParticles.Instantiate<Node2D>();
+        // Take damage very rapidly
+        AddChild(fireParticles);
+        ignited = true;
+    }
+
     public float GetHP()
     {
         return hp;
@@ -163,7 +190,6 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
     protected virtual void Die()
     {
-
         // Don't queuefree yet, that happens once the damage sound is complete
         dead = true;
         Hide();
@@ -237,10 +263,19 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
             Pause();
             return;
         }
+        if (dead)
+        {
+            return;
+        }
         if (poisoned)
         {
             poisonTick -= (float)delta;
             ProcessPoison();
+        }
+        if (ignited)
+        {
+            igniteTick += (float)delta;
+            ProcessIgnition();
         }
         if (beforePauseVelocity != Vector2.Zero)
         {
@@ -259,6 +294,14 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     }
 
     protected abstract void ProcessMovement(double delta);
+    protected void ProcessIgnition()
+    {
+        if (igniteTick > GD.Randf())
+        {
+            TakeDamage(1, DamageTypes.Fire, false);
+            igniteTick = 0;
+        }
+    }
 
     protected virtual float DamageResistanceMult(DamageType t)
     {

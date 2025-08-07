@@ -95,7 +95,19 @@ public static class Stats
         public static PlayerStat Lifetime = new PlayerStat("Bullet Lifetime", 1, new Vector2(1, 20), Uncommon, false, false, 1.5f);
         public static PlayerStat DropRate = new PlayerStat("Drop Rate", 1.5f, new Vector2(0.25f, 4), Rare);
         public static PlayerStat MoneyCap = new PlayerStat("Money Cap", 50, new Vector2(50, Mathf.Inf), Rare, true, false, 50, new CounterCondition(Counters.WaveCounter, 10)); // Only unlock after 10 waves have been beaten
-        static List<PlayerStat> defaultStatList = new List<PlayerStat> { Damage, FireRate, MaxHP, HPReward, Multishot, Spread, ShotSpeed, Speed, DamageRecoil, RevengeDamage, BulletSize, Lifetime, DropRate, MoneyCap };
+
+
+
+        
+        // Ignition isn't an unlock, but a rare upgrade that can only appear if something that deals fire damage is unlocked
+        public static PlayerStat IgnitionChance = new PlayerStat("Ignition Chance", 0, new Vector2(0, 1), Rare, false, false, 1f,
+         new ConjunctCondition(new List<Condition> { new UnlockCondition(Unlocks.FireTrail, true), new UnlockCondition(Unlocks.DeathExplosion, true) }, false));
+
+
+        static List<PlayerStat> defaultStatList = new List<PlayerStat> { Damage, FireRate, MaxHP, HPReward, Multishot, Spread, ShotSpeed, Speed, DamageRecoil, RevengeDamage, BulletSize, Lifetime, DropRate, MoneyCap, IgnitionChance };
+
+
+
 
         static StatSet defaultStats = new StatSet(defaultStatList);
 
@@ -316,6 +328,8 @@ public static class Stats
             static List<PlayerStat> fireTrailStatList = new List<PlayerStat> { trailLifetime, trailDensity, trailDamage };
             static StatSet fireTrailStats = new StatSet(fireTrailStatList);
             public static Unlockable FireTrail = new Unlockable("Fire Trail", fireTrailStats);
+
+
 
             public static Unlockable[] allUnlockables = {
                 Laser,

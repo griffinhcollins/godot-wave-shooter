@@ -147,8 +147,8 @@ public partial class Main : Node2D
 
     public void StartWave()
     {
-        // Stats.PlayerStats.Unlocks.Shield.Unlock();
-        Stats.PlayerStats.Mutations.GrowingBullet.applied = true;
+        Stats.PlayerStats.Unlocks.Shield.Unlock();
+        // Stats.PlayerStats.Mutations.GrowingBullet.applied = true;
         State.currentState = State.alive;
         UpdateEnemyStats();
         ClearScreen();

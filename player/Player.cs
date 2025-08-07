@@ -18,10 +18,6 @@ public partial class Player : Node2D, IAffectedByVisualEffects
     public PackedScene pierceBullet;
     [Export]
     public PackedScene laserBeam;
-    [Export]
-    public PackedScene shieldPacked;
-    Node2D shieldNode;
-    bool shieldActive;
 
 
     CpuParticles2D bubbleEmitter;
@@ -47,7 +43,8 @@ public partial class Player : Node2D, IAffectedByVisualEffects
     List<Mutation> activeMutations;
     AudioStreamPlayer2D damageSound;
 
-
+    Node2D shield;
+    bool shieldActive;
 
 
 
@@ -70,10 +67,10 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         emitterX = bubbleEmitter.Position.X;
         reticule = GetNode<Node2D>("ReticuleHolder");
         bulletTimer = GetNode<Timer>("BulletTimer");
-        
+
         damageSound = GetNode<AudioStreamPlayer2D>("DamageSound");
         hud = GetParent().GetNode<Hud>("HUD");
-
+        shield = GetNode<Node2D>("Shield");
 
         // Hide();
     }
@@ -113,20 +110,7 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         }
     }
 
-    void RaiseShield()
-    {
-        shieldActive = true;
-        if (shieldNode is null)
-        {
-            shieldNode = shieldPacked.Instantiate<Node2D>();
-            AddChild(shieldNode);
-        }
 
-
-        shieldNode.Show();
-
-
-    }
 
     private void OnBulletTimerFinished()
     {
@@ -388,7 +372,7 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         {
             // Shield took the hit
             shieldActive = false;
-            shieldNode.Hide();
+            shield.Hide();
             shielded = true;
 
         }
@@ -403,10 +387,24 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         if (shielded)
         {
             await ToSignal(GetTree().CreateTimer(Unlocks.shieldRecharge.GetDynamicVal()), SceneTreeTimer.SignalName.Timeout);
-            RaiseShield();
+            RaiseShieldIfUnlocked();
         }
 
 
+
+    }
+
+    void RaiseShieldIfUnlocked()
+    {
+        if (!Unlocks.Shield.unlocked)
+        {
+            shield.Hide();
+            shieldActive = false;
+        }
+
+        shieldActive = true;
+
+        shield.Show();
 
     }
 
@@ -420,10 +418,8 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         ToggleCollision(true);
         bubbleEmitter.Amount = bubbleEmitter.Amount; // Doing this clears existing particles
 
-        if (Unlocks.Shield.unlocked)
-        {
-            RaiseShield();
-        }
+
+        RaiseShieldIfUnlocked();
 
         ((IAffectedByVisualEffects)this).ImmediateVisualEffects();
     }

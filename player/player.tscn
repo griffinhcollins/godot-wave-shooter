@@ -249,5 +249,8 @@ color_ramp = SubResource("Gradient_larbq")
 stream = ExtResource("32_cgufq")
 bus = &"Sound Effects"
 
+[node name="Shield" parent="." instance=ExtResource("5_mk332")]
+visible = false
+
 [connection signal="body_entered" from="." to="." method="OnBodyEntered"]
 [connection signal="timeout" from="BulletTimer" to="." method="OnBulletTimerFinished"]

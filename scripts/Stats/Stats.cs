@@ -226,7 +226,7 @@ public static class Stats
                         line.AddPoint(seedMob.GlobalPosition);
                         line.AddPoint(target.GlobalPosition);
 
-                        target.TakeDamage(dmg * Mathf.Pow(Unlocks.lightningChainDamageRetention.GetDynamicVal(), depth));
+                        target.TakeDamage(dmg * Mathf.Pow(Unlocks.lightningChainDamageRetention.GetDynamicVal(), depth), DamageTypes.Electric);
                         if (Unlocks.lightningChainChance.GetDynamicVal() > GD.Randf())
                         {
                             HashSet<Mob> hits = SpawnLightning(dmg, target, depth + 1, arcScene, alreadyHit);

@@ -12,6 +12,8 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
     [Export]
     PackedScene lightningArc;
 
+    protected DamageType damageType;
+
     protected List<Mutation> currentMutations;
 
     public bool isShard = false;
@@ -58,6 +60,7 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
 
         shardMult = isShard ? Unlocks.splinterDamageMultiplier.GetDynamicVal() : 1;
         SetDamage(Damage.GetDynamicVal() * shardMult);
+        AssignDamageType();
         SetSeed(GD.Randf());
 
         numHit = 0;
@@ -95,6 +98,8 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
         
 
     }
+
+    protected abstract void AssignDamageType();
 
     public void SetScale(float multiplier = 1)
     {
@@ -328,7 +333,7 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
             numHit++;
             mobsHit.Add(hitNode);
             Mob mobHit = (Mob)hitNode;
-            mobHit.TakeDamage(dmg);
+            mobHit.TakeDamage(dmg, damageType);
         }
 
 

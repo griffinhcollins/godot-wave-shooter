@@ -59,4 +59,8 @@ public partial class BouncyBullet : Bullet
         parent.LinearVelocity = beforePauseVelocity;
     }
 
+    protected override void AssignDamageType()
+    {
+        damageType = DamageTypes.Blunt;
+    }
 }

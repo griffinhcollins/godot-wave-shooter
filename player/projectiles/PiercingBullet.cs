@@ -98,4 +98,8 @@ public partial class PiercingBullet : Bullet
         velocity = newVelocity;
     }
 
+    protected override void AssignDamageType()
+    {
+        damageType = DamageTypes.Sharp;
+    }
 }

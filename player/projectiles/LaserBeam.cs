@@ -105,4 +105,10 @@ public partial class LaserBeam : Bullet
         base.SetVelocity(newVelocity);
 		Rotation = Vector2.Up.AngleTo(newVelocity);
 	}
+
+    protected override void AssignDamageType()
+    {
+        damageType = DamageTypes.Laser;
+    }
+
 }

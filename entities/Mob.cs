@@ -115,7 +115,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
             ApplyImpulse(mult * Stats.PlayerStats.DamageRecoil.GetDynamicVal() * (GlobalPosition - recoilFrom).Normalized() * (recoilRange - distance));
             if (Stats.PlayerStats.RevengeDamage.GetDynamicVal() > 0)
             {
-                TakeDamage(Stats.PlayerStats.RevengeDamage.GetDynamicVal() * Stats.PlayerStats.Damage.GetDynamicVal());
+                TakeDamage(Stats.PlayerStats.RevengeDamage.GetDynamicVal() * Stats.PlayerStats.Damage.GetDynamicVal(), DamageTypes.Blunt);
             }
         }
     }
@@ -130,7 +130,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         explodeOnDeath = b;
     }
 
-    public void TakeDamage(float dmg)
+    public void TakeDamage(float dmg, DamageType type)
     {
         if (Venom.unlocked && !poisoned)
         {
@@ -260,7 +260,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         if (poisonTick < 0)
         {
             poisonTick = GetPoisonInterval();
-            TakeDamage(venomDamage.GetDynamicVal());
+            TakeDamage(venomDamage.GetDynamicVal(), DamageTypes.Poison);
             if (Plague.unlocked)
             {
                 // Check for any mobs I'm touching and poison them

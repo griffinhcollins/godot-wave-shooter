@@ -45,7 +45,7 @@ public partial class Explosion : Area2D
         {
             Mob mob = (Mob)hit;
             hits.Add(mob);
-            mob.TakeDamage(explosionDamage.GetDynamicVal());
+            mob.TakeDamage(explosionDamage.GetDynamicVal(), DamageTypes.Fire);
             mob.Recoil(GlobalPosition);
         }
     }

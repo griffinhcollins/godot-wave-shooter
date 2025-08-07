@@ -191,8 +191,8 @@ public partial class Hud : CanvasLayer
 
         Button buySlot = shopElements.GetNode<Button>("BuySlot");
 
-        // Hide the upgrade slot purchase if the player is at max
-        if (upgradeSlotNum >= Stats.PlayerStats.UpgradeSlots.GetRange().Y)
+        // Hide the upgrade slot purchase if the player is at max or it's an unlock wave
+        if (upgradeSlotNum >= Stats.PlayerStats.UpgradeSlots.GetRange().Y || Stats.Counters.IsUnlockWave())
         {
             buySlot.Hide();
             buySlot.Disabled = true;

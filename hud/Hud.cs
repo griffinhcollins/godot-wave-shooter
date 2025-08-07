@@ -109,7 +109,7 @@ public partial class Hud : CanvasLayer
 
     private void OnNextWavePressed()
     {
-        rerollCost = 10;
+        rerollCost = Stats.Counters.IsUnlockWave() ? 50 : 10;
         ShowWave();
         EmitSignal(SignalName.NextWave);
         foreach (UpgradeNode upgrade in shopElements.GetNode("Upgrades").GetChildren())
@@ -237,7 +237,7 @@ public partial class Hud : CanvasLayer
         {
             return;
         }
-        rerollCost += 5;
+        rerollCost *= 2;
         foreach (UpgradeNode upgrade in shopElements.GetNode("Upgrades").GetChildren())
         {
             upgrade.QueueFree();
@@ -254,7 +254,7 @@ public partial class Hud : CanvasLayer
 
     int GetCurrentUpgradeSlotCost()
     {
-        return ((int)Stats.PlayerStats.UpgradeSlots.GetDynamicVal() - 1) * 10;
+        return (int)(10 * Mathf.Pow(2, Stats.PlayerStats.UpgradeSlots.GetDynamicVal() - 3));
     }
 
     private UpgradeNode AddUpgrade(bool delving = false)

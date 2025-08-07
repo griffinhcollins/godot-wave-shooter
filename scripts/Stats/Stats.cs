@@ -1,5 +1,6 @@
 using Godot;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using static RarityControl;
 
@@ -307,7 +308,31 @@ public static class Stats
             static StatSet shieldStats = new StatSet(shieldStatList);
             public static Unlockable Shield = new Unlockable("Shield", shieldStats);
 
-            public static Unlockable[] allUnlockables = { Laser, BouncingBullets, PiercingBullets, WallBounce, Lightning, OverflowBullets, Splinter, Venom, Plague, PlagueExplosion, LightningPlague, DeathExplosion, Shield };
+
+            // Fire trail
+            public static PlayerStat trailLifetime = new PlayerStat("Trail Lifetime", 2, new Vector2(2, 10), Uncommon);
+            public static PlayerStat trailDensity = new PlayerStat("Trail Density", 1, new Vector2(1, 5), Rare, false, false, 0.75f);
+            public static PlayerStat trailDamage = new PlayerStat("Trail Damage", 5, new Vector2(5, 20), Common);
+            static List<PlayerStat> fireTrailStatList = new List<PlayerStat> { trailLifetime, trailDensity, trailDamage };
+            static StatSet fireTrailStats = new StatSet(fireTrailStatList);
+            public static Unlockable FireTrail = new Unlockable("Fire Trail", fireTrailStats);
+
+            public static Unlockable[] allUnlockables = {
+                Laser,
+                BouncingBullets,
+                PiercingBullets,
+                WallBounce,
+                Lightning,
+                OverflowBullets,
+                Splinter,
+                Venom,
+                Plague,
+                PlagueExplosion,
+                LightningPlague,
+                DeathExplosion,
+                Shield,
+                FireTrail
+            };
 
 
         }

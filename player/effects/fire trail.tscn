@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://bly0s40do1gq1"]
+
+[ext_resource type="Script" path="res://player/effects/FireTrail.cs" id="1_400ks"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pl0op"]
+radius = 15.0
+
+[sub_resource type="Gradient" id="Gradient_uo5fu"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.489437)
+colors = PackedColorArray(0.909804, 0.298039, 0, 1, 1, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5onlc"]
+gradient = SubResource("Gradient_uo5fu")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[node name="FireTrail" type="Area2D" groups=["cleanup"]]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_400ks")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_pl0op")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("GradientTexture2D_5onlc")
+
+[connection signal="body_entered" from="." to="." method="OnBodyEntered"]

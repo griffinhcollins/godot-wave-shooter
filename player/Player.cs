@@ -18,6 +18,8 @@ public partial class Player : Node2D, IAffectedByVisualEffects
     public PackedScene pierceBullet;
     [Export]
     public PackedScene laserBeam;
+    [Export]
+    public PackedScene fireTrail;
 
 
     CpuParticles2D bubbleEmitter;
@@ -35,6 +37,7 @@ public partial class Player : Node2D, IAffectedByVisualEffects
     Node2D reticule;
 
     Timer bulletTimer;
+    Timer trailTimer;
 
     Hud hud;
 
@@ -67,6 +70,7 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         emitterX = bubbleEmitter.Position.X;
         reticule = GetNode<Node2D>("ReticuleHolder");
         bulletTimer = GetNode<Timer>("BulletTimer");
+        trailTimer = GetNode<Timer>("TrailTimer");
 
         damageSound = GetNode<AudioStreamPlayer2D>("DamageSound");
         hud = GetParent().GetNode<Hud>("HUD");
@@ -177,12 +181,21 @@ public partial class Player : Node2D, IAffectedByVisualEffects
 
     }
 
+    public void EndWave()
+    {
+        trailTimer.Stop();
+    }
+
+
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
-
-        if (State.currentState == State.paused)
+        bool isPaused = State.currentState == State.paused;
+        bulletTimer.Paused = isPaused;
+        trailTimer.Paused = isPaused;
+        if (isPaused)
         {
+
             return;
         }
 
@@ -327,11 +340,13 @@ public partial class Player : Node2D, IAffectedByVisualEffects
 
 
 
+
     private void Die()
     {
         Money = 0;
         EmitSignal(SignalName.Killed);
         ToggleCollision(false);
+        trailTimer.Stop();
         Hide();
         GetNode<CpuParticles2D>("DamageEffect").Show();
     }
@@ -404,11 +419,12 @@ public partial class Player : Node2D, IAffectedByVisualEffects
 
     void RaiseShieldIfUnlocked()
     {
-
+        GD.Print("raising shield");
         if (!Unlocks.Shield.unlocked)
         {
             shield.Hide();
             shieldActive = false;
+            return;
         }
 
         shieldActive = true;
@@ -427,6 +443,15 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         ToggleCollision(true);
         bubbleEmitter.Amount = bubbleEmitter.Amount; // Doing this clears existing particles
 
+        if (Unlocks.FireTrail.unlocked)
+        {
+            trailTimer.WaitTime = 0.25f / Unlocks.trailDensity.GetDynamicVal();
+            trailTimer.Start();
+        }
+        else
+        {
+            trailTimer.Stop();
+        }
 
         RaiseShieldIfUnlocked();
 
@@ -438,6 +463,14 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         GetNode<CollisionShape2D>("BodyCollision").SetDeferred(CollisionShape2D.PropertyName.Disabled, !toggle);
         GetNode<CollisionShape2D>("PropellerCollision").SetDeferred(CollisionShape2D.PropertyName.Disabled, !toggle);
         GetNode<CollisionPolygon2D>("FinCollision").SetDeferred(CollisionShape2D.PropertyName.Disabled, !toggle);
+    }
+
+
+    private void OnTrailTimeout()
+    {
+        FireTrail t = fireTrail.Instantiate<FireTrail>();
+        GetTree().Root.AddChild(t);
+        t.GlobalPosition = GlobalPosition;
     }
 
 

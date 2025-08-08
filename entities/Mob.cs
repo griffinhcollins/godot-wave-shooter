@@ -29,7 +29,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     protected Vector2 beforePausePosition;
     protected float beforePauseAngularVelocity;
 
-    bool dead = false;
+    protected bool dead = false;
 
 
 

@@ -44,6 +44,10 @@ public partial class Bomber : OrganicMob
 
     void BombTimeout()
     {
+        if (dead)
+        {
+            return;
+        }
         // Drop a bomb!
         Bomb newBomb = bomb.Instantiate<Bomb>();
         GetTree().Root.AddChild(newBomb);

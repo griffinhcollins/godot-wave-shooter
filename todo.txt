@@ -12,6 +12,9 @@
 - When getting a mutation, show the name
 - poisoned enemies leave poison trail
 
+- something is fucked with lightning, it's hitting the same enemy multiple times
+- bombers are still dropping bombs after death
+
 
 
 Ideas:

@@ -7,33 +7,33 @@ public partial class Bomber : OrganicMob
 
     bool direction;
 
-    float speed = 200;
+    float speed = 300;
 
     public override void _Ready()
     {
-        base._Ready();
         spawner = GetNode<Node2D>("Spawner");
         direction = GD.Randf() > 0.5;
+        base._Ready();
     }
 
 
 
     protected override void InitialMovement()
     {
-        LookAt(GetViewportRect().GetCenter());
+        LookAt(GetViewportRect().GetCenter() + Vector2.Left.Rotated(Rotation) * (direction ? -1 : 1) * 100);
         Rotate(Mathf.Pi / 2);
-        ApplyCentralImpulse(Vector2.Up.Rotated(Transform.Rotation) * speed);
+        ApplyCentralImpulse(Vector2.Up.Rotated(Rotation) * speed);
     }
 
 
 
     protected override void ProcessMovement(double delta)
     {
-        ApplyCentralForce(Vector2.Left.Rotated(Transform.Rotation) * (direction ? 1 : -1) * (float)delta * 100);
         Rotation = Vector2.Up.AngleTo(LinearVelocity);
         if (LinearVelocity.LengthSquared() < speed * speed)
         {
             ApplyCentralForce(LinearVelocity.Normalized() * (speed - LinearVelocity.Length()) * (float)delta * 1000);
         }
+        ApplyCentralForce(Vector2.Left.Rotated(Rotation) * (direction ? 1 : -1) * (float)delta * 100000);
     }
 }

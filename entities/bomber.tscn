@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://cngnalvl4ap2o"]
+[gd_scene load_steps=8 format=3 uid="uid://cngnalvl4ap2o"]
 
 [ext_resource type="Script" path="res://entities/Bomber.cs" id="1_svlx0"]
 [ext_resource type="AudioStream" uid="uid://cl6887ed40bm7" path="res://sounds/enemy hurt.wav" id="2_8876d"]
 [ext_resource type="Shader" path="res://shaders/colourable.gdshader" id="3_vy4mq"]
 [ext_resource type="Texture2D" uid="uid://ichymdvvsl7" path="res://custom assets/enemies/bomber.png" id="4_gr3tu"]
+[ext_resource type="PackedScene" uid="uid://bp21m4kr2kvxa" path="res://entities/offscreen_indicator.tscn" id="5_q3jod"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kh3me"]
 resource_local_to_scene = true
@@ -45,3 +46,5 @@ polygon = PackedVector2Array(0, -41, -30, -21, -30, 19, -8, 5, -12, 11, -12, 20,
 
 [node name="Spawner" type="Node2D" parent="."]
 position = Vector2(0, 15)
+
+[node name="OffscreenIndicator" parent="." instance=ExtResource("5_q3jod")]

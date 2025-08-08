@@ -43,7 +43,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
     AudioStreamPlayer2D damageSound;
 
-    VisibleOnScreenNotifier2D onScreenNotifier2D;
+    protected VisibleOnScreenNotifier2D onScreenNotifier2D;
 
 
     protected AnimatedSprite2D animSprite;
@@ -68,6 +68,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         // Set Size
         SetSize();
         SetScale();
+        InitialMovement();
 
         if (DeathExplosion.unlocked)
         {
@@ -85,6 +86,8 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     }
 
 
+    protected abstract void InitialMovement();
+
     public virtual Vector2 GetIndicatorSize()
     {
         return Vector2.One * size;
@@ -100,7 +103,8 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         animSprite.SpeedScale = 1 / (size);
         hp = DynamicStats[ID.HPMult] * GetBaseHealth() * size * 0.75f;
         animSprite.Scale *= size;
-        GetNode<CollisionShape2D>("Collider").Scale *= size;
+        Node2D collider = GetNode<Node2D>("Collider");
+        collider.Scale *= size;
     }
 
     protected virtual float GetBaseHealth()
@@ -116,8 +120,12 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         if ((GlobalPosition - recoilFrom).LengthSquared() < recoilRange * recoilRange)
         {
             float distance = (GlobalPosition - recoilFrom).Length();
-            LinearVelocity = Vector2.Zero;
-            ApplyImpulse(mult * Stats.PlayerStats.DamageRecoil.GetDynamicVal() * (GlobalPosition - recoilFrom).Normalized() * (recoilRange - distance));
+            if (this is not Bomber)
+            {
+                LinearVelocity = Vector2.Zero;
+
+            }
+            ApplyImpulse(mult * Stats.PlayerStats.DamageRecoil.GetDynamicVal() * (GlobalPosition - recoilFrom).Normalized() * (recoilRange - distance) * Mathf.Pow(Mass, 0.5f));
             if (Stats.PlayerStats.RevengeDamage.GetDynamicVal() > 0)
             {
                 TakeDamage(Stats.PlayerStats.RevengeDamage.GetDynamicVal() * Stats.PlayerStats.Damage.GetDynamicVal(), DamageTypes.Blunt);
@@ -175,7 +183,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         {
             return;
         }
-        
+
         Node2D fireParticles = State.sceneHolder.ignitedParticles.Instantiate<Node2D>();
         // Take damage very rapidly
         AddChild(fireParticles);
@@ -284,7 +292,6 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
         }
 
-        ProcessMovement(delta);
 
 
 
@@ -292,6 +299,24 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         ((IAffectedByVisualEffects)this).ProcessVisualEffects((float)delta);
 
     }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        // Pause logic. NOTHING GOES BEFORE THIS UNLESS IT SHOULD BE HAPPENING EVEN WHILE PAUSED
+        if (State.currentState == State.paused)
+        {
+
+            Pause();
+            return;
+        }
+        if (dead)
+        {
+            return;
+        }
+        base._PhysicsProcess(delta);
+        ProcessMovement(delta);
+    }
+
 
     protected abstract void ProcessMovement(double delta);
     protected void ProcessIgnition()
@@ -354,6 +379,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
             beforePauseAngularVelocity = AngularVelocity;
         }
         Sleeping = true;
+
         LinearVelocity = Vector2.Zero;
 
         AngularVelocity = 0;

@@ -6,21 +6,33 @@ public partial class Drifter : Mob
 {
 
 
-    VisibleOnScreenNotifier2D onScreenNotifier;
 
     float offScreenTime = -1;
 
     public override void _Ready()
     {
         base._Ready();
-        onScreenNotifier = GetNode<VisibleOnScreenNotifier2D>("VisibleOnScreenNotifier2D");
-        float speed = 1 / size;
-        ApplyImpulse((GD.Randf() * 0.5f + 0.5f) * 200 * (GetViewportRect().GetCenter() - Position).Normalized() * speed * DynamicStats[ID.AccelerationMult]);
+        InitialMovement();
     }
     // No acceleration towards player while on screen, moves only through momentum
     protected override void ProcessMovement(double delta)
     {
-        if (onScreenNotifier.IsOnScreen())
+        ScreenCheck((float)delta);
+    }
+
+
+    protected override void InitialMovement()
+    {
+        float speed = 1 / size;
+        ApplyImpulse((GD.Randf() * 0.5f + 0.5f) * 200 * (GetViewportRect().GetCenter() - Position).Normalized() * speed * DynamicStats[ID.AccelerationMult]);
+
+    }
+
+
+    protected void ScreenCheck(float delta)
+    {
+        // Once the drifter enters the screen for the first time, next time it leaves the screen it despawns after 1 second
+        if (onScreenNotifier2D.IsOnScreen())
         {
             offScreenTime = 1;
             return;
@@ -34,20 +46,15 @@ public partial class Drifter : Mob
             }
             else
             {
-                offScreenTime -= (float)delta;
+                offScreenTime -= delta;
                 if (offScreenTime < 0)
                 {
                     QueueFree();
                 }
             }
-            // // return to the screen
-            // Vector2 toCentreOfScreen = GetViewportRect().GetCenter() - GlobalPosition;
-            // GD.Print(toCentreOfScreen);
-            // // we want it to be like gravity, so divide by distance squared. since the vector is already multiplied by distance, divide by distance cubed
-            // float distSq = toCentreOfScreen.LengthSquared();
-            // ApplyForce((float)delta * toCentreOfScreen * 1000);
         }
     }
+
 
     // Rocks are immune to poison, resistant to sharp and fire damage
     protected override float DamageResistanceMult(DamageType t)

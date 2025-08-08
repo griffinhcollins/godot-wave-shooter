@@ -1,7 +1,7 @@
 using Godot;
 using static Stats.EnemyStats;
 
-public partial class Biter : Organic
+public partial class Biter : OrganicMob
 {
 
     float timeAlive;
@@ -16,13 +16,19 @@ public partial class Biter : Organic
         // Start timer
         timeAlive = 0;
 
-        // Look at the player
-        LookAt(player.GlobalPosition + new Vector2(GD.Randf(), GD.Randf()) * 100);
-        Rotate(Mathf.Pi / 2);
 
         warningLine = GetNode<Line2D>("WarningLine");
 
     }
+
+    protected override void InitialMovement()
+    {
+        // Look at the player
+        LookAt(player.GlobalPosition + new Vector2(GD.Randf(), GD.Randf()) * 100);
+        Rotate(Mathf.Pi / 2);
+    }
+
+
     protected override void ProcessMovement(double delta)
     {
         timeAlive += (float)delta;

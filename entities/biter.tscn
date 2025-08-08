@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://wpwcjanustiv"]
+[gd_scene load_steps=9 format=3 uid="uid://bt68cunr8dsx5"]
 
 [ext_resource type="Texture2D" uid="uid://dl3jrayk6m2uf" path="res://custom assets/enemies/biter.png" id="1_i7w21"]
 [ext_resource type="Script" path="res://entities/Biter.cs" id="1_m60yx"]

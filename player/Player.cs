@@ -184,6 +184,7 @@ public partial class Player : Node2D, IAffectedByVisualEffects
     public void EndWave()
     {
         trailTimer.Stop();
+        GetNode<CpuParticles2D>("DamageEffect").Hide();
     }
 
 
@@ -348,7 +349,7 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         ToggleCollision(false);
         trailTimer.Stop();
         Hide();
-        GetNode<CpuParticles2D>("DamageEffect").Show();
+        GetNode<CpuParticles2D>("DamageEffect").Hide();
     }
 
     public int CurrentHP()
@@ -359,7 +360,11 @@ public partial class Player : Node2D, IAffectedByVisualEffects
     private async void OnBodyEntered(Node2D body)
     {
         // GD.Print("ouch!");
-
+        // freeze the mob that hit me unless it's a biter
+        if (body is Mob && body is not Biter)
+        {
+            ((Mob)body).LinearVelocity = Vector2.Zero;
+        }
         // tell mobs to back off
         foreach (Mob mob in GetTree().GetNodesInGroup("mobs"))
         {
@@ -374,6 +379,7 @@ public partial class Player : Node2D, IAffectedByVisualEffects
             currentHP--;
             damageSound.Play();
             hud.ShowDamageEffect();
+            GetNode<CpuParticles2D>("DamageEffect").Show();
             GetNode<CpuParticles2D>("DamageEffect").Emitting = true;
             ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(State.MobDamage, Colors.Red, 0.8f, 100, iframes));
             hud.UpdateHealth(currentHP);

@@ -2,7 +2,7 @@ using Godot;
 
 using static Stats.EnemyStats;
 using static Stats.PlayerStats.Unlocks;
-public abstract partial class Fish : Organic 
+public abstract partial class Fish : OrganicMob
 {
     // The starting basic mobs that kind of accelerate towards the player but also just kinda drift around
     // Notable for gazing!
@@ -29,8 +29,14 @@ public abstract partial class Fish : Organic
 
     }
 
+    protected override void InitialMovement()
+    {
+        return;
+    }
 
-    
+
+
+
     protected abstract float GetIrisMoveRadius();
     protected abstract float GetPupilMoveRadius();
 

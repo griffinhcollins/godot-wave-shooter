@@ -24,7 +24,7 @@ public partial class Drifter : Mob
     protected override void InitialMovement()
     {
         float speed = 1 / size;
-        ApplyImpulse((GD.Randf() * 0.5f + 0.5f) * 200 * (GetViewportRect().GetCenter() - Position).Normalized() * speed * DynamicStats[ID.AccelerationMult]);
+        ApplyImpulse((GD.Randf() * 0.5f + 0.5f) * 100 * (GetViewportRect().GetCenter() - Position).Normalized() * speed * DynamicStats[ID.AccelerationMult]);
 
     }
 

@@ -125,7 +125,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
                 LinearVelocity = Vector2.Zero;
 
             }
-            ApplyImpulse(mult * Stats.PlayerStats.DamageRecoil.GetDynamicVal() * (GlobalPosition - recoilFrom).Normalized() * (recoilRange - distance) * Mathf.Pow(Mass, 0.5f));
+            ApplyImpulse(mult * Stats.PlayerStats.DamageRecoil.GetDynamicVal() * (GlobalPosition - recoilFrom).Normalized() * (recoilRange - distance));
             if (Stats.PlayerStats.RevengeDamage.GetDynamicVal() > 0)
             {
                 TakeDamage(Stats.PlayerStats.RevengeDamage.GetDynamicVal() * Stats.PlayerStats.Damage.GetDynamicVal(), DamageTypes.Blunt);

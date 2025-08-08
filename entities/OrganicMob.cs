@@ -5,11 +5,11 @@ using static Stats.EnemyStats;
 
 
 
-public abstract partial class Organic : Mob
+public abstract partial class OrganicMob : Mob
 {
     // Things that drop money when they die
 
-    
+
     protected override void Die()
     {
         Stats.Counters.KillCounter.Value++;

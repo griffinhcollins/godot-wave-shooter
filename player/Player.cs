@@ -370,6 +370,16 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         {
             mob.Recoil(GlobalPosition);
         }
+        // push away bombs
+        foreach (Bomb b in GetTree().GetNodesInGroup("bombs"))
+        {
+            float dist = (b.GlobalPosition - GlobalPosition).Length();
+            if (dist < 400)
+            {
+                b.ApplyImpulse((b.GlobalPosition - GlobalPosition) / dist * (400 - dist));
+
+            }
+        }
 
         bool shielded = false;
         float iframes = 0.5f;

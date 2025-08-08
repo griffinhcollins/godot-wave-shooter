@@ -3,6 +3,11 @@ using System;
 
 public partial class Bomber : OrganicMob
 {
+
+    [Export]
+    PackedScene bomb;
+
+
     Node2D spawner;
 
     bool direction;
@@ -36,4 +41,26 @@ public partial class Bomber : OrganicMob
         }
         ApplyCentralForce(Vector2.Left.Rotated(Rotation) * (direction ? 1 : -1) * (float)delta * 100000);
     }
+
+    void BombTimeout()
+    {
+        // Drop a bomb!
+        Bomb newBomb = bomb.Instantiate<Bomb>();
+        GetTree().Root.AddChild(newBomb);
+        newBomb.SetSize(size * new Vector2(1, 1));
+        newBomb.GlobalPosition = spawner.GlobalPosition;
+    }
+
+    protected override void Pause()
+    {
+        base.Pause();
+        GetNode<Timer>("BombTimer").Paused = true;
+    }
+
+    protected override void UnPause()
+    {
+        base.UnPause();
+        GetNode<Timer>("BombTimer").Paused = false;
+    }
+
 }

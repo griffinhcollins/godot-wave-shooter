@@ -362,7 +362,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
 
 
-    private void UnPause()
+    protected virtual void UnPause()
     {
         Sleeping = false;
         LinearVelocity = beforePauseVelocity;
@@ -370,7 +370,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     }
 
 
-    private void Pause()
+    protected virtual void Pause()
     {
         if (beforePauseVelocity == Vector2.Zero)
         {

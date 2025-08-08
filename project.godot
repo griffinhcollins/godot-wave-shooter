@@ -29,6 +29,7 @@ project/assembly_name="Into The Depths"
 
 cleanup=""
 mobs=""
+bombs=""
 
 [gui]
 

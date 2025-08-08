@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://cngnalvl4ap2o"]
+[gd_scene load_steps=9 format=3 uid="uid://cngnalvl4ap2o"]
 
 [ext_resource type="Script" path="res://entities/Bomber.cs" id="1_svlx0"]
 [ext_resource type="AudioStream" uid="uid://cl6887ed40bm7" path="res://sounds/enemy hurt.wav" id="2_8876d"]
+[ext_resource type="PackedScene" uid="uid://cnpgix24ufjdy" path="res://entities/bomb.tscn" id="2_ybra4"]
 [ext_resource type="Shader" path="res://shaders/colourable.gdshader" id="3_vy4mq"]
 [ext_resource type="Texture2D" uid="uid://ichymdvvsl7" path="res://custom assets/enemies/bomber.png" id="4_gr3tu"]
 [ext_resource type="PackedScene" uid="uid://bp21m4kr2kvxa" path="res://entities/offscreen_indicator.tscn" id="5_q3jod"]
@@ -28,6 +29,8 @@ collision_mask = 7
 mass = 30.0
 gravity_scale = 0.0
 script = ExtResource("1_svlx0")
+bomb = ExtResource("2_ybra4")
+firstAppearsAtWave = 15
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 
@@ -48,3 +51,10 @@ polygon = PackedVector2Array(0, -41, -30, -21, -30, 19, -8, 5, -12, 11, -12, 20,
 position = Vector2(0, 15)
 
 [node name="OffscreenIndicator" parent="." instance=ExtResource("5_q3jod")]
+visible = false
+
+[node name="BombTimer" type="Timer" parent="."]
+wait_time = 0.25
+autostart = true
+
+[connection signal="timeout" from="BombTimer" to="." method="BombTimeout"]

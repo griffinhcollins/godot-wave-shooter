@@ -188,7 +188,7 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [node name="Player" type="Area2D" groups=["player"]]
 position = Vector2(571.219, 338.715)
-collision_mask = 10
+collision_mask = 26
 script = ExtResource("1_empth")
 bounceBullet = ExtResource("2_qxbfg")
 pierceBullet = ExtResource("3_sfohy")

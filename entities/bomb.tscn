@@ -6,13 +6,16 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_pvhsa"]
 radius = 13.0
 
-[node name="Bomb" type="RigidBody2D" groups=["cleanup", "mobs"]]
+[node name="Bomb" type="RigidBody2D" groups=["bombs", "cleanup"]]
+z_index = -1
+collision_layer = 16
+collision_mask = 0
 gravity_scale = 0.0
 script = ExtResource("1_3n11p")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="MainSprite" type="Sprite2D" parent="."]
 scale = Vector2(0.05, 0.05)
 texture = ExtResource("1_fohbn")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Collider" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_pvhsa")

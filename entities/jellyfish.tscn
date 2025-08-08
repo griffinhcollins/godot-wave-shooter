@@ -52,7 +52,7 @@ gravity_scale = 0.0
 contact_monitor = true
 max_contacts_reported = 10
 script = ExtResource("1_gs1vn")
-firstAppearsAtWave = 2
+firstAppearsAtWave = 1
 metadata/_edit_group_ = true
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]

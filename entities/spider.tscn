@@ -53,7 +53,7 @@ gravity_scale = 0.0
 contact_monitor = true
 max_contacts_reported = 10
 script = ExtResource("1_4b5u5")
-firstAppearsAtWave = 2
+firstAppearsAtWave = 1
 metadata/_edit_group_ = true
 
 [node name="MainSprite" type="AnimatedSprite2D" parent="."]

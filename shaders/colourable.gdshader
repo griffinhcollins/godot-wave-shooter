@@ -2,9 +2,6 @@ shader_type canvas_item;
 
 uniform vec4 input_colour;
 
-void vertex() {
-	// Called for every vertex the material is visible on.
-}
 
 void fragment() {
 	if (input_colour == vec4(1.0, 1.0, 1.0, 1.0)){}

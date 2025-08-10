@@ -83,7 +83,7 @@ public static class Stats
 
         public static PlayerStat Damage = new PlayerStat("Damage", 10, new Vector2(5, Mathf.Inf), Common);
         public static PlayerStat FireRate = new PlayerStat("Firerate", 2, new Vector2(0.5f, 10), Common);
-        public static PlayerStat MaxHP = new PlayerStat("HP", 3, new Vector2(0, 6), Rare, true);
+        public static PlayerStat MaxHP = new PlayerStat("HP", 30, new Vector2(0, 60), Rare, true);
         public static PlayerStat HPReward = new PlayerStat("HP Interest", 1, new Vector2(0, 4), Rare, true);
         public static PlayerStat Multishot = new PlayerStat("Multishot", 1, new Vector2(1, 10), Uncommon);
         public static PlayerStat Spread = new PlayerStat("Spread", 15, new Vector2(0, 180), Common, false, true);
@@ -98,7 +98,7 @@ public static class Stats
 
 
 
-        
+
         // Ignition isn't an unlock, but a rare upgrade that can only appear if something that deals fire damage is unlocked
         public static PlayerStat IgnitionChance = new PlayerStat("Ignition Chance", 0, new Vector2(0, 1), Rare, false, false, 1f,
          new ConjunctCondition(new List<Condition> { new UnlockCondition(Unlocks.FireTrail, true), new UnlockCondition(Unlocks.DeathExplosion, true) }, false));

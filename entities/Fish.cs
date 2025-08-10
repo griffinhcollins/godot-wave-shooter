@@ -48,7 +48,7 @@ public abstract partial class Fish : OrganicMob
         float currentSpeedSq = LinearVelocity.LengthSquared();
         if (currentSpeedSq > speedLimit * speedLimit)
         {
-            LinearVelocity = LinearVelocity.Normalized() * speedLimit;
+            LinearVelocity -= LinearVelocity * (1 - speedLimit * speedLimit / currentSpeedSq);
             // ApplyForce(LinearVelocity * (speedLimit - Mathf.Pow(currentSpeedSq, 0.5f)));
         }
 

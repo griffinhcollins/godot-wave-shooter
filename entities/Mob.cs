@@ -93,6 +93,8 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         return Vector2.One * size;
     }
 
+    abstract protected string GetMobName();
+
     protected virtual void SetSize()
     {
         size = GD.Randf() * 0.5f * DynamicStats[ID.SizeMult] + 1;
@@ -313,8 +315,14 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         {
             return;
         }
-        base._PhysicsProcess(delta);
+        double time = Time.GetUnixTimeFromSystem();
         ProcessMovement(delta);
+        time -= Time.GetUnixTimeFromSystem();
+        time *= -1;
+        if (time > 0.001)
+        {
+            GD.Print(string.Format("{0} Movement time: {1}ms", GetMobName(), time * 1000));
+        }
     }
 
 

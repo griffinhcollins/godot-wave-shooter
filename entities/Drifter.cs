@@ -4,7 +4,10 @@ using static Stats.EnemyStats;
 using static Stats.PlayerStats.Unlocks;
 public partial class Drifter : Mob
 {
-
+    protected override string GetMobName()
+    {
+        return "Rock";
+    }
 
 
     float offScreenTime = -1;

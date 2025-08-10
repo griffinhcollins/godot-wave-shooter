@@ -20,6 +20,10 @@ public partial class Biter : OrganicMob
         warningLine = GetNode<Line2D>("WarningLine");
 
     }
+    protected override string GetMobName()
+    {
+        return "Biter";
+    }
 
     protected override void InitialMovement()
     {

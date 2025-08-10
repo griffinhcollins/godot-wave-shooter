@@ -21,6 +21,11 @@ public partial class Bomber : OrganicMob
         base._Ready();
     }
 
+    protected override string GetMobName()
+    {
+        return "Bomber";
+    }
+
 
 
     protected override void InitialMovement()

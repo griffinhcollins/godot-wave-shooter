@@ -435,7 +435,7 @@ public partial class Player : Node2D, IAffectedByVisualEffects
 
     void RaiseShieldIfUnlocked()
     {
-        GD.Print("raising shield");
+        // GD.Print("raising shield");
         if (!Unlocks.Shield.unlocked)
         {
             shield.Hide();

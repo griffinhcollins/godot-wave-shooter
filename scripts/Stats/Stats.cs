@@ -175,7 +175,7 @@ public static class Stats
             public static Unlockable WallBounce = new Unlockable("Wall Bounce", wallBounceStats, null, wallBounceUnlockCondition);
 
             // Piercing
-            public static PlayerStat piercingBulletsPiercingTime = new PlayerStat("Piercing Time", 0.25f, new Vector2(0, 2), Common, false, false, 0.5f);
+            public static PlayerStat piercingBulletsPiercingTime = new PlayerStat("Piercing Time", 0.25f, new Vector2(0, 2), Common, false, false, 0.5f, new ConjunctCondition(new List<Condition> { new UnlockCondition(Flamethrower, false), new UnlockCondition(OverflowBullets, false) }));
             static List<PlayerStat> piercingBulletsStatList = new List<PlayerStat> { piercingBulletsPiercingTime };
             static StatSet piercingBulletsStats = new StatSet(piercingBulletsStatList);
             public static Unlockable PiercingBullets = new Unlockable("Piercing Bullets", piercingBulletsStats);
@@ -331,7 +331,7 @@ public static class Stats
 
             static List<PlayerStat> explosionStatList = new List<PlayerStat> { explosionChance, explosionDamage, explosionRadius };
             static StatSet explosionStats = new StatSet(explosionStatList);
-            public static Unlockable DeathExplosion = new Unlockable("Death Explosion", explosionStats, new List<VisualEffect> { new ParticleEffect(DeathExplosion, "death explosion"), new StaticColourChange(Plague, Colors.Red, 5, 3) });
+            public static Unlockable DeathExplosion = new Unlockable("Death Explosion", explosionStats, new List<VisualEffect> { new ParticleEffect(DeathExplosion, "death explosion"), new StaticColourChange(DeathExplosion, Colors.Red, 5, 3) });
 
 
             // Shield that regenerates after a period of time
@@ -349,6 +349,13 @@ public static class Stats
             static StatSet fireTrailStats = new StatSet(fireTrailStatList);
             public static Unlockable FireTrail = new Unlockable("Fire Trail", fireTrailStats);
 
+
+            // FLAMETHROWER
+            public static PlayerStat flamethrowerWidth = new PlayerStat("Cone Width", 20, new Vector2(20, 90), Common, false, false, 0.5f);
+            public static PlayerStat flamethrowerFrequency = new PlayerStat("Flame Intensity", 5, new Vector2(5, 10), Uncommon, false, false, 0.5f); // How many times per second the flames deal damage while in contact with an enemy
+            static List<PlayerStat> flamethrowerStatList = new List<PlayerStat> { flamethrowerWidth, flamethrowerFrequency };
+            static StatSet flamethrowerStats = new StatSet(flamethrowerStatList);
+            public static Unlockable Flamethrower = new Unlockable("Flamethrower", flamethrowerStats);
 
 
             public static Unlockable[] allUnlockables = {

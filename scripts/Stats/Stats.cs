@@ -2,6 +2,7 @@ using Godot;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using static RarityControl;
 
 public static class Stats
@@ -83,7 +84,7 @@ public static class Stats
 
         public static PlayerStat Damage = new PlayerStat("Damage", 10, new Vector2(5, Mathf.Inf), Common);
         public static PlayerStat FireRate = new PlayerStat("Firerate", 2, new Vector2(0.5f, 10), Common);
-        public static PlayerStat MaxHP = new PlayerStat("HP", 30, new Vector2(0, 60), Rare, true);
+        public static PlayerStat MaxHP = new PlayerStat("HP", 3, new Vector2(0, 6), Rare, true);
         public static PlayerStat HPReward = new PlayerStat("HP Interest", 1, new Vector2(0, 4), Rare, true);
         public static PlayerStat Multishot = new PlayerStat("Multishot", 1, new Vector2(1, 10), Uncommon);
         public static PlayerStat Spread = new PlayerStat("Spread", 15, new Vector2(0, 180), Common, false, true);
@@ -194,8 +195,11 @@ public static class Stats
             public static PlayerStat lightningRange = new PlayerStat("Lightning Arc Range", 300, new Vector2(200, 1000), Rare, false, false, 0.5f);
             public static PlayerStat lightningMaxArcs = new PlayerStat("Maximum Arcs", 1, new Vector2(1, 5), Uncommon, true, false);
             public static PlayerStat lightningChainChance = new PlayerStat("Chain Chance", 0.1f, new Vector2(0.1f, 0.8f), Common, false, false);
+            public static PlayerStat lightningStaticTimeDown = new PlayerStat("Lightning Static Duration", 2, new Vector2(2, 0.1f), Uncommon, false, true);
+            public static PlayerStat lightningStunChance = new PlayerStat("Static Stun Chance", 1, new Vector2(0, 1), Rare, false, false, 0.5f);
+            public static PlayerStat lightningStaticTimeUp = new PlayerStat("Lightning Static Duration", 1, new Vector2(0.1f, 5), Uncommon, false, false, 1.5f, new StatCondition(lightningStunChance, 0, true));
             public static PlayerStat lightningChainDamageRetention = new PlayerStat("Chain Damage Retention", 0.5f, new Vector2(0.5f, 1), Common, false, false, 0.5f, new StatCondition(lightningChainChance, 0.2f, true));
-            static List<PlayerStat> lightningStatList = new List<PlayerStat> { lightningRange, lightningMaxArcs, lightningChainChance, lightningChainDamageRetention };
+            static List<PlayerStat> lightningStatList = new List<PlayerStat> { lightningRange, lightningMaxArcs, lightningChainChance, lightningChainDamageRetention, lightningStaticTimeDown, lightningStaticTimeUp, lightningStunChance };
             static StatSet lightningStats = new StatSet(lightningStatList);
             public static Unlockable Lightning = new Unlockable("Lightning Arc", lightningStats, new List<VisualEffect> { new ParticleEffect(Lightning, "Lightning Arc") });
 
@@ -215,7 +219,7 @@ public static class Stats
                 // Find the nearest mob
                 foreach (Mob mob in seedMob.GetTree().GetNodesInGroup("mobs"))
                 {
-                    if (alreadyHit.Contains(mob))
+                    if (alreadyHit.Contains(mob) || mob.staticApplied)
                     {
                         continue;
                     }
@@ -240,13 +244,29 @@ public static class Stats
                         line.AddPoint(target.GlobalPosition);
 
                         target.TakeDamage(dmg * Mathf.Pow(Unlocks.lightningChainDamageRetention.GetDynamicVal(), depth), DamageTypes.Electric);
+                        target.ApplyStatic();
                         if (Unlocks.lightningChainChance.GetDynamicVal() > GD.Randf())
                         {
+                            GD.Print("before union");
+                            GD.Print("s");
+                            foreach (Mob m in alreadyHit)
+                            {
+                                GD.Print(m.GetID());
+                            }
+                            GD.Print("e");
                             HashSet<Mob> hits = SpawnLightning(dmg, target, depth + 1, arcScene, alreadyHit);
                             alreadyHit.UnionWith(hits);
+                            GD.Print("after union");
+                            GD.Print("s");
+                            foreach (Mob m in alreadyHit)
+                            {
+                                GD.Print(m.GetID());
+                            }
+                            GD.Print("e");
                         }
                     }
                 }
+
                 return alreadyHit;
             }
 
@@ -502,8 +522,9 @@ public static class Stats
         public static Counter WaveCounter = new Counter("Wave", 1);
         public static Counter KillCounter = new Counter("Kills", 0);
         public static Counter CoinCounter = new Counter("Coins", 0);
+        public static Counter EnemyCounter = new Counter("Enemies", 1);
 
-        static List<Counter> allCounters = new List<Counter> { WaveCounter, KillCounter, CoinCounter };
+        static List<Counter> allCounters = new List<Counter> { WaveCounter, KillCounter, CoinCounter, EnemyCounter };
 
         public static void Reset()
         {

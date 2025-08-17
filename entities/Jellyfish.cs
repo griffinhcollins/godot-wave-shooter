@@ -6,7 +6,7 @@ public partial class Jellyfish : Fish
         return 0;
     }
 
-    protected override string GetMobName()
+    public override string GetMobName()
     {
         return "Jellyfish";
     }

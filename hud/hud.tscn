@@ -177,8 +177,8 @@ offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_fonts/font = ExtResource("2_262y3")
-theme_override_font_sizes/font_size = 64
-text = "Next Wave"
+theme_override_font_sizes/font_size = 36
+text = "Skip Upgrade (+$10 money cap)"
 
 [node name="Message" type="Label" parent="ShopElements"]
 anchors_preset = 8

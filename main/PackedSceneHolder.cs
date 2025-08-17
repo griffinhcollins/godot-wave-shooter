@@ -14,6 +14,8 @@ public partial class PackedSceneHolder : Node
 	public PackedScene coin;
 	[Export]
 	public PackedScene ignitedParticles;
+	[Export]
+	public PackedScene lightningStaticParticles;
 
 
 

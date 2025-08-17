@@ -31,6 +31,9 @@ public partial class Hud : CanvasLayer
 
     TextureRect damageGlow;
 
+
+    Button nextWaveButton;
+
     int rerollCost = 10;
     bool upgradeSelected;
 
@@ -43,6 +46,7 @@ public partial class Hud : CanvasLayer
         gameOverElements = GetNode<CanvasLayer>("GameOverElements");
         upgradeCost = shopElements.GetNode("BuySlot").GetNode<Label>("Cost");
         damageGlow = GetNode<TextureRect>("DamageEffect/RedGlow");
+        nextWaveButton = GetNode<Button>("ShopElements/NextWave");
     }
 
     public override void _Process(double delta)
@@ -90,6 +94,10 @@ public partial class Hud : CanvasLayer
         player.Hide();
         waveElements.Hide();
         shopElements.Show();
+        nextWaveButton.Text = "Skip Upgrade (+$10 money cap)";
+        nextWaveButton.AddThemeFontSizeOverride("font_size", 36);
+
+        rerollCost = Stats.Counters.IsUnlockWave() ? 50 : 10;
         shopElements.GetNode<Button>("Delve Deeper").Hide();
 
     }
@@ -105,11 +113,19 @@ public partial class Hud : CanvasLayer
         }
         shopElements.GetNode<Button>("Reroll").Hide();
         shopElements.GetNode<Button>("BuySlot").Hide();
+
+        // Change Skip for cash to Next Wave
+        nextWaveButton.Text = "Next Wave";
+        nextWaveButton.AddThemeFontSizeOverride("font_size", 64);
     }
 
     private void OnNextWavePressed()
     {
-        rerollCost = Stats.Counters.IsUnlockWave() ? 50 : 10;
+        if (!upgradeSelected)
+        {
+            Stats.PlayerStats.MoneyCap.ApplyUpgrade(10, true);
+            player.AddMoney(10);
+        }
         ShowWave();
         EmitSignal(SignalName.NextWave);
         foreach (UpgradeNode upgrade in shopElements.GetNode("Upgrades").GetChildren())
@@ -398,7 +414,7 @@ public partial class Hud : CanvasLayer
 
     public void UpdateMoneyCounter(int money)
     {
-        GetNode<Label>("MoneyLabel").Text = money.ToString();
+        GetNode<Label>("MoneyLabel").Text = string.Format("{0}/{1}", money.ToString(), Stats.PlayerStats.MoneyCap.GetDynamicVal());
     }
 
     public void ShowGameOver()

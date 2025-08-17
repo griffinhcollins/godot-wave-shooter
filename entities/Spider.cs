@@ -3,7 +3,7 @@ public partial class Spider : Fish
 
 
 
-    protected override string GetMobName()
+    public override string GetMobName()
     {
         return "Spider";
     }

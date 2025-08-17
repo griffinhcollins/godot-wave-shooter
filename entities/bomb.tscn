@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://cnpgix24ufjdy"]
+[gd_scene load_steps=4 format=3 uid="uid://lsy41c02hm52"]
 
 [ext_resource type="Script" path="res://entities/Bomb.cs" id="1_3n11p"]
 [ext_resource type="Texture2D" uid="uid://bd8c36brnfhod" path="res://custom assets/enemies/bomb.png" id="1_fohbn"]

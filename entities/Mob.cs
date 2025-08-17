@@ -18,11 +18,16 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     bool ignited = false;
     float igniteTick;
 
+    protected int mobNum;
+
 
     // Explosions!
     protected bool explodeOnDeath = false;
 
     protected float hp;
+
+    public bool staticApplied = false;
+    public bool stunned = false;
 
 
     protected Vector2 beforePauseVelocity;
@@ -31,6 +36,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
 
     protected bool dead = false;
 
+    GpuParticles2D staticParticles;
 
 
     [Export]
@@ -69,7 +75,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         SetSize();
         SetScale();
         InitialMovement();
-
+        mobNum = Stats.Counters.EnemyCounter.Value++;
         if (DeathExplosion.unlocked)
         {
             if (GD.Randf() < explosionChance.GetDynamicVal())
@@ -93,7 +99,12 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         return Vector2.One * size;
     }
 
-    abstract protected string GetMobName();
+    abstract public string GetMobName();
+
+    public string GetID()
+    {
+        return GetMobName() + mobNum;
+    }
 
     protected virtual void SetSize()
     {
@@ -321,7 +332,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         time *= -1;
         if (time > 0.001)
         {
-            GD.Print(string.Format("{0} Movement time: {1}ms", GetMobName(), time * 1000));
+            GD.Print(string.Format("{0} Movement time: {1}ms", GetID(), time * 1000));
         }
     }
 
@@ -364,6 +375,37 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
             }
 
         }
+    }
+
+    async public virtual void ApplyStatic() // While under the effects of static, mobs can't be hit by lightning arcs but (if upgraded) can be stunned
+    {
+        if (staticApplied)
+        {
+            return;
+        }
+        staticApplied = true;
+        if (staticParticles is null)
+        {
+            staticParticles = State.sceneHolder.lightningStaticParticles.Instantiate<GpuParticles2D>();
+            AddChild(staticParticles);
+
+        }
+        staticParticles.Show();
+
+        if (GD.Randf() <= lightningStunChance.GetDynamicVal())
+        {
+            stunned = true;
+            ((IAffectedByVisualEffects)this).AddStaticColour(this, new StaticColourChange(lightningStunChance, Colors.DeepSkyBlue, 1, 10, lightningStaticTimeDown.GetDynamicVal()));
+            animSprite.SpeedScale = 0.1f;
+            GD.Print("stunned!");
+        }
+
+        await ToSignal(GetTree().CreateTimer(lightningStaticTimeDown.GetDynamicVal()), SceneTreeTimer.SignalName.Timeout); // countdown before coming off lightning cooldown
+
+        animSprite.SpeedScale = 1;
+        staticApplied = false;
+        stunned = false;
+        staticParticles.Hide();
     }
 
 

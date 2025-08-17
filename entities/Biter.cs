@@ -20,7 +20,7 @@ public partial class Biter : OrganicMob
         warningLine = GetNode<Line2D>("WarningLine");
 
     }
-    protected override string GetMobName()
+    public override string GetMobName()
     {
         return "Biter";
     }
@@ -44,7 +44,16 @@ public partial class Biter : OrganicMob
         else
         {
             warningLine.Hide();
-            ApplyCentralForce(Vector2.Up.Rotated(Transform.Rotation) * 1000000 * (float)delta);
+            if (stunned)
+            {
+                GD.Print("stunned a biter!");
+                ApplyCentralForce(LinearVelocity * -1 * (float)delta);
+
+            }
+            else
+            {
+                ApplyCentralForce(Vector2.Up.Rotated(Transform.Rotation) * 1000000 * (float)delta);
+            }
         }
 
     }

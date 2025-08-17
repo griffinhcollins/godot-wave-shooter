@@ -21,7 +21,7 @@ public partial class Bomber : OrganicMob
         base._Ready();
     }
 
-    protected override string GetMobName()
+    public override string GetMobName()
     {
         return "Bomber";
     }
@@ -40,6 +40,10 @@ public partial class Bomber : OrganicMob
     protected override void ProcessMovement(double delta)
     {
         Rotation = Vector2.Up.AngleTo(LinearVelocity);
+        if (stunned)
+        {
+            return;
+        }
         if (LinearVelocity.LengthSquared() < speed * speed)
         {
             ApplyCentralForce(LinearVelocity.Normalized() * (speed - LinearVelocity.Length()) * (float)delta * 1000);
@@ -49,7 +53,7 @@ public partial class Bomber : OrganicMob
 
     void BombTimeout()
     {
-        if (dead)
+        if (dead || stunned)
         {
             return;
         }

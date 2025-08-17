@@ -1,10 +1,11 @@
+using System.Runtime.CompilerServices;
 using Godot;
 
 using static Stats.EnemyStats;
 using static Stats.PlayerStats.Unlocks;
 public partial class Drifter : Mob
 {
-    protected override string GetMobName()
+    public override string GetMobName()
     {
         return "Rock";
     }
@@ -29,6 +30,11 @@ public partial class Drifter : Mob
         float speed = 1 / size;
         ApplyImpulse((GD.Randf() * 0.5f + 0.5f) * 100 * (GetViewportRect().GetCenter() - Position).Normalized() * speed * DynamicStats[ID.AccelerationMult]);
 
+    }
+
+    override public void ApplyStatic()
+    {
+        return;
     }
 
 

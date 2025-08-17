@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://player/projectiles/BouncyBullet.cs" id="2_kxnli"]
 [ext_resource type="AudioStream" uid="uid://b2kro6y6sewt7" path="res://sounds/laser pip.wav" id="3_0w13g"]
 [ext_resource type="Shader" path="res://shaders/colourable.gdshader" id="3_6h68e"]
-[ext_resource type="PackedScene" path="res://player/effects/lightning_arc.tscn" id="3_b5ltj"]
+[ext_resource type="PackedScene" uid="uid://4br0n54vxpbq" path="res://player/effects/lightning_arc.tscn" id="3_b5ltj"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_8702t"]
 bounce = 0.5

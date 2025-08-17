@@ -1,7 +1,7 @@
-[gd_scene load_steps=14 format=3 uid="uid://q7l6o05qbryj"]
+[gd_scene load_steps=14 format=3 uid="uid://cvjrmcq0ldpm0"]
 
 [ext_resource type="Script" path="res://entities/Spider.cs" id="1_4b5u5"]
-[ext_resource type="PackedScene" uid="uid://bp21m4kr2kvxa" path="res://entities/offscreen_indicator.tscn" id="2_jf12g"]
+[ext_resource type="PackedScene" uid="uid://cpsf1tpjvco18" path="res://entities/offscreen_indicator.tscn" id="2_jf12g"]
 [ext_resource type="Shader" path="res://shaders/colourable.gdshader" id="3_yafp7"]
 [ext_resource type="Texture2D" uid="uid://bvs07hppc8ssa" path="res://custom assets/enemies/New Spider A No1.png" id="4_3kfod"]
 [ext_resource type="Texture2D" uid="uid://pqwbgcl2vy0g" path="res://custom assets/enemies/New Spider A No2.png" id="5_vc10x"]

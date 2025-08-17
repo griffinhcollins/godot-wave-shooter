@@ -42,6 +42,10 @@ public abstract partial class Fish : OrganicMob
 
     protected override void ProcessMovement(double delta)
     {
+        if (stunned)
+        {
+            return;
+        }
         // Point towards the player
         ApplyForce((player.Position - Position) * (1 / 1000 + speedLimit / 500) * acceleration);
         ApplyTorque(LinearVelocity.AngleTo(ToGlobal(Vector2.Up)) * 1000);

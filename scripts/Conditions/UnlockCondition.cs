@@ -8,7 +8,7 @@ public class UnlockCondition : Condition
 
 
 	public Unlockable unlock;
-
+	public int ID;
 
 	public bool equalTo;
 
@@ -22,9 +22,19 @@ public class UnlockCondition : Condition
 		equalTo = _equalTo;
 	}
 
+	public UnlockCondition(int _ID, bool _equalTo)
+	{
+		ID = _ID;
+		equalTo = _equalTo;
+	}
+
 
 	public override bool CheckCondition()
 	{
+		if (unlock is null)
+		{
+			return allUnlockables[ID].unlocked == equalTo;
+		}
 		return unlock.unlocked == equalTo;
 	}
 

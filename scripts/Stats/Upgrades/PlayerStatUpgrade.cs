@@ -45,6 +45,7 @@ public class PlayerStatUpgrade : PlayerUpgrade
         stat.ApplyUpgrade(magnitude, Increasing());
     }
 
+
     public bool IntIncrease()
     {
         return stat.intChange;

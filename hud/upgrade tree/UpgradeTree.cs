@@ -24,6 +24,7 @@ public partial class UpgradeTree : Node
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        return;
         container = GetNode<HBoxContainer>("Container");
 
         // Create our root
@@ -52,6 +53,7 @@ public partial class UpgradeTree : Node
         foreach (Improvement p in allStatsAndUnlocks)
         {
             UpgradeTreeNode newNode = SpawnNode(p);
+            
             AddChild(newNode);
             nameLookup.Add(p.GetName(), newNode);
         }

@@ -91,6 +91,11 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
             SetScale();
         }
 
+        if (Unlocks.Flamethrower.unlocked)
+        {
+            AddMutation(Mutations.GrowingBullet);
+        }
+
         ActivateInitialMutationEffects();
         GenerateVisualEffects();
         ((IAffectedByVisualEffects)this).ImmediateVisualEffects();
@@ -195,7 +200,7 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
 
         }
 
-        timeAlive += (float)delta;
+        timeAlive += (float)delta * (Unlocks.Flamethrower.unlocked ? 3 : 1);
 
         foreach (Mutation m in GetMutations())
         {

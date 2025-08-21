@@ -5,32 +5,20 @@ using static Stats;
 public class UnlockableWithBonus : Unlockable
 {
 
-    PlayerStat bonusStat;
-    bool increase;
-    bool multOrUpgrade; // If true, mult. If false, upgrade.
+    Dictionary<PlayerStatUpgrade, float> bonusUpgrades;
 
-    float mag;
-
-    public UnlockableWithBonus(string _name, string _description, StatSet _stats, PlayerStat _bonusStat, float _mag, bool _trueIfMultFalseIfUpgrade, bool _inc = true, List<VisualEffect> effects = null,  Condition _condition = null) : base(_name, _description, _stats, effects, _condition)
+    public UnlockableWithBonus(string _name, string _description, StatSet _stats, Dictionary<PlayerStatUpgrade, float> _bonusUpgrades, List<VisualEffect> effects = null, Condition _condition = null) : base(_name, _description, _stats, effects, _condition)
     {
-        bonusStat = _bonusStat;
-        multOrUpgrade = _trueIfMultFalseIfUpgrade;
-        mag = _mag;
-        increase = _inc;
+        bonusUpgrades = _bonusUpgrades;
     }
 
 
     public override void Unlock()
     {
         base.Unlock();
-        if (multOrUpgrade)
+        foreach (PlayerStatUpgrade u in bonusUpgrades.Keys)
         {
-            bonusStat.AddMult(mag);
-        }
-        else
-        {
-            bonusStat.ApplyUpgrade(mag, increase);
-
+            u.Execute(bonusUpgrades[u]);
         }
     }
 

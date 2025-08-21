@@ -147,7 +147,8 @@ public partial class Main : Node2D
 
     public void StartWave()
     {
-        Stats.PlayerStats.Unlocks.Flamethrower.Unlock();
+        Stats.PlayerStats.Unlocks.PiercingBullets.Unlock();
+        // Stats.PlayerStats.Unlocks.Flamethrower.Unlock();
         // Stats.PlayerStats.Mutations.GrowingBullet.applied = true;
         State.currentState = State.alive;
         UpdateEnemyStats();
@@ -171,6 +172,7 @@ public partial class Main : Node2D
         waveTimer.Start();
 
         mobsSpawned = 0;
+        EndWave();
     }
 
     private void OnWaveTimeout()

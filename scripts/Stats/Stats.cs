@@ -217,7 +217,7 @@ public static class Stats
             // Piercing
             public static PlayerStat piercingBulletsPiercingTime = new PlayerStat("Piercing Time",
             "How many seconds a bullet will pierce for after being shot.",
-             0.25f, new Vector2(0, 2), Common, false, false, 0.5f, new ConjunctCondition(new List<Condition> { new UnlockCondition(Flamethrower, false), new UnlockCondition(OverflowBullets, false) }));
+             0.25f, new Vector2(0, 2), Common, false, false, 0.5f, new ConjunctCondition(new List<Condition> { new UnlockCondition(14, false), new UnlockCondition(5, false) }));
             static List<PlayerStat> piercingBulletsStatList = new List<PlayerStat> { piercingBulletsPiercingTime };
             static StatSet piercingBulletsStats = new StatSet(piercingBulletsStatList);
             public static Unlockable PiercingBullets = new Unlockable("Piercing Bullets",
@@ -230,13 +230,13 @@ public static class Stats
             // What fraction of the damage is reduced when hitting an enemy, e.g. if the enemy has 10 health and this stat is 0.5f, the overflow loses 5 damage
             public static PlayerStat overflowLoss = new PlayerStat("Overflow Reduction",
             "Percentage of damage dealt that is subtracted from a bullet's total upon hitting an enemy.",
-             1, new Vector2(0, 1), Uncommon, false, true);
+             1, new Vector2(0, 1), Uncommon, false, true, 0.5f);
             static List<PlayerStat> overflowStatList = new List<PlayerStat> { overflowLoss };
             static StatSet overflowStats = new StatSet(overflowStatList);
-            // Unlocking this also doubles your damage
+            // Unlocking this also adds 20 damage
             public static Unlockable OverflowBullets = new UnlockableWithBonus("Overflow Bullets",
             "Bullets have infinite piercing, but use up their damage as they kill enemies. Comes with a hefty damage boost.",
-             overflowStats, Damage, 1, true, true, null, overflowCondition);
+             overflowStats, new Dictionary<PlayerStatUpgrade, float> { { Damage.GenerateIncreasingUpgrade(), 20 } }, null, overflowCondition);
 
 
             // Lightning!
@@ -249,19 +249,16 @@ public static class Stats
             public static PlayerStat lightningChainChance = new PlayerStat("Chain Chance",
             "The chance that an enemy struck by an arc will chain to another enemy.",
              0.1f, new Vector2(0.1f, 0.8f), Common, false, false);
-            public static PlayerStat lightningStaticTimeDown = new PlayerStat("Lightning Static Duration",
+            public static PlayerStat lightningStaticTimeDown = new PlayerStat("Lightning Static Duration", // if you unlock stun, this should start also spawning increasing upgrades
             "The amount of time in seconds an enemy hit by lightning is affected by static. While affected by static, enemies cannot be hit with lightning again.",
-             2, new Vector2(2, 0.1f), Uncommon, false, true);
+             2, new Vector2(0.1f, 2), Uncommon, false, true);
             public static PlayerStat lightningStunChance = new PlayerStat("Static Stun Chance",
             "Chance that an enemy, upon being struck by a lightning arc, will be stunned while affected by static.",
              1, new Vector2(0, 1), Rare, false, false, 0.5f);
-            public static PlayerStat lightningStaticTimeUp = new PlayerStat("Lightning Static Duration",
-            "",
-             1, new Vector2(0.1f, 5), Uncommon, false, false, 1.5f, new StatCondition(lightningStunChance, 0, true));
             public static PlayerStat lightningChainDamageRetention = new PlayerStat("Chain Damage Retention",
             "Damage retention when chaining from one enemy to another.",
              0.5f, new Vector2(0.5f, 1), Common, false, false, 0.5f, new StatCondition(lightningChainChance, 0.2f, true));
-            static List<PlayerStat> lightningStatList = new List<PlayerStat> { lightningRange, lightningMaxArcs, lightningChainChance, lightningChainDamageRetention, lightningStaticTimeDown, lightningStaticTimeUp, lightningStunChance };
+            static List<PlayerStat> lightningStatList = new List<PlayerStat> { lightningRange, lightningMaxArcs, lightningChainChance, lightningChainDamageRetention, lightningStaticTimeDown, lightningStunChance };
             static StatSet lightningStats = new StatSet(lightningStatList);
             public static Unlockable Lightning = new Unlockable("Lightning Arc",
             "Hitting an enemy may trigger a lightning arc to a nearby enemy, which can then continue to arc.",
@@ -338,7 +335,7 @@ public static class Stats
             // If you reach high enough shotspeed, piercing and firerate, you get LASER BEAM as an option
             static Condition laserUnlockCondition = new ConjunctCondition(new List<Condition> { new StatCondition(FireRate, 3, true), new StatCondition(ShotSpeed, 1.5f, true), new StatCondition(piercingBulletsPiercingTime, 0.5f, true) });
             public static PlayerStat LaserLifetime = new PlayerStat("Laser Lifetime",
-            "",
+            "How long the laser beam sticks around.",
              0.2f, new Vector2(0.2f, 2), Uncommon);
             static List<PlayerStat> laserStatList = new List<PlayerStat> { LaserLifetime };
             static StatSet laserStats = new StatSet(laserStatList);
@@ -474,8 +471,11 @@ public static class Stats
             static List<PlayerStat> flamethrowerStatList = new List<PlayerStat> { flamethrowerWidth, flamethrowerFrequency };
             static StatSet flamethrowerStats = new StatSet(flamethrowerStatList);
             public static Unlockable Flamethrower = new UnlockableWithBonus("Flamethrower",
-            "Replaces the turret with a flamethrower, reducing range but giving a big damage boost.",
-             flamethrowerStats, piercingBulletsPiercingTime, 200, false, true, null, new ConjunctCondition(new List<Condition> { new UnlockCondition(PiercingBullets, true), new UnlockCondition(Laser, false) }));
+            "Replaces the turret with a flamethrower, reducing lifetime but giving a big damage boost.",
+             flamethrowerStats,
+             new Dictionary<PlayerStatUpgrade, float> { { piercingBulletsPiercingTime.GenerateIncreasingUpgrade(), 200f }, { FireRate.GenerateIncreasingUpgrade(), 10 } },
+             new List<VisualEffect> { new ParticleEffect(Flamethrower, "death explosion"), new StaticColourChange(DeathExplosion, Colors.OrangeRed, 5, 7) },
+             new ConjunctCondition(new List<Condition> { new UnlockCondition(PiercingBullets, true), new UnlockCondition(Laser, false) }));
 
 
             public static Unlockable[] allUnlockables = {

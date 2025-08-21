@@ -9,6 +9,7 @@ using static RarityControl;
 public class PlayerStat : Improvement
 {
     public string name;
+    public string description;
     public float baseValue;
     private Vector2 startingRange;
     private float dynamicValue;
@@ -21,9 +22,10 @@ public class PlayerStat : Improvement
 
     public Condition condition;
 
-    public PlayerStat(string _name, float _baseValue, Vector2 _range, Rarity _rarity, bool _intChange = false, bool _invert = false, float _changePolynomial = 1, Condition _condition = null)
+    public PlayerStat(string _name, string _description, float _baseValue, Vector2 _range, Rarity _rarity, bool _intChange = false, bool _invert = false, float _changePolynomial = 1, Condition _condition = null)
     {
         name = _name;
+        description = _description;
         baseValue = _baseValue;
         startingRange = _range;
         intChange = _intChange;

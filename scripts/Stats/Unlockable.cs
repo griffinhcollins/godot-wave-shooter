@@ -14,13 +14,15 @@ public class Unlockable : Improvement
 
     public List<PlayerStat> prerequisites;
 
+    public string description;
 
 
-    public Unlockable(string _name, StatSet _stats, List<VisualEffect> _effects = null, Condition _condition = null)
+
+    public Unlockable(string _name, string _description, StatSet _stats, List<VisualEffect> _effects = null, Condition _condition = null)
     {
         name = _name;
         associatedStats = _stats;
-
+        description = _description;
 
 
         if (_effects is not null)

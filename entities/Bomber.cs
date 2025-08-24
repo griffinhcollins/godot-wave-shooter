@@ -53,7 +53,7 @@ public partial class Bomber : OrganicMob
 
     void BombTimeout()
     {
-        if (dead || stunned)
+        if (dead || stunned || State.currentState == State.shop)
         {
             return;
         }

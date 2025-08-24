@@ -9,6 +9,7 @@ public class PlayerUnlockUpgrade : PlayerUpgrade
 
     public PlayerUnlockUpgrade(Unlockable _unlockable)
     {
+        improvement = _unlockable;
         unlock = _unlockable;
         iconName = string.Format("{0}.png", unlock.GetName().ToLower());
         if (unlock.condition is not null)
@@ -29,9 +30,9 @@ public class PlayerUnlockUpgrade : PlayerUpgrade
         return base.CheckCondition() && !unlock.unlocked;
     }
 
-    public override string GetDescription(float magnitude)
+    public override string GetMechanicalChange(float magnitude)
     {
-        return string.Format("Unlocks {0}", unlock.GetName());
+        return string.Format("Permanently unlocks {0}, associated upgrades will appear in the shop.", unlock.GetName());
     }
 
     public override bool IsPositive()
@@ -43,5 +44,15 @@ public class PlayerUnlockUpgrade : PlayerUpgrade
     {
         // This should never come up
         throw new Exception("Why are you asking if an upgrade is increasing?");
+    }
+
+    public override string GetName()
+    {
+        return unlock.GetName();
+    }
+
+    public override string GetWordyDescription()
+    {
+        return unlock.description;
     }
 }

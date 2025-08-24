@@ -36,25 +36,25 @@ public partial class UpgradeNode : Button
 
     }
 
-    public (List<PlayerUpgrade>, List<Improvement>) Generate(List<PlayerUpgrade> upgradePool, List<Improvement> exclude, bool _delving)
+    public (List<PlayerUpgrade>, List<Improvement>) Generate(List<PlayerUpgrade> upgradePool, List<Improvement> exclude, bool _delving, bool upgradeOverride = false)
     {
         if (exclude is null)
         {
             exclude = new List<Improvement>();
         }
         delving = _delving;
-        hud = (Hud)GetTree().GetNodesInGroup("HUD")[0];
+        hud = State.hud;
         iconHolder = GetNode<HFlowContainer>("IconHolder");
-        (upgradePool, exclude) = Randomize(upgradePool, exclude);
+        (upgradePool, exclude) = Randomize(upgradePool, exclude, upgradeOverride);
 
         UpdateCost();
         return (upgradePool, exclude);
     }
 
     // The pool is already checked for conditions, and any upgrades that have previously appeared in this shop are added to exclude
-    (List<PlayerUpgrade>, List<Improvement>) Randomize(List<PlayerUpgrade> pool, List<Improvement> exclude)
+    (List<PlayerUpgrade>, List<Improvement>) Randomize(List<PlayerUpgrade> pool, List<Improvement> exclude, bool upgradeOverride = false)
     {
-        if (Stats.Counters.IsUnlockWave())
+        if (Stats.Counters.IsUnlockWave() && !upgradeOverride)
         {
             // it's fuckin unlock time baby
 
@@ -134,14 +134,20 @@ public partial class UpgradeNode : Button
     }
 
 
+    public string GetDescription()
+    {
+        string name = string.Format("[font_size=40][center]{0}[/center][/font_size]\n\n", upgrade.GetName());
+        string description = string.Format("{0}\n\n{1}", upgrade.GetWordyDescription(), upgrade.GetMechanicalChange(magnitude));
 
+        return name + description;
+    }
 
 
     private void OnMouseOver()
     {
-        string infoMessage = "";
+        string infoMessage = GetDescription();
 
-        infoMessage += upgrade.GetDescription(magnitude);
+        infoMessage += upgrade.GetMechanicalChange(magnitude);
         if (locked)
         {
             infoMessage += "\nLocked, requires more ";
@@ -153,7 +159,7 @@ public partial class UpgradeNode : Button
             infoMessage = infoMessage.Remove(infoMessage.Length - 2);
         }
         // infoMessage += string.Format(", ({0})", rarity.name);
-        hud.ShowMessage(infoMessage, false);
+        hud.UpdateUpgradeDescription(infoMessage);
     }
 
     private void OnMouseLeave()

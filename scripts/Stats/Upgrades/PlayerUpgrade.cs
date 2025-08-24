@@ -11,6 +11,8 @@ public abstract class PlayerUpgrade
 
     protected Condition appearCondition; // A condition that must be met before this upgrade will appear
 
+    public Improvement improvement;
+
 
     public virtual bool CheckCondition()
     {
@@ -32,7 +34,9 @@ public abstract class PlayerUpgrade
     public abstract void Execute(float magnitude);
 
 
-    public abstract string GetDescription(float magnitude);
+    public abstract string GetMechanicalChange(float magnitude);
+    public abstract string GetWordyDescription();
+    public abstract string GetName();
 
 
     public abstract bool Increasing(); // True if this upgrade increases the given stat

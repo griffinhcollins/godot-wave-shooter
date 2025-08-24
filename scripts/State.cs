@@ -5,6 +5,7 @@ public static class State
 {
 
     public static PackedSceneHolder sceneHolder;
+    public static Hud hud;
 
     public static Improvement MobDamage; // exists as a source for visual effects
 

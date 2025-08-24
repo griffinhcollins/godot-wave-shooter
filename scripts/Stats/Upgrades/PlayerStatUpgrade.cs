@@ -8,9 +8,9 @@ public class PlayerStatUpgrade : PlayerUpgrade
     public PlayerStat stat; // ID of the stat this changes
 
 
-
     public PlayerStatUpgrade(PlayerStat _stat, bool _increasing, string _iconName, Condition _condition = null)
     {
+        improvement = _stat;
         stat = _stat;
         positive = _increasing ^ stat.invert;
         iconName = _iconName;
@@ -51,7 +51,7 @@ public class PlayerStatUpgrade : PlayerUpgrade
         return stat.intChange;
     }
 
-    public override string GetDescription(float magnitude)
+    public override string GetMechanicalChange(float magnitude)
     {
         return stat.GetPreview(magnitude, Increasing());
     }
@@ -65,4 +65,15 @@ public class PlayerStatUpgrade : PlayerUpgrade
     {
         return positive;
     }
+
+    public override string GetName()
+    {
+        return stat.GetName() + " " + (Increasing() ? "Up" : "Down");
+    }
+
+    public override string GetWordyDescription()
+    {
+        return stat.description;
+    }
+
 }

@@ -31,6 +31,9 @@ public partial class Hud : CanvasLayer
 
     TextureRect damageGlow;
 
+    bool skippedForBonus = false;
+    int bonusTaken = 0;
+
 
     Button nextWaveButton;
 
@@ -40,6 +43,7 @@ public partial class Hud : CanvasLayer
     Player player;
     public override void _Ready()
     {
+        State.hud = this;
         player = (Player)GetTree().GetNodesInGroup("player")[0];
         waveElements = GetNode<CanvasLayer>("WaveElements");
         shopElements = GetNode<CanvasLayer>("ShopElements");
@@ -47,6 +51,7 @@ public partial class Hud : CanvasLayer
         upgradeCost = shopElements.GetNode("BuySlot").GetNode<Label>("Cost");
         damageGlow = GetNode<TextureRect>("DamageEffect/RedGlow");
         nextWaveButton = GetNode<Button>("ShopElements/NextWave");
+        upgradeBar = GetNode<HBoxContainer>("ShopElements/Upgrades");
     }
 
     public override void _Process(double delta)
@@ -87,6 +92,7 @@ public partial class Hud : CanvasLayer
         waveElements.Show();
         shopElements.Hide();
         gameOverElements.Hide();
+        skippedForBonus = false;
     }
 
     public void ShowShop()
@@ -94,8 +100,19 @@ public partial class Hud : CanvasLayer
         player.Hide();
         waveElements.Hide();
         shopElements.Show();
-        nextWaveButton.Text = "Skip Upgrade (+$10 money cap)";
-        nextWaveButton.AddThemeFontSizeOverride("font_size", 36);
+        shopElements.GetNode<Control>("Bonus Upgrades").Hide();
+        if (Stats.Counters.IsUnlockWave())
+        {
+            nextWaveButton.Text = "Skip Unlock (+3 free upgrades)";
+            nextWaveButton.AddThemeFontSizeOverride("font_size", 36);
+
+        }
+        else
+        {
+            nextWaveButton.Text = "Skip Upgrade (+$10 money cap)";
+            nextWaveButton.AddThemeFontSizeOverride("font_size", 36);
+
+        }
 
         rerollCost = Stats.Counters.IsUnlockWave() ? 50 : 10;
         shopElements.GetNode<Button>("Delve Deeper").Hide();
@@ -105,27 +122,76 @@ public partial class Hud : CanvasLayer
     private void OnUpgradeChosen()
     {
         // An upgrade has been selected
-        upgradeSelected = true;
-        upgradeBar.Hide();
-        if (Stats.Counters.IsUnlockWave())
+        if (!skippedForBonus || bonusTaken >= 2)
         {
-            shopElements.GetNode<Button>("Delve Deeper").Show();
-        }
-        shopElements.GetNode<Button>("Reroll").Hide();
-        shopElements.GetNode<Button>("BuySlot").Hide();
+            upgradeSelected = true;
+            upgradeBar.Hide();
+            shopElements.GetNode<Control>("Bonus Upgrades").Hide();
 
-        // Change Skip for cash to Next Wave
-        nextWaveButton.Text = "Next Wave";
-        nextWaveButton.AddThemeFontSizeOverride("font_size", 64);
+            if (Stats.Counters.IsUnlockWave())
+            {
+                shopElements.GetNode<Button>("Delve Deeper").Show();
+            }
+            shopElements.GetNode<Button>("Reroll").Hide();
+            shopElements.GetNode<Button>("BuySlot").Hide();
+
+            // Change Skip for cash to Next Wave
+            nextWaveButton.Text = "Next Wave";
+            nextWaveButton.AddThemeFontSizeOverride("font_size", 64);
+        }
+        else
+        {
+            bonusTaken++;
+        }
+
     }
 
     private void OnNextWavePressed()
     {
-        if (!upgradeSelected)
+        if (upgradeSelected)
         {
+            CloseShop();
+            return;
+        }
+        if (Stats.Counters.IsUnlockWave())
+        {
+            // Player has skipped their unlock and is instead getting 3 free upgrades
+            skippedForBonus = true;
+            ShowBonusUpgrades();
+        }
+        else
+        {
+            // Player has skipped an upgrade so gets some money
             Stats.PlayerStats.MoneyCap.ApplyUpgrade(10, true);
             player.AddMoney(10);
+            CloseShop();
         }
+    }
+
+    private void ShowBonusUpgrades()
+    {
+        // hoo boy
+        // No rerolling or getting extra slots, they'll already have plenty of options
+        bonusTaken = 0;
+        shopElements.GetNode<RichTextLabel>("Bonus Upgrades/Description").Text = "";
+        upgradeSelected = true;
+        nextWaveButton.Text = "Next Wave";
+        nextWaveButton.AddThemeFontSizeOverride("font_size", 64);
+        shopElements.GetNode<Button>("Reroll").Hide();
+        shopElements.GetNode<Button>("BuySlot").Hide();
+        shopElements.GetNode<Control>("Bonus Upgrades").Show();
+        GenerateShop(shopElements.GetNode<Container>("Bonus Upgrades/HBoxContainer"), 12);
+
+    }
+
+    public void UpdateUpgradeDescription(string description)
+    {
+
+        shopElements.GetNode<RichTextLabel>("Bonus Upgrades/Description").Text = description;
+    }
+
+    private void CloseShop()
+    {
         ShowWave();
         EmitSignal(SignalName.NextWave);
         foreach (UpgradeNode upgrade in shopElements.GetNode("Upgrades").GetChildren())
@@ -140,7 +206,7 @@ public partial class Hud : CanvasLayer
         int cost = GetCurrentUpgradeSlotCost();
         if (player.ChargeMoney(cost))
         {
-            AddUpgrade();
+            AddUpgrade(upgradeBar);
             Stats.PlayerStats.UpgradeSlots.ApplyUpgrade(1, true);
             if (Stats.PlayerStats.UpgradeSlots.GetDynamicVal() >= Stats.PlayerStats.UpgradeSlots.GetRange().Y)
             {
@@ -161,7 +227,7 @@ public partial class Hud : CanvasLayer
             {
                 item.QueueFree();
             }
-            GenerateShop(true);
+            GenerateShop(upgradeBar, 3, true);
 
         }
     }
@@ -198,11 +264,14 @@ public partial class Hud : CanvasLayer
         AddChild(dmgNum);
     }
 
-    public void GenerateShop(bool delving = false)
+    public void GenerateShop(Container _upgradeBar = null, int upgradeNumOverride = -1, bool delving = false)
     {
+        if (_upgradeBar == null)
+        {
+            _upgradeBar = upgradeBar;
+            ShowShop();
+        }
         upgradeSelected = false;
-        upgradeBar = shopElements.GetNode<HBoxContainer>("Upgrades");
-        ShowShop();
         int upgradeSlotNum = (int)Stats.PlayerStats.UpgradeSlots.GetDynamicVal();
 
         Button buySlot = shopElements.GetNode<Button>("BuySlot");
@@ -223,9 +292,9 @@ public partial class Hud : CanvasLayer
         excludePool = new();
         if (!delving)
         {
-            for (int i = 0; i < (Stats.Counters.IsUnlockWave() ? 3 : upgradeSlotNum); i++)
+            for (int i = 0; i < Mathf.Max(upgradeNumOverride, Stats.Counters.IsUnlockWave() ? 3 : upgradeSlotNum); i++)
             {
-                UpgradeNode newUpgrade = AddUpgrade();
+                UpgradeNode newUpgrade = AddUpgrade(_upgradeBar);
             }
             shopElements.GetNode<Button>("Reroll").Show();
         }
@@ -234,15 +303,15 @@ public partial class Hud : CanvasLayer
             // they paid to get an extra upgrade, but it'll come with a mutation
             for (int i = 0; i < 3; i++)
             {
-                UpgradeNode newUpgrade = AddUpgrade(true);
+                UpgradeNode newUpgrade = AddUpgrade(_upgradeBar, true);
             }
             // No rerolling or getting extra slots if you're delving
             buySlot.Hide();
             shopElements.GetNode<Button>("Reroll").Hide();
         }
         // This is hacky but it will stop the upgrade bar sometimes appearing offset 
-        upgradeBar.Visible = false;
-        upgradeBar.Visible = true;
+        _upgradeBar.Visible = false;
+        _upgradeBar.Visible = true;
         UpdateCosts();
 
     }
@@ -258,7 +327,7 @@ public partial class Hud : CanvasLayer
         {
             upgrade.QueueFree();
         }
-        GenerateShop();
+        GenerateShop(upgradeBar);
     }
 
 
@@ -273,12 +342,12 @@ public partial class Hud : CanvasLayer
         return (int)(10 * Mathf.Pow(2, Stats.PlayerStats.UpgradeSlots.GetDynamicVal() - 3));
     }
 
-    private UpgradeNode AddUpgrade(bool delving = false)
+    private UpgradeNode AddUpgrade(Container _upgradeBar, bool delving = false)
     {
         UpgradeNode newUpgrade = upgrade.Instantiate<UpgradeNode>();
-        upgradeBar.AddChild(newUpgrade);
-        (upgradePool, excludePool) = newUpgrade.Generate(upgradePool, excludePool, delving);
+        (upgradePool, excludePool) = newUpgrade.Generate(upgradePool, excludePool, delving, _upgradeBar != upgradeBar);
         newUpgrade.UpgradeSelected += OnUpgradeChosen;
+        _upgradeBar.AddChild(newUpgrade);
         return newUpgrade;
     }
 

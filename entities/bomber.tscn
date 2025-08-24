@@ -30,7 +30,7 @@ mass = 30.0
 gravity_scale = 0.0
 script = ExtResource("1_svlx0")
 bomb = ExtResource("2_ybra4")
-firstAppearsAtWave = 1
+firstAppearsAtWave = 15
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 

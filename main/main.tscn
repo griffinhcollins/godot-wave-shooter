@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://b8xdrbjqw4dbh"]
+[gd_scene load_steps=23 format=3 uid="uid://b8xdrbjqw4dbh"]
 
 [ext_resource type="Script" path="res://main/Main.cs" id="1_7h5d5"]
 [ext_resource type="PackedScene" uid="uid://cp4tep5yomtr4" path="res://entities/jellyfish.tscn" id="2_iwtfb"]
@@ -14,6 +14,8 @@
 [ext_resource type="PackedScene" uid="uid://den36dbitx31u" path="res://player/effects/plague_cloud.tscn" id="9_ffucl"]
 [ext_resource type="PackedScene" uid="uid://cx23hqh3pjy5l" path="res://entities/coin.tscn" id="10_o0jux"]
 [ext_resource type="PackedScene" path="res://player/effects/explosion.tscn" id="10_q14kl"]
+[ext_resource type="PackedScene" path="res://player/effects/ignition_particles.tscn" id="14_hr3s7"]
+[ext_resource type="PackedScene" path="res://player/effects/static_particles.tscn" id="15_sd5i7"]
 
 [sub_resource type="Curve2D" id="Curve2D_oc665"]
 _data = {
@@ -87,6 +89,8 @@ lightningArc = ExtResource("8_7562c")
 plagueCloud = ExtResource("9_ffucl")
 explosion = ExtResource("10_q14kl")
 coin = ExtResource("10_o0jux")
+ignitedParticles = ExtResource("14_hr3s7")
+lightningStaticParticles = ExtResource("15_sd5i7")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -2

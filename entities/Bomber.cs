@@ -76,4 +76,10 @@ public partial class Bomber : OrganicMob
         GetNode<Timer>("BombTimer").Paused = false;
     }
 
+    protected override void Die()
+    {
+        GetNode<Timer>("BombTimer").Stop();
+        base.Die();
+    }
+
 }

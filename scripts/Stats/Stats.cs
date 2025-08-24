@@ -254,7 +254,7 @@ public static class Stats
              2, new Vector2(0.1f, 2), Uncommon, false, true);
             public static PlayerStat lightningStunChance = new PlayerStat("Static Stun Chance",
             "Chance that an enemy, upon being struck by a lightning arc, will be stunned while affected by static.",
-             1, new Vector2(0, 1), Rare, false, false, 0.5f);
+             0, new Vector2(0, 1), Rare, false, false, 0.5f);
             public static PlayerStat lightningChainDamageRetention = new PlayerStat("Chain Damage Retention",
             "Damage retention when chaining from one enemy to another.",
              0.5f, new Vector2(0.5f, 1), Common, false, false, 0.5f, new StatCondition(lightningChainChance, 0.2f, true));

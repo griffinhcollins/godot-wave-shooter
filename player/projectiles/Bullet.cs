@@ -199,7 +199,8 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
             beforePauseVelocity = Vector2.Zero;
 
         }
-
+        double time = Time.GetUnixTimeFromSystem();
+        
         timeAlive += (float)delta * (Unlocks.Flamethrower.unlocked ? 3 : 1);
 
         foreach (Mutation m in GetMutations())
@@ -220,7 +221,12 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
         //     Color currentColour = sprite.Modulate;
         //     sprite.Modulate = new Color(currentColour.R, currentColour.G, currentColour.B, Mathf.Lerp(1, 0.5f, 2*(Lifetime.GetDynamicVal() -)));
         // }
-
+        time -= Time.GetUnixTimeFromSystem();
+        time *= -1;
+        if (time > 0.001)
+        {
+            GD.Print(string.Format("{0} bullet process time: {1}ms", Name, time * 1000));
+        }
     }
 
     protected void ActivateInitialMutationEffects()
@@ -293,7 +299,7 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
 
     protected virtual void HandleCollision(Node2D hitNode)
     {
-
+        double time = Time.GetUnixTimeFromSystem();
         if (hitNode.IsInGroup("border"))
         {
             numHit++;
@@ -341,6 +347,12 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
             mobHit.TakeDamage(dmg, damageType);
         }
 
+        time -= Time.GetUnixTimeFromSystem();
+        time *= -1;
+        if (time > 0.001)
+        {
+            GD.Print(string.Format("{0} bullet collision time: {1}ms", GetParent().Name, time * 1000));
+        }
 
     }
 
@@ -378,7 +390,6 @@ public abstract partial class Bullet : Node2D, IAffectedByVisualEffects
         if (soundFinished)
         {
             parent.QueueFree();
-
         }
     }
 

@@ -138,6 +138,7 @@ theme_override_font_sizes/font_size = 64
 text = "Options"
 
 [node name="ShopElements" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="ShopTitle" type="Label" parent="ShopElements"]
 anchors_preset = 5

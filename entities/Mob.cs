@@ -330,7 +330,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         ProcessMovement(delta);
         time -= Time.GetUnixTimeFromSystem();
         time *= -1;
-        if (time > 0.001)
+        if (time > 0.005)
         {
             GD.Print(string.Format("{0} Movement time: {1}ms", GetID(), time * 1000));
         }

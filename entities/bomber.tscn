@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cnpgix24ufjdy" path="res://entities/bomb.tscn" id="2_ybra4"]
 [ext_resource type="Shader" path="res://shaders/colourable.gdshader" id="3_vy4mq"]
 [ext_resource type="Texture2D" uid="uid://ichymdvvsl7" path="res://custom assets/enemies/bomber.png" id="4_gr3tu"]
-[ext_resource type="PackedScene" uid="uid://bp21m4kr2kvxa" path="res://entities/offscreen_indicator.tscn" id="5_q3jod"]
+[ext_resource type="PackedScene" uid="uid://cpsf1tpjvco18" path="res://entities/offscreen_indicator.tscn" id="5_q3jod"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kh3me"]
 resource_local_to_scene = true

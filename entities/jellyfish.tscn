@@ -1,7 +1,7 @@
 [gd_scene load_steps=14 format=3 uid="uid://cp4tep5yomtr4"]
 
 [ext_resource type="Script" path="res://entities/Jellyfish.cs" id="1_gs1vn"]
-[ext_resource type="PackedScene" uid="uid://bp21m4kr2kvxa" path="res://entities/offscreen_indicator.tscn" id="2_vu1s5"]
+[ext_resource type="PackedScene" uid="uid://cpsf1tpjvco18" path="res://entities/offscreen_indicator.tscn" id="2_vu1s5"]
 [ext_resource type="Shader" path="res://shaders/colourable.gdshader" id="3_0uud4"]
 [ext_resource type="Texture2D" uid="uid://biw0pankd8h37" path="res://custom assets/enemies/Jellyfish A No1.png" id="4_7a8sw"]
 [ext_resource type="Texture2D" uid="uid://ct27dywddkidk" path="res://custom assets/enemies/Jellyfish A No2.png" id="5_uxgu0"]

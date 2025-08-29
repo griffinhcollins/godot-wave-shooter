@@ -147,7 +147,7 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         {
             // PhysicsServer implementation
             State.bulletManager.SpawnBullet(new Vector2(0, -1).Rotated(spreadRotate), 1000 * ShotSpeed.GetDynamicVal(), fireFromPos + Position);
-
+            return;
 
             fireFromPos += Position; // Add the player's position because this projectile isn't a child of this node
             // A bullet is piercing first, then when piercing runs out becomes bouncy. If there is no piercing, it starts bouncy.

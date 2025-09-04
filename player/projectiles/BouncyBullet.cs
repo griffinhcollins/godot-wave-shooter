@@ -3,7 +3,7 @@ using static Stats;
 using System;
 using System.Collections.Generic;
 
-public partial class BouncyBullet : Bullet
+public partial class BouncyBullet : OldBullet
 {
 
     RigidBody2D parent;

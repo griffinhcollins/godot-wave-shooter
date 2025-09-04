@@ -3,7 +3,7 @@ using static Stats.PlayerStats;
 using System;
 using System.Linq;
 
-public partial class LaserBeam : Bullet
+public partial class LaserBeam : OldBullet
 {
 
 	GpuParticles2D particles;

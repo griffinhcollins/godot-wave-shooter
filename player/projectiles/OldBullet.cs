@@ -3,21 +3,14 @@ using static Stats.PlayerStats;
 using System.Collections.Generic;
 using System.Linq;
 
-public partial class Bullet : IAffectedByVisualEffects
+public abstract partial class OldBullet : Node2D, IAffectedByVisualEffects
 {
 
     // [Export]
     // PackedScene splinterShard;
 
-    public string name;
-    public Vector2 direction;
-    public Vector2 position;
-    public float lifetime = 0;
-    public float speed;
-    public int imageIndex;
-    public Rid shapeID;
-    public Rid body;
-
+    [Export]
+    PackedScene lightningArc;
 
     protected DamageType damageType;
 
@@ -32,6 +25,10 @@ public partial class Bullet : IAffectedByVisualEffects
 
     public float seed { get; private set; }
 
+    protected float timeAlive;
+
+    // Whether the firing sound has finished sounding - can't delete until it has
+    bool soundFinished = false;
 
     protected Vector2 beforePauseVelocity;
 
@@ -57,7 +54,7 @@ public partial class Bullet : IAffectedByVisualEffects
 
 
     // Called when the node enters the scene tree for the first time.
-    public virtual void Initialize()
+    public override void _Ready()
     {
         dead = false;
 
@@ -77,17 +74,22 @@ public partial class Bullet : IAffectedByVisualEffects
 
         if (originalBullet)
         {
-            State.audioManager.PlaySound("FireSound");
+            GetParent().GetNode<AudioStreamPlayer>("FireSound").Play();
 
         }
-        lifetime = 0;
+        timeAlive = 0;
+        CollisionObject2D parent = GetParent<CollisionObject2D>();
 
-        GD.Print("wallbounce");
+        if (Unlocks.WallBounce.unlocked)
+        {
+            parent.SetCollisionMaskValue(5, true);
 
-        // if (this is not LaserBeam)
-        // {
-        //     SetScale();
-        // }
+        }
+
+        if (this is not LaserBeam)
+        {
+            SetScale();
+        }
 
         if (Unlocks.Flamethrower.unlocked)
         {
@@ -98,19 +100,19 @@ public partial class Bullet : IAffectedByVisualEffects
         GenerateVisualEffects();
         ((IAffectedByVisualEffects)this).ImmediateVisualEffects();
 
-
+        
 
     }
 
-    protected virtual void AssignDamageType() // Default damage type
-    {
-        damageType = DamageTypes.Blunt;
-    }
+    protected abstract void AssignDamageType();
 
     public void SetScale(float multiplier = 1)
     {
-        PhysicsServer2D.ShapeSetData(shapeID, 15 * BulletSize.GetDynamicVal() * shardMult * multiplier);
+
+        Sprite2D sprite = GetNode<Sprite2D>("MainSprite");
         Vector2 scale = Vector2.One * BulletSize.GetDynamicVal() * shardMult * multiplier;
+        GetParent().GetNode<CollisionShape2D>("CollisionShape2D").Scale = scale;
+        sprite.Scale = scale;
         if (visualEffects is not null && visualEffects.Count != 0)
         {
             foreach (GpuParticles2D p in instantiatedParticles.Values)
@@ -142,9 +144,13 @@ public partial class Bullet : IAffectedByVisualEffects
     }
     public float GetTimeAlive()
     {
-        return lifetime;
+        return timeAlive;
     }
 
+    public void AddToPosition(Vector2 offset)
+    {
+        GetParent<Node2D>().Position += offset;
+    }
 
 
     public void AddToHitMobs(Mob mob)
@@ -156,10 +162,7 @@ public partial class Bullet : IAffectedByVisualEffects
         mobsHit.Add(mob);
     }
 
-    public virtual Vector2 GetCurrentVelocity()
-    {
-        return direction * speed;
-    }
+    public abstract Vector2 GetCurrentVelocity();
     // Each projectile type implements more, this is just something they all need as well
     public virtual void SetVelocity(Vector2 newVelocity, bool normalize = true)
     {
@@ -176,16 +179,10 @@ public partial class Bullet : IAffectedByVisualEffects
         }
         return initialVelocity;
     }
-    protected virtual void Pause()
-    {
-        // TODO
-    }
-    protected virtual void UnPause()
-    {
-        // TODO
-    }
+    protected abstract void Pause();
+    protected abstract void UnPause();
 
-    public virtual void Process(double delta)
+    public override void _Process(double delta)
     {
         if (State.currentState == State.paused)
         {
@@ -203,15 +200,15 @@ public partial class Bullet : IAffectedByVisualEffects
 
         }
         double time = Time.GetUnixTimeFromSystem();
-
-        lifetime += (float)delta * (Unlocks.Flamethrower.unlocked ? 3 : 1);
+        
+        timeAlive += (float)delta * (Unlocks.Flamethrower.unlocked ? 3 : 1);
 
         foreach (Mutation m in GetMutations())
         {
-            m.OngoingEffect(delta, this);
+            // m.OngoingEffect(delta, this);
         }
 
-        if (lifetime >= Lifetime.GetDynamicVal())
+        if (timeAlive >= Lifetime.GetDynamicVal())
         {
             HandleDeath(null, false);
         }
@@ -228,7 +225,7 @@ public partial class Bullet : IAffectedByVisualEffects
         time *= -1;
         if (time > 0.001)
         {
-            GD.Print(string.Format("{0} bullet process time: {1}ms", name, time * 1000));
+            GD.Print(string.Format("{0} bullet process time: {1}ms", Name, time * 1000));
         }
     }
 
@@ -237,7 +234,7 @@ public partial class Bullet : IAffectedByVisualEffects
         foreach (Mutation m in GetMutations())
         {
 
-            m.ImmediateEffect(this);
+            // m.ImmediateEffect(this);
         }
     }
 
@@ -273,14 +270,15 @@ public partial class Bullet : IAffectedByVisualEffects
         dmg = newDmg;
     }
 
-    public void OnCollision(Node2D body)
+    private void OnCollision(Node2D body)
     {
+
         // This always happens when we hit something, regardless of if it is the final hit
         HandleCollision(body);
         //  Now do checks for things that are only on final or non-final hit
         if (
             ((numHit <= Unlocks.bouncingBulletBounces.GetDynamicVal()) || // Don't die if we have bounces left
-            (lifetime < Unlocks.piercingBulletsPiercingTime.GetDynamicVal()) || // Don't die if we have piercing left
+            (timeAlive < Unlocks.piercingBulletsPiercingTime.GetDynamicVal()) || // Don't die if we have piercing left
             Unlocks.OverflowBullets.unlocked || Unlocks.Flamethrower.unlocked) && // Don't die if overflow bullets are unlocked
             dmg > 0 // Do die if we've run out of damage, even if we have bounces/pierces left
          )
@@ -301,13 +299,14 @@ public partial class Bullet : IAffectedByVisualEffects
 
     protected virtual void HandleCollision(Node2D hitNode)
     {
+        double time = Time.GetUnixTimeFromSystem();
         if (hitNode.IsInGroup("border"))
         {
             numHit++;
             // If a piercing shot hits a wall while wall bounces are unlocked, instantly convert it into bouncy
             if (Unlocks.piercingBulletsPiercingTime.GetDynamicVal() > 0)
             {
-                lifetime = Unlocks.piercingBulletsPiercingTime.GetDynamicVal();
+                timeAlive = Unlocks.piercingBulletsPiercingTime.GetDynamicVal();
             }
             // Reduce damage of bullet when it hits a border
             SetDamage(dmg * Unlocks.wallBounceDamageRetention.GetDynamicVal());
@@ -333,7 +332,7 @@ public partial class Bullet : IAffectedByVisualEffects
 
         foreach (Mutation m in GetMutations())
         {
-            m.OnCollision(this);
+            // m.OnCollision(this);
         }
         if (dmg <= 0)
         {
@@ -348,7 +347,12 @@ public partial class Bullet : IAffectedByVisualEffects
             mobHit.TakeDamage(dmg, damageType);
         }
 
-
+        time -= Time.GetUnixTimeFromSystem();
+        time *= -1;
+        if (time > 0.001)
+        {
+            GD.Print(string.Format("{0} bullet collision time: {1}ms", GetParent().Name, time * 1000));
+        }
 
     }
 
@@ -370,13 +374,29 @@ public partial class Bullet : IAffectedByVisualEffects
 
 
         dead = true;
+        Node2D parent = GetParent<Node2D>();
+        parent.Hide();
+        ((CollisionObject2D)parent).CollisionLayer = 0; // Disable collision
+        ((CollisionObject2D)parent).CollisionMask = 0; // Disable collision
+        if (instantiatedParticles is not null)
+        {
+            foreach (GpuParticles2D p in instantiatedParticles.Values)
+            {
+                p.Reparent(GetTree().Root);
+                p.Emitting = false;
+            }
+        }
 
+        if (soundFinished)
+        {
+            parent.QueueFree();
+        }
     }
 
     bool IsOnScreen()
     {
-        Vector2 screenSize = State.bulletManager.GetViewportRect().Size;
-        return position.X >= -10 && position.X <= screenSize.X + 10 && position.Y >= -10 && position.Y <= screenSize.Y + 10;
+        Vector2 screenSize = GetViewportRect().Size;
+        return GlobalPosition.X >= -10 && GlobalPosition.X <= screenSize.X + 10 && GlobalPosition.Y >= -10 && GlobalPosition.Y <= screenSize.Y + 10;
     }
 
     protected void Splinter(Node2D lastHit = null, int shardCountOveride = -1)
@@ -391,6 +411,7 @@ public partial class Bullet : IAffectedByVisualEffects
             hitMob = (Mob)lastHit;
         }
 
+        Node2D parent = GetParent<Node2D>();
         int shards = (int)Unlocks.splinterFragments.GetDynamicVal();
         if (shardCountOveride != -1)
         {
@@ -399,20 +420,22 @@ public partial class Bullet : IAffectedByVisualEffects
         for (int i = 0; i < shards; i++)
         {
             // Copy myself
+            Node2D shardBody = (GD.Load(GetParent().SceneFilePath) as PackedScene).Instantiate<Node2D>();
+            Bullet shard = shardBody.GetNode<Bullet>("ScriptHolder");
+            if (this is LaserBeam)
+            {
+                // If splinter is with laser beam, spawns a laser beam off a hit enemy
+                shardBody.GlobalPosition = lastHit.GlobalPosition;
+                // Make it perpendicular in either direction
+                shardBody.Rotation = GD.Randf() * 2 * Mathf.Pi;
+            }
+            else
+            {
+                shardBody.Position = parent.Position;
+                Vector2 shardVelocity = GetCurrentVelocity().Rotated((GD.Randf() + 1 / 6) * 1.5f * Mathf.Pi);
+                shard.SetVelocity(shardVelocity);
 
-            // if (this is LaserBeam)
-            // {
-            //     // If splinter is with laser beam, spawns a laser beam off a hit enemy
-            //     shardBody.GlobalPosition = lastHit.GlobalPosition;
-            //     // Make it perpendicular in either direction
-            //     shardBody.Rotation = GD.Randf() * 2 * Mathf.Pi;
-            // }
-            // else
-            // {
-
-            Bullet shard = State.bulletManager.SpawnBullet(direction.Rotated((GD.Randf() + 1 / 6) * 1.5f * Mathf.Pi), position, speed);
-
-            // }
+            }
             shard.isShard = true;
             foreach (Mutation m in GetMutations())
             {
@@ -423,9 +446,19 @@ public partial class Bullet : IAffectedByVisualEffects
                 shard.AddToHitMobs(hitMob);
                 shard.shardParent = hitMob;
             }
+            GetTree().Root.CallDeferred(MethodName.AddChild, shardBody);
         }
     }
 
+    private void SoundFinished()
+    {
+        soundFinished = true;
+        if (dead)
+        {
+            QueueFree();
+
+        }
+    }
 
 
 }

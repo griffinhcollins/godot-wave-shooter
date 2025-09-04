@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://b8xdrbjqw4dbh"]
+[gd_scene load_steps=26 format=3 uid="uid://b8xdrbjqw4dbh"]
 
 [ext_resource type="Script" path="res://main/Main.cs" id="1_7h5d5"]
 [ext_resource type="PackedScene" uid="uid://cp4tep5yomtr4" path="res://entities/jellyfish.tscn" id="2_iwtfb"]
@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://br3rrmtxfl84c" path="res://player/effects/static_particles.tscn" id="15_sd5i7"]
 [ext_resource type="Script" path="res://main/BulletManager.cs" id="17_0vgmj"]
 [ext_resource type="Texture2D" uid="uid://cjilwsmy35you" path="res://custom assets/projectiles/bullet.png" id="18_l2al7"]
+[ext_resource type="Script" path="res://main/AudioManager.cs" id="19_qxmkc"]
 
 [sub_resource type="Curve2D" id="Curve2D_oc665"]
 _data = {
@@ -101,12 +102,18 @@ centered = false
 script = ExtResource("17_0vgmj")
 bulletImage = ExtResource("18_l2al7")
 
+[node name="Area2D" type="Area2D" parent="BulletManager"]
+
 [node name="Player" parent="." instance=ExtResource("3_vww5f")]
 position = Vector2(405, 328)
+
+[node name="AudioManager" type="Node2D" parent="."]
+script = ExtResource("19_qxmkc")
 
 [connection signal="NextWave" from="HUD" to="." method="StartWave"]
 [connection signal="StartGame" from="HUD" to="." method="NewGame"]
 [connection signal="timeout" from="MobTimer" to="." method="OnMobTimerTimeout"]
 [connection signal="timeout" from="WaveTimer" to="." method="OnWaveTimeout"]
 [connection signal="timeout" from="StartTimer" to="." method="OnStartTimerTimeout"]
+[connection signal="body_shape_entered" from="BulletManager/Area2D" to="BulletManager" method="BodyShapeEntered"]
 [connection signal="Killed" from="Player" to="." method="GameOver"]

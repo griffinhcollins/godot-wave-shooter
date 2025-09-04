@@ -63,6 +63,7 @@ public partial class Player : Node2D, IAffectedByVisualEffects
     public override void _Ready()
     {
 
+        State.player = this;
         Hide();
         screenSize = GetViewportRect().Size;
         sprite = GetNode<AnimatedSprite2D>("MainSprite");
@@ -75,6 +76,7 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         damageSound = GetNode<AudioStreamPlayer2D>("DamageSound");
         hud = GetParent().GetNode<Hud>("HUD");
         shield = GetNode<Node2D>("Shield");
+
 
         // Hide();
     }
@@ -140,13 +142,14 @@ public partial class Player : Node2D, IAffectedByVisualEffects
             Area2D newBeam = laserBeam.Instantiate<Area2D>();
             newBeam.Position = fireFromPos;
             newBeam.Rotate(spreadRotate);
-            projectile = newBeam.GetNode<LaserBeam>("ScriptHolder");
+            // projectile = newBeam.GetNode<LaserBeam>("ScriptHolder");
             AddChild(newBeam);
         }
         else
         {
             // PhysicsServer implementation
-            State.bulletManager.SpawnBullet(new Vector2(0, -1).Rotated(spreadRotate), 1000 * ShotSpeed.GetDynamicVal(), fireFromPos + Position);
+            projectile = State.bulletManager.SpawnBullet(new Vector2(0, -1).Rotated(spreadRotate), fireFromPos + Position);
+            // State.bulletManager.NewSpawn(new Vector2(0, -1).Rotated(spreadRotate), 1000 * ShotSpeed.GetDynamicVal(), fireFromPos + Position);
             return;
 
             fireFromPos += Position; // Add the player's position because this projectile isn't a child of this node
@@ -178,7 +181,7 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         {
             foreach (Mutation m in activeMutations)
             {
-                projectile.AddMutation(m);
+                // projectile.AddMutation(m);
             }
 
         }

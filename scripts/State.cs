@@ -7,6 +7,8 @@ public static class State
     public static PackedSceneHolder sceneHolder;
     public static Hud hud;
     public static BulletManager bulletManager;
+    public static AudioManager audioManager;
+    public static Player player;
 
     public static Improvement MobDamage; // exists as a source for visual effects
 

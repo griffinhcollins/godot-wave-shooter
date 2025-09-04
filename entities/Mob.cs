@@ -126,6 +126,18 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     }
 
 
+    protected void OnCollision(Node2D node)
+    {
+        GD.Print(node.Name);
+        GD.Print("body");
+    }
+
+    protected void OnCollision(Rid rid, Node body, int i1, int i2)
+    {
+        GD.Print(body.Name);
+        GD.Print("bunch");
+    }
+
     // Used when the player is hit to give them some breathing room
     public virtual void Recoil(Vector2 recoilFrom, float mult = 1)
     {
@@ -370,7 +382,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
                 }
                 if (LightningPlague.unlocked && GD.Randf() < lightningPlagueChance.GetDynamicVal())
                 {
-                    SpawnLightning(venomDamage.GetDynamicVal(), this, 0, State.sceneHolder.lightningArc);
+                    SpawnLightning(venomDamage.GetDynamicVal(), this, 0);
                 }
             }
 

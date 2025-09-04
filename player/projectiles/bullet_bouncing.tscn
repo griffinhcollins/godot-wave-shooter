@@ -1,10 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://i3lhgidaa505"]
+[gd_scene load_steps=8 format=3 uid="uid://i3lhgidaa505"]
 
 [ext_resource type="Texture2D" uid="uid://cjilwsmy35you" path="res://custom assets/projectiles/bullet.png" id="1_shdhe"]
 [ext_resource type="Script" path="res://player/projectiles/BouncyBullet.cs" id="2_kxnli"]
 [ext_resource type="AudioStream" uid="uid://b2kro6y6sewt7" path="res://sounds/laser pip.wav" id="3_0w13g"]
 [ext_resource type="Shader" path="res://shaders/colourable.gdshader" id="3_6h68e"]
-[ext_resource type="PackedScene" uid="uid://4br0n54vxpbq" path="res://player/effects/lightning_arc.tscn" id="3_b5ltj"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_8702t"]
 bounce = 0.5
@@ -31,7 +30,6 @@ shape = SubResource("CircleShape2D_gr8yg")
 
 [node name="ScriptHolder" type="Node2D" parent="."]
 script = ExtResource("2_kxnli")
-lightningArc = ExtResource("3_b5ltj")
 
 [node name="MainSprite" type="Sprite2D" parent="ScriptHolder"]
 texture_filter = 1

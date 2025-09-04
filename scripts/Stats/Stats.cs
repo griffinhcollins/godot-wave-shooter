@@ -87,7 +87,7 @@ public static class Stats
             10, new Vector2(5, Mathf.Inf), Common);
         public static PlayerStat FireRate = new PlayerStat("Firerate",
             "Bullets fired per second.",
-             2, new Vector2(0.5f, 10), Common);
+             2, new Vector2(0.5f, 1000), Common);
         public static PlayerStat MaxHP = new PlayerStat("HP",
             "Max HP, regenerates each round.",
              3, new Vector2(0, 6), Rare, true);
@@ -265,8 +265,9 @@ public static class Stats
              lightningStats, new List<VisualEffect> { new ParticleEffect(Lightning, "Lightning Arc") });
 
             // returns all the mobs that got hit so other branches don't hit the same mobs
-            public static HashSet<Mob> SpawnLightning(float dmg, Mob seedMob, int depth, PackedScene arcScene, HashSet<Mob> alreadyHit = null)
+            public static HashSet<Mob> SpawnLightning(float dmg, Mob seedMob, int depth, HashSet<Mob> alreadyHit = null)
             {
+                PackedScene arcScene = State.sceneHolder.lightningArc;
                 if (alreadyHit is null)
                 {
                     alreadyHit = new HashSet<Mob> { seedMob };
@@ -315,7 +316,7 @@ public static class Stats
                                 GD.Print(m.GetID());
                             }
                             GD.Print("e");
-                            HashSet<Mob> hits = SpawnLightning(dmg, target, depth + 1, arcScene, alreadyHit);
+                            HashSet<Mob> hits = SpawnLightning(dmg, target, depth + 1, alreadyHit);
                             alreadyHit.UnionWith(hits);
                             GD.Print("after union");
                             GD.Print("s");

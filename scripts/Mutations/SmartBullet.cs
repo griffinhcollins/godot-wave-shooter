@@ -16,7 +16,7 @@ public class SmartBullet : Mutation
 
     public override void OngoingEffect(double delta, Bullet projectile)
     {
-        Vector2 towardsMouse = projectile.GetGlobalMousePosition() - projectile.GlobalPosition;
+        Vector2 towardsMouse = State.bulletManager.GetGlobalMousePosition() - projectile.position;
         if (towardsMouse.LengthSquared() > 700 * 700)
         {
             return;

@@ -4,7 +4,7 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 
-public partial class PiercingBullet : Bullet
+public partial class PiercingBullet : OldBullet
 {
 
     [Export]

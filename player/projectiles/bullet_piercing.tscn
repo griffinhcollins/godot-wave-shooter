@@ -1,11 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://bed170bj6kt5s"]
+[gd_scene load_steps=8 format=3 uid="uid://bed170bj6kt5s"]
 
 [ext_resource type="Script" path="res://player/projectiles/PiercingBullet.cs" id="1_2fpha"]
 [ext_resource type="Texture2D" uid="uid://dvio14uuu5dx0" path="res://custom assets/projectiles/bullet_piercing.png" id="1_xmiob"]
 [ext_resource type="AudioStream" uid="uid://b2kro6y6sewt7" path="res://sounds/laser pip.wav" id="3_b1yh7"]
 [ext_resource type="PackedScene" uid="uid://i3lhgidaa505" path="res://player/projectiles/bullet_bouncing.tscn" id="3_d1mif"]
 [ext_resource type="Shader" path="res://shaders/colourable.gdshader" id="4_5ogsc"]
-[ext_resource type="PackedScene" uid="uid://4br0n54vxpbq" path="res://player/effects/lightning_arc.tscn" id="4_ki2e2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gr8yg"]
 radius = 15.0
@@ -26,7 +25,6 @@ shape = SubResource("CircleShape2D_gr8yg")
 [node name="ScriptHolder" type="Node2D" parent="."]
 script = ExtResource("1_2fpha")
 bounceBullet = ExtResource("3_d1mif")
-lightningArc = ExtResource("4_ki2e2")
 
 [node name="MainSprite" type="Sprite2D" parent="ScriptHolder"]
 texture_filter = 1

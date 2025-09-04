@@ -6,9 +6,23 @@ using System.Linq;
 public partial class BulletManager : Node2D
 {
 
+
+	public class BulletStructure
+	{
+		public Vector2 direction;
+		public Vector2 position;
+		public float lifetime = 0;
+		public float speed;
+		public int imageIndex;
+		public Rid shapeID;
+		public Rid body;
+	}
+
 	Rid sharedArea;
 
-	List<BulletStructure> bullets;
+	Rid bulletShape;
+
+	List<Bullet> bullets;
 
 	[Export]
 	Texture2D bulletImage;
@@ -16,13 +30,20 @@ public partial class BulletManager : Node2D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		
+		bulletShape = PhysicsServer2D.CircleShapeCreate();
 		State.bulletManager = this;
-		bullets = new List<BulletStructure>();
-		sharedArea = PhysicsServer2D.AreaCreate();
+		bullets = new List<Bullet>();
+		sharedArea = GetNode<Area2D>("Area2D").GetRid();
 		Transform2D areaTransform = new Transform2D(0, new Vector2(1280 / 2, 720 / 2));
 		PhysicsServer2D.AreaSetTransform(sharedArea, areaTransform);
 		PhysicsServer2D.AreaSetCollisionLayer(sharedArea, 3);
 		PhysicsServer2D.AreaSetCollisionMask(sharedArea, 2);
+	}
+	private void BodyShapeEntered(Rid body_rid, Node2D body, int body_shape_index, int local_index)
+	{
+		bullets[local_index].OnCollision(body);
+		GD.Print("ow");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -33,21 +54,21 @@ public partial class BulletManager : Node2D
 	public override void _Draw()
 	{
 		Vector2 offset = bulletImage.GetSize() / 2;
-		foreach (BulletStructure b in bullets)
+		foreach (Bullet b in bullets)
 		{
 			DrawTexture(bulletImage, b.position - offset);
 		}
-    }
+	}
 
 
 	public override void _PhysicsProcess(double delta)
 	{
-		List<BulletStructure> tooOld = new List<BulletStructure>();
+		List<Bullet> tooOld = new List<Bullet>();
 		Transform2D t = new Transform2D(0, Vector2.One);
 		for (int i = 0; i < bullets.Count; i++)
 		{
 
-			BulletStructure b = bullets[i];
+			Bullet b = bullets[i];
 
 			b.lifetime += (float)delta;
 
@@ -61,37 +82,65 @@ public partial class BulletManager : Node2D
 			b.position += offset;
 			t.Origin = b.position;
 			PhysicsServer2D.AreaSetShapeTransform(sharedArea, i, t);
-			GD.Print(b.position);
+			// GD.Print(b.position);
 		}
 		for (int i = 0; i < tooOld.Count; i++)
 		{
-			BulletStructure bToKill = tooOld[i];
+			Bullet bToKill = tooOld[i];
 			PhysicsServer2D.FreeRid(bToKill.shapeID);
 			bullets.Remove(bToKill);
 		}
 		QueueRedraw();
 	}
 
-
-
-	public void SpawnBullet(Vector2 direction, float speed, Vector2 initialPosition)
+	public void NewSpawn(Vector2 direction, float speed, Vector2 initialPosition)
 	{
-		GD.Print("spawned a bullet");
-		BulletStructure newBullet = new BulletStructure();
+		PhysicsServer2D.ShapeSetData(bulletShape, 15);
+		Bullet b = new Bullet();
+		b.speed = speed;
+		b.direction = direction;
+		b.position = initialPosition;
+		b.body = PhysicsServer2D.BodyCreate();
+
+		PhysicsServer2D.BodySetSpace(b.body, GetWorld2D().Space);
+		PhysicsServer2D.BodySetConstantForce(b.body, Vector2.Zero);
+		PhysicsServer2D.BodyAddShape(b.body, bulletShape);
+
+		PhysicsServer2D.BodySetCollisionMask(b.body, 2);
+		PhysicsServer2D.BodySetCollisionLayer(b.body, 3);
+		Transform2D t = new Transform2D();
+		t.Origin = b.position;
+
+		PhysicsServer2D.BodySetState(b.body, PhysicsServer2D.BodyState.Transform, t);
+		bullets.Add(b);
+	}
+
+
+
+	public Bullet SpawnBullet(Vector2 direction, Vector2 initialPosition, float speed = -1)
+	{
+		if (speed == -1)
+		{
+			speed = Stats.PlayerStats.ShotSpeed.GetDynamicVal() * 1000;
+		}
+		// GD.Print("spawned a bullet");
+		Bullet newBullet = new Bullet();
 		newBullet.direction = direction;
 		newBullet.position = initialPosition;
 		newBullet.speed = speed;
 		ConfigureCollision(newBullet);
 		bullets.Add(newBullet);
+		newBullet.Initialize();
+		return newBullet;
 	}
 
 
-	private void ConfigureCollision(BulletStructure bullet)
+	private void ConfigureCollision(Bullet bullet)
 	{
-		Transform2D bulletTransform = new Transform2D(0, Position);
+		Transform2D bulletTransform = new Transform2D(0, bullet.position);
 		bulletTransform.Origin = bullet.position;
 		Rid circle = PhysicsServer2D.CircleShapeCreate();
-		PhysicsServer2D.ShapeSetData(circle, 15);
+		PhysicsServer2D.ShapeSetData(circle, 15 * Stats.PlayerStats.BulletSize.GetDynamicVal());
 		PhysicsServer2D.AreaAddShape(sharedArea, circle, bulletTransform);
 		bullet.shapeID = circle;
 	}

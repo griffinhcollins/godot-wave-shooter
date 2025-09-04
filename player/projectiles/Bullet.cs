@@ -65,6 +65,7 @@ public partial class Bullet : IAffectedByVisualEffects
         SetDamage(Damage.GetDynamicVal() * shardMult);
         AssignDamageType();
         SetSeed(GD.Randf());
+        SetScale(shardMult);
 
         numHit = 0;
         if (mobsHit is null)
@@ -370,6 +371,7 @@ public partial class Bullet : IAffectedByVisualEffects
 
 
         dead = true;
+        State.bulletManager.DestroyBullet(this);
 
     }
 

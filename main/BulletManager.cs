@@ -30,7 +30,7 @@ public partial class BulletManager : Node2D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		
+
 		bulletShape = PhysicsServer2D.CircleShapeCreate();
 		State.bulletManager = this;
 		bullets = new List<Bullet>();
@@ -87,10 +87,15 @@ public partial class BulletManager : Node2D
 		for (int i = 0; i < tooOld.Count; i++)
 		{
 			Bullet bToKill = tooOld[i];
-			PhysicsServer2D.FreeRid(bToKill.shapeID);
-			bullets.Remove(bToKill);
+			DestroyBullet(bToKill);
 		}
 		QueueRedraw();
+	}
+
+	public void DestroyBullet(Bullet b)
+	{
+		PhysicsServer2D.FreeRid(b.shapeID);
+		bullets.Remove(b);
 	}
 
 	public void NewSpawn(Vector2 direction, float speed, Vector2 initialPosition)

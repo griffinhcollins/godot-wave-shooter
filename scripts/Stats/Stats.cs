@@ -281,7 +281,7 @@ public static class Stats
                 // Find the nearest mob
                 foreach (Mob mob in seedMob.GetTree().GetNodesInGroup("mobs"))
                 {
-                    if (alreadyHit.Contains(mob) || mob.staticApplied)
+                    if (alreadyHit.Contains(mob) || mob.staticApplied || mob.dead)
                     {
                         continue;
                     }

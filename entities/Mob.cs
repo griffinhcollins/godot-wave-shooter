@@ -34,7 +34,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
     protected Vector2 beforePausePosition;
     protected float beforePauseAngularVelocity;
 
-    protected bool dead = false;
+    public bool dead = false;
 
     GpuParticles2D staticParticles;
 
@@ -228,6 +228,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         Hide();
         CollisionLayer = 0;
         CollisionMask = 0;
+        this.RemoveFromGroup("mobs");
 
 
     }

@@ -37,7 +37,10 @@ public class ParticleEffect : VisualEffect
         }
         GpuParticles2D newParticles = particles.Instantiate<GpuParticles2D>();
         parent.instantiatedParticles[this] = newParticles;
-        ((Node2D)parent).AddChild(newParticles);
+        if (parent is not Bullet)
+        {
+            ((Node2D)parent).AddChild(newParticles);
+        }
     }
 
     public override void OngoingEffect(double delta, IAffectedByVisualEffects parent)

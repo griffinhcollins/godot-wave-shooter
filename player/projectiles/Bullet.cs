@@ -42,10 +42,13 @@ public partial class Bullet : IAffectedByVisualEffects
 
     public int numHit { get; private set; }
     public List<VisualEffect> visualEffects { get; set; }
+
     public Dictionary<StaticColourChange, float> staticColours { get; set; }
     public Dictionary<ParticleEffect, GpuParticles2D> instantiatedParticles { get; set; } // Particle effects should only instantiate once
+
     public HashSet<Improvement> overwrittenSources { get; set; }
 
+    public List<Node2D> attachedParticleNodes;
     // true only if this was sent by the player (not by another bullet)
 
 
@@ -123,6 +126,10 @@ public partial class Bullet : IAffectedByVisualEffects
 
     private void GenerateVisualEffects()
     {
+        if (instantiatedParticles is null)
+        {
+            instantiatedParticles = new();
+        }
         foreach (Unlockable u in Unlocks.allUnlockables.Where(u => u.unlocked))
         {
             foreach (VisualEffect visEffect in u.GetVisualEffects())

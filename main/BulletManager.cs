@@ -7,16 +7,6 @@ public partial class BulletManager : Node2D
 {
 
 
-	public class BulletStructure
-	{
-		public Vector2 direction;
-		public Vector2 position;
-		public float lifetime = 0;
-		public float speed;
-		public int imageIndex;
-		public Rid shapeID;
-		public Rid body;
-	}
 
 	Rid sharedArea;
 
@@ -80,6 +70,11 @@ public partial class BulletManager : Node2D
 
 			Vector2 offset = b.direction * b.speed * (float)delta;
 			b.position += offset;
+
+			foreach (GpuParticles2D p in b.instantiatedParticles.Values)
+			{
+				p.Position = b.position;
+			}
 			t.Origin = b.position;
 			PhysicsServer2D.AreaSetShapeTransform(sharedArea, i, t);
 			// GD.Print(b.position);
@@ -96,28 +91,10 @@ public partial class BulletManager : Node2D
 	{
 		PhysicsServer2D.FreeRid(b.shapeID);
 		bullets.Remove(b);
-	}
-
-	public void NewSpawn(Vector2 direction, float speed, Vector2 initialPosition)
-	{
-		PhysicsServer2D.ShapeSetData(bulletShape, 15);
-		Bullet b = new Bullet();
-		b.speed = speed;
-		b.direction = direction;
-		b.position = initialPosition;
-		b.body = PhysicsServer2D.BodyCreate();
-
-		PhysicsServer2D.BodySetSpace(b.body, GetWorld2D().Space);
-		PhysicsServer2D.BodySetConstantForce(b.body, Vector2.Zero);
-		PhysicsServer2D.BodyAddShape(b.body, bulletShape);
-
-		PhysicsServer2D.BodySetCollisionMask(b.body, 2);
-		PhysicsServer2D.BodySetCollisionLayer(b.body, 3);
-		Transform2D t = new Transform2D();
-		t.Origin = b.position;
-
-		PhysicsServer2D.BodySetState(b.body, PhysicsServer2D.BodyState.Transform, t);
-		bullets.Add(b);
+		foreach (GpuParticles2D p in b.instantiatedParticles.Values)
+		{
+			p.QueueFree();
+		}
 	}
 
 
@@ -135,7 +112,12 @@ public partial class BulletManager : Node2D
 		newBullet.speed = speed;
 		ConfigureCollision(newBullet);
 		bullets.Add(newBullet);
-		newBullet.Initialize();
+		newBullet.Initialize(); // Populates instantiatedParticles
+		foreach (GpuParticles2D p in newBullet.instantiatedParticles.Values)
+		{
+			AddChild(p);
+			p.GlobalPosition = initialPosition;
+		}
 		return newBullet;
 	}
 
@@ -149,5 +131,31 @@ public partial class BulletManager : Node2D
 		PhysicsServer2D.AreaAddShape(sharedArea, circle, bulletTransform);
 		bullet.shapeID = circle;
 	}
+
+
+
+
+
+	// 	public void NewSpawn(Vector2 direction, float speed, Vector2 initialPosition)
+	// {
+	// 	PhysicsServer2D.ShapeSetData(bulletShape, 15);
+	// 	Bullet b = new Bullet();
+	// 	b.speed = speed;
+	// 	b.direction = direction;
+	// 	b.position = initialPosition;
+	// 	b.body = PhysicsServer2D.BodyCreate();
+
+	// 	PhysicsServer2D.BodySetSpace(b.body, GetWorld2D().Space);
+	// 	PhysicsServer2D.BodySetConstantForce(b.body, Vector2.Zero);
+	// 	PhysicsServer2D.BodyAddShape(b.body, bulletShape);
+
+	// 	PhysicsServer2D.BodySetCollisionMask(b.body, 2);
+	// 	PhysicsServer2D.BodySetCollisionLayer(b.body, 3);
+	// 	Transform2D t = new Transform2D();
+	// 	t.Origin = b.position;
+
+	// 	PhysicsServer2D.BodySetState(b.body, PhysicsServer2D.BodyState.Transform, t);
+	// 	bullets.Add(b);
+	// }
 
 }

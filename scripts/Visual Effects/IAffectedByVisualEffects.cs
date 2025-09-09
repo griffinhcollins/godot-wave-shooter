@@ -68,7 +68,7 @@ public interface IAffectedByVisualEffects
         }
     }
 
-    public void AddStaticColour(Node2D parent, StaticColourChange colourChange)
+    public void AddStaticColour(IAffectedByVisualEffects parent, StaticColourChange colourChange)
     {
         if (staticColours is null)
         {
@@ -78,7 +78,9 @@ public interface IAffectedByVisualEffects
         SetColour(parent, GetStaticColour());
     }
 
-    public void RemoveStaticColour(Node2D parent, StaticColourChange colourChange)
+
+
+    public void RemoveStaticColour(IAffectedByVisualEffects parent, StaticColourChange colourChange)
     {
         if (staticColours is null)
         {
@@ -98,9 +100,15 @@ public interface IAffectedByVisualEffects
         return maxPriority;
     }
 
-    private void SetColour(Node2D parent, StaticColourChange colourChange)
+    private void SetColour(IAffectedByVisualEffects parent, StaticColourChange colourChange)
     {
-        Node2D sprite = parent.GetNode<Node2D>("MainSprite");
+
+        if (parent is Bullet)
+        {
+            return;
+        }
+        GD.Print(parent);
+        Node2D sprite = ((Node2D)parent).GetNode<Node2D>("MainSprite");
         ShaderMaterial shadermat;
         if (sprite is Sprite2D)
         {

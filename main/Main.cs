@@ -147,7 +147,7 @@ public partial class Main : Node2D
 
     public void StartWave()
     {
-        // Stats.PlayerStats.Unlocks.PiercingBullets.Unlock();
+        Stats.PlayerStats.Unlocks.Lightning.Unlock();
         // Stats.PlayerStats.Unlocks.Flamethrower.Unlock();
         // Stats.PlayerStats.Mutations.GrowingBullet.applied = true;
         State.currentState = State.alive;

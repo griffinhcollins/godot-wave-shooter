@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using Godot;
 
 public class StaticColourChange : VisualEffect
@@ -28,7 +29,7 @@ public class StaticColourChange : VisualEffect
     public override void ImmediateEffect(IAffectedByVisualEffects parent)
     {
         applied = true;
-        parent.AddStaticColour((Node2D)parent, this);
+        parent.AddStaticColour(parent, this);
     }
 
     public override void OngoingEffect(double delta, IAffectedByVisualEffects parent)
@@ -37,7 +38,7 @@ public class StaticColourChange : VisualEffect
         if (applied && lifeTime <= 0)
         {
             applied = false;
-            parent.RemoveStaticColour((Node2D)parent, this);
+            parent.RemoveStaticColour(parent, this);
         }
         return;
     }

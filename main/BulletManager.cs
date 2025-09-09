@@ -46,7 +46,7 @@ public partial class BulletManager : Node2D
 		Vector2 offset = bulletImage.GetSize() / 2;
 		foreach (Bullet b in bullets)
 		{
-			DrawTexture(bulletImage, b.position - offset);
+			DrawTexture(bulletImage, b.position - offset, ((IAffectedByVisualEffects)b).GetStaticColour().modulate);
 		}
 	}
 

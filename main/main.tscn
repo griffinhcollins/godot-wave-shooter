@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://b8xdrbjqw4dbh"]
+[gd_scene load_steps=28 format=3 uid="uid://b8xdrbjqw4dbh"]
 
 [ext_resource type="Script" path="res://main/Main.cs" id="1_7h5d5"]
 [ext_resource type="PackedScene" uid="uid://cp4tep5yomtr4" path="res://entities/jellyfish.tscn" id="2_iwtfb"]
@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://ctoc7lxl2bj47" path="res://player/effects/ignition_particles.tscn" id="14_hr3s7"]
 [ext_resource type="PackedScene" uid="uid://br3rrmtxfl84c" path="res://player/effects/static_particles.tscn" id="15_sd5i7"]
 [ext_resource type="Script" path="res://main/BulletManager.cs" id="17_0vgmj"]
+[ext_resource type="Shader" path="res://shaders/colourable.gdshader" id="18_3j01n"]
 [ext_resource type="Texture2D" uid="uid://cjilwsmy35you" path="res://custom assets/projectiles/bullet.png" id="18_l2al7"]
 [ext_resource type="Script" path="res://main/AudioManager.cs" id="19_qxmkc"]
 
@@ -41,6 +42,10 @@ normal = Vector2(1, 0)
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_7axoi"]
 normal = Vector2(-1, 0)
 distance = -1280.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yj4n4"]
+shader = ExtResource("18_3j01n")
+shader_parameter/input_colour = null
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_7h5d5")
@@ -103,6 +108,7 @@ script = ExtResource("17_0vgmj")
 bulletImage = ExtResource("18_l2al7")
 
 [node name="Area2D" type="Area2D" parent="BulletManager"]
+material = SubResource("ShaderMaterial_yj4n4")
 
 [node name="Player" parent="." instance=ExtResource("3_vww5f")]
 position = Vector2(405, 328)

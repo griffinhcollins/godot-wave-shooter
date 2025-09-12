@@ -38,12 +38,13 @@ public partial class Biter : OrganicMob
         timeAlive += (float)delta;
         if (timeAlive < warningTime)
         {
-            warningLine.Width = Mathf.Lerp(0, 30, timeAlive / warningTime);
             warningLine.DefaultColor = Color.Color8(255, 0, 0, (byte)Mathf.Lerp(0, 255, timeAlive / warningTime));
+            warningLine.Width = Mathf.Lerp(0, 30, timeAlive / warningTime);
+
         }
         else
         {
-            warningLine.Hide();
+            warningLine.DefaultColor = Color.Color8(255, 255, 255, (byte)Mathf.Lerp(0, 255, 0.01f/(timeAlive - 3)));
             if (stunned)
             {
                 GD.Print("stunned a biter!");

@@ -123,7 +123,7 @@ public partial class Hud : CanvasLayer
     {
         Control upgradesMenu = shopElements.GetNode<Control>("Upgrades");
         upgradesMenu.Show();
-        UpdateUpgradeDescription("[font_size=50][center]Upgrade Store[/center][/font_size]\n\nDespite the name, upgrades are free! Rerolls and extra slots are not, however. Hover over an upgrade to see a description and the effect it will have on your stats.");
+        UpdateUpgradeDescription("[font_size=50][center]Upgrade Store[/center][/font_size]\n\nDespite the name, upgrades are free! Rerolls and extra slots are not, however. Hover over an upgrade to see a description and the effect it will have on your stats.\n\nIf none of the upgrades appeal to you, or you'd rather save up, you can skip the upgrades to increase your money cap by $10.");
     }
 
     private void OnUpgradeChosen()
@@ -170,7 +170,7 @@ public partial class Hud : CanvasLayer
         {
             // Player has skipped an upgrade so gets some money
             Stats.PlayerStats.MoneyCap.ApplyUpgrade(10, true);
-            player.AddMoney(10);
+            // player.AddMoney(10);
             CloseShop();
         }
     }

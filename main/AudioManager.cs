@@ -25,7 +25,6 @@ public partial class AudioManager : Node2D
 		{
 			soundPlayer.Stop();
 		}
-		GD.Print("bang");
 		soundPlayer.Play();
 	}
 

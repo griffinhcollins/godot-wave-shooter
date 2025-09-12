@@ -87,7 +87,7 @@ public static class Stats
             10, new Vector2(5, Mathf.Inf), Common);
         public static PlayerStat FireRate = new PlayerStat("Firerate",
             "Bullets fired per second.",
-             200, new Vector2(0.5f, 1000), Common);
+             2, new Vector2(0.5f, 1000), Common);
         public static PlayerStat MaxHP = new PlayerStat("HP",
             "Max HP, regenerates each round.",
              3, new Vector2(0, 6), Rare, true);
@@ -193,6 +193,7 @@ public static class Stats
         {
 
             // Bouncing bullets
+            static Condition bouncingUnlockCondition = new UnlockCondition(2, false); // Mutually exclusive with piercing
             public static PlayerStat bouncingBulletBounces = new PlayerStat("Bounces",
             "Number of times a bullet will bounce before it expires.",
              1, new Vector2(0, 10), Common, true);
@@ -200,7 +201,7 @@ public static class Stats
             static StatSet bouncingBulletsStats = new StatSet(bouncingBulletsStatList);
             public static Unlockable BouncingBullets = new Unlockable("Bouncing Bullets",
             "Bullets will bounce a number of times before expiring.",
-            bouncingBulletsStats);
+            bouncingBulletsStats, null, bouncingUnlockCondition);
 
 
             // Wallbounce, it's a direct upgrade to bouncing bullets
@@ -215,6 +216,7 @@ public static class Stats
              wallBounceStats, null, wallBounceUnlockCondition);
 
             // Piercing
+            static Condition piercingUnlockCondition = new UnlockCondition(1, false); // Mutually exclusive with bouncing
             public static PlayerStat piercingBulletsPiercingTime = new PlayerStat("Piercing Time",
             "How many seconds a bullet will pierce for after being shot.",
              0.25f, new Vector2(0, 2), Common, false, false, 0.5f, new ConjunctCondition(new List<Condition> { new UnlockCondition(14, false), new UnlockCondition(5, false) }));
@@ -222,7 +224,7 @@ public static class Stats
             static StatSet piercingBulletsStats = new StatSet(piercingBulletsStatList);
             public static Unlockable PiercingBullets = new Unlockable("Piercing Bullets",
             "Bullets pierce through enemies for a period of time after firing.",
-             piercingBulletsStats);
+             piercingBulletsStats, null, piercingUnlockCondition);
 
             // Piercing overwhammer style
             static Condition overflowCondition = new ConjunctCondition(new List<Condition> { new StatCondition(piercingBulletsPiercingTime, 0.5f, true), new StatCondition(Damage, 20, true) });
@@ -480,21 +482,21 @@ public static class Stats
 
 
             public static Unlockable[] allUnlockables = {
-                Laser,
-                BouncingBullets,
-                PiercingBullets,
-                WallBounce,
-                Lightning,
-                OverflowBullets,
-                Splinter,
-                Venom,
-                Plague,
-                PlagueExplosion,
-                LightningPlague,
-                DeathExplosion,
-                Shield,
-                FireTrail,
-                Flamethrower
+                Laser,                  // 0
+                BouncingBullets,        // 1
+                PiercingBullets,        // 2
+                WallBounce,             // 3
+                Lightning,              // 4
+                OverflowBullets,        // 5
+                Splinter,               // 6
+                Venom,                  // 7
+                Plague,                 // 8
+                PlagueExplosion,        // 9
+                LightningPlague,        // 10
+                DeathExplosion,         // 11
+                Shield,                 // 12
+                FireTrail,              // 13
+                Flamethrower            // 14
             };
 
 

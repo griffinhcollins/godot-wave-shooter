@@ -149,30 +149,9 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         {
             // PhysicsServer implementation
             projectile = State.bulletManager.SpawnBullet(new Vector2(0, -1).Rotated(spreadRotate), fireFromPos + Position);
+            projectile.originalBullet = true;
             // State.bulletManager.NewSpawn(new Vector2(0, -1).Rotated(spreadRotate), 1000 * ShotSpeed.GetDynamicVal(), fireFromPos + Position);
             return;
-
-            fireFromPos += Position; // Add the player's position because this projectile isn't a child of this node
-            // A bullet is piercing first, then when piercing runs out becomes bouncy. If there is no piercing, it starts bouncy.
-            Vector2 velocity = new Vector2(0, -1000 * ShotSpeed.GetDynamicVal()).Rotated(spreadRotate);
-
-            if (!Unlocks.PiercingBullets.unlocked)
-            {
-                // Bouncing, it's a rigidbody
-                projectileHolder = bounceBullet.Instantiate<RigidBody2D>();
-            }
-            else
-            {
-                // Piercing, it's an Area2D
-                projectileHolder = pierceBullet.Instantiate<Area2D>();
-            }
-
-            projectileHolder.Rotate(spreadRotate);
-            projectile = projectileHolder.GetNode<Bullet>("ScriptHolder");
-            projectile.originalBullet = true;
-            projectile.SetVelocity(velocity);
-            projectileHolder.Position = fireFromPos;
-            GetParent().AddChild(projectileHolder);
 
 
         }

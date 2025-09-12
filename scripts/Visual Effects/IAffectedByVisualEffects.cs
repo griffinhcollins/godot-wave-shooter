@@ -107,7 +107,7 @@ public interface IAffectedByVisualEffects
         {
             return;
         }
-        GD.Print(parent);
+        // GD.Print(parent);
         Node2D sprite = ((Node2D)parent).GetNode<Node2D>("MainSprite");
         ShaderMaterial shadermat;
         if (sprite is Sprite2D)

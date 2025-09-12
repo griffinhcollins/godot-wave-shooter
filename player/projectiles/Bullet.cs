@@ -86,7 +86,7 @@ public partial class Bullet : IAffectedByVisualEffects
         }
         lifetime = 0;
 
-        GD.Print("wallbounce");
+        // GD.Print("wallbounce");
 
         // if (this is not LaserBeam)
         // {
@@ -294,6 +294,7 @@ public partial class Bullet : IAffectedByVisualEffects
          )
         {
             // Not the final hit - do stuff that only triggers on intermediate hits
+            GD.Print("intermediate");
         }
         else
         {
@@ -326,7 +327,6 @@ public partial class Bullet : IAffectedByVisualEffects
             Mob hitMob = (Mob)hitNode;
             if (Unlocks.Lightning.unlocked)
             {
-
                 Unlocks.SpawnLightning(dmg, hitMob, 0);
             }
             if (Unlocks.OverflowBullets.unlocked)
@@ -336,6 +336,10 @@ public partial class Bullet : IAffectedByVisualEffects
             if (Unlocks.Splinter.unlocked && Unlocks.Laser.unlocked)
             {
                 Splinter(hitNode);
+            }
+            if (Unlocks.BouncingBullets.unlocked)
+            {
+                Bounce(hitNode);
             }
         }
 
@@ -360,10 +364,26 @@ public partial class Bullet : IAffectedByVisualEffects
 
     }
 
+    void Bounce(Node2D hitNode)
+    {
+        Vector2 normal;
+        if (hitNode is Mob)
+        {
+            // Mobs are modelled as spheres that we hit the edge of
+            normal = position - hitNode.GlobalPosition;
+        }
+        else
+        {
+            // We hit a wall
+            normal = hitNode.GetViewportRect().GetCenter() - hitNode.Position;
+        }
+        normal = normal.Normalized();
+        Vector2 newDir = direction - 2 * (direction.Dot(normal)) * normal;
+        direction = newDir;
+    }
 
 
-
-    protected virtual void HandleDeath(Node2D lastHit = null, bool splinterOveride = true)
+    public virtual void HandleDeath(Node2D lastHit = null, bool splinterOveride = true)
     {
         if (dead)
         {
@@ -376,7 +396,7 @@ public partial class Bullet : IAffectedByVisualEffects
             Splinter(lastHit);
         }
 
-
+        GD.Print("blegh");
         dead = true;
         State.bulletManager.DestroyBullet(this);
 

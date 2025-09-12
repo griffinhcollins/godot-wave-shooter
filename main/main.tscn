@@ -109,6 +109,8 @@ bulletImage = ExtResource("18_l2al7")
 
 [node name="Area2D" type="Area2D" parent="BulletManager"]
 material = SubResource("ShaderMaterial_yj4n4")
+collision_layer = 4
+collision_mask = 2
 
 [node name="Player" parent="." instance=ExtResource("3_vww5f")]
 position = Vector2(405, 328)

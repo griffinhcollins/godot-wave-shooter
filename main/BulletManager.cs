@@ -29,16 +29,17 @@ public partial class BulletManager : Node2D
 		PhysicsServer2D.AreaSetTransform(sharedArea, areaTransform);
 		PhysicsServer2D.AreaSetCollisionLayer(sharedArea, 3);
 		PhysicsServer2D.AreaSetCollisionMask(sharedArea, 2);
+
 	}
 	private void BodyShapeEntered(Rid body_rid, Node2D body, int body_shape_index, int local_index)
 	{
 		bullets[local_index].OnCollision(body);
-		GD.Print("ow");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		
 	}
 
 	public override void _Draw()
@@ -46,6 +47,7 @@ public partial class BulletManager : Node2D
 		Vector2 offset = bulletImage.GetSize() / 2;
 		foreach (Bullet b in bullets)
 		{
+			// GD.Print(b.position);
 			DrawTexture(bulletImage, b.position - offset, ((IAffectedByVisualEffects)b).GetStaticColour().modulate);
 		}
 	}
@@ -57,7 +59,7 @@ public partial class BulletManager : Node2D
 		Transform2D t = new Transform2D(0, Vector2.One);
 		for (int i = 0; i < bullets.Count; i++)
 		{
-
+			GD.Print("still truckin");
 			Bullet b = bullets[i];
 
 			b.lifetime += (float)delta;
@@ -70,6 +72,7 @@ public partial class BulletManager : Node2D
 
 			Vector2 offset = b.direction * b.speed * (float)delta;
 			b.position += offset;
+			GD.Print(offset);
 
 			foreach (GpuParticles2D p in b.instantiatedParticles.Values)
 			{
@@ -77,12 +80,11 @@ public partial class BulletManager : Node2D
 			}
 			t.Origin = b.position;
 			PhysicsServer2D.AreaSetShapeTransform(sharedArea, i, t);
-			// GD.Print(b.position);
 		}
 		for (int i = 0; i < tooOld.Count; i++)
 		{
 			Bullet bToKill = tooOld[i];
-			DestroyBullet(bToKill);
+			bToKill.HandleDeath();
 		}
 		QueueRedraw();
 	}

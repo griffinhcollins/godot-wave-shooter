@@ -48,7 +48,8 @@ public partial class BulletManager : Node2D
 		foreach (Bullet b in bullets)
 		{
 			// GD.Print(b.position);
-			DrawTexture(bulletImage, b.position - offset, ((IAffectedByVisualEffects)b).GetStaticColour().modulate);
+			StaticColourChange staticColour = ((IAffectedByVisualEffects)b).GetStaticColour();
+			DrawTexture(bulletImage, b.position - offset, staticColour is null ? Colors.White : staticColour.modulate);
 		}
 	}
 

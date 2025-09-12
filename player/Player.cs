@@ -149,7 +149,7 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         {
             // PhysicsServer implementation
             projectile = State.bulletManager.SpawnBullet(new Vector2(0, -1).Rotated(spreadRotate), fireFromPos + Position);
-            projectile.originalBullet = true;
+            State.audioManager.PlaySound("FireSound");
             // State.bulletManager.NewSpawn(new Vector2(0, -1).Rotated(spreadRotate), 1000 * ShotSpeed.GetDynamicVal(), fireFromPos + Position);
             return;
 

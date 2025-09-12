@@ -28,7 +28,6 @@ public partial class Bullet : IAffectedByVisualEffects
     protected bool dead;
     float dmg;
 
-    protected float shotSpeedMult = 800;
 
     public float seed { get; private set; }
 
@@ -51,8 +50,6 @@ public partial class Bullet : IAffectedByVisualEffects
     public List<Node2D> attachedParticleNodes;
     // true only if this was sent by the player (not by another bullet)
 
-
-    public bool originalBullet;
 
     float shardMult = 1;
 
@@ -80,12 +77,6 @@ public partial class Bullet : IAffectedByVisualEffects
         }
 
 
-
-        if (originalBullet)
-        {
-            State.audioManager.PlaySound("FireSound");
-
-        }
         lifetime = 0;
 
         // GD.Print("wallbounce");

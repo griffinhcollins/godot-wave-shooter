@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://b8xdrbjqw4dbh"]
+[gd_scene load_steps=30 format=3 uid="uid://b8xdrbjqw4dbh"]
 
 [ext_resource type="Script" path="res://main/Main.cs" id="1_7h5d5"]
 [ext_resource type="PackedScene" uid="uid://cp4tep5yomtr4" path="res://entities/jellyfish.tscn" id="2_iwtfb"]
@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://dvio14uuu5dx0" path="res://custom assets/projectiles/bullet_piercing.png" id="18_8q6vi"]
 [ext_resource type="Texture2D" uid="uid://cjilwsmy35you" path="res://custom assets/projectiles/bullet.png" id="18_l2al7"]
 [ext_resource type="Script" path="res://main/AudioManager.cs" id="19_qxmkc"]
+[ext_resource type="AudioStream" uid="uid://b2kro6y6sewt7" path="res://sounds/laser pip.wav" id="22_jtriy"]
 
 [sub_resource type="Curve2D" id="Curve2D_oc665"]
 _data = {
@@ -118,7 +119,13 @@ collision_mask = 2
 position = Vector2(405, 328)
 
 [node name="AudioManager" type="Node2D" parent="."]
+position = Vector2(640, 260)
 script = ExtResource("19_qxmkc")
+
+[node name="FireSound" type="AudioStreamPlayer2D" parent="AudioManager"]
+stream = ExtResource("22_jtriy")
+volume_db = -14.071
+pitch_scale = 0.86
 
 [connection signal="NextWave" from="HUD" to="." method="StartWave"]
 [connection signal="StartGame" from="HUD" to="." method="NewGame"]

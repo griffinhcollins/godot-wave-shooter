@@ -3,6 +3,9 @@ using System;
 
 public partial class AudioManager : Node2D
 {
+
+
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -17,7 +20,13 @@ public partial class AudioManager : Node2D
 
 	public void PlaySound(string soundName)
 	{
-		
+		AudioStreamPlayer2D soundPlayer = GetNode<AudioStreamPlayer2D>(soundName);
+		if (soundPlayer.Playing)
+		{
+			soundPlayer.Stop();
+		}
+		GD.Print("bang");
+		soundPlayer.Play();
 	}
 
 }

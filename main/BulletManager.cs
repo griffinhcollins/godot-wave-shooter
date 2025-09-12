@@ -60,7 +60,7 @@ public partial class BulletManager : Node2D
 		{
 			// GD.Print(b.position);
 			StaticColourChange staticColour = ((IAffectedByVisualEffects)b).GetStaticColour();
-			DrawSetTransform(b.position, Vector2.Up.AngleTo(b.direction));
+			DrawSetTransform(b.position, Vector2.Up.AngleTo(b.direction), b.GetScale() * Vector2.One);
 			DrawTexture(GetTexture(), -offset, staticColour is null ? Colors.White : staticColour.modulate);
 		}
 	}
@@ -139,13 +139,13 @@ public partial class BulletManager : Node2D
 		Transform2D bulletTransform = new Transform2D(0, bullet.position);
 		bulletTransform.Origin = bullet.position;
 		Rid circle = PhysicsServer2D.CircleShapeCreate();
-		PhysicsServer2D.ShapeSetData(circle, 15 * Stats.PlayerStats.BulletSize.GetDynamicVal());
+		PhysicsServer2D.ShapeSetData(circle, bullet.GetScale() * 15);
 		PhysicsServer2D.AreaAddShape(sharedArea, circle, bulletTransform);
 		bullet.shapeID = circle;
 	}
 
 
-
+	
 
 
 	// 	public void NewSpawn(Vector2 direction, float speed, Vector2 initialPosition)

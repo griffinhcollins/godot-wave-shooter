@@ -56,6 +56,9 @@ public partial class Bullet : IAffectedByVisualEffects
 
     float shardMult = 1;
 
+
+    float scaleMult = 1;
+
     Vector2 initialVelocity;
 
 
@@ -68,7 +71,6 @@ public partial class Bullet : IAffectedByVisualEffects
         SetDamage(Damage.GetDynamicVal() * shardMult);
         AssignDamageType();
         SetSeed(GD.Randf());
-        SetScale(shardMult);
 
         numHit = 0;
         if (mobsHit is null)
@@ -100,6 +102,7 @@ public partial class Bullet : IAffectedByVisualEffects
 
         ActivateInitialMutationEffects();
         GenerateVisualEffects();
+        SetScale();
         ((IAffectedByVisualEffects)this).ImmediateVisualEffects();
 
 
@@ -111,18 +114,22 @@ public partial class Bullet : IAffectedByVisualEffects
         damageType = DamageTypes.Blunt;
     }
 
-    public void SetScale(float multiplier = 1)
+    public void SetScale(float mult = 1)
     {
-        PhysicsServer2D.ShapeSetData(shapeID, 15 * BulletSize.GetDynamicVal() * shardMult * multiplier);
-        Vector2 scale = Vector2.One * BulletSize.GetDynamicVal() * shardMult * multiplier;
-        if (visualEffects is not null && visualEffects.Count != 0)
+        if (mult != 1) { scaleMult = mult; }
+        Vector2 scale = Vector2.One * GetScale();
+        foreach (GpuParticles2D p in instantiatedParticles.Values)
         {
-            foreach (GpuParticles2D p in instantiatedParticles.Values)
-            {
-                p.Scale = scale;
-            }
+            p.Scale = scale;
         }
     }
+
+    public float GetScale()
+    {
+        return BulletSize.GetDynamicVal() * (isShard ? Unlocks.splinterDamageMultiplier.GetDynamicVal() : 1) * scaleMult;
+    }
+
+   
 
     private void GenerateVisualEffects()
     {
@@ -294,7 +301,7 @@ public partial class Bullet : IAffectedByVisualEffects
          )
         {
             // Not the final hit - do stuff that only triggers on intermediate hits
-            GD.Print("intermediate");
+            // GD.Print("intermediate");
         }
         else
         {

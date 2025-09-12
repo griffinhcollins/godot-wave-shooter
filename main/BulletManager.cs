@@ -15,7 +15,9 @@ public partial class BulletManager : Node2D
 	List<Bullet> bullets;
 
 	[Export]
-	Texture2D bulletImage;
+	Texture2D bouncyBulletTexture;
+	[Export]
+	Texture2D piercingBulletTexture;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -42,14 +44,24 @@ public partial class BulletManager : Node2D
 		
 	}
 
+	Texture2D GetTexture()
+	{
+		if (Stats.PlayerStats.Unlocks.PiercingBullets.unlocked)
+		{
+			return piercingBulletTexture;
+		}
+		return bouncyBulletTexture;
+	}
+
 	public override void _Draw()
 	{
-		Vector2 offset = bulletImage.GetSize() / 2;
+		Vector2 offset = bouncyBulletTexture.GetSize() / 2;
 		foreach (Bullet b in bullets)
 		{
 			// GD.Print(b.position);
 			StaticColourChange staticColour = ((IAffectedByVisualEffects)b).GetStaticColour();
-			DrawTexture(bulletImage, b.position - offset, staticColour is null ? Colors.White : staticColour.modulate);
+			DrawSetTransform(b.position - offset, Vector2.Up.AngleTo(b.direction));
+			DrawTexture(GetTexture(), Vector2.Zero, staticColour is null ? Colors.White : staticColour.modulate);
 		}
 	}
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://b8xdrbjqw4dbh"]
+[gd_scene load_steps=29 format=3 uid="uid://b8xdrbjqw4dbh"]
 
 [ext_resource type="Script" path="res://main/Main.cs" id="1_7h5d5"]
 [ext_resource type="PackedScene" uid="uid://cp4tep5yomtr4" path="res://entities/jellyfish.tscn" id="2_iwtfb"]
@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://br3rrmtxfl84c" path="res://player/effects/static_particles.tscn" id="15_sd5i7"]
 [ext_resource type="Script" path="res://main/BulletManager.cs" id="17_0vgmj"]
 [ext_resource type="Shader" path="res://shaders/colourable.gdshader" id="18_3j01n"]
+[ext_resource type="Texture2D" uid="uid://dvio14uuu5dx0" path="res://custom assets/projectiles/bullet_piercing.png" id="18_8q6vi"]
 [ext_resource type="Texture2D" uid="uid://cjilwsmy35you" path="res://custom assets/projectiles/bullet.png" id="18_l2al7"]
 [ext_resource type="Script" path="res://main/AudioManager.cs" id="19_qxmkc"]
 
@@ -105,7 +106,8 @@ centered = false
 
 [node name="BulletManager" type="Node2D" parent="."]
 script = ExtResource("17_0vgmj")
-bulletImage = ExtResource("18_l2al7")
+bouncyBulletTexture = ExtResource("18_l2al7")
+piercingBulletTexture = ExtResource("18_8q6vi")
 
 [node name="Area2D" type="Area2D" parent="BulletManager"]
 material = SubResource("ShaderMaterial_yj4n4")

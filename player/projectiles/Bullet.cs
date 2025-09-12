@@ -396,7 +396,6 @@ public partial class Bullet : IAffectedByVisualEffects
             Splinter(lastHit);
         }
 
-        GD.Print("blegh");
         dead = true;
         State.bulletManager.DestroyBullet(this);
 

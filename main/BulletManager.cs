@@ -60,8 +60,8 @@ public partial class BulletManager : Node2D
 		{
 			// GD.Print(b.position);
 			StaticColourChange staticColour = ((IAffectedByVisualEffects)b).GetStaticColour();
-			DrawSetTransform(b.position - offset, Vector2.Up.AngleTo(b.direction));
-			DrawTexture(GetTexture(), Vector2.Zero, staticColour is null ? Colors.White : staticColour.modulate);
+			DrawSetTransform(b.position, Vector2.Up.AngleTo(b.direction));
+			DrawTexture(GetTexture(), -offset, staticColour is null ? Colors.White : staticColour.modulate);
 		}
 	}
 
@@ -72,7 +72,6 @@ public partial class BulletManager : Node2D
 		Transform2D t = new Transform2D(0, Vector2.One);
 		for (int i = 0; i < bullets.Count; i++)
 		{
-			GD.Print("still truckin");
 			Bullet b = bullets[i];
 
 			b.lifetime += (float)delta;
@@ -85,8 +84,6 @@ public partial class BulletManager : Node2D
 
 			Vector2 offset = b.direction * b.speed * (float)delta;
 			b.position += offset;
-			GD.Print(offset);
-
 			foreach (GpuParticles2D p in b.instantiatedParticles.Values)
 			{
 				p.Position = b.position;

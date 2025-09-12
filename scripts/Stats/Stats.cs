@@ -87,7 +87,7 @@ public static class Stats
             10, new Vector2(5, Mathf.Inf), Common);
         public static PlayerStat FireRate = new PlayerStat("Firerate",
             "Bullets fired per second.",
-             2, new Vector2(0.5f, 1000), Common);
+             200, new Vector2(0.5f, 1000), Common);
         public static PlayerStat MaxHP = new PlayerStat("HP",
             "Max HP, regenerates each round.",
              3, new Vector2(0, 6), Rare, true);

@@ -147,7 +147,6 @@ public partial class UpgradeNode : Button
     {
         string infoMessage = GetDescription();
 
-        infoMessage += upgrade.GetMechanicalChange(magnitude);
         if (locked)
         {
             infoMessage += "\nLocked, requires more ";

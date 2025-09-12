@@ -91,7 +91,7 @@ public class PlayerStat : Improvement
                 hitCap = true;
                 preview = range.X;
             }
-            return string.Format("{0} {1} by {2:D} ({3:D} -> {4:D}){5}", name, increase ? "Up" : "Down", (int)Mathf.Abs(preview - GetDynamicVal()), (int)GetDynamicVal(), (int)preview, hitCap ? " (cap)" : "");
+            return string.Format("{0} {1} by {2:D}\n({3:D} -> {4:D}){5}", name, increase ? "Up" : "Down", (int)Mathf.Abs(preview - GetDynamicVal()), (int)GetDynamicVal(), (int)preview, hitCap ? " (cap)" : "");
         }
         else
         {
@@ -106,7 +106,7 @@ public class PlayerStat : Improvement
                 hitCap = true;
                 preview = range.X;
             }
-            return string.Format("{0} {1} by {2:D}% ({3:n2} -> {4:n2}){5}", name, increase ? "Up" : "Down", (int)Math.Round(100 * Mathf.Abs(preview - GetDynamicVal()) / (GetDynamicVal() != 0 ? GetDynamicVal() : 1)), GetDynamicVal(), preview, hitCap ? " (cap)" : "");
+            return string.Format("{0} {1} by {2:D}%\n({3:n2} -> {4:n2}){5}", name, increase ? "Up" : "Down", (int)Math.Round(100 * Mathf.Abs(preview - GetDynamicVal()) / (GetDynamicVal() != 0 ? GetDynamicVal() : 1)), GetDynamicVal(), preview, hitCap ? " (cap)" : "");
 
         }
     }

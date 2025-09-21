@@ -1,30 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://s47tunx2vl7"]
+[gd_scene load_steps=8 format=3 uid="uid://s47tunx2vl7"]
 
 [ext_resource type="Script" path="res://player/projectiles/LaserBeam.cs" id="1_a8ijb"]
+[ext_resource type="PackedScene" uid="uid://d0rs6uujwmanw" path="res://player/effects/upgrade particles/beam_particles.tscn" id="1_q8uyp"]
 [ext_resource type="Texture2D" uid="uid://c6csskppek7oa" path="res://custom assets/projectiles/laser particles.png" id="1_qmtoj"]
 [ext_resource type="PackedScene" uid="uid://4br0n54vxpbq" path="res://player/effects/lightning_arc.tscn" id="3_f8wnx"]
 [ext_resource type="Shader" path="res://shaders/colourable.gdshader" id="4_a4xy6"]
-
-[sub_resource type="Curve" id="Curve_j4fcn"]
-_data = [Vector2(0.0285714, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_bqavb"]
-curve = SubResource("Curve_j4fcn")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8ciuh"]
-particle_flag_disable_z = true
-emission_shape_offset = Vector3(0, -400, 0)
-emission_shape = 3
-emission_box_extents = Vector3(10, 400, 1)
-direction = Vector3(0, -1, 0)
-spread = 180.0
-initial_velocity_min = 10.0
-initial_velocity_max = 10.0
-gravity = Vector3(0, 0, 0)
-scale_min = 0.0
-scale_max = 0.5
-alpha_curve = SubResource("CurveTexture_bqavb")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f4rt8"]
 size = Vector2(20, 800)
@@ -38,11 +18,7 @@ z_index = 1
 collision_layer = 4
 collision_mask = 2
 
-[node name="BeamParticles" type="GPUParticles2D" parent="."]
-amount = 3200
-process_material = SubResource("ParticleProcessMaterial_8ciuh")
-texture = ExtResource("1_qmtoj")
-lifetime = 0.1
+[node name="BeamParticles" parent="." instance=ExtResource("1_q8uyp")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -400)

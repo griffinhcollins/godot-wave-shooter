@@ -49,7 +49,7 @@ public partial class Player : Node2D, IAffectedByVisualEffects
     Node2D shield;
     bool shieldActive;
 
-
+    RayCast2D raycaster;
 
     bool canFire = true;
 
@@ -123,38 +123,64 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         canFire = true;
     }
 
-    private void ShootBullet(Vector2 fireFromPos)
+    private void ShootLaser(Vector2 offset)
     {
         if (State.currentState != State.alive)
         {
             return;
         }
+        if (raycaster is null)
+        {
+            raycaster = new RayCast2D();
+            CircleShape2D castCircle = new CircleShape2D();
+            castCircle.Radius = BulletSize.GetDynamicVal() * 10;
+            // raycaster.Shape = castCircle;
+            raycaster.SetCollisionMaskValue(1, false);
+            raycaster.SetCollisionMaskValue(2, true);
+            // raycaster.SetCollisionMaskValue(5, true);
+            raycaster.Enabled = true; // we don't want it to cast every frame, just when we ask it to
+            raycaster.CollideWithAreas = true;
+            raycaster.TargetPosition = Vector2.Up * 1000;
+            reticule.AddChild(raycaster);
+
+        }
+        Vector2 pointVec = GetGlobalMousePosition() - Position;
+        raycaster.GlobalRotation = -1 * pointVec.AngleTo(Vector2.Up);
+        raycaster.GlobalPosition = GlobalPosition;
+        // raycaster.ForceRaycastUpdate();
+        float distanceToHit = 1000;
+        if (raycaster.IsColliding())
+        {
+
+            distanceToHit = (((Node2D)raycaster.GetCollider()).GlobalPosition - raycaster.GlobalPosition).Length();
+        }
+        State.bulletManager.FireLaser(new Vector2(0, -1).Rotated(reticule.GlobalRotation), offset + GlobalPosition, distanceToHit);
+        // Area2D newBeam = laserBeam.Instantiate<Area2D>();
+        // newBeam.Position = fireFromPos;
+        // newBeam.Rotate(reticule.Rotation);
+        // // projectile = newBeam.GetNode<LaserBeam>("ScriptHolder");
+        // AddChild(newBeam);
+    }
+
+    private void ShootBullet(Vector2 fireFromPos)
+    {
+
         canFire = false;
         bulletTimer.Start();
 
         float spreadRotate = reticule.Rotation + Mathf.DegToRad(Spread.GetDynamicVal()) * (float)GD.RandRange(-1, 1f);
 
         Bullet projectile;
-        Node2D projectileHolder;
-
-        if (Unlocks.Laser.unlocked)
-        {
-            Area2D newBeam = laserBeam.Instantiate<Area2D>();
-            newBeam.Position = fireFromPos;
-            newBeam.Rotate(spreadRotate);
-            // projectile = newBeam.GetNode<LaserBeam>("ScriptHolder");
-            AddChild(newBeam);
-        }
-        else
-        {
-            // PhysicsServer implementation
-            projectile = State.bulletManager.SpawnBullet(new Vector2(0, -1).Rotated(spreadRotate), fireFromPos + Position);
-            State.audioManager.PlaySound("FireSound");
-            // State.bulletManager.NewSpawn(new Vector2(0, -1).Rotated(spreadRotate), 1000 * ShotSpeed.GetDynamicVal(), fireFromPos + Position);
-            return;
 
 
-        }
+        // PhysicsServer implementation
+        projectile = State.bulletManager.SpawnBullet(new Vector2(0, -1).Rotated(spreadRotate), fireFromPos + Position);
+        State.audioManager.PlaySound("FireSound");
+        // State.bulletManager.NewSpawn(new Vector2(0, -1).Rotated(spreadRotate), 1000 * ShotSpeed.GetDynamicVal(), fireFromPos + Position);
+        return;
+
+
+
 
         if (activeMutations is not null)
         {
@@ -186,29 +212,44 @@ public partial class Player : Node2D, IAffectedByVisualEffects
             return;
         }
 
+        ProcessMovement((float)delta);
         // Point reticule at mouse
         Vector2 pointVec = GetGlobalMousePosition() - Position;
-        reticule.Rotation = -1 * pointVec.AngleTo(Vector2.Up);
+        reticule.GlobalRotation = -1 * pointVec.AngleTo(Vector2.Up);
 
-        ProcessMovement((float)delta);
 
 
         // Regular Fire if clicking 
-        if (Input.IsActionPressed("fire") && canFire)
+        if (Unlocks.Laser.unlocked)
         {
-            Vector2 fireFromPos = new Vector2(0, 0);
-            // Multishot
-            float shots = Multishot.GetDynamicVal();
-            while (shots > 0)
+            if (Input.IsActionPressed("fire"))
             {
-                if (GD.RandRange(0f, 1) <= shots)
-                {
-                    ShootBullet(fireFromPos);
-                }
-                fireFromPos += new Vector2(10 + (GD.Randi() % 5), 0).Rotated(reticule.Rotation) * (GD.Randi() % 2 == 0 ? 1 : -1);
-                shots--;
+                ShootLaser(new Vector2(0, 0));
             }
+            else
+            {
+                State.bulletManager.StopLaser();
+            }
+        }
+        else
+        {
 
+            if (Input.IsActionPressed("fire") && canFire)
+            {
+                Vector2 fireFromPos = new Vector2(0, 0);
+                // Multishot
+                float shots = Multishot.GetDynamicVal();
+                while (shots > 0)
+                {
+                    if (GD.RandRange(0f, 1) <= shots)
+                    {
+                        ShootBullet(fireFromPos);
+                    }
+                    fireFromPos += new Vector2(10 + (GD.Randi() % 5), 0).Rotated(reticule.Rotation) * (GD.Randi() % 2 == 0 ? 1 : -1);
+                    shots--;
+                }
+
+            }
         }
 
         ((IAffectedByVisualEffects)this).ProcessVisualEffects((float)delta);

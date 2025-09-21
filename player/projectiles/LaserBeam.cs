@@ -30,7 +30,11 @@ public partial class LaserBeam : OldBullet
 	{
 
 		particles.Texture = GetNode<Sprite2D>("MainSprite").Texture;
-		((ParticleProcessMaterial)particles.ProcessMaterial).Color = ((IAffectedByVisualEffects)this).GetStaticColour().modulate;
+		if (((IAffectedByVisualEffects)this).GetStaticColour() is not null)
+		{
+
+			((ParticleProcessMaterial)particles.ProcessMaterial).Color = ((IAffectedByVisualEffects)this).GetStaticColour().modulate;
+		}
 	}
 
 	void SetSize()
@@ -41,7 +45,9 @@ public partial class LaserBeam : OldBullet
 		// Set size of collider
 		RectangleShape2D collisionShape = new RectangleShape2D();
 		collisionShape.Size = size;
+		
 		hitbox.Shape = collisionShape;
+		hitbox.Position = new Vector2(hitbox.Position.X, -collisionShape.Size.Y / 2f);
 
 		// Set size of particles
 		particles.ProcessMaterial.Set(ParticleProcessMaterial.PropertyName.EmissionShapeOffset, new Vector3(0, -1 * size.Y, 0));
@@ -102,13 +108,13 @@ public partial class LaserBeam : OldBullet
 
 	public override void SetVelocity(Vector2 newVelocity, bool normalize = true)
 	{
-        base.SetVelocity(newVelocity);
+		base.SetVelocity(newVelocity);
 		Rotation = Vector2.Up.AngleTo(newVelocity);
 	}
 
-    protected override void AssignDamageType()
-    {
-        damageType = DamageTypes.Laser;
-    }
+	protected override void AssignDamageType()
+	{
+		damageType = DamageTypes.Laser;
+	}
 
 }

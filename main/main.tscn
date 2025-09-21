@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://b8xdrbjqw4dbh"]
+[gd_scene load_steps=32 format=3 uid="uid://b8xdrbjqw4dbh"]
 
 [ext_resource type="Script" path="res://main/Main.cs" id="1_7h5d5"]
 [ext_resource type="PackedScene" uid="uid://cp4tep5yomtr4" path="res://entities/jellyfish.tscn" id="2_iwtfb"]
@@ -20,6 +20,8 @@
 [ext_resource type="Shader" path="res://shaders/colourable.gdshader" id="18_3j01n"]
 [ext_resource type="Texture2D" uid="uid://dvio14uuu5dx0" path="res://custom assets/projectiles/bullet_piercing.png" id="18_8q6vi"]
 [ext_resource type="Texture2D" uid="uid://cjilwsmy35you" path="res://custom assets/projectiles/bullet.png" id="18_l2al7"]
+[ext_resource type="PackedScene" uid="uid://d0rs6uujwmanw" path="res://player/effects/upgrade particles/beam_particles.tscn" id="19_eod3f"]
+[ext_resource type="Texture2D" uid="uid://bqfq4tggikbyo" path="res://custom assets/upgrade icons/laser beam.png" id="19_melwp"]
 [ext_resource type="Script" path="res://main/AudioManager.cs" id="19_qxmkc"]
 [ext_resource type="AudioStream" uid="uid://b2kro6y6sewt7" path="res://sounds/laser pip.wav" id="22_jtriy"]
 
@@ -109,6 +111,8 @@ centered = false
 script = ExtResource("17_0vgmj")
 bouncyBulletTexture = ExtResource("18_l2al7")
 piercingBulletTexture = ExtResource("18_8q6vi")
+laserTexture = ExtResource("19_melwp")
+laserParticles = ExtResource("19_eod3f")
 
 [node name="Area2D" type="Area2D" parent="BulletManager"]
 material = SubResource("ShaderMaterial_yj4n4")
@@ -126,6 +130,9 @@ script = ExtResource("19_qxmkc")
 stream = ExtResource("22_jtriy")
 volume_db = -14.071
 pitch_scale = 0.86
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+position = Vector2(-91.1174, 81.4258)
 
 [connection signal="NextWave" from="HUD" to="." method="StartWave"]
 [connection signal="StartGame" from="HUD" to="." method="NewGame"]

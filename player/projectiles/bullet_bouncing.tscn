@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://i3lhgidaa505"]
+[gd_scene load_steps=8 format=3 uid="uid://5ho8b5pxtf4g"]
 
 [ext_resource type="Texture2D" uid="uid://cjilwsmy35you" path="res://custom assets/projectiles/bullet.png" id="1_shdhe"]
 [ext_resource type="Script" path="res://player/projectiles/BouncyBullet.cs" id="2_kxnli"]

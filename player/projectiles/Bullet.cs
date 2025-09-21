@@ -18,6 +18,8 @@ public partial class Bullet : IAffectedByVisualEffects
     public Rid shapeID;
     public Rid body;
 
+    public bool isLaser = false;
+
 
     protected DamageType damageType;
 
@@ -426,20 +428,20 @@ public partial class Bullet : IAffectedByVisualEffects
         {
             // Copy myself
 
-            // if (this is LaserBeam)
+            Bullet shard;
+
+            // if (isLaser)
             // {
             //     // If splinter is with laser beam, spawns a laser beam off a hit enemy
-            //     shardBody.GlobalPosition = lastHit.GlobalPosition;
-            //     // Make it perpendicular in either direction
-            //     shardBody.Rotation = GD.Randf() * 2 * Mathf.Pi;
+                
+            //     shard = State.bulletManager.SpawnOrMoveLaser(direction.Rotated(GD.Randf() * 2 * Mathf.Pi), position, true);
             // }
             // else
             // {
 
-            Bullet shard = State.bulletManager.SpawnBullet(direction.Rotated((GD.Randf() + 1 / 6) * 1.5f * Mathf.Pi), position, speed);
+                shard = State.bulletManager.SpawnBullet(direction.Rotated((GD.Randf() + 1 / 6) * 1.5f * Mathf.Pi), position, speed, true);
 
             // }
-            shard.isShard = true;
             foreach (Mutation m in GetMutations())
             {
                 shard.AddMutation(m);

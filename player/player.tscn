@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://cxxc2leij01vs" path="res://art/playerGrey_up1.png" id="1_333lq"]
 [ext_resource type="Script" path="res://player/Player.cs" id="1_empth"]
 [ext_resource type="Texture2D" uid="uid://dkgo0v8k3ef30" path="res://art/playerGrey_up2.png" id="2_jf2ap"]
-[ext_resource type="PackedScene" uid="uid://i3lhgidaa505" path="res://player/projectiles/bullet_bouncing.tscn" id="2_qxbfg"]
+[ext_resource type="PackedScene" uid="uid://5ho8b5pxtf4g" path="res://player/projectiles/bullet_bouncing.tscn" id="2_qxbfg"]
 [ext_resource type="Texture2D" uid="uid://cep626uarssxs" path="res://art/playerGrey_walk1.png" id="3_3x6b2"]
 [ext_resource type="Texture2D" uid="uid://cxcloiidhrgwk" path="res://custom assets/player stuff/Submarine.png" id="3_dpa7h"]
 [ext_resource type="Texture2D" uid="uid://bury5lajrwpyk" path="res://custom assets/player stuff/Jupes Sub 2.png" id="3_ijnwh"]

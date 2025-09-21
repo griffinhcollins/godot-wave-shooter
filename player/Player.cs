@@ -49,9 +49,11 @@ public partial class Player : Node2D, IAffectedByVisualEffects
     Node2D shield;
     bool shieldActive;
 
-    RayCast2D raycaster;
+    RayCast2D[] raycasters;
+    float[] laserLastDamageTime;
 
     bool canFire = true;
+
 
     public List<VisualEffect> visualEffects { get; set; }
     public Dictionary<StaticColourChange, float> staticColours { get; set; }
@@ -78,6 +80,7 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         shield = GetNode<Node2D>("Shield");
 
 
+
         // Hide();
     }
 
@@ -87,7 +90,43 @@ public partial class Player : Node2D, IAffectedByVisualEffects
 
 
         firingspeed = FireRate.GetDynamicVal();
-        bulletTimer.WaitTime = 1 / firingspeed;
+        if (Unlocks.Laser.unlocked)
+        {
+            int beamnum = Mathf.FloorToInt(Multishot.GetDynamicVal());
+            bulletTimer.WaitTime = 1 / (firingspeed * 5);
+            raycasters = new RayCast2D[beamnum];
+            laserLastDamageTime = new float[beamnum];
+
+            foreach (Node2D child in reticule.GetChildren())
+            {
+                if (child is RayCast2D)
+                {
+                    child.QueueFree();
+                }
+            }
+            for (int i = 0; i < beamnum; i++)
+            {
+                // Add a raycasting laser
+                RayCast2D raycaster = new RayCast2D();
+                CircleShape2D castCircle = new CircleShape2D();
+                castCircle.Radius = BulletSize.GetDynamicVal() * 10;
+                // raycaster.Shape = castCircle;
+                raycaster.SetCollisionMaskValue(1, false);
+                raycaster.SetCollisionMaskValue(2, true);
+                // raycaster.SetCollisionMaskValue(5, true);
+                raycaster.Enabled = true; // we don't want it to cast every frame, just when we ask it to
+                raycaster.CollideWithAreas = true;
+                raycaster.TargetPosition = Vector2.Up * 1000;
+                reticule.AddChild(raycaster);
+                raycasters[i] = raycaster;
+                laserLastDamageTime[i] = 0;
+            }
+        }
+        else
+        {
+
+            bulletTimer.WaitTime = 1 / firingspeed;
+        }
         currentHP = (int)MaxHP.GetDynamicVal();
         hud.UpdateHealth(currentHP);
 
@@ -129,32 +168,37 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         {
             return;
         }
-        if (raycaster is null)
+        int beamCount = raycasters.Length;
+        for (int i = 0; i < beamCount; i++)
         {
-            raycaster = new RayCast2D();
-            CircleShape2D castCircle = new CircleShape2D();
-            castCircle.Radius = BulletSize.GetDynamicVal() * 10;
-            // raycaster.Shape = castCircle;
-            raycaster.SetCollisionMaskValue(1, false);
-            raycaster.SetCollisionMaskValue(2, true);
-            // raycaster.SetCollisionMaskValue(5, true);
-            raycaster.Enabled = true; // we don't want it to cast every frame, just when we ask it to
-            raycaster.CollideWithAreas = true;
-            raycaster.TargetPosition = Vector2.Up * 1000;
-            reticule.AddChild(raycaster);
+            float rotation = 0;
+            if (raycasters.Length > 1)
+            {
+                rotation = (i / (beamCount - 1f) - 0.5f) * Spread.GetDynamicVal() * beamCount * 0.0174533f;
+                GD.Print(i);
+                GD.Print(rotation);
+            }
+            RayCast2D raycaster = raycasters[i];
+            Vector2 pointVec = GetGlobalMousePosition() - Position;
+            raycaster.GlobalRotation = -1 * pointVec.AngleTo(Vector2.Up) + rotation;
+            raycaster.GlobalPosition = GlobalPosition;
+            // raycaster.ForceRaycastUpdate();
+            float distanceToHit = 1000;
+            if (raycaster.IsColliding())
+            {
+                Node2D hit = (Node2D)raycaster.GetCollider();
+                distanceToHit = (hit.GlobalPosition - raycaster.GlobalPosition).Length();
+                if (hit is Mob && laserLastDamageTime[i] > 1 / (FireRate.GetDynamicVal() * 5f))
+                {
+                    GD.Print(i);
+                    laserLastDamageTime[i] = 0f;
 
+                    ((Mob)hit).TakeDamage(Damage.GetDynamicVal() / 5f, DamageTypes.Laser);
+                }
+            }
+            State.bulletManager.FireLaser(new Vector2(0, -1).Rotated(raycaster.GlobalRotation), offset + GlobalPosition, distanceToHit, i);
         }
-        Vector2 pointVec = GetGlobalMousePosition() - Position;
-        raycaster.GlobalRotation = -1 * pointVec.AngleTo(Vector2.Up);
-        raycaster.GlobalPosition = GlobalPosition;
-        // raycaster.ForceRaycastUpdate();
-        float distanceToHit = 1000;
-        if (raycaster.IsColliding())
-        {
 
-            distanceToHit = (((Node2D)raycaster.GetCollider()).GlobalPosition - raycaster.GlobalPosition).Length();
-        }
-        State.bulletManager.FireLaser(new Vector2(0, -1).Rotated(reticule.GlobalRotation), offset + GlobalPosition, distanceToHit);
         // Area2D newBeam = laserBeam.Instantiate<Area2D>();
         // newBeam.Position = fireFromPos;
         // newBeam.Rotate(reticule.Rotation);
@@ -222,8 +266,13 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         // Regular Fire if clicking 
         if (Unlocks.Laser.unlocked)
         {
+            for (int i = 0; i < laserLastDamageTime.Length; i++)
+            {
+                laserLastDamageTime[i] += (float)delta;
+            }
             if (Input.IsActionPressed("fire"))
             {
+
                 ShootLaser(new Vector2(0, 0));
             }
             else

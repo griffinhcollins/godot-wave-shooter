@@ -20,7 +20,7 @@ public partial class BulletManager : Node2D
 
 	// Laser information
 	bool firingLaser = false;
-	LaserInformation lastLaserInformation;
+	List<LaserInformation> lastLaserInformation;
 
 	[Export]
 	Texture2D bouncyBulletTexture;
@@ -65,6 +65,7 @@ public partial class BulletManager : Node2D
 		PhysicsServer2D.AreaSetTransform(sharedArea, areaTransform);
 		PhysicsServer2D.AreaSetCollisionLayer(sharedArea, 3);
 		PhysicsServer2D.AreaSetCollisionMask(sharedArea, 2);
+		lastLaserInformation = new List<LaserInformation>();
 
 	}
 	private void BodyShapeEntered(Rid body_rid, Node2D body, int body_shape_index, int local_index)
@@ -98,7 +99,10 @@ public partial class BulletManager : Node2D
 		{
 			if (firingLaser)
 			{
-				DrawLine(lastLaserInformation._source, lastLaserInformation._target, Colors.White, 20);
+				foreach (LaserInformation info in lastLaserInformation)
+				{
+					DrawLine(info._source, info._target, Colors.White, 20);
+				}
 			}
 			else if (instantiatedLaserParticles is not null)
 			{
@@ -173,8 +177,8 @@ public partial class BulletManager : Node2D
 				bToKill.HandleDeath();
 			}
 
-			QueueRedraw();
 		}
+		QueueRedraw();
 
 	}
 
@@ -213,28 +217,31 @@ public partial class BulletManager : Node2D
 		return newBullet;
 	}
 
-	public void FireLaser(Vector2 direction, Vector2 initialPosition, float hitDist, bool isShard = false)
+	public void FireLaser(Vector2 direction, Vector2 initialPosition, float hitDist, int multishotIndex = 0, bool isShard = false)
 	{
-		if (instantiatedLaserParticles is null)
-		{
-			instantiatedLaserParticles = laserParticles.Instantiate<GpuParticles2D>();
-			Vector2 size = Unlocks.LaserSizeVector();
-			instantiatedLaserParticles.ProcessMaterial.Set(ParticleProcessMaterial.PropertyName.EmissionShapeOffset, new Vector3(0, -1 * size.Y, 0));
-			instantiatedLaserParticles.ProcessMaterial.Set(ParticleProcessMaterial.PropertyName.EmissionBoxExtents, new Vector3(size.X, size.Y, 1));
-			AddChild(instantiatedLaserParticles);
-		}
+		// if (instantiatedLaserParticles is null)
+		// {
+		// 	instantiatedLaserParticles = laserParticles.Instantiate<GpuParticles2D>();
+		// 	Vector2 size = Unlocks.LaserSizeVector();
+		// 	instantiatedLaserParticles.ProcessMaterial.Set(ParticleProcessMaterial.PropertyName.EmissionShapeOffset, new Vector3(0, -1 * size.Y, 0));
+		// 	instantiatedLaserParticles.ProcessMaterial.Set(ParticleProcessMaterial.PropertyName.EmissionBoxExtents, new Vector3(size.X, size.Y, 1));
+		// 	AddChild(instantiatedLaserParticles);
+		// }
+
+
 		LaserInformation newInfo = new LaserInformation(initialPosition, initialPosition + direction * hitDist);
-		lastLaserInformation = newInfo;
+		if (lastLaserInformation.Count <= multishotIndex)
+		{
+			GD.Print(multishotIndex);
+			lastLaserInformation.Add(newInfo);
+		}
+		lastLaserInformation[multishotIndex] = newInfo;
 		firingLaser = true;
 		QueueRedraw();
 	}
 
 	public void StopLaser()
 	{
-		if (instantiatedLaserParticles is null)
-		{
-			return;
-		}
 		firingLaser = false;
 		QueueRedraw();
 	}

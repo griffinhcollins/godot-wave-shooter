@@ -566,7 +566,7 @@ public static class Stats
         // Starting/Default Stats
         public static readonly float[] BaseStats = {
             // Enemy Starting Stats
-            150,     // 0: Wave Length
+            15,     // 0: Wave Length
             1f,      // 1: Spawn Rate (Spawns/second)
             1,      // 2: HP Mult 
             1,      // 3: Acceleration Mult 

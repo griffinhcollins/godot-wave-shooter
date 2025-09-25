@@ -79,6 +79,17 @@ public partial class BulletManager : Node2D
 
 	}
 
+	public void ClearScreen()
+	{
+		for (int i = 0; i < bullets.Count; i++)
+		{
+			Bullet bToKill = bullets[i];
+			bToKill.HandleDeath();
+		}
+
+		QueueRedraw();
+	}
+
 	Texture2D GetTexture()
 	{
 		if (Unlocks.Laser.unlocked)
@@ -128,6 +139,10 @@ public partial class BulletManager : Node2D
 
 	public override void _PhysicsProcess(double delta)
 	{
+		if (State.currentState != State.alive && State.currentState != State.dead)
+		{
+			return;
+		}
 		List<Bullet> tooOld = new List<Bullet>();
 		Transform2D t = new Transform2D(0, Vector2.One);
 		if (Unlocks.Laser.unlocked)
@@ -159,9 +174,9 @@ public partial class BulletManager : Node2D
 					tooOld.Add(b);
 					continue;
 				}
-				GD.Print(PhysicsServer2D.AreaGetShapeTransform(sharedArea, i).Rotation);
+				// GD.Print(PhysicsServer2D.AreaGetShapeTransform(sharedArea, i).Rotation);
 				PhysicsServer2D.AreaSetShapeTransform(sharedArea, i, PhysicsServer2D.AreaGetShapeTransform(sharedArea, i).Rotated(Vector2.Down.AngleTo(b.direction)));
-				GD.Print(PhysicsServer2D.AreaGetShapeTransform(sharedArea, i).Rotation);
+				// GD.Print(PhysicsServer2D.AreaGetShapeTransform(sharedArea, i).Rotation);
 				Vector2 offset = b.direction * b.speed * (float)delta;
 				b.position += offset;
 				foreach (GpuParticles2D p in b.instantiatedParticles.Values)

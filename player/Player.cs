@@ -250,7 +250,7 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         bool isPaused = State.currentState == State.paused;
         bulletTimer.Paused = isPaused;
         trailTimer.Paused = isPaused;
-        if (isPaused)
+        if (State.currentState != State.alive)
         {
 
             return;

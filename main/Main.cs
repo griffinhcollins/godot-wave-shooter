@@ -72,6 +72,7 @@ public partial class Main : Node2D
     private void ClearScreen()
     {
         GetTree().CallGroup("cleanup", Node.MethodName.QueueFree);
+        State.bulletManager.ClearScreen();
     }
 
     public override void _Process(double delta)
@@ -147,7 +148,7 @@ public partial class Main : Node2D
 
     public void StartWave()
     {
-        Stats.PlayerStats.Unlocks.Laser.Unlock();
+        // Stats.PlayerStats.Unlocks.Laser.Unlock();
         // Stats.PlayerStats.Unlocks.Splinter.Unlock();
         // Stats.PlayerStats.Mutations.GrowingBullet.applied = true;
         State.currentState = State.alive;

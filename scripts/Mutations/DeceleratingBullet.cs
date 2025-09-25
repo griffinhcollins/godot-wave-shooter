@@ -16,12 +16,12 @@ public override bool AffectsMovement()
     }
     public override void ImmediateEffect(Bullet projectile)
     {
-        projectile.SetVelocity(projectile.GetInitialVelocity() * 2, false);
+        projectile.speed = projectile.initialSpeed * 2;
     }
 
     public override void OngoingEffect(double delta, Bullet projectile)
     {
-        projectile.SetVelocity(projectile.GetCurrentVelocity() * (1 - (float)delta * 4), false);
+        projectile.speed = projectile.speed * (1 - (float)delta * 6);
     }
     
     public override void OnCollision(Bullet projectile)

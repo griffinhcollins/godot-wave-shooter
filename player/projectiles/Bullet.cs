@@ -14,6 +14,8 @@ public partial class Bullet : IAffectedByVisualEffects
     public Vector2 position;
     public float lifetime = 0;
     public float speed;
+    public float initialSpeed; // Used for mutation purposes
+    public Vector2 initialDirection; // Used for mutation purposes
     public int imageIndex;
     public Rid shapeID;
     public Rid body;
@@ -70,7 +72,8 @@ public partial class Bullet : IAffectedByVisualEffects
         SetDamage(Damage.GetDynamicVal() * shardMult);
         AssignDamageType();
         SetSeed(GD.Randf());
-
+        initialSpeed = speed;
+        initialDirection = direction;
         numHit = 0;
         if (mobsHit is null)
         {

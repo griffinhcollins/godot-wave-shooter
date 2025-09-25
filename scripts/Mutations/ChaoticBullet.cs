@@ -25,8 +25,8 @@ public class ChaoticBullet : Mutation
     public override void OngoingEffect(double delta, Bullet projectile)
     {
 
-        Vector2 perpendicular = projectile.GetCurrentVelocity().Rotated((GD.Randf() > 0.5f ? 1 : -1) * Mathf.Pi / 2);
-        projectile.SetVelocity(projectile.GetCurrentVelocity() + perpendicular * (float)delta * 15);
+        Vector2 newDir = projectile.direction.Rotated((GD.Randf() > 0.5f ? 1.1f : -1.1f) * Mathf.Pi / 2);
+        projectile.direction = projectile.direction + newDir * (float)delta * 10f;
     }
 
 

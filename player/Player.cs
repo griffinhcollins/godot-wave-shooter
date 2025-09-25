@@ -43,7 +43,6 @@ public partial class Player : Node2D, IAffectedByVisualEffects
 
     Vector2 prevVelocity;
 
-    List<Mutation> activeMutations;
     AudioStreamPlayer2D damageSound;
 
     Node2D shield;
@@ -130,7 +129,6 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         currentHP = (int)MaxHP.GetDynamicVal();
         hud.UpdateHealth(currentHP);
 
-        activeMutations = Mutations.allMutations.Where(m => m.applied).ToList();
     }
 
 
@@ -175,8 +173,8 @@ public partial class Player : Node2D, IAffectedByVisualEffects
             if (raycasters.Length > 1)
             {
                 rotation = (i / (beamCount - 1f) - 0.5f) * Spread.GetDynamicVal() * beamCount * 0.0174533f;
-                GD.Print(i);
-                GD.Print(rotation);
+                // GD.Print(i);
+                // GD.Print(rotation);
             }
             RayCast2D raycaster = raycasters[i];
             Vector2 pointVec = GetGlobalMousePosition() - Position;
@@ -226,14 +224,6 @@ public partial class Player : Node2D, IAffectedByVisualEffects
 
 
 
-        if (activeMutations is not null)
-        {
-            foreach (Mutation m in activeMutations)
-            {
-                // projectile.AddMutation(m);
-            }
-
-        }
 
     }
 

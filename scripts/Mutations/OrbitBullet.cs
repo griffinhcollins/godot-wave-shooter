@@ -4,7 +4,14 @@ using Godot;
 
 public class OrbitBullet : Mutation
 {
-
+    public override bool AffectsMovement()
+    {
+        return true;
+    }
+    public override bool AffectsTexture()
+    {
+        return false;
+    }
     public override string GetName()
     {
         return "Orbit Bullet";

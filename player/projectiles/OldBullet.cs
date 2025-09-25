@@ -439,7 +439,7 @@ public abstract partial class OldBullet : Node2D, IAffectedByVisualEffects
             shard.isShard = true;
             foreach (Mutation m in GetMutations())
             {
-                shard.AddMutation(m);
+                // shard.AddMutation(m);
             }
             if (hitMob is not null)
             {

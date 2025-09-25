@@ -3,6 +3,14 @@ using Godot;
 public class BoomarangBullet : Mutation
 {
     Node2D player;
+    public override bool AffectsMovement()
+    {
+        return true;
+    }
+    public override bool AffectsTexture()
+    {
+        return false;
+    }
     public override string GetName()
     {
         return "Boomarang Bullet";
@@ -16,7 +24,8 @@ public class BoomarangBullet : Mutation
 
     public override void OngoingEffect(double delta, Bullet projectile)
     {
-        Vector2 towardsPlayer = State.player.GlobalPosition - projectile.position;
-        projectile.SetVelocity(projectile.GetCurrentVelocity() + towardsPlayer * (float)delta * 50);
+        float towardsPlayerRot = projectile.direction.AngleTo(State.player.GlobalPosition - projectile.position);
+        Vector2 newDir = projectile.direction.Rotated(towardsPlayerRot * (float)delta * 3f);
+        projectile.direction = newDir;
     }
 }

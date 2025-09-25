@@ -17,6 +17,8 @@ public abstract class Mutation // Comes with delved unlockables, not optional. S
     {
         return;
     }
+    public abstract bool AffectsMovement();
+    public abstract bool AffectsTexture();
 
 
 }

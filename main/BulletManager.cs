@@ -15,6 +15,7 @@ public partial class BulletManager : Node2D
 
 	Rid bulletShape;
 
+	List<Mutation> activeMutations;
 	List<Bullet> bullets;
 	GpuParticles2D instantiatedLaserParticles;
 
@@ -77,6 +78,13 @@ public partial class BulletManager : Node2D
 	public override void _Process(double delta)
 	{
 
+	}
+
+	public void OnStartWave()
+	{
+		ClearScreen();
+		activeMutations = Mutations.allMutations.Where(m => m.applied).ToList();
+		GD.Print(activeMutations[0]);
 	}
 
 	public void ClearScreen()
@@ -143,6 +151,7 @@ public partial class BulletManager : Node2D
 		{
 			return;
 		}
+
 		List<Bullet> tooOld = new List<Bullet>();
 		Transform2D t = new Transform2D(0, Vector2.One);
 		if (Unlocks.Laser.unlocked)
@@ -174,9 +183,14 @@ public partial class BulletManager : Node2D
 					tooOld.Add(b);
 					continue;
 				}
+				foreach (Mutation m in activeMutations.Where(m => m.AffectsMovement()))
+				{
+					m.OngoingEffect(delta, b);
+				}
 				// GD.Print(PhysicsServer2D.AreaGetShapeTransform(sharedArea, i).Rotation);
 				PhysicsServer2D.AreaSetShapeTransform(sharedArea, i, PhysicsServer2D.AreaGetShapeTransform(sharedArea, i).Rotated(Vector2.Down.AngleTo(b.direction)));
 				// GD.Print(PhysicsServer2D.AreaGetShapeTransform(sharedArea, i).Rotation);
+				// GD.Print(b.speed);
 				Vector2 offset = b.direction * b.speed * (float)delta;
 				b.position += offset;
 				foreach (GpuParticles2D p in b.instantiatedParticles.Values)
@@ -228,6 +242,10 @@ public partial class BulletManager : Node2D
 		{
 			AddChild(p);
 			p.GlobalPosition = initialPosition;
+		}
+		foreach (Mutation m in activeMutations.Where(m => m.AffectsMovement()))
+		{
+			m.ImmediateEffect(newBullet);
 		}
 		return newBullet;
 	}

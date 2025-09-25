@@ -88,12 +88,7 @@ public partial class Bullet : IAffectedByVisualEffects
         //     SetScale();
         // }
 
-        if (Unlocks.Flamethrower.unlocked)
-        {
-            AddMutation(Mutations.GrowingBullet);
-        }
 
-        ActivateInitialMutationEffects();
         GenerateVisualEffects();
         SetScale();
         ((IAffectedByVisualEffects)this).ImmediateVisualEffects();
@@ -214,10 +209,6 @@ public partial class Bullet : IAffectedByVisualEffects
 
         lifetime += (float)delta * (Unlocks.Flamethrower.unlocked ? 3 : 1);
 
-        foreach (Mutation m in GetMutations())
-        {
-            m.OngoingEffect(delta, this);
-        }
 
         if (lifetime >= Lifetime.GetDynamicVal())
         {
@@ -240,38 +231,6 @@ public partial class Bullet : IAffectedByVisualEffects
         }
     }
 
-    protected void ActivateInitialMutationEffects()
-    {
-        foreach (Mutation m in GetMutations())
-        {
-
-            m.ImmediateEffect(this);
-        }
-    }
-
-    protected List<Mutation> GetMutations()
-    {
-        if (currentMutations is null)
-        {
-            return new List<Mutation> { };
-        }
-        else
-        {
-            return currentMutations;
-        }
-    }
-
-    public void AddMutation(Mutation mut)
-    {
-        if (currentMutations is null)
-        {
-            currentMutations = new List<Mutation> { mut };
-        }
-        else
-        {
-            currentMutations.Add(mut);
-        }
-    }
 
 
     // The bullet's damage can change after certain events
@@ -343,10 +302,7 @@ public partial class Bullet : IAffectedByVisualEffects
             }
         }
 
-        foreach (Mutation m in GetMutations())
-        {
-            m.OnCollision(this);
-        }
+        
         if (dmg <= 0)
         {
             return;
@@ -442,10 +398,7 @@ public partial class Bullet : IAffectedByVisualEffects
                 shard = State.bulletManager.SpawnBullet(direction.Rotated((GD.Randf() + 1 / 6) * 1.5f * Mathf.Pi), position, speed, true);
 
             // }
-            foreach (Mutation m in GetMutations())
-            {
-                shard.AddMutation(m);
-            }
+            
             if (hitMob is not null)
             {
                 shard.AddToHitMobs(hitMob);

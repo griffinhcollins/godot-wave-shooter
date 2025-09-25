@@ -5,6 +5,14 @@ using Godot;
 public class ChaoticBullet : Mutation
 {
 
+    public override bool AffectsMovement()
+    {
+        return true;
+    }
+    public override bool AffectsTexture()
+    {
+        return false;
+    }
     public override string GetName()
     {
         return "Chaotic Bullet";

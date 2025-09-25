@@ -311,17 +311,17 @@ public static class Stats
                         target.ApplyStatic();
                         if (Unlocks.lightningChainChance.GetDynamicVal() > GD.Randf())
                         {
-                            GD.Print("before union");
-                            GD.Print("s");
+                            // GD.Print("before union");
+                            // GD.Print("s");
                             foreach (Mob m in alreadyHit)
                             {
                                 GD.Print(m.GetID());
                             }
-                            GD.Print("e");
+                            // GD.Print("e");
                             HashSet<Mob> hits = SpawnLightning(dmg, target, depth + 1, alreadyHit);
                             alreadyHit.UnionWith(hits);
-                            GD.Print("after union");
-                            GD.Print("s");
+                            // GD.Print("after union");
+                            // GD.Print("s");
                             foreach (Mob m in alreadyHit)
                             {
                                 GD.Print(m.GetID());

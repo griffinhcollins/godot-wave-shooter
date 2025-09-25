@@ -327,7 +327,7 @@ public partial class Bullet : IAffectedByVisualEffects
             Mob hitMob = (Mob)hitNode;
             if (Unlocks.Lightning.unlocked)
             {
-                Unlocks.SpawnLightning(dmg, hitMob, 0);
+                Unlocks.SpawnLightning(dmg, hitMob, 1);
             }
             if (Unlocks.OverflowBullets.unlocked)
             {

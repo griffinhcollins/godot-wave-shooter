@@ -383,7 +383,7 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
                 }
                 if (LightningPlague.unlocked && GD.Randf() < lightningPlagueChance.GetDynamicVal())
                 {
-                    SpawnLightning(venomDamage.GetDynamicVal(), this, 0);
+                    SpawnLightning(venomDamage.GetDynamicVal(), this, 1);
                 }
             }
 

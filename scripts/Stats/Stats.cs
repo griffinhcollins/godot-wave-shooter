@@ -259,7 +259,7 @@ public static class Stats
              0, new Vector2(0, 1), Rare, false, false, 0.5f);
             public static PlayerStat lightningChainDamageRetention = new PlayerStat("Chain Damage Retention",
             "Damage retention when chaining from one enemy to another.",
-             0.5f, new Vector2(0.5f, 1), Common, false, false, 0.5f, new StatCondition(lightningChainChance, 0.2f, true));
+             0.5f, new Vector2(0.5f, 1), Common, false, false, 0.5f, new StatCondition(lightningChainChance, 0.5f, true));
             static List<PlayerStat> lightningStatList = new List<PlayerStat> { lightningRange, lightningMaxArcs, lightningChainChance, lightningChainDamageRetention, lightningStaticTimeDown, lightningStunChance };
             static StatSet lightningStats = new StatSet(lightningStatList);
             public static Unlockable Lightning = new Unlockable("Lightning Arc",
@@ -596,7 +596,7 @@ public static class Stats
                             difficultyMult = 1.25f;
                             break;
                         default:
-                            GD.Print("weird difficulty");
+                            GD.PushError("weird difficulty");
                             break;
                     }
                 }

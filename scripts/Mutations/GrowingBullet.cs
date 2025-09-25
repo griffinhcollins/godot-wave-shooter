@@ -22,7 +22,7 @@ public class GrowingBullet : Mutation
     public override void OngoingEffect(double delta, Bullet projectile)
     {
 
-        projectile.SetScale(projectile.GetTimeAlive() * 2 + 0.1f);
+        projectile.SetScale(projectile.GetTimeAlive() * 2 + 0.5f);
     }
 
 }

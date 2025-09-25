@@ -84,7 +84,6 @@ public partial class BulletManager : Node2D
 	{
 		ClearScreen();
 		activeMutations = Mutations.allMutations.Where(m => m.applied).ToList();
-		GD.Print(activeMutations[0]);
 	}
 
 	public void ClearScreen()
@@ -137,7 +136,7 @@ public partial class BulletManager : Node2D
 				// GD.Print(b.position);
 				StaticColourChange staticColour = ((IAffectedByVisualEffects)b).GetStaticColour();
 				DrawSetTransform(b.position, Vector2.Up.AngleTo(b.direction), b.GetScale() * Vector2.One);
-				DrawTexture(GetTexture(), -offset, staticColour is null ? Colors.White : staticColour.modulate);
+				DrawTexture(GetTexture(), -offset * b.GetScale(), staticColour is null ? Colors.White : staticColour.modulate);
 			}
 		}
 
@@ -183,12 +182,12 @@ public partial class BulletManager : Node2D
 					tooOld.Add(b);
 					continue;
 				}
-				foreach (Mutation m in activeMutations.Where(m => m.AffectsMovement()))
+				foreach (Mutation m in activeMutations)
 				{
 					m.OngoingEffect(delta, b);
 				}
 				// GD.Print(PhysicsServer2D.AreaGetShapeTransform(sharedArea, i).Rotation);
-				PhysicsServer2D.AreaSetShapeTransform(sharedArea, i, PhysicsServer2D.AreaGetShapeTransform(sharedArea, i).Rotated(Vector2.Down.AngleTo(b.direction)));
+				PhysicsServer2D.AreaSetShapeTransform(sharedArea, i, PhysicsServer2D.AreaGetShapeTransform(sharedArea, i).Rotated(Vector2.Down.AngleTo(b.direction)).Scaled(b.GetScale() * Vector2.One));
 				// GD.Print(PhysicsServer2D.AreaGetShapeTransform(sharedArea, i).Rotation);
 				// GD.Print(b.speed);
 				Vector2 offset = b.direction * b.speed * (float)delta;
@@ -198,6 +197,7 @@ public partial class BulletManager : Node2D
 					p.Position = b.position;
 				}
 				t.Origin = b.position;
+				
 				PhysicsServer2D.AreaSetShapeTransform(sharedArea, i, t);
 			}
 			for (int i = 0; i < tooOld.Count; i++)

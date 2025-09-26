@@ -150,7 +150,7 @@ public partial class Main : Node2D
     {
         // Stats.PlayerStats.Unlocks.Laser.Unlock();
         // Stats.PlayerStats.Unlocks.Splinter.Unlock();
-        Stats.PlayerStats.Mutations.SetMutation(PlayerStats.Mutations.SmartBullet);
+        // Stats.PlayerStats.Mutations.SetMutation(PlayerStats.Mutations.SmartBullet);
         State.currentState = State.alive;
         UpdateEnemyStats();
         State.bulletManager.OnStartWave();

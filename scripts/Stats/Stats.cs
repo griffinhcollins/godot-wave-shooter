@@ -269,7 +269,7 @@ public static class Stats
             // returns all the mobs that got hit so other branches don't hit the same mobs
             public static HashSet<Mob> SpawnLightning(float dmg, Mob seedMob, int depth, HashSet<Mob> alreadyHit = null)
             {
-                PackedScene arcScene = State.sceneHolder.lightningArc;
+
                 if (alreadyHit is null)
                 {
                     alreadyHit = new HashSet<Mob> { seedMob };
@@ -278,7 +278,12 @@ public static class Stats
                 {
                     alreadyHit.Add(seedMob);
                 }
-                float arcRange = Unlocks.lightningRange.GetDynamicVal();
+                if (seedMob.staticApplied)
+                {
+                    return alreadyHit;
+                }
+                PackedScene arcScene = State.sceneHolder.lightningArc;
+                float arcRange = lightningRange.GetDynamicVal();
                 List<Mob> targets = new List<Mob>();
                 // Find the nearest mob
                 foreach (Mob mob in seedMob.GetTree().GetNodesInGroup("mobs"))

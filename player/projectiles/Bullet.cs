@@ -30,7 +30,7 @@ public partial class Bullet : IAffectedByVisualEffects
     public bool isShard = false;
 
     protected bool dead;
-    float dmg;
+    public float dmg { get; private set; }
 
 
     public float seed { get; private set; }
@@ -120,7 +120,7 @@ public partial class Bullet : IAffectedByVisualEffects
         return BulletSize.GetDynamicVal() * (isShard ? Unlocks.splinterDamageMultiplier.GetDynamicVal() : 1) * scaleMult;
     }
 
-   
+
 
     private void GenerateVisualEffects()
     {
@@ -305,7 +305,7 @@ public partial class Bullet : IAffectedByVisualEffects
             }
         }
 
-        
+
         if (dmg <= 0)
         {
             return;
@@ -392,16 +392,16 @@ public partial class Bullet : IAffectedByVisualEffects
             // if (isLaser)
             // {
             //     // If splinter is with laser beam, spawns a laser beam off a hit enemy
-                
+
             //     shard = State.bulletManager.SpawnOrMoveLaser(direction.Rotated(GD.Randf() * 2 * Mathf.Pi), position, true);
             // }
             // else
             // {
 
-                shard = State.bulletManager.SpawnBullet(direction.Rotated((GD.Randf() + 1 / 6) * 1.5f * Mathf.Pi), position, speed, true);
+            shard = State.bulletManager.SpawnBullet(direction.Rotated((GD.Randf() + 1 / 6) * 1.5f * Mathf.Pi), position, speed, true);
 
             // }
-            
+
             if (hitMob is not null)
             {
                 shard.AddToHitMobs(hitMob);

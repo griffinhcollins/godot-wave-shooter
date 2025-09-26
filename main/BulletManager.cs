@@ -265,7 +265,7 @@ public partial class BulletManager : Node2D
 		LaserInformation newInfo = new LaserInformation(initialPosition, initialPosition + direction * hitDist);
 		if (lastLaserInformation.Count <= multishotIndex)
 		{
-			GD.Print(multishotIndex);
+			// GD.Print(multishotIndex);
 			lastLaserInformation.Add(newInfo);
 		}
 		lastLaserInformation[multishotIndex] = newInfo;

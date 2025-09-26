@@ -19,7 +19,7 @@ public class BoomarangBullet : Mutation
 
     public override void ImmediateEffect(Bullet projectile)
     {
-        baseDamage = projectile.dmg;
+        baseDamage = projectile.GetDamage();
     }
 
 
@@ -38,6 +38,6 @@ public class BoomarangBullet : Mutation
         Vector2 newDir = projectile.direction.Rotated(boomarangRot * (float)delta * 3f * (projectile.seed > 0.5f ? 1 : -1));
         projectile.direction = newDir;
         projectile.speed = boomarangSpeed * projectile.initialSpeed;
-        projectile.SetDamage(baseDamage * (Mathf.Max(0.5f, projectile.lifetime) * 2f));
+        projectile.SetBaseDamage(baseDamage * (Mathf.Max(0.5f, projectile.lifetime) * 2f));
     }
 }

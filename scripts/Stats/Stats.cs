@@ -329,9 +329,8 @@ public static class Stats
                             // GD.Print("s");
                             foreach (Mob m in alreadyHit)
                             {
-                                GD.Print(m.GetID());
+                                // GD.Print(m.GetID());
                             }
-                            GD.Print("e");
                         }
                     }
                 }

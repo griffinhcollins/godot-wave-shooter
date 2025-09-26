@@ -30,7 +30,7 @@ public partial class Bullet : IAffectedByVisualEffects
     public bool isShard = false;
 
     protected bool dead;
-    public float dmg { get; private set; }
+    private float baseDamage;
 
 
     public float seed { get; private set; }
@@ -69,7 +69,7 @@ public partial class Bullet : IAffectedByVisualEffects
         dead = false;
 
         shardMult = isShard ? Unlocks.splinterDamageMultiplier.GetDynamicVal() : 1;
-        SetDamage(Damage.GetDynamicVal() * shardMult);
+        SetBaseDamage(Damage.GetDynamicVal());
         AssignDamageType();
         SetSeed(GD.Randf());
         initialSpeed = speed;
@@ -151,6 +151,10 @@ public partial class Bullet : IAffectedByVisualEffects
         return lifetime;
     }
 
+    public float GetDamage()
+    {
+        return baseDamage * shardMult;
+    }
 
 
     public void AddToHitMobs(Mob mob)
@@ -237,10 +241,10 @@ public partial class Bullet : IAffectedByVisualEffects
 
 
     // The bullet's damage can change after certain events
-    public void SetDamage(float newDmg)
+    public void SetBaseDamage(float newDmg)
     {
 
-        dmg = newDmg;
+        baseDamage = newDmg;
     }
 
     public void OnCollision(Node2D body)
@@ -252,7 +256,7 @@ public partial class Bullet : IAffectedByVisualEffects
             ((numHit <= Unlocks.bouncingBulletBounces.GetDynamicVal()) || // Don't die if we have bounces left
             (Unlocks.PiercingBullets.unlocked && (lifetime < Unlocks.piercingBulletsPiercingTime.GetDynamicVal())) || // Don't die if we have piercing left
             Unlocks.OverflowBullets.unlocked || Unlocks.Flamethrower.unlocked) && // Don't die if overflow bullets are unlocked
-            dmg > 0 // Do die if we've run out of damage, even if we have bounces/pierces left
+            baseDamage > 0 // Do die if we've run out of damage, even if we have bounces/pierces left
          )
         {
             // Not the final hit - do stuff that only triggers on intermediate hits
@@ -281,7 +285,7 @@ public partial class Bullet : IAffectedByVisualEffects
                 lifetime = Unlocks.piercingBulletsPiercingTime.GetDynamicVal();
             }
             // Reduce damage of bullet when it hits a border
-            SetDamage(dmg * Unlocks.wallBounceDamageRetention.GetDynamicVal());
+            SetBaseDamage(baseDamage * Unlocks.wallBounceDamageRetention.GetDynamicVal());
         }
         if (mobsHit.Contains(hitNode))
         {
@@ -293,11 +297,11 @@ public partial class Bullet : IAffectedByVisualEffects
             Mob hitMob = (Mob)hitNode;
             if (Unlocks.Lightning.unlocked)
             {
-                Unlocks.SpawnLightning(dmg, hitMob, 1);
+                Unlocks.SpawnLightning(GetDamage(), hitMob, 1);
             }
             if (Unlocks.OverflowBullets.unlocked)
             {
-                SetDamage(dmg - Unlocks.overflowLoss.GetDynamicVal() * hitMob.GetHP());
+                SetBaseDamage(baseDamage - Unlocks.overflowLoss.GetDynamicVal() * hitMob.GetHP());
             }
             if (Unlocks.Splinter.unlocked && Unlocks.Laser.unlocked)
             {
@@ -310,7 +314,7 @@ public partial class Bullet : IAffectedByVisualEffects
         }
 
 
-        if (dmg <= 0)
+        if (baseDamage <= 0)
         {
             return;
         }
@@ -320,7 +324,7 @@ public partial class Bullet : IAffectedByVisualEffects
             numHit++;
             mobsHit.Add(hitNode);
             Mob mobHit = (Mob)hitNode;
-            mobHit.TakeDamage(dmg, damageType);
+            mobHit.TakeDamage(GetDamage(), damageType);
         }
 
 

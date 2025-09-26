@@ -250,7 +250,7 @@ public partial class Bullet : IAffectedByVisualEffects
         //  Now do checks for things that are only on final or non-final hit
         if (
             ((numHit <= Unlocks.bouncingBulletBounces.GetDynamicVal()) || // Don't die if we have bounces left
-            (lifetime < Unlocks.piercingBulletsPiercingTime.GetDynamicVal()) || // Don't die if we have piercing left
+            (Unlocks.PiercingBullets.unlocked && (lifetime < Unlocks.piercingBulletsPiercingTime.GetDynamicVal())) || // Don't die if we have piercing left
             Unlocks.OverflowBullets.unlocked || Unlocks.Flamethrower.unlocked) && // Don't die if overflow bullets are unlocked
             dmg > 0 // Do die if we've run out of damage, even if we have bounces/pierces left
          )
@@ -282,6 +282,10 @@ public partial class Bullet : IAffectedByVisualEffects
             }
             // Reduce damage of bullet when it hits a border
             SetDamage(dmg * Unlocks.wallBounceDamageRetention.GetDynamicVal());
+        }
+        if (mobsHit.Contains(hitNode))
+        {
+            return;
         }
         // Activate any abilities that trigger on hit
         if (hitNode is Mob)
@@ -398,7 +402,7 @@ public partial class Bullet : IAffectedByVisualEffects
             // else
             // {
 
-            shard = State.bulletManager.SpawnBullet(direction.Rotated((GD.Randf() + 1 / 6) * 1.5f * Mathf.Pi), position, speed, true);
+            shard = State.bulletManager.SpawnBullet(direction.Rotated((GD.Randf() + 1 / 6) * 1.5f * Mathf.Pi), position, -1, true);
 
             // }
 

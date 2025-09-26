@@ -191,7 +191,7 @@ public partial class Main : Node2D
         }
     }
 
-    private void EndWave()
+    async private void EndWave()
     {
 
         waveTimer.Stop();
@@ -205,9 +205,10 @@ public partial class Main : Node2D
 
         }
 
-        player.AddMoney((int)PlayerStats.HPReward.GetDynamicVal() * player.CurrentHP());
         player.EndWave();
         State.currentState = State.shop;
+        hud.PlayHPInterestAnimation(); // give the player money for each remaining HP
+        await ToSignal(GetTree().CreateTimer(player.CurrentHP()), SceneTreeTimer.SignalName.Timeout);
         hud.GenerateShop();
     }
 

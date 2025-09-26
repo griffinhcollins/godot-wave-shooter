@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 public partial class Hud : CanvasLayer
 {
@@ -175,7 +176,7 @@ public partial class Hud : CanvasLayer
         {
             // Player has skipped an upgrade so gets some money
             Stats.PlayerStats.MoneyCap.ApplyUpgrade(10, true);
-            player.AddMoney(0); // Update the money counter
+            UpdateMoneyCounter(Stats.PlayerStats.Money); // Update the money counter
             // player.AddMoney(10);
             CloseShop();
         }
@@ -233,6 +234,29 @@ public partial class Hud : CanvasLayer
             UpdateCosts();
         }
 
+    }
+
+    public async Task PlayHPInterestAnimation()
+    {
+        foreach (TextureRect heart in GetNode<HBoxContainer>("WaveElements/HealthBar").GetChildren())
+        {
+            await ToSignal(GetTree().CreateTimer(0.5f), SceneTreeTimer.SignalName.Timeout);
+            MoveHeart(heart);
+            await ToSignal(GetTree().CreateTimer(0.5f), SceneTreeTimer.SignalName.Timeout);
+            player.AddMoney((int)Stats.PlayerStats.HPReward.GetDynamicVal());
+
+        }
+    }
+    async private void MoveHeart(TextureRect heart)
+    {
+        Vector2 targetPos = GetNode<Label>("MoneyLabel").GlobalPosition;
+        Vector2 startPos = heart.GlobalPosition;
+        for (int i = 0; i < 20; i++)
+        {
+            heart.GlobalPosition = startPos.Lerp(targetPos, i / 20f);
+            await ToSignal(GetTree().CreateTimer(1 / 60f), SceneTreeTimer.SignalName.Timeout);
+        }
+        heart.QueueFree();
     }
 
     private void OnDelveDeeperPressed()

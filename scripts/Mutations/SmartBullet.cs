@@ -28,7 +28,8 @@ public class SmartBullet : Mutation
         {
             return;
         }
-        projectile.SetVelocity(projectile.GetCurrentVelocity() + towardsMouse.Normalized() * (float)delta * 5000);
+        float angleToMouse = projectile.direction.AngleTo(towardsMouse);
+        projectile.direction = projectile.direction.Rotated(angleToMouse * (float)delta * 5f);
     }
 
 

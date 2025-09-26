@@ -163,7 +163,7 @@ public partial class UpgradeNode : Button
 
     private void OnMouseLeave()
     {
-        hud.HideMessage();
+        hud.ShowShopInfo();
     }
 
     private void OnClicked()

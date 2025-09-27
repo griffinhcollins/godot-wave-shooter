@@ -208,7 +208,7 @@ public partial class Main : Node2D
         player.EndWave();
         State.currentState = State.shop;
         hud.PlayHPInterestAnimation(); // give the player money for each remaining HP
-        await ToSignal(GetTree().CreateTimer(player.CurrentHP()), SceneTreeTimer.SignalName.Timeout);
+        await ToSignal(GetTree().CreateTimer(player.CurrentHP()*0.5f + 0.1f), SceneTreeTimer.SignalName.Timeout);
         hud.GenerateShop();
     }
 

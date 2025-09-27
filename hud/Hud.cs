@@ -240,11 +240,9 @@ public partial class Hud : CanvasLayer
     {
         foreach (TextureRect heart in GetNode<HBoxContainer>("WaveElements/HealthBar").GetChildren())
         {
-            await ToSignal(GetTree().CreateTimer(0.5f), SceneTreeTimer.SignalName.Timeout);
             MoveHeart(heart);
-            await ToSignal(GetTree().CreateTimer(0.5f), SceneTreeTimer.SignalName.Timeout);
+            await ToSignal(GetTree().CreateTimer(0.4f), SceneTreeTimer.SignalName.Timeout);
             player.AddMoney((int)Stats.PlayerStats.HPReward.GetDynamicVal());
-
         }
     }
     async private void MoveHeart(TextureRect heart)
@@ -256,6 +254,11 @@ public partial class Hud : CanvasLayer
             heart.GlobalPosition = startPos.Lerp(targetPos, i / 20f);
             await ToSignal(GetTree().CreateTimer(1 / 60f), SceneTreeTimer.SignalName.Timeout);
         }
+        Label plusOne = damageNumber.Instantiate<Label>();
+        plusOne.Text = string.Format("+{0:n0}", Stats.PlayerStats.HPReward.GetDynamicVal());
+        plusOne.AddThemeColorOverride("font_color", Colors.Gold);
+        plusOne.Position = heart.GlobalPosition + new Vector2(GD.Randf() * 10 - 5, GD.Randf() * 10 - 5);
+        AddChild(plusOne);
         heart.QueueFree();
     }
 

@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 public partial class Hud : CanvasLayer
@@ -238,8 +239,12 @@ public partial class Hud : CanvasLayer
 
     public async Task PlayHPInterestAnimation()
     {
-        foreach (TextureRect heart in GetNode<HBoxContainer>("WaveElements/HealthBar").GetChildren())
+
+        HBoxContainer healthbar = GetNode<HBoxContainer>("WaveElements/HealthBar");
+        int hp = player.CurrentHP();
+        for (int i = 1; i <= hp; i++)
         {
+            TextureRect heart = healthbar.GetChild<TextureRect>(hp - i);
             MoveHeart(heart);
             await ToSignal(GetTree().CreateTimer(0.4f), SceneTreeTimer.SignalName.Timeout);
             player.AddMoney((int)Stats.PlayerStats.HPReward.GetDynamicVal());

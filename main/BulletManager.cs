@@ -97,7 +97,7 @@ public partial class BulletManager : Node2D
 		QueueRedraw();
 	}
 
-	Texture2D GetTexture()
+	Texture2D GetTexture(Bullet b = null)
 	{
 		if (Unlocks.Laser.unlocked)
 		{
@@ -105,6 +105,10 @@ public partial class BulletManager : Node2D
 		}
 		if (Unlocks.PiercingBullets.unlocked)
 		{
+			if (b is not null && b.lifetime > Unlocks.piercingBulletsPiercingTime.GetDynamicVal())
+			{
+				return bouncyBulletTexture;
+			}
 			return piercingBulletTexture;
 		}
 		return bouncyBulletTexture;
@@ -136,7 +140,7 @@ public partial class BulletManager : Node2D
 				// GD.Print(b.position);
 				StaticColourChange staticColour = ((IAffectedByVisualEffects)b).GetStaticColour();
 				DrawSetTransform(b.position, Vector2.Up.AngleTo(b.direction), b.GetScale() * Vector2.One);
-				DrawTexture(GetTexture(), -offset * b.GetScale(), staticColour is null ? Colors.White : staticColour.modulate);
+				DrawTexture(GetTexture(b), -offset * b.GetScale(), staticColour is null ? Colors.White : staticColour.modulate);
 			}
 		}
 
@@ -197,7 +201,7 @@ public partial class BulletManager : Node2D
 					p.Position = b.position;
 				}
 				t.Origin = b.position;
-				
+
 				PhysicsServer2D.AreaSetShapeTransform(sharedArea, i, t);
 			}
 			for (int i = 0; i < tooOld.Count; i++)

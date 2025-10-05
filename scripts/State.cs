@@ -8,6 +8,7 @@ public static class State
     public static Hud hud;
     public static BulletManager bulletManager;
     public static AudioManager audioManager;
+    public static Border border;
     public static Player player;
 
     public static Improvement MobDamage; // exists as a source for visual effects

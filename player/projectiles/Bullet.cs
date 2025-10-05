@@ -307,10 +307,11 @@ public partial class Bullet : IAffectedByVisualEffects
             {
                 Splinter(hitNode);
             }
-            if (Unlocks.BouncingBullets.unlocked)
-            {
-                Bounce(hitNode);
-            }
+
+        }
+        if (Unlocks.WallBounce.unlocked || (Unlocks.BouncingBullets.unlocked && hitNode is Mob))
+        {
+            Bounce(hitNode);
         }
 
 
@@ -342,7 +343,12 @@ public partial class Bullet : IAffectedByVisualEffects
         else
         {
             // We hit a wall
-            normal = hitNode.GetViewportRect().GetCenter() - hitNode.Position;
+            int borderCheck = State.border.CheckBounds(position);
+            if (borderCheck == 0)
+            {
+                return;
+            }
+            normal = Vector2.Right.Rotated(Mathf.Pi * borderCheck / 2);
         }
         normal = normal.Normalized();
         Vector2 newDir = direction - 2 * (direction.Dot(normal)) * normal;

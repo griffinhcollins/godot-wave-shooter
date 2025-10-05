@@ -64,8 +64,6 @@ public partial class BulletManager : Node2D
 		sharedArea = GetNode<Area2D>("Area2D").GetRid();
 		Transform2D areaTransform = new Transform2D(0, new Vector2(1280 / 2, 720 / 2));
 		PhysicsServer2D.AreaSetTransform(sharedArea, areaTransform);
-		PhysicsServer2D.AreaSetCollisionLayer(sharedArea, 3);
-		PhysicsServer2D.AreaSetCollisionMask(sharedArea, 2);
 		lastLaserInformation = new List<LaserInformation>();
 
 	}
@@ -73,6 +71,8 @@ public partial class BulletManager : Node2D
 	{
 		bullets[local_index].OnCollision(body);
 	}
+
+
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
@@ -83,6 +83,11 @@ public partial class BulletManager : Node2D
 	public void OnStartWave()
 	{
 		ClearScreen();
+		if (Unlocks.WallBounce.unlocked)
+		{
+
+			PhysicsServer2D.AreaSetCollisionMask(sharedArea, 2 | 5);
+		}
 		activeMutations = Mutations.allMutations.Where(m => m.applied).ToList();
 	}
 
@@ -196,6 +201,7 @@ public partial class BulletManager : Node2D
 				// GD.Print(b.speed);
 				Vector2 offset = b.direction * b.speed * (float)delta;
 				b.position += offset;
+
 				foreach (GpuParticles2D p in b.instantiatedParticles.Values)
 				{
 					p.Position = b.position;
@@ -203,6 +209,10 @@ public partial class BulletManager : Node2D
 				t.Origin = b.position;
 
 				PhysicsServer2D.AreaSetShapeTransform(sharedArea, i, t);
+				if (Unlocks.WallBounce.unlocked && State.border.CheckBounds(b.position) > 0)
+				{
+					b.OnCollision(State.border);
+				}
 			}
 			for (int i = 0; i < tooOld.Count; i++)
 			{

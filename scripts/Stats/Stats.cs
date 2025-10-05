@@ -250,7 +250,7 @@ public static class Stats
              1, new Vector2(1, 5), Uncommon, true, false);
             public static PlayerStat lightningChainChance = new PlayerStat("Chain Chance",
             "The chance that an enemy struck by an arc will chain to another enemy.",
-             0.1f, new Vector2(0.1f, 0.8f), Common, false, false);
+             0.1f, new Vector2(0.1f, 0.8f), Common, false, false, 0.4f);
             public static PlayerStat lightningStaticTimeDown = new PlayerStat("Lightning Static Duration", // if you unlock stun, this should start also spawning increasing upgrades
             "The amount of time in seconds an enemy hit by lightning is affected by static. While affected by static, enemies cannot be hit with lightning again.",
              2, new Vector2(0.1f, 2), Uncommon, false, true);

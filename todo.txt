@@ -6,13 +6,12 @@
 - upgrade trees: when you hit 0 hp, you unlock powerful lich upgrades, change character sprite
 - need new sprites for enemies and the player, while we're on that
 
-
+- TODO: overhaul the upgrade/unlock description system. Bounce wasn't correctly showing upgrades (1->2 multiple times), make progression and unlocking unlocks easier to understand
 
 - rocks maybe scale in health faster so that they can pierce through massive damage builds, dodging should always be preferred with rocks
 - When getting a mutation, show the name
 - poisoned enemies leave poison trail
 
-- something is fucked with lightning, it's hitting the same enemy multiple times
 - bombers are still dropping bombs after death
 
 

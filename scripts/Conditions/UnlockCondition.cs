@@ -25,6 +25,7 @@ public class UnlockCondition : Condition
 	public UnlockCondition(int _ID, bool _equalTo)
 	{
 		ID = _ID;
+		unlock = allUnlockables[ID];
 		equalTo = _equalTo;
 	}
 

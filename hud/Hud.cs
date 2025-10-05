@@ -149,14 +149,14 @@ public partial class Hud : CanvasLayer
             shopElements.GetNode<Button>("Reroll").Hide();
             shopElements.GetNode<Button>("BuySlot").Hide();
 
-            // Change Skip for cash to Next Wave
-            nextWaveButton.Text = "Next Wave";
-            nextWaveButton.AddThemeFontSizeOverride("font_size", 64);
         }
         else
         {
             bonusTaken++;
         }
+        // Change to Next Wave
+        nextWaveButton.Text = "Next Wave";
+        nextWaveButton.AddThemeFontSizeOverride("font_size", 64);
 
     }
 
@@ -260,8 +260,17 @@ public partial class Hud : CanvasLayer
             await ToSignal(GetTree().CreateTimer(1 / 60f), SceneTreeTimer.SignalName.Timeout);
         }
         Label plusOne = damageNumber.Instantiate<Label>();
-        plusOne.Text = string.Format("+{0:n0}", Stats.PlayerStats.HPReward.GetDynamicVal());
-        plusOne.AddThemeColorOverride("font_color", Colors.Gold);
+        if (Stats.PlayerStats.Money < Stats.PlayerStats.MoneyCap.GetDynamicVal())
+        {
+            plusOne.Text = string.Format("+{0:n0}", Stats.PlayerStats.HPReward.GetDynamicVal());
+            plusOne.AddThemeColorOverride("font_color", Colors.Gold);
+        }
+        else
+        {
+            plusOne.Text = "Cap!";
+
+            plusOne.AddThemeColorOverride("font_color", Colors.Red);
+        }
         plusOne.Position = heart.GlobalPosition + new Vector2(GD.Randf() * 10 - 5, GD.Randf() * 10 - 5);
         AddChild(plusOne);
         heart.QueueFree();

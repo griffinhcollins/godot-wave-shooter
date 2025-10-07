@@ -80,7 +80,7 @@ public static class Stats
         // This holds every stat set in the game that is currently unlocked
         static List<StatSet> allAvailableStatSets;
 
-        // Default starting stats
+        // Default starting stats, these can always be rolled in the shop
 
         public static PlayerStat Damage = new PlayerStat("Damage",
             "Base bullet damage.",
@@ -121,21 +121,52 @@ public static class Stats
         public static PlayerStat DropRate = new PlayerStat("Drop Rate",
             "How many coins enemies drop. Fractional values add a chance for extra coins.",
              1.5f, new Vector2(0.25f, 4), Rare);
+
+
+
+
+        // Upgrades that require something, but aren't behind an unlock
         public static PlayerStat MoneyCap = new PlayerStat("Money Cap",
             "Maximum amount of money you can gather.",
              50, new Vector2(50, Mathf.Inf), Rare, true, false, 50, new CounterCondition(Counters.WaveCounter, 10)); // Only unlock after 10 waves have been beaten
 
 
-
-
-        // Ignition isn't an unlock, but a rare upgrade that can only appear if something that deals fire damage is unlocked
+        // Ignition, a rare upgrade that can only appear if something that deals fire damage is unlocked
         public static PlayerStat IgnitionChance = new PlayerStat("Ignition Chance",
             "Any fire damage has a chance to ignite enemies, dealing rapid damage over time (yes we're underwater, don't think about it).",
              0, new Vector2(0, 1), Rare, false, false, 1f,
          new ConjunctCondition(new List<Condition> { new UnlockCondition(Unlocks.FireTrail, true), new UnlockCondition(Unlocks.DeathExplosion, true) }, false));
 
+        // Knockback requires a bit of damage
+        public static PlayerStat Knockback = new PlayerStat("Knockback",
+            "Push enemies back upon hit.",
+             0, new Vector2(0, 20), Uncommon, false, false, 1, new StatCondition(Damage, 15, true)); // Only unlock after 10 waves have been beaten
 
-        static List<PlayerStat> defaultStatList = new List<PlayerStat> { Damage, FireRate, MaxHP, HPReward, Multishot, Spread, ShotSpeed, Speed, DamageRecoil, RevengeDamage, BulletSize, Lifetime, DropRate, MoneyCap, IgnitionChance };
+        // Like Monstro's Lung
+        public static PlayerStat ChargeTime = new PlayerStat("Charge Time",
+        "Rather than firing continuously, hold down the fire button to build up bullets, then release it to fire them in one go. This stat determines how long you will accumulate bullets for.",
+        2, new Vector2(0, 5f), Rare, false, false, 1, new StatCondition(Multishot, 2f, true));
+
+
+        static List<PlayerStat> defaultStatList = new List<PlayerStat> {
+            Damage,
+            FireRate,
+            MaxHP,
+            HPReward,
+            Multishot,
+            Spread,
+            ShotSpeed,
+            Speed,
+            DamageRecoil,
+            RevengeDamage,
+            BulletSize,
+            Lifetime,
+            DropRate,
+            // Special upgrades, not locked behind an unlock but still have conditions
+            MoneyCap,
+            IgnitionChance,
+            Knockback,
+            ChargeTime };
 
 
 

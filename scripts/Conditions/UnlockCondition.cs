@@ -7,7 +7,7 @@ public class UnlockCondition : Condition
 
 
 
-	public Unlockable unlock;
+	private Unlockable unlock;
 	public int ID;
 
 	public bool equalTo;
@@ -25,8 +25,16 @@ public class UnlockCondition : Condition
 	public UnlockCondition(int _ID, bool _equalTo)
 	{
 		ID = _ID;
-		unlock = allUnlockables[ID];
 		equalTo = _equalTo;
+	}
+
+	public Unlockable GetUnlock()
+	{
+		if (unlock is null)
+		{
+			unlock = allUnlockables[ID];
+		}
+		return unlock;
 	}
 
 

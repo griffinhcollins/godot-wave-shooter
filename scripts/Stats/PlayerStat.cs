@@ -162,7 +162,7 @@ public class PlayerStat : Improvement
         }
         if (c is UnlockCondition)
         {
-            return new List<Improvement> { ((UnlockCondition)c).unlock };
+            return new List<Improvement> { ((UnlockCondition)c).GetUnlock() };
         }
         if (c is ConjunctCondition)
         {

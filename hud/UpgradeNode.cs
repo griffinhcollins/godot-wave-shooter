@@ -103,13 +103,14 @@ public partial class UpgradeNode : Button
             List<PlayerStatUpgrade> allStatUpgrades = pool.OfType<PlayerStatUpgrade>().Where(u => u.IsPositive()).Where(u => !exclude.Contains(u.stat)).ToList();
             // Roll to see what rarity we get
             float roll = GD.Randf();
+            GD.Print(roll);
             if (roll < 0.5f)
             {
                 rarity = Common;
             }
             else
             {
-                if (roll < 0.90f)
+                if (roll < 0.80f)
                 {
                     rarity = Uncommon;
                 }

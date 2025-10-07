@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 public partial class Player : Node2D, IAffectedByVisualEffects
 {
@@ -53,6 +54,10 @@ public partial class Player : Node2D, IAffectedByVisualEffects
 
     bool canFire = true;
 
+    // For Charged shots
+    int shotsCharged = 0;
+    float timeCharging = 0;
+
 
     public List<VisualEffect> visualEffects { get; set; }
     public Dictionary<StaticColourChange, float> staticColours { get; set; }
@@ -86,7 +91,8 @@ public partial class Player : Node2D, IAffectedByVisualEffects
 
     public void UpdateStats()
     {
-
+        timeCharging = 0;
+        shotsCharged = 0;
 
         firingspeed = FireRate.GetDynamicVal();
         if (Unlocks.Laser.unlocked)
@@ -207,8 +213,6 @@ public partial class Player : Node2D, IAffectedByVisualEffects
     private void ShootBullet(Vector2 fireFromPos)
     {
 
-        canFire = false;
-        bulletTimer.Start();
 
         float spreadRotate = reticule.Rotation + Mathf.DegToRad(Spread.GetDynamicVal()) * (float)GD.RandRange(-1, 1f);
 
@@ -275,6 +279,8 @@ public partial class Player : Node2D, IAffectedByVisualEffects
 
             if (Input.IsActionPressed("fire") && canFire)
             {
+                canFire = false;
+                bulletTimer.Start();
                 Vector2 fireFromPos = new Vector2(0, 0);
                 // Multishot
                 float shots = Multishot.GetDynamicVal();
@@ -282,10 +288,39 @@ public partial class Player : Node2D, IAffectedByVisualEffects
                 {
                     if (GD.RandRange(0f, 1) <= shots)
                     {
-                        ShootBullet(fireFromPos);
+                        if (ChargeTime.GetDynamicVal() <= 0)
+                        {
+                            ShootBullet(fireFromPos);
+
+                        }
+                        else if (timeCharging <= ChargeTime.GetDynamicVal())
+                        {
+                            shotsCharged++;
+                            ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(ChargeTime, Colors.Red, 0.5f, 1, 0.1f));
+                        }
                     }
                     fireFromPos += new Vector2(10 + (GD.Randi() % 5), 0).Rotated(reticule.Rotation) * (GD.Randi() % 2 == 0 ? 1 : -1);
                     shots--;
+                }
+
+            }
+
+            if (ChargeTime.GetDynamicVal() > 0)
+            {
+                if (Input.IsActionPressed("fire"))
+                {
+
+                    timeCharging += (float)delta;
+                    if (timeCharging > ChargeTime.GetDynamicVal() && timeCharging - (float)delta <= ChargeTime.GetDynamicVal())
+                    {
+                        // flash to indicate the bullets have finished charging
+
+                        ((IAffectedByVisualEffects)this).AddVisualEffect(new StaticColourChange(ChargeTime, Colors.Green, 1f, 100, 0.1f));
+                    }
+                }
+                else if (timeCharging > 0)
+                {
+                    FireChargedShots();
                 }
 
             }
@@ -295,6 +330,21 @@ public partial class Player : Node2D, IAffectedByVisualEffects
 
 
 
+    }
+
+    async Task FireChargedShots()
+    {
+        timeCharging = 0;
+        Vector2 fireFromPos = Vector2.Zero;
+        for (int i = 0; i < shotsCharged; i++)
+        {
+
+            ShootBullet(fireFromPos);
+
+            fireFromPos += new Vector2(10 + (GD.Randi() % 5), 0).Rotated(reticule.Rotation) * (GD.Randi() % 2 == 0 ? 1 : -1);
+            await ToSignal(GetTree().CreateTimer(GD.Randf() * 0.1f / shotsCharged), SceneTreeTimer.SignalName.Timeout);
+        }
+        shotsCharged = 0;
     }
 
 

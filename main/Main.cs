@@ -148,12 +148,15 @@ public partial class Main : Node2D
 
     public void StartWave()
     {
-        Stats.PlayerStats.Unlocks.BouncingBullets.Unlock();
-        // Stats.PlayerStats.Unlocks.WallBounce.Unlock();
+        Stats.PlayerStats.Unlocks.PiercingBullets.Unlock();
+        Stats.PlayerStats.Unlocks.Flamethrower.Unlock();
+
         // Stats.PlayerStats.Unlocks.Splinter.Unlock();
         // Stats.PlayerStats.Mutations.SetMutation(PlayerStats.Mutations.SmartBullet);
         State.currentState = State.alive;
         UpdateEnemyStats();
+
+        
         State.bulletManager.OnStartWave();
         ClearScreen();
 
@@ -209,7 +212,7 @@ public partial class Main : Node2D
         player.EndWave();
         State.currentState = State.shop;
         hud.PlayHPInterestAnimation(); // give the player money for each remaining HP
-        await ToSignal(GetTree().CreateTimer(player.CurrentHP()*0.5f + 0.1f), SceneTreeTimer.SignalName.Timeout);
+        await ToSignal(GetTree().CreateTimer(player.CurrentHP() * 0.5f + 0.1f), SceneTreeTimer.SignalName.Timeout);
         hud.GenerateShop();
     }
 

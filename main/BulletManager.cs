@@ -88,6 +88,10 @@ public partial class BulletManager : Node2D
 
 			PhysicsServer2D.AreaSetCollisionMask(sharedArea, 2 | 5);
 		}
+		if (Unlocks.Flamethrower.unlocked)
+        {
+            Mutations.SetMutation(Mutations.GrowingBullet);
+        }
 		activeMutations = Mutations.allMutations.Where(m => m.applied).ToList();
 	}
 
@@ -107,6 +111,10 @@ public partial class BulletManager : Node2D
 		if (Unlocks.Laser.unlocked)
 		{
 			return laserTexture;
+		}
+		if (Unlocks.Flamethrower.unlocked)
+		{
+			
 		}
 		if (Unlocks.PiercingBullets.unlocked)
 		{

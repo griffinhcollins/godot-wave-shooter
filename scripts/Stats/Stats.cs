@@ -117,7 +117,7 @@ public static class Stats
              0.7f, new Vector2(0.25f, 3), Common, false, false, 0.75f);
         public static PlayerStat Lifetime = new PlayerStat("Bullet Lifetime",
             "Number of seconds a bullet will last before expiring.",
-             1, new Vector2(1, 20), Uncommon, false, false, 1.5f);
+             1, new Vector2(0.1f, 20), Uncommon, false, false, 1.5f);
         public static PlayerStat DropRate = new PlayerStat("Drop Rate",
             "How many coins enemies drop. Fractional values add a chance for extra coins.",
              1.5f, new Vector2(0.25f, 4), Rare);
@@ -140,12 +140,12 @@ public static class Stats
         // Knockback requires a bit of damage
         public static PlayerStat Knockback = new PlayerStat("Knockback",
             "Push enemies back upon hit.",
-             0, new Vector2(0, 20), Uncommon, false, false, 1, new StatCondition(Damage, 15, true)); // Only unlock after 10 waves have been beaten
+             0, new Vector2(0, 10), Uncommon, false, false, 1, new StatCondition(Damage, 15, true)); // Only unlock with enough damage
 
         // Like Monstro's Lung
         public static PlayerStat ChargeTime = new PlayerStat("Charge Time",
-        "Rather than firing continuously, hold down the fire button to build up bullets, then release it to fire them in one go. This stat determines how long you will accumulate bullets for.",
-        2, new Vector2(0, 5f), Rare, false, false, 1, new StatCondition(Multishot, 2f, true));
+            "Rather than firing continuously, hold down the fire button to build up bullets, then release it to fire them in one go. This stat determines how long you will accumulate bullets for.",
+            0, new Vector2(0, 5f), Rare, false, false, 1, new StatCondition(Multishot, 2f, true));
 
 
         static List<PlayerStat> defaultStatList = new List<PlayerStat> {
@@ -250,7 +250,7 @@ public static class Stats
             static Condition piercingUnlockCondition = new UnlockCondition(1, false); // Mutually exclusive with bouncing
             public static PlayerStat piercingBulletsPiercingTime = new PlayerStat("Piercing Time",
             "How many seconds a bullet will pierce for after being shot.",
-             0.25f, new Vector2(0, 2), Common, false, false, 0.5f, new ConjunctCondition(new List<Condition> { new UnlockCondition(14, false), new UnlockCondition(5, false) }));
+             0.25f, new Vector2(0, 5), Common, false, false, 0.5f, new ConjunctCondition(new List<Condition> { new UnlockCondition(14, false), new UnlockCondition(5, false) }));
             static List<PlayerStat> piercingBulletsStatList = new List<PlayerStat> { piercingBulletsPiercingTime };
             static StatSet piercingBulletsStats = new StatSet(piercingBulletsStatList);
             public static Unlockable PiercingBullets = new Unlockable("Piercing Bullets",
@@ -511,8 +511,8 @@ public static class Stats
             public static Unlockable Flamethrower = new UnlockableWithBonus("Flamethrower",
             "Replaces the turret with a flamethrower, reducing lifetime but giving a big damage boost.",
              flamethrowerStats,
-             new Dictionary<PlayerStatUpgrade, float> { { piercingBulletsPiercingTime.GenerateIncreasingUpgrade(), 200f }, { FireRate.GenerateIncreasingUpgrade(), 10 } },
-             new List<VisualEffect> { new ParticleEffect(Flamethrower, "death explosion"), new StaticColourChange(DeathExplosion, Colors.OrangeRed, 5, 7) },
+             new Dictionary<PlayerStatUpgrade, float> { { piercingBulletsPiercingTime.GenerateIncreasingUpgrade(), 200f }, { FireRate.GenerateIncreasingUpgrade(), 10 }, {ShotSpeed.GenerateDecreasingUpgrade(), 5} },
+             new List<VisualEffect> { new ParticleEffect(Flamethrower, "death explosion"), new ParticleEffect(Flamethrower, "death explosion"), new StaticColourChange(DeathExplosion, Colors.OrangeRed, 5, 7) },
              new ConjunctCondition(new List<Condition> { new UnlockCondition(PiercingBullets, true), new UnlockCondition(Laser, false) }));
 
 

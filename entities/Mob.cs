@@ -421,7 +421,19 @@ public abstract partial class Mob : RigidBody2D, IAffectedByVisualEffects
         staticParticles.Hide();
     }
 
-
+    public async Task Stun(float stunDuration = -1)
+    {
+        if (stunned)
+        {
+            return;
+        }
+        stunned = true;
+        if (stunDuration != -1)
+        {
+            await ToSignal(GetTree().CreateTimer(stunDuration), SceneTreeTimer.SignalName.Timeout);
+            stunned = false;
+        }
+    }
 
 
 

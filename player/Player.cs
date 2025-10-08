@@ -584,6 +584,10 @@ public partial class Player : Node2D, IAffectedByVisualEffects
         {
             trailTimer.Stop();
         }
+        if (Unlocks.Flamethrower.unlocked)
+        {
+            Mutations.SetMutation(Mutations.GrowingBullet);
+        }
 
         RaiseShieldIfUnlocked();
 

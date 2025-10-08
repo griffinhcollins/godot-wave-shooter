@@ -80,7 +80,8 @@ public partial class Bullet : IAffectedByVisualEffects
             mobsHit = new HashSet<Node2D>();
 
         }
-
+        
+        
 
         lifetime = 0;
 
@@ -96,7 +97,7 @@ public partial class Bullet : IAffectedByVisualEffects
         SetScale();
         ((IAffectedByVisualEffects)this).ImmediateVisualEffects();
 
-
+        GD.Print(Unlocks.piercingBulletsPiercingTime.GetDynamicVal());
 
     }
 
@@ -299,6 +300,12 @@ public partial class Bullet : IAffectedByVisualEffects
             {
                 Unlocks.SpawnLightning(GetDamage(), hitMob, 1);
             }
+            if (Knockback.GetDynamicVal() > 0)
+            {
+                hitMob.LinearVelocity += direction * Knockback.GetDynamicVal() * 100;
+                hitMob.Stun(0.2f);
+            }
+
             if (Unlocks.OverflowBullets.unlocked)
             {
                 SetBaseDamage(baseDamage - Unlocks.overflowLoss.GetDynamicVal() * hitMob.GetHP());
@@ -307,6 +314,7 @@ public partial class Bullet : IAffectedByVisualEffects
             {
                 Splinter(hitNode);
             }
+
 
         }
         if (Unlocks.WallBounce.unlocked || (Unlocks.BouncingBullets.unlocked && hitNode is Mob))

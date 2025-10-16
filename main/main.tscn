@@ -22,8 +22,8 @@
 [ext_resource type="Texture2D" uid="uid://dvio14uuu5dx0" path="res://custom assets/projectiles/bullet_piercing.png" id="18_8q6vi"]
 [ext_resource type="Texture2D" uid="uid://cjilwsmy35you" path="res://custom assets/projectiles/bullet.png" id="18_l2al7"]
 [ext_resource type="PackedScene" uid="uid://d0rs6uujwmanw" path="res://player/effects/upgrade particles/beam_particles.tscn" id="19_eod3f"]
-[ext_resource type="Texture2D" uid="uid://bqfq4tggikbyo" path="res://custom assets/upgrade icons/laser beam.png" id="19_melwp"]
 [ext_resource type="Script" path="res://main/AudioManager.cs" id="19_qxmkc"]
+[ext_resource type="Texture2D" uid="uid://c6csskppek7oa" path="res://custom assets/projectiles/laser particles.png" id="20_ch32w"]
 [ext_resource type="AudioStream" uid="uid://b2kro6y6sewt7" path="res://sounds/laser pip.wav" id="22_jtriy"]
 
 [sub_resource type="Curve2D" id="Curve2D_oc665"]
@@ -109,7 +109,7 @@ centered = false
 script = ExtResource("17_0vgmj")
 bouncyBulletTexture = ExtResource("18_l2al7")
 piercingBulletTexture = ExtResource("18_8q6vi")
-laserTexture = ExtResource("19_melwp")
+laserTexture = ExtResource("20_ch32w")
 laserParticles = ExtResource("19_eod3f")
 
 [node name="Area2D" type="Area2D" parent="BulletManager"]

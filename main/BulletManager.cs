@@ -114,7 +114,7 @@ public partial class BulletManager : Node2D
 		}
 		if (Unlocks.Flamethrower.unlocked)
 		{
-			
+			return laserTexture;
 		}
 		if (Unlocks.PiercingBullets.unlocked)
 		{
@@ -153,7 +153,7 @@ public partial class BulletManager : Node2D
 				// GD.Print(b.position);
 				StaticColourChange staticColour = ((IAffectedByVisualEffects)b).GetStaticColour();
 				DrawSetTransform(b.position, Vector2.Up.AngleTo(b.direction), b.GetScale() * Vector2.One);
-				DrawTexture(GetTexture(b), -offset * b.GetScale(), staticColour is null ? Colors.White : staticColour.modulate);
+				DrawTexture(GetTexture(b), -offset * b.GetScale(), staticColour is null ? Colors.Blue : staticColour.modulate);
 			}
 		}
 

@@ -502,7 +502,7 @@ public static class Stats
             // FLAMETHROWER
             public static PlayerStat flamethrowerWidth = new PlayerStat("Cone Width",
             "The maximum size flamethrower particles reach.",
-             1, new Vector2(1, 5), Common, false, false, 0.5f); // How quickly the bullets enlarge
+             5, new Vector2(1, 10), Common, false, false, 0.5f); // How quickly the bullets enlarge
             public static PlayerStat flamethrowerFrequency = new PlayerStat("Flame Intensity",
             "How quickly flames damage enemies.",
              5, new Vector2(5, 10), Uncommon, false, false, 0.5f); // How many times per second the flames deal damage while in contact with an enemy

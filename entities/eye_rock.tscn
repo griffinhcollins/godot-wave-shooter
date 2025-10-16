@@ -34,7 +34,7 @@ mass = 100.0
 physics_material_override = SubResource("PhysicsMaterial_qm6eu")
 gravity_scale = 0.0
 script = ExtResource("1_gus6a")
-firstAppearsAtWave = 1
+firstAppearsAtWave = 5
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 scale = Vector2(5, 5.06)

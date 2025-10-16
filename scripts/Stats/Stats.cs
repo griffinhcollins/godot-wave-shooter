@@ -351,7 +351,7 @@ public static class Stats
                             // GD.Print("s");
                             foreach (Mob m in alreadyHit)
                             {
-                                GD.Print(m.GetID());
+                                // GD.Print(m.GetID());
                             }
                             // GD.Print("e");
                             HashSet<Mob> hits = SpawnLightning(dmg, target, depth + 1, alreadyHit);

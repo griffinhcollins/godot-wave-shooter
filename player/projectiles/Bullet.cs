@@ -97,7 +97,6 @@ public partial class Bullet : IAffectedByVisualEffects
         SetScale();
         ((IAffectedByVisualEffects)this).ImmediateVisualEffects();
 
-        GD.Print(Unlocks.piercingBulletsPiercingTime.GetDynamicVal());
 
     }
 

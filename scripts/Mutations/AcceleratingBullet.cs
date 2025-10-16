@@ -26,9 +26,7 @@ public class AcceleratingBullet : Mutation
 
     public override void OngoingEffect(double delta, Bullet projectile)
     {
-        GD.Print(projectile.speed);
         projectile.speed = projectile.speed * (1 + (float)delta * 4);
-        GD.Print(projectile.speed);
     }
 
     public override void OnCollision(Bullet projectile)

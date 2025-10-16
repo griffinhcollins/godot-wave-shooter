@@ -194,7 +194,7 @@ public partial class Player : Node2D, IAffectedByVisualEffects
                 distanceToHit = (hit.GlobalPosition - raycaster.GlobalPosition).Length();
                 if (hit is Mob && laserLastDamageTime[i] > 1 / (FireRate.GetDynamicVal() * 5f))
                 {
-                    GD.Print(i);
+                    // GD.Print(i);
                     laserLastDamageTime[i] = 0f;
 
                     ((Mob)hit).TakeDamage(Damage.GetDynamicVal() / 5f, DamageTypes.Laser);
